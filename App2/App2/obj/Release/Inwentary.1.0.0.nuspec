@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Inwentary</id>
+    <version>1.0.0</version>
+    <authors>Inwentary</authors>
+    <owners>Inwentary</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="SharpCifs.Std" version="0.2.12" exclude="Build,Analyzers" />
+        <dependency id="System.Data.SqlClient" version="4.6.0-preview2-26905-02" exclude="Build,Analyzers" />
+        <dependency id="Xamarin.Forms" version="3.1.0.697729" exclude="Build,Analyzers" />
+        <dependency id="ZXing.Net.Mobile" version="2.4.1" exclude="Build,Analyzers" />
+        <dependency id="ZXing.Net.Mobile.Forms" version="2.4.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\pawel\source\repos\App2\App2\App2\bin\Release\netstandard2.0\App2.dll" target="lib\netstandard2.0\App2.dll" />
+  </files>
+</package>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.StartPage"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
+               xmlns:local="clr-namespace:App2"
+             >
+    <StackLayout VerticalOptions="FillAndExpand" BackgroundColor="#F5FFFF" Padding="0,50,0,0">
+        <Label Text="{Binding  }" x:Name="lbl_user" HorizontalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
+        <Grid  Padding="40" ColumnSpacing="25" RowSpacing="25" VerticalOptions="FillAndExpand">
+            <!--<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" /> 
+                <ColumnDefinition Width="2*" /> 
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>-->
+            <Button Text="Przyjmij MM" Grid.Column="0" Grid.Row="0" 
+                    BackgroundColor="DarkCyan" 
+                    FontSize="Medium" 
+                    FontAttributes="Bold" 
+                    TextColor="Bisque"   
+                    CornerRadius="10" 
+                    BorderColor="mediumturquoise"   
+                    BorderWidth="5"
+                    Image="skaner100"
+                    Clicked="BtnListaMMp_Clicked"   
+                    ContentLayout="Top,20" x:Name="btn_przyjmijMM"
+                    
+                    />
+            <!--IsEnabled="{Binding Path=(local:Analyze.DataPresent)}"-->
+            <!--IsEnabled="{Binding Source={x:Static local:Model.Analyze.DataPresent}}"-->
+            <Button Text="Utwórz MM" Grid.Column="1" Grid.Row="0" 
+                    BackgroundColor="DarkCyan" 
+                    FontSize="Medium" 
+                    TextColor="Bisque"   
+                    FontAttributes="Bold" 
+                    CornerRadius="10" 
+                    BorderColor="mediumturquoise" 
+                    BorderWidth="5"
+                    Image="dodaj100" 
+                    ContentLayout="Top,40" 
+                    Clicked="BtnCreateMm_Clicked" x:Name="btn_CreateMM"
+                    />
+            <Button Text="Weryfikator Cen" Grid.Column="0" Grid.Row="1" 
+                    BackgroundColor="DarkCyan" 
+                    FontSize="14" 
+                    TextColor="Bisque"  
+                    FontAttributes="Bold" 
+                    CornerRadius="10" 
+                    BorderColor="mediumturquoise"
+                    BorderWidth="5"
+                    Image="barcode150.png"
+                    ContentLayout="Top,0"
+                    Clicked="SkanTwr_Clicked"
+                    x:Name="btn_weryfikator" 
+
+                />
+            <Button Text="Zrób przecenę" Grid.Column="1" Grid.Row="1" 
+                    BackgroundColor="DarkGray" 
+                    FontSize="Medium" 
+                    TextColor="DarkCyan"  
+                    CornerRadius="10" 
+                    BorderColor="black" 
+                    BorderWidth="5" 
+                    FontAttributes="Bold" 
+                    Image="znizka100"
+                    ContentLayout="Top,1"
+                    
+                    
+                    />
+            <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
+
+        </Grid>
+
+        <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
+            <Button Text="Zaloguj" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="65" Clicked="Btn_Login_Clicked" x:Name="btn_login"/>
+        
+            <Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings"/>
+                </Image.GestureRecognizers>
+            </Image>
+            
+        </StackLayout>
+    </StackLayout>
+
+</ContentPage>

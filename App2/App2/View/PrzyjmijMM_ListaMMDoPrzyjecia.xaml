@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM_ListaMMDoPrzyjecia"
+             xmlns:local="clr-namespace:App2" 
+             NavigationPage.HasNavigationBar="false"
+    >
+    <!--<ListView x:Name="MyListView"
+            ItemsSource="{Binding Items}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement">-->
+
+    <!--Built in Cells-->
+    <!--<ListView.ItemTemplate>
+        <DataTemplate>
+            <TextCell Text="{Binding .}" />
+        </DataTemplate>
+    </ListView.ItemTemplate>-->
+
+    <!--Custom View Cells-->
+
+    <!--<ListView.ItemTemplate>
+      <DataTemplate>
+        <ViewCell>
+          <StackLayout>
+            <Label Text="{Binding Text}" 
+                   Style="{DynamicResource ListItemTextStyle}" />
+            <Label Text="{Binding Detail}" 
+                   Style="{DynamicResource ListItemDetailTextStyle}"/>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+    </ListView.ItemTemplate>-->
+
+
+
+    <StackLayout Padding="10" Spacing="3">
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+            <Label Text="Lista MMek do przyjęcia" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
+        </StackLayout>
+        <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.PrzyjmijMMClass.ListaMMDoPrzyjcia}" 
+                  ItemTapped="Handle_ItemTapped" SeparatorColor="DarkCyan" SeparatorVisibility="Default"
+                  CachingStrategy="RecycleElement" 
+                  HasUnevenRows="True" 
+                  
+                  VerticalOptions="FillAndExpand">
+            <ListView.ItemTemplate>
+                <DataTemplate  >
+                    <ViewCell>
+                        <StackLayout Padding="5" Spacing="2" Orientation="Horizontal">
+                            <StackLayout>
+                                <Label Text="{Binding nrdokumentuMM}"   Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
+                                <Label Text="{Binding DatadokumentuMM}" Font="14"/>
+                                <Label Text="{Binding OpisdokumentuMM}" Font="12"/>
+                            </StackLayout>
+                            <!--<Image Source="{Binding StatusMM, Converter={StaticResource Model.PrzyjmijMMClass}}"/>-->
+                        </StackLayout>
+                    </ViewCell>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+                            <ActivityIndicator x:Name="waiticon" IsRunning="{Binding IsBusy}" />
+        <Button Text="Skanuj MMkę" Clicked="Btn_Skanuj_Clicked"  Image="scan48x2.png" ContentLayout="right,10"/>
+        <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
+    </StackLayout>
+
+
+</ContentPage>

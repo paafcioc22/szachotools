@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.LoginLista">
+
+
+    <StackLayout HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" Padding="20,6,20,6"   >
+
+
+        <Label Text="Wybierz operatora do logowania" HorizontalOptions="CenterAndExpand" FontSize="18" VerticalOptions="Start" />
+
+
+        <StackLayout VerticalOptions="CenterAndExpand"> 
+            <ListView x:Name="MyListView" 
+                ItemsSource="{Binding Items}"  
+                ItemTapped="Handle_ItemTapped" 
+                CachingStrategy="RecycleElement" HasUnevenRows="True" >
+                <ListView.ItemTemplate  >
+                    <DataTemplate >
+                        <ViewCell  >
+                            <StackLayout Spacing="0"   Padding="4" VerticalOptions="CenterAndExpand" >
+                                <Label Text="{Binding opekod}"
+                       FontSize="18" TextColor="DarkCyan" FontAttributes="Italic" />
+                                <Label Text="{Binding openazwa}" 
+                       FontSize="15" TextColor="Black"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+        </StackLayout>
+        
+        <Entry Placeholder="hasło" x:Name="entry_haslo"  IsPassword="True" Margin="50,0,50,0" Completed="entry_haslo_Completed" />
+        <Button Text="Zaloguj" Clicked="Button_Clicked" HorizontalOptions="FillAndExpand" />
+    </StackLayout>
+</ContentPage>

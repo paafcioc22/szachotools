@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.RaportListaDetails"
+                NavigationPage.HasNavigationBar="false"
+             >
+    <StackLayout Padding="10">
+    <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand" Spacing="8">
+            <Label Text="Szczegóły towaru" x:Name="tytul"  TextColor="Bisque"
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"  
+               FontSize="Medium"  />
+        </StackLayout>
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">
+                <Image x:Name="img_foto" />
+                <!--Source="{Binding twr_url}"/>-->
+                <Label Text="Dane" HorizontalOptions="Center" FontSize="18"/> 
+                <TableView Intent="Data" RowHeight="30"  >
+                    <TableRoot >
+                        <TableSection Title="" >
+                            <ViewCell >
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0" >
+                                    <Label Text="Kod " VerticalOptions="Center"/>
+                                    <Label Text="" x:Name="lbl_twr_kod" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                    <Label Text="Nazwa " VerticalOptions="Center"/>
+                                    <Label Text="{}" x:Name="lbl_twrnazwa" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                    <Label Text="EAN " VerticalOptions="Center"/>
+                                    <Label Text="" x:Name="lbl_twrean" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                    <Label Text="symbol " VerticalOptions="Center"/>
+                                    <Label Text="" x:Name="lbl_twrsymbol" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                    <Label Text="Cena"  VerticalOptions="Center"/>
+                                    <Label Text="" x:Name="lbl_twrcena" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+
+                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                    <Label Text="Ilość z MM " VerticalOptions="Center"/> 
+                                    <Label Text="" x:Name="lbl_ileZMM" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold" />
+                                </StackLayout>
+                            </ViewCell> 
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                    <Label Text="Ilość zeskanowana" VerticalOptions="Center"/>
+
+                    <Entry FontSize="24" x:Name="entry_ileZeSkan" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold" Keyboard="Numeric" WidthRequest="30" HeightRequest="50" Focused="entry_ileZeSkan_Focused"   />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+        <Button Text="Zapisz zmiany" Clicked="Btn_save_Clicked" HorizontalOptions="FillAndExpand" x:Name="btn_save"/>
+    </StackLayout>
+</ContentPage>

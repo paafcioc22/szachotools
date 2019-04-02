@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM_ListaElementowMM"
+             NavigationPage.HasNavigationBar="false">
+
+
+
+
+    <StackLayout BindingContext="TabbedPage" 
+                     Padding="10"  
+                     VerticalOptions="FillAndExpand">
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand" Spacing="8">
+            <Label Text="" x:Name="tytul"  TextColor="Bisque"
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"  
+               FontSize="Medium"  />
+        </StackLayout>
+        <ListView x:Name="MyListView"
+                  CachingStrategy="RecycleElement"
+                  HasUnevenRows="True"
+                  ItemTapped="Handle_ItemTapped"
+                  VerticalOptions="FillAndExpand" >
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+
+                        <StackLayout Orientation="Horizontal" Padding="2"  VerticalOptions="Center">
+                            <StackLayout VerticalOptions="Center" >
+                                <Label Text="{Binding id}"  
+                                       FontSize="30"  
+                                       TextColor="#47BFA7" 
+                                       HorizontalOptions="CenterAndExpand"  
+                                       VerticalOptions="Center" WidthRequest="55" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical"    
+                                         HorizontalOptions="FillAndExpand" Spacing="1" >
+                                <Label Text="{Binding twrkod}"   
+                                           FontAttributes="Bold"   
+                                           HorizontalOptions="StartAndExpand"
+                                           FontSize="13"  />
+                                <Label Text="{Binding nazwa}"   
+                                           
+                                               HorizontalOptions="StartAndExpand"
+                                               FontSize="13"  />
+                                <Label Text="{Binding symbol}"   
+                                               HorizontalOptions="StartAndExpand"
+                                               VerticalOptions="Center"
+                                               FontSize="11"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center"  >
+                                <Label Text="{Binding ilosc}"  
+                                           FontSize="16"  
+                                           HorizontalOptions="Center" WidthRequest="40"
+                                           VerticalOptions="Center" />
+                                <!--<Label Text="{Binding ilosc_OK } Margin="0,0,2,0"" 
+                                            VerticalOptions="Center" 
+                                            HorizontalOptions="Start"                                            
+                                            x:Name="poprawna" />-->
+                            </StackLayout>
+                            <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+            <StackLayout Orientation="Vertical" VerticalOptions="End">
+                <SearchBar Placeholder="Szukaj.." TextChanged="SearchBar_TextChanged" HeightRequest="30" x:Name="szukaj"  />
+                <Button Text="Rozpocznij skanowanie dostawy" Clicked="Btn_StartRaport_Clicked"   VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand"  /> 
+            </StackLayout>
+        </StackLayout>
+</ContentPage>

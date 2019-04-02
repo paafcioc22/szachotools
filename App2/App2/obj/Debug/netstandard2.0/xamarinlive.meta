@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XamlProjectMeta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Files>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\App.xaml</FilePath>
+      <Hash>64-64-0D-46-A1-43-AC-83-85-FB-5D-B2-27-00-40-F6</Hash>
+      <Properties />
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\ConnPage.xaml</FilePath>
+      <Hash>22-1B-A3-31-68-F8-6E-AC-C7-B8-91-E7-FC-F6-6F-9B</Hash>
+      <Properties />
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\ListaMMP.xaml</FilePath>
+      <Hash>3C-7B-C8-BD-68-1B-2E-FA-4E-53-FE-DF-C3-75-1F-4C</Hash>
+      <Properties />
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\ListaTest.xaml</FilePath>
+      <Hash>1E-99-9D-34-EF-9E-E0-51-93-F5-CA-47-3F-4E-70-BD</Hash>
+      <Properties />
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\MainPage.xaml</FilePath>
+      <Hash>AA-B4-57-19-EB-1B-23-ED-3F-7E-DC-BA-5C-26-A8-AF</Hash>
+      <Properties>
+        <string>NavigationPage.HasNavigationBar</string>
+        <string>NavigationPage.HasBackButton</string>
+      </Properties>
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\View\AddElementMMList.xaml</FilePath>
+      <Hash>81-A4-DF-4D-8C-63-3D-71-48-53-F7-24-C7-E2-89-6F</Hash>
+      <Properties />
+    </XamlFileMeta>
+    <XamlFileMeta>
+      <FilePath>C:\Users\pawel\source\repos\App2\App2\App2\View\ListaSklepowPage.xaml</FilePath>
+      <Hash>72-4E-4A-31-26-28-A3-95-EC-32-F1-44-6C-7A-0F-20</Hash>
+      <Properties />
+    </XamlFileMeta>
+  </Files>
+</XamlProjectMeta>

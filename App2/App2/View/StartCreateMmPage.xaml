@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.StartCreateMmPage"
+             xmlns:App2="clr-namespace:LabelTextColorSample"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False" 
+             xmlns:local="clr-namespace:App2"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <App2:StringToColorConverter x:Key="StringToColorConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Padding="10" Spacing="10">
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+            <Label Text="Lista MMek do wygenerowania" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/> 
+        </StackLayout>
+        <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.DokMM.dokMMs}" 
+                  ItemTapped="ListaMMek_ItemTapped" SeparatorColor="DeepSkyBlue" SeparatorVisibility="Default"
+                  CachingStrategy="RecycleElement" 
+                  HasUnevenRows="True" 
+                  
+                  VerticalOptions="FillAndExpand">
+            <ListView.ItemTemplate>
+                <DataTemplate  >
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Usuń" Clicked="Delete_Clicked" IsDestructive="True" CommandParameter="{Binding .}"/>
+                        </ViewCell.ContextActions>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Mag_Nrdok}" TextColor="{Binding statuss,Converter={StaticResource StringToColorConverter}}" Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
+                            <Label Text="{Binding opis}" Font="14"/>
+                        </StackLayout>
+                    </ViewCell>
+                     
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" Image="add48x2.png" ContentLayout="right,10"/>
+        <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
+    </StackLayout>
+</ContentPage>

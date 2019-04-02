@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.RaportListaRoznice"
+             NavigationPage.HasNavigationBar="false"
+    xmlns:local="clr-namespace:App2">
+
+
+    <StackLayout Padding="10" Spacing="3">
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+            <Label Text="{Binding NrDokumentu}" x:Name="lbl_NrDokumentu" HorizontalOptions="Center" FontSize="14" TextColor="Bisque"/>
+        </StackLayout>
+        
+        
+        <ListView x:Name="MyListView" IsGroupingEnabled="True" 
+              GroupDisplayBinding="{Binding Grupa}"
+              
+            ItemsSource="{Binding lista}" 
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement">
+
+            <!--Built in Cells  , StringFormat= 'Raport różnicowy -{0}' -->
+             
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell Height="25">
+                        <StackLayout VerticalOptions="FillAndExpand"
+                       Padding="5"
+                       BackgroundColor="{Binding kolor}">
+                            <Label Text="{Binding Grupa}" TextColor="Beige" VerticalOptions="Center" FontSize="18" FontAttributes="Bold,Italic"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Vertical" Padding="15,0,0,0">
+                            <!--<StackLayout Orientation="Horizontal" Padding="15,0,0,0">
+                                <Label Text="{Binding twrkod}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                                <Label Text="{Binding ilosc}" HorizontalOptions="EndAndExpand" WidthRequest="40" VerticalOptions="Center"/>
+                            
+                            </StackLayout>
+                            <Label Text="{Binding TwrNazwa}" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>--> 
+                        <StackLayout Orientation="Horizontal" Padding="2"  VerticalOptions="Center">
+                             
+                            <StackLayout Orientation="Vertical"    
+                                         HorizontalOptions="FillAndExpand" Spacing="1" >
+                                <Label Text="{Binding twrkod}"   
+                                           FontAttributes="Bold"   
+                                           HorizontalOptions="StartAndExpand"
+                                           FontSize="15"  />
+                                <Label Text="{Binding TwrNazwa}"    
+                                               HorizontalOptions="StartAndExpand"
+                                               FontSize="13"  /> 
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal"  >
+                                <Label Text="{Binding ilosc}"  
+                                           FontSize="16"  
+                                           HorizontalOptions="End" 
+                                           VerticalOptions="Center" Margin="0,0,15,0"/>
+                            </StackLayout>
+                            <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>
+                        </StackLayout>
+                        </StackLayout>
+
+                    </ViewCell>
+                    <!--<TextCell Text="{Binding twrkod}" Detail="{Binding ilosc}"  />-->
+                </DataTemplate>
+            </ListView.ItemTemplate> 
+        </ListView>
+        <!--<Label Text="" x:Name="lbl_komunikat" HorizontalOptions="Center" VerticalOptions="Center" />-->
+        <Button Text="Wyślij raport do Centrali" Clicked="Btn_SendRaport_Clicked" HorizontalOptions="FillAndExpand"/>
+    </StackLayout>
+
+    <!--<ListView x:Name="list" 
+            ItemsSource="{Binding MonkeysGrouped}" 
+            ItemTapped="OnItemSelected"
+            IsGroupingEnabled="True"
+            GroupDisplayBinding="{Binding Key}"
+            GroupShortNameBinding="{Binding Key}"
+            HasUnevenRows="True">
+        <ListView.GroupHeaderTemplate>
+            <DataTemplate>
+                <ViewCell Height="25">
+                    <StackLayout VerticalOptions="FillAndExpand"
+                       Padding="5"
+                       BackgroundColor="#3498DB">
+                        <Label Text="{Binding Key}" TextColor="White" VerticalOptions="Center"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <local:AspectImageCell Text="{Binding Name}" Detail="{Binding Location}" ImageSource="{Binding Image}"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>-->
+
+
+
+</ContentPage>

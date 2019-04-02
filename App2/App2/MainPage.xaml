@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:App2"
+             xmlns:ef="clr-namespace:App2.Effects" 
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+            xmlns:labelTextColorSample="clr-namespace:LabelTextColorSample;assembly=LabelTextColorSample"
+            xmlns:ef1="clr-namespace:ShowHidePassEx.Effects"
+            xmlns:App2="clr-namespace:LabelTextColorSample"
+            x:Class="App2.MainPage"
+            NavigationPage.HasNavigationBar="False"
+            NavigationPage.HasBackButton="False"
+            BarBackgroundColor="Black"
+            >
+
+
+
+    <ContentPage Title="Skanuj towar"  >
+        <StackLayout>
+
+
+            <StackLayout VerticalOptions="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Skaner kodów ss" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"
+               FontAttributes="Bold" 
+               FontSize="Medium" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                </Grid>
+
+                <!-- Place new controls here -->
+                <!--<Button Text="Skanuj Kod" Clicked="Button_Clicked" x:Name="ButtonScanDefault" Scale="2"/>-->
+
+                <!--<Button Text="Skanuj inaczej" Clicked="Button_Clicked" x:Name="nowyprzycisk" />-->
+                <Label Text=""/>
+                <Label Text="" 
+               x:Name="lbl_twrkod" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" 
+               FontSize="Medium" 
+               FontAttributes="Bold" 
+               TextColor="DarkGray"/>
+                <Label Text="" 
+               x:Name="lbl_twrnazwa" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" 
+               FontSize="Medium" 
+               FontAttributes="Bold" 
+               TextColor="SlateGray"/>
+                <Label Text="" 
+               x:Name="lbl_twrsymbol" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" 
+               FontSize="Medium" 
+               FontAttributes="Bold" 
+               TextColor="Black"/>
+                <Label Text="" 
+               x:Name="lbl_twrcena" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" 
+               FontSize="Medium" 
+               FontAttributes="Bold" 
+               TextColor="Accent" />
+
+
+
+            </StackLayout>
+            <!--<Button x:Name="BtnTworzMM" Text="Tworz MM" Clicked="BtnTworzMM_Clicked"/>-->
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Skanuj MM" >
+        <StackLayout VerticalOptions="Center">
+            <!--<Button Text="Skanuj MM" Clicked="Button_Clicked" x:Name="ButtonScanMM" Scale="2"/>
+            <Button Text="Skanuj gotowe" Clicked="Button_Clicked_1" x:Name="Btn_inaczej"/>-->
+
+            <!--<ListView x:Name="MyListView"
+            
+            CachingStrategy="RecycleElement"
+            >
+            -->
+            <!--ItemsSource="{Binding pozycje}"-->
+
+            <!--Built in Cells-->
+            <!--
+                <ListView.ItemTemplate>
+
+                    <DataTemplate>
+                        <TextCell Text="{Binding twrkod}" Detail="{Binding ilosc}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Ustawienia"  >
+
+        <StackLayout >
+
+            <StackLayout Orientation="Vertical" BackgroundColor="AliceBlue"
+                     HorizontalOptions="Fill" 
+                     Spacing="0" VerticalOptions="Center"   Padding="0,80,0,0"
+                     >
+                <Label Text="Ip serwer" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                <Entry 
+                x:Name="Ipserwer" 
+                Placeholder="IP serwer.." 
+                VerticalOptions="FillAndExpand" 
+                Keyboard="Telephone" 
+                HorizontalTextAlignment="Center"
+                />
+                <Label Text="Instancja" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                <Entry 
+                x:Name="Instancja"
+                Placeholder="Instancja.."  
+                VerticalOptions="FillAndExpand" 
+                HorizontalTextAlignment="Center"
+                />
+                <Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                <Entry 
+                x:Name="Login"
+                Placeholder="Login.." 
+                VerticalOptions="FillAndExpand" 
+                HorizontalTextAlignment="Center"
+                />
+                <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
+
+                <Entry 
+                x:Name="Haslo"
+                Placeholder="Hasło.." 
+                VerticalOptions="FillAndExpand" 
+                HorizontalTextAlignment="Center"
+                IsPassword="True" Margin="0,0,25,0">
+                    <Entry.Effects  >
+                        <ef1:ShowHidePassEffect  />
+                    </Entry.Effects>
+
+                </Entry>
+
+            </StackLayout>
+
+            <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Yellow">
+                <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked"/>
+            </StackLayout>
+        </StackLayout>
+
+
+    </ContentPage>
+    <ContentPage Title="Lista MM">
+        <ContentPage.Resources>
+            <ResourceDictionary>
+                <App2:StringToColorConverter x:Key="StringToColorConverter"/>
+            </ResourceDictionary>
+        </ContentPage.Resources>
+        <StackLayout Padding="10" Spacing="10">
+            <Label Text="Lista MMek do wygenerowania" HorizontalOptions="Center"/>
+            <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.DokMM.dokMMs}" 
+                  ItemTapped="ListaMMek_ItemTapped" SeparatorColor="DeepSkyBlue" SeparatorVisibility="Default"
+                  CachingStrategy="RecycleElement" 
+                  HasUnevenRows="True" 
+                  
+                  VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate  >
+                        <ViewCell>
+                            <ViewCell.ContextActions> 
+                                <MenuItem Text="Usuń" Clicked="Delete_Clicked" IsDestructive="True" CommandParameter="{Binding .}"/>
+                            </ViewCell.ContextActions>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Mag_Nrdok}" TextColor="{Binding statuss,Converter={StaticResource StringToColorConverter}}" Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
+                                <Label Text="{Binding opis}" Font="14"/> 
+                            </StackLayout>
+                        </ViewCell>
+                        <!--<TextCell Text="{Binding Mag_Nrdok }" Detail="{Binding opis}" TextColor="{Binding statuss,Converter={StaticResource StringToColorConverter}}"  >-->
+                            <!--<TextCell.ContextActions>
+                                --><!--<MenuItem Text="Zatwierdź" Clicked="Save_Clicked" CommandParameter="{Binding .}"/>--><!--
+                            </TextCell.ContextActions>--> 
+                        <!--<Label Text="{Binding Mag_Nrdok}" TextColor="Purple"/>
+                                    <Label Text="{Binding opis}"/>-->
+                            <!--</TextCell>-->
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Dodaj MMkę" Clicked="Button_Clicked_2" Image="add48x2.png" ContentLayout="right,10"/>
+            <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
+        </StackLayout>
+    </ContentPage>
+
+</TabbedPage>
+    
+ 
