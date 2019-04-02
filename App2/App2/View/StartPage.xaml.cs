@@ -36,15 +36,10 @@ namespace App2.View
 
             try
             {
-                HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
-
-                iNetRequest.Timeout = 2000;
-
-                WebResponse iNetResponse = iNetRequest.GetResponse();
-
-                iNetResponse.Close();
-
-                
+                HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl); 
+                iNetRequest.Timeout = 2000; 
+                WebResponse iNetResponse = iNetRequest.GetResponse(); 
+                iNetResponse.Close();  
                 return true;
 
             }
@@ -113,7 +108,7 @@ namespace App2.View
 
 
         private bool _userTapped;
-        private async void TapGestureRecognizer_Tapped()
+        private async void TapGestureRecognizer_Tapped(object sender, EventArgs args)
         {
             //  string query = "[CDN].[PC_WykonajSelect] 58611";
             //  var Maglista =  App.TodoManager.InsertDataNiezgodnosci(query); 

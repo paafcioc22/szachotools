@@ -335,7 +335,6 @@ namespace App2.View
                         dokMM.GIDdokumentuMM = _gidnumer;
                         dokMM.DatadokumentuMM = listaZMM[0].DatadokumentuMM;
                         dokMM.nrdokumentuMM = listaZMM[0].nrdokumentuMM;
-                        dokMM.XLGIDMM = listaZMM[0].XLGIDMM;
                         //dokMM.nazwa = 
                         // dokMM.RaportListaMMs.Add(dokMM);
                         Model.RaportListaMM.RaportListaMMs.Add(dokMM);

@@ -6,7 +6,9 @@
              NavigationPage.HasBackButton="False"
                xmlns:local="clr-namespace:App2"
              >
+ 
     <StackLayout VerticalOptions="FillAndExpand" BackgroundColor="#F5FFFF" Padding="0,50,0,0">
+      
         <Label Text="{Binding  }" x:Name="lbl_user" HorizontalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
         <Grid  Padding="40" ColumnSpacing="25" RowSpacing="25" VerticalOptions="FillAndExpand">
             <!--<Grid.ColumnDefinitions>
@@ -75,15 +77,16 @@
 
         </Grid>
 
+                    <!--<TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings"/>-->
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
             <Button Text="Zaloguj" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="65" Clicked="Btn_Login_Clicked" x:Name="btn_login"/>
         
             <Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings"/>
+                  <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings" />
                 </Image.GestureRecognizers>
             </Image>
-            
+         
         </StackLayout>
     </StackLayout>
 

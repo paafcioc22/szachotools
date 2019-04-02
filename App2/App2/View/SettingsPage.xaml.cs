@@ -23,12 +23,16 @@ namespace App2.View
             var app = Application.Current as App;
             BindingContext = Application.Current;
             if (SprConn())
-            { 
+            {
+                GetBaseName();
                 cennikClasses = GetCenniki();
                 //foreach (var cenniki in _cennikClasses)
                 //    pickerlist.Items.Add(cenniki.RodzajCeny);
-                pickerlist.ItemsSource = GetCenniki().ToList();
-                pickerlist.SelectedIndex = app.Cennik;
+                if (cennikClasses.Count > 0)
+                {
+                    pickerlist.ItemsSource = GetCenniki().ToList();
+                    pickerlist.SelectedIndex = app.Cennik; 
+                }
             }
             sprwersja();
         }
@@ -309,7 +313,8 @@ namespace App2.View
             {
                 DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane", "OK");
             }
-                return lista;
+
+            return lista;
             
         }
 
