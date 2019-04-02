@@ -79,6 +79,17 @@ namespace App2.Model
         public static ObservableCollection<PrzyjmijMMClass> ListaMMDoPrzyjcia = new ObservableCollection<PrzyjmijMMClass>();
 
 
+        public ObservableCollection<PrzyjmijMMClass> CreateListMM(PrzyjmijMMClass przyjmijMM)
+        {
+            ListaMMDoPrzyjcia.Clear();
+
+            var tmpKlas = przyjmijMM;
+
+            ListaMMDoPrzyjcia.Add(przyjmijMM);
+
+            return ListaMMDoPrzyjcia;
+        }
+
         public async   Task<ObservableCollection<PrzyjmijMMClass>> getListMM()
         {
             //DokMM dokMM = new DokMM();
@@ -106,7 +117,9 @@ namespace App2.Model
                 while (sqlData.Read())
                 {
                     DateTime dateTime = System.Convert.ToDateTime(sqlData["dataMM"]);
-                    ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    //ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    PrzyjmijMMClass mMClass = new PrzyjmijMMClass()
+                    
                     {
                         GIDdokumentuMM = System.Convert.ToInt32(sqlData["trn_trnid"]),
                         DatadokumentuMM = dateTime.ToString("dd-MM-yyyy"),
@@ -115,8 +128,12 @@ namespace App2.Model
                         GIDMagazynuMM = System.Convert.ToInt32(sqlData["magId"]),
                         XLGIDMM = System.Convert.ToInt32(sqlData["trn_gidnumer"]),
                         StatusMM = await PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]))
-                    });
+                    };
+
+
+                    CreateListMM(mMClass);
                     //PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]));
+
                 }
                 sqlData.Close();
                 sqlData.Dispose();
@@ -139,21 +156,22 @@ namespace App2.Model
                 //return await Task.Run(async () =>
                 //{
                     await _connection.CreateTableAsync<Model.RaportListaMM>();
-                    //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync();
+                //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync();
 
 
-                    var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", gidnumer);
+
+               var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", gidnumer);
                 if (wynik.Count > 0)
                 {
                     var wpis = wynik[0].Sended;
 
-                    var pozycja = ListaMMDoPrzyjcia.Where(x => x.GIDdokumentuMM == gidnumer).ToList();
+                    var pozycja = ListaMMDoPrzyjcia.Where(x => x.XLGIDMM == gidnumer).ToList();
                     pozycja[0].StatusMM = wpis;
-                    return pozycja[0].StatusMM;
+                    return true;//pozycja[0].StatusMM;
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
                // });
             }

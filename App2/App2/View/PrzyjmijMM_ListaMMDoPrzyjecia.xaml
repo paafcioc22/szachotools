@@ -44,7 +44,7 @@
 
     <StackLayout Padding="10" Spacing="3">
         <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
-            <Label Text="Lista MMek do przyjęcia" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
+            <Label Text="Lista MMek do przyjęcia" HorizontalOptions="Center" FontSize="20" TextColor="Bisque" />
         </StackLayout>
         <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.PrzyjmijMMClass.ListaMMDoPrzyjcia}" 
                   ItemTapped="Handle_ItemTapped" SeparatorColor="DarkCyan" SeparatorVisibility="Default"
@@ -55,8 +55,8 @@
             <ListView.ItemTemplate>
                 <DataTemplate  >
                     <ViewCell>
-                        <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <StackLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout Padding="10" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <StackLayout HorizontalOptions="FillAndExpand" >
                                 <Label Text="{Binding nrdokumentuMM}"   Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
                                 <Label Text="{Binding DatadokumentuMM}" Font="14"/>
                                 <Label Text="{Binding OpisdokumentuMM}" Font="12"/>

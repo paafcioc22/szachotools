@@ -19,29 +19,41 @@ namespace App2.View
         {
             InitializeComponent();
             this.BindingContext = this;
-            PrzyjmijMMClass = new Model.PrzyjmijMMClass();
+            //PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
-            PrzyjmijMMClass.getListMM();
+            ////PrzyjmijMMClass.getListMM();
 
-            BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
-            ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia; 
+            //BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+            //ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia; 
         }
 
-        //private async  void PobierzListe()
-        //{
+        protected override void OnAppearing()
+        {
+            PrzyjmijMMClass = new Model.PrzyjmijMMClass();
+            PobierzListe();
+            //PrzyjmijMMClass.getListMM();
 
-        //    try
-        //    {
+            BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+            ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+            base.OnAppearing();
 
-        //       await PrzyjmijMMClass.getListMM();
-        //    }
-        //    catch (Exception s)
-        //    {
+        }
 
-        //      await  DisplayAlert(null, s.Message, "OK");
-        //    }
+        private async void PobierzListe()
+        {
 
-        //}
+            try
+            {
+
+                await PrzyjmijMMClass.getListMM();
+            }
+            catch (Exception s)
+            {
+
+                await DisplayAlert(null, s.Message, "OK");
+            }
+
+        }
 
         bool _userTapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
