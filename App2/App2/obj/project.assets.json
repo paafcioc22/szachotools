@@ -4603,11 +4603,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\App2\\App2\\App2\\App2.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
       "projectName": "Inwentary",
-      "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\App2\\App2\\App2.csproj",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
       "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawel\\source\\repos\\App2\\App2\\App2\\obj\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

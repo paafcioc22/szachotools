@@ -26,87 +26,7 @@ namespace App2.View
         //List<ListDiffrence> listaRoznic;  
 
 
-        //public RaportListaRoznice(IOrderedEnumerable<Model.ListDiffrence> nowa2, IEnumerable<Model.PrzyjmijMMLista> listaZMM)
-        //{
-        //    InitializeComponent();
-
-        //    lista = Convert(nowa2.OrderByDescending(x=>x.ilosc));
-
-        //    var tmp = listaZMM.ToList();
-        //    lbl_NrDokumentu.Text = "Raport różnic :" +tmp[0].nrdokumentuMM;
-
-        //    var ile_brak = lista.Where(x => x.ilosc < 0).Count();
-        //    var ile_nadstan = lista.Where(x => x.ilosc > 0).Count();
-
-        //    if (ile_brak > 0)
-        //    {
-        //        braki_grupa = new Model.RaportRoznicGrupa("BRAKI",Color.Red);
-        //        listDiffrence.Add(braki_grupa);
-        //    }
-        //    if (ile_nadstan > 0)
-        //    {
-        //        nadstany_grupa = new Model.RaportRoznicGrupa("NADSTANY",Color.Green);
-        //        listDiffrence.Add(nadstany_grupa);
-        //    }
-
-
-
-        //    if (ile_brak > 0 || ile_nadstan > 0)
-        //    {
-        //        foreach (var el in lista)
-        //        {
-        //            if (el.ilosc < 0)
-        //            {
-        //                Model.ListDiffrence element = new Model.ListDiffrence();
-        //                element.twrkod = el.twrkod;
-        //                element.NrDokumentu = el.NrDokumentu;
-        //                element.ilosc = el.ilosc;
-        //                element.GidMagazynu = el.GidMagazynu;
-        //                element.DataDokumentu = el.DataDokumentu;
-        //                element.IleZeSkan = el.IleZeSkan;
-        //                element.IleZMM = el.IleZMM;
-        //                element.TwrNazwa = el.TwrNazwa;
-        //                // element.typ = el.IleZMM.ToString() + " vs " + el.IleZeSkan.ToString();
-        //                braki_grupa.Add(element);
-        //            }
-        //            else
-        //            {
-        //                Model.ListDiffrence element = new Model.ListDiffrence();
-        //                element.twrkod = el.twrkod;
-        //                element.NrDokumentu = el.NrDokumentu;
-        //                element.GidMagazynu = el.GidMagazynu;
-        //                element.DataDokumentu = el.DataDokumentu;
-        //                element.ilosc = el.ilosc;
-        //                element.IleZeSkan = el.IleZeSkan;
-        //                element.IleZMM = el.IleZMM;
-        //                element.TwrNazwa = el.TwrNazwa;
-
-        //                //element.typ = el.IleZMM.ToString() + " vs " + el.IleZeSkan.ToString();
-        //                nadstany_grupa.Add(element);
-        //            }
-        //        }
-
-        //        listDiffrence.OrderBy(n => n.Select(x => x.ilosc));
-
-        //    }
-             
-
-        //    if (ile_brak == 0 && ile_nadstan == 0)
-        //    {
-        //        //lbl_komunikat.Text = "Pełna zgodność dostawy- brawo";
-        //        nadstany_grupa = new Model.RaportRoznicGrupa("Pełna zgodność dostawy",Color.LightGreen);
-        //        listDiffrence.Add(nadstany_grupa);
-        //        //Model.ListDiffrence element = new Model.ListDiffrence();
-        //        //element.twrkod = "Brawo";
-        //        //nadstany_grupa.Add(element);
-        //        MyListView.ItemsSource = listDiffrence;//lista; }
-
-        //    }
-        //    else
-        //    {
-        //        MyListView.ItemsSource = listDiffrence;//lista; }
-        //    }
-        //}
+         
 
         static private int _gidnumer;
         static private int _XLgidnumer;
@@ -119,9 +39,7 @@ namespace App2.View
         {
             InitializeComponent();
             _gidnumer = gidnumer;
-            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-
-             
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection(); 
 
             //  _connection.CreateTableAsync<Model.RaportListaMM>();
 
