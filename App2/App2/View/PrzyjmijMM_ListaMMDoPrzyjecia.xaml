@@ -4,7 +4,9 @@
              x:Class="App2.View.PrzyjmijMM_ListaMMDoPrzyjecia"
              xmlns:local="clr-namespace:App2" 
              NavigationPage.HasNavigationBar="false"
-    >
+             
+             xmlns:App2="clr-namespace:App2.Model">
+              
     <!--<ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
@@ -33,6 +35,12 @@
     </ListView.ItemTemplate>-->
 
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <App2:StatusConverter x:Key="StatusConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
 
     <StackLayout Padding="10" Spacing="3">
         <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
@@ -47,13 +55,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate  >
                     <ViewCell>
-                        <StackLayout Padding="5" Spacing="2" Orientation="Horizontal">
-                            <StackLayout>
+                        <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <StackLayout HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding nrdokumentuMM}"   Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
                                 <Label Text="{Binding DatadokumentuMM}" Font="14"/>
                                 <Label Text="{Binding OpisdokumentuMM}" Font="12"/>
                             </StackLayout>
-                            <!--<Image Source="{Binding StatusMM, Converter={StaticResource Model.PrzyjmijMMClass}}"/>-->
+                            <Image Source="{Binding StatusMM, Converter={StaticResource StatusConverter}}"/>
                         </StackLayout>
                     </ViewCell>
 
