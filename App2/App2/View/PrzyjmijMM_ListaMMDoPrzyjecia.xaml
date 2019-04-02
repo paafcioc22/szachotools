@@ -56,7 +56,7 @@
                 <DataTemplate  >
                     <ViewCell>
                         <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <StackLayout>
+                            <StackLayout HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding nrdokumentuMM}"   Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
                                 <Label Text="{Binding DatadokumentuMM}" Font="14"/>
                                 <Label Text="{Binding OpisdokumentuMM}" Font="12"/>
