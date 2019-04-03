@@ -79,10 +79,22 @@ namespace App2.Model
         public static ObservableCollection<PrzyjmijMMClass> ListaMMDoPrzyjcia = new ObservableCollection<PrzyjmijMMClass>();
 
 
-        public async   Task<ObservableCollection<PrzyjmijMMClass>> getListMM()
+
+        //public ObservableCollection<PrzyjmijMMClass> CreateListMM(PrzyjmijMMClass przyjmijMM)
+        //{
+
+        //    //ListaMMDoPrzyjcia.Clear();
+
+        //    ListaMMDoPrzyjcia.Add(przyjmijMM); 
+
+        //    return ListaMMDoPrzyjcia;
+        //}
+
+
+        public  async Task<ObservableCollection<PrzyjmijMMClass>> getListMM()
         {
             //DokMM dokMM = new DokMM();
-
+            PrzyjmijMMClass przyjmijMM;
             try
             {
                 ListaMMDoPrzyjcia.Clear();
@@ -106,7 +118,8 @@ namespace App2.Model
                 while (sqlData.Read())
                 {
                     DateTime dateTime = System.Convert.ToDateTime(sqlData["dataMM"]);
-                    ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    //ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    przyjmijMM= new PrzyjmijMMClass()
                     {
                         GIDdokumentuMM = System.Convert.ToInt32(sqlData["trn_trnid"]),
                         DatadokumentuMM = dateTime.ToString("dd-MM-yyyy"),
@@ -114,9 +127,12 @@ namespace App2.Model
                         OpisdokumentuMM = System.Convert.ToString(sqlData["trn_opis"]),
                         GIDMagazynuMM = System.Convert.ToInt32(sqlData["magId"]),
                         XLGIDMM = System.Convert.ToInt32(sqlData["trn_gidnumer"]),
-                        StatusMM = await PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]))
-                    });
+                        // StatusMM = await PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]))
+                    };
                     //PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]));
+                   var tmpMM= await PobierzSatus(przyjmijMM);
+                    // CreateListMM(tmpMM);
+                    ListaMMDoPrzyjcia.Add(tmpMM);
                 }
                 sqlData.Close();
                 sqlData.Dispose();
@@ -124,15 +140,15 @@ namespace App2.Model
 
                 return ListaMMDoPrzyjcia;
             }
-            catch (Exception)
+            catch (Exception s)
             {
-
+                //Console.WriteLine(s.Message);
                 throw;
             }
              
         }
         //private SQLiteAsyncConnection _connection= DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-        public async Task<bool>   PobierzSatus(int gidnumer)
+        public async Task<PrzyjmijMMClass>   PobierzSatus(PrzyjmijMMClass mMClass)
         {
             try
             {
@@ -142,24 +158,26 @@ namespace App2.Model
                     //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync();
 
 
-                    var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", gidnumer);
+
+                    var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
                 if (wynik.Count > 0)
                 {
                     var wpis = wynik[0].Sended;
 
-                    var pozycja = ListaMMDoPrzyjcia.Where(x => x.GIDdokumentuMM == gidnumer).ToList();
-                    pozycja[0].StatusMM = wpis;
-                    return pozycja[0].StatusMM;
+                    //var pozycja = ListaMMDoPrzyjcia.Where(x => x.GIDdokumentuMM == gidnumer).ToList();
+
+                    mMClass.StatusMM = wpis;
+                    return mMClass;
                 }
                 else
                 {
-                    return false;
+                    return mMClass;
                 }
                // });
             }
             catch (Exception )
             {
-                return false;
+                return mMClass;
             }
         }
 

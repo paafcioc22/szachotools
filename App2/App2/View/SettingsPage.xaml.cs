@@ -23,12 +23,17 @@ namespace App2.View
             var app = Application.Current as App;
             BindingContext = Application.Current;
             if (SprConn())
-            { 
+            {
+                GetBaseName();
+
                 cennikClasses = GetCenniki();
+                if (cennikClasses.Count > 0)
+                {
+                    pickerlist.ItemsSource = GetCenniki().ToList();
+                    pickerlist.SelectedIndex = app.Cennik;
+                }
                 //foreach (var cenniki in _cennikClasses)
-                //    pickerlist.Items.Add(cenniki.RodzajCeny);
-                pickerlist.ItemsSource = GetCenniki().ToList();
-                pickerlist.SelectedIndex = app.Cennik;
+                //pickerlist.Items.Add(cenniki.RodzajCeny);
             }
             sprwersja();
         }

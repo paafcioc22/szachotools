@@ -19,13 +19,25 @@ namespace App2.View
         {
             InitializeComponent();
             this.BindingContext = this;
+           
+        }
+
+
+
+        protected override void OnAppearing()
+        {
+
             PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
             PrzyjmijMMClass.getListMM();
 
             BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
-            ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia; 
+            ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+
+            base.OnAppearing();
+
         }
+
 
         //private async  void PobierzListe()
         //{
