@@ -24,12 +24,12 @@ namespace App2.View
 
 
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
 
             PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
-            PrzyjmijMMClass.getListMM();
+            await PrzyjmijMMClass.getListMM();
 
             BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
             ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;

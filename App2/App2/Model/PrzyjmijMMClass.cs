@@ -140,7 +140,7 @@ namespace App2.Model
 
                 return ListaMMDoPrzyjcia;
             }
-            catch (Exception s)
+            catch (Exception )
             {
                 //Console.WriteLine(s.Message);
                 throw;
@@ -152,12 +152,8 @@ namespace App2.Model
         {
             try
             {
-                //return await Task.Run(async () =>
-                //{
-                    await _connection.CreateTableAsync<Model.RaportListaMM>();
-                    //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync();
-
-
+                  await _connection.CreateTableAsync<Model.RaportListaMM>();
+                    //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync(); 
 
                     var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
                 if (wynik.Count > 0)
@@ -173,7 +169,7 @@ namespace App2.Model
                 {
                     return mMClass;
                 }
-               // });
+               
             }
             catch (Exception )
             {
