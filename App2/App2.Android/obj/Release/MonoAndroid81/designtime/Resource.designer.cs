@@ -2433,8 +2433,8 @@ namespace App2.Droid
 			// aapt resource value: 0x7F090055
 			public const int avd_show_password = 2131296341;
 			
-			// aapt resource value: 0x7F010016
-			public const int barcode150 = 2130771990;
+			// aapt resource value: 0x7F010018
+			public const int barcode150 = 2130771992;
 			
 			// aapt resource value: 0x7F010003
 			public const int create48x2 = 2130771971;
@@ -2475,8 +2475,8 @@ namespace App2.Droid
 			// aapt resource value: 0x7F090057
 			public const int ic_dialog_close_light = 2131296343;
 			
-			// aapt resource value: 0x7F010021
-			public const int ic_errorstatus = 2130772001;
+			// aapt resource value: 0x7F010023
+			public const int ic_errorstatus = 2130772003;
 			
 			// aapt resource value: 0x7F090058
 			public const int ic_group_collapse_00 = 2131296344;
@@ -2979,8 +2979,8 @@ namespace App2.Droid
 			// aapt resource value: 0x7F0900FE
 			public const int ic_mr_button_grey = 2131296510;
 			
-			// aapt resource value: 0x7F010022
-			public const int ic_successstatus = 2130772002;
+			// aapt resource value: 0x7F010024
+			public const int ic_successstatus = 2130772004;
 			
 			// aapt resource value: 0x7F0900FF
 			public const int ic_vol_type_speaker_dark = 2131296511;
@@ -3003,8 +3003,8 @@ namespace App2.Droid
 			// aapt resource value: 0x7F010006
 			public const int kod96 = 2130771974;
 			
-			// aapt resource value: 0x7F010017
-			public const int metka128 = 2130771991;
+			// aapt resource value: 0x7F010019
+			public const int metka128 = 2130771993;
 			
 			// aapt resource value: 0x7F090105
 			public const int mr_button_connected_dark = 2131296517;
@@ -3108,20 +3108,26 @@ namespace App2.Droid
 			// aapt resource value: 0x7F09000C
 			public const int notify_panel_notification_icon_bg = 2131296268;
 			
+			// aapt resource value: 0x7F010016
+			public const int NotSended = 2130771990;
+			
 			// aapt resource value: 0x7F010008
 			public const int refresh48x2 = 2130771976;
 			
-			// aapt resource value: 0x7F010019
-			public const int roundedbg = 2130771993;
+			// aapt resource value: 0x7F010021
+			public const int roundedbg = 2130772001;
 			
-			// aapt resource value: 0x7F010020
-			public const int roundedbgdark = 2130772000;
+			// aapt resource value: 0x7F010022
+			public const int roundedbgdark = 2130772002;
 			
 			// aapt resource value: 0x7F010009
 			public const int save48x2 = 2130771977;
 			
 			// aapt resource value: 0x7F010010
 			public const int scan48x2 = 2130771984;
+			
+			// aapt resource value: 0x7F010017
+			public const int Sended = 2130771991;
 			
 			// aapt resource value: 0x7F010011
 			public const int show_pwd = 2130771985;
@@ -3132,8 +3138,8 @@ namespace App2.Droid
 			// aapt resource value: 0x7F010013
 			public const int skaner100 = 2130771987;
 			
-			// aapt resource value: 0x7F010018
-			public const int skaner64 = 2130771992;
+			// aapt resource value: 0x7F010020
+			public const int skaner64 = 2130772000;
 			
 			// aapt resource value: 0x7F090069
 			public const int tooltip_frame_dark = 2131296361;

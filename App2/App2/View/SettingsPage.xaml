@@ -4,12 +4,16 @@
              xmlns:ef1="clr-namespace:ShowHidePassEx.Effects" 
              x:Class="App2.View.SettingsPage">
 
-    <StackLayout >
-        <Label x:Name="lbl_appVersion" HorizontalOptions="Center" />
+    <StackLayout Padding="10">
+        <!--<Label Text="Ustawienia"  HorizontalOptions="Center"/>-->
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+            <Label Text="Ustawienia" HorizontalOptions="Center" FontSize="18" TextColor="Bisque"/>
+        </StackLayout>
         <StackLayout Orientation="Vertical" BackgroundColor="AliceBlue"
                      HorizontalOptions="Fill" 
-                     Spacing="0" VerticalOptions="Center"   Padding="0,80,0,0"
+                     Spacing="0" VerticalOptions="Center"   Padding="8,15,8,8"
                      >
+            <Label x:Name="lbl_appVersion" HorizontalOptions="Center"  />
             <Label Text="Ip serwer" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
             <Entry 
                 x:Name="Ipserwer" Text="{Binding Serwer}"
@@ -49,11 +53,20 @@
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
                 IsPassword="True" Margin="0,0,25,0">
-                <Entry.Effects  >
+                <!--<Entry.Effects  >
                     <ef1:ShowHidePassEffect  />
-                </Entry.Effects>
+                </Entry.Effects>-->
             
             </Entry>
+            <Label Text="Pokaż na liście również zatwierdzone MM (8dni)" 
+                   HorizontalOptions="FillAndExpand" 
+                   BackgroundColor="Silver" 
+                   HorizontalTextAlignment="Center"/>
+            <Switch HorizontalOptions="CenterAndExpand"   
+                    IsToggled="False" 
+                    Toggled="Switch_Toggled"
+                    x:Name="SwitchStatus" 
+                    />
             <Label Text="Cennik" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
             <!--<Entry 
                 x:Name="Cennik" Text="{Binding Cennik}"

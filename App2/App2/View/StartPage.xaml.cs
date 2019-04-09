@@ -22,8 +22,9 @@ namespace App2.View
             this.BindingContext = this;
             this.IsBusy = false;
             //this.IsEnabled = false;
- 
+
             // sprwersja();
+             
         }
 
         public static bool CzyPrzyciskiWlaczone;

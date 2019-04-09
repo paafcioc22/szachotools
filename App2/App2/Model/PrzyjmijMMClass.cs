@@ -91,26 +91,33 @@ namespace App2.Model
         //}
 
 
-        public  async Task<ObservableCollection<PrzyjmijMMClass>> getListMM()
+        public  async Task<ObservableCollection<PrzyjmijMMClass>> getListMM(bool CzyZatwierdzone)
         {
             //DokMM dokMM = new DokMM();
+            string queryZatwierdzone = CzyZatwierdzone ?
+                                        "or (trn_rodzaj = 312010 and trn_datadok > getdate() - 8)" :
+                                        "";
+
+
             PrzyjmijMMClass przyjmijMM;
             try
             {
                 ListaMMDoPrzyjcia.Clear();
                 connection.Open();
-                string query = @"SELECT  trn_trnid,trn_gidnumer,
+                string query = $@"SELECT  trn_trnid,trn_gidnumer,
                      cast(trn_datadok as date) dataMM
 	                 ,trn_numerobcy
 	                 ,trn_opis
                      ,trn_magzrdID magId
                   FROM[CDN].[TraNag]
-                        where
-                    (trn_rodzaj= 312010 and trn_bufor<>0 )
-                    or(trn_rodzaj = 312010 and trn_datadok > getdate() - 8)
-             
+                        where   (trn_rodzaj = 312010 and trn_bufor<>0 )
+                                {queryZatwierdzone}
+
+
                  order by 1";
 
+                    //(trn_rodzaj= 312010 and trn_bufor<>0 )
+                   //    or(trn_rodzaj = 312010 and trn_datadok > getdate() - 8)
 
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlDataReader sqlData = command.ExecuteReader();

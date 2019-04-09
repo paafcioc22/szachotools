@@ -93,6 +93,11 @@ namespace App2.View
             ilosc.Keyboard = Keyboard.Text;
             ilosc.Placeholder = "Wpisz Ilość";
             ilosc.Keyboard = Keyboard.Telephone;
+            ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                ZapiszPozycje();
+
+            };
             ilosc.HorizontalOptions = LayoutOptions.Center;
             stackLayout.Children.Add(ilosc);
 
@@ -190,6 +195,11 @@ namespace App2.View
             ilosc.Placeholder = "Wpisz Ilość";
             ilosc.Keyboard = Keyboard.Telephone;
             ilosc.Text = mmka.szt.ToString();
+            ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                EdytujPozyce();
+                 
+            };
             ilosc.HorizontalOptions = LayoutOptions.Center;
             stackLayout.Children.Add(ilosc);
 
@@ -212,17 +222,47 @@ namespace App2.View
             stackLayout.Padding = new Thickness(30, 0, 30, 0);
             stackLayout_gl.Children.Add(stackLayout);
             Content = stackLayout_gl;
-            GetDataFromTwrKod(mmka.twrkod);
+            GetDataFromTwrKod(mmka.twrkod,false);
             ilosc.Focus();
         }
 
+
+        public AddTwrPage(Model.DokMM mmka, string CzyFoto =null)
+        {
+            this.Title = "Dodaj MM";
+            StackLayout stackLayout_gl = new StackLayout();
+            StackLayout stackLayout = new StackLayout();
+            StackLayout stack_naglowek = new StackLayout(); 
+
+            var absoluteLayout = new AbsoluteLayout();
+            var centerLabel = new Label
+            {
+                Text = " Zdjecie"
+               ,
+                HorizontalOptions = LayoutOptions.StartAndExpand
+               ,
+                BackgroundColor = Color.YellowGreen
+            };
+
+            foto = new Image();
+            stackLayout.Children.Add(foto);
+            stackLayout.VerticalOptions = LayoutOptions.CenterAndExpand;
+            stackLayout_gl.VerticalOptions = LayoutOptions.FillAndExpand;
+            stackLayout_gl.Children.Add(stackLayout);
+            //absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(1, 1, 1, 1), AbsoluteLayoutFlags.HeightProportional);
+            Content = stackLayout_gl;
+            GetDataFromTwrKod(mmka.twrkod,true);
+
+
+        }
 
         private void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
             pobierztwrkod(kodean.Text);
         }
 
-        private void Btn_Update_Clicked(object sender, EventArgs e)
+
+        private void EdytujPozyce()
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
@@ -248,13 +288,19 @@ namespace App2.View
             }
         }
 
-        private async void Btn_Zapisz_Clicked(object sender, EventArgs e)
+        private void Btn_Update_Clicked(object sender, EventArgs e)
+        {
+            EdytujPozyce();
+        }
+
+
+        private async void ZapiszPozycje()
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
                 if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt))
                 {
-                   await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
+                    await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
                 }
                 else
                 {
@@ -276,8 +322,8 @@ namespace App2.View
                                 return;
                             }
                             else
-                            { 
-                            //Model.DokMM dokMM = new Model.DokMM();
+                            {
+                                //Model.DokMM dokMM = new Model.DokMM();
                                 dokMM.gidnumer = _gidnumer;
                                 dokMM.twrkod = kodean.Text;
                                 dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
@@ -285,7 +331,8 @@ namespace App2.View
                                 dokMM.getElementy(_gidnumer);
                             }
                         }
-                        else {
+                        else
+                        {
 
                             await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
                         }
@@ -295,8 +342,13 @@ namespace App2.View
             }
             else
             {
-               await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
+                await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
             }
+        }
+
+        private   void Btn_Zapisz_Clicked(object sender, EventArgs e)
+        {
+             ZapiszPozycje();
 
         }
 
@@ -536,7 +588,7 @@ namespace App2.View
             foto.Source = twr_url;
         }
 
-        public void GetDataFromTwrKod(string _twrkod)
+        public void GetDataFromTwrKod(string _twrkod,bool CzyFoto )
         {
             var app = Application.Current as App;
             if (SettingsPage.SprConn())
@@ -593,12 +645,20 @@ namespace App2.View
             }
             //return twrkod;
             //kodean.Text = twrkod;
-            ean.Text = twr_ean;
-            symbol.Text = twr_symbol;
-            nazwa.Text = twr_nazwa;
-            stan.Text = "Stan : " + stan_szt;
-            foto.Source = twr_url;
-            ilosc.Focus();
+            if (CzyFoto)
+            {
+                foto.Source = twr_url;
+            }
+            else
+            {
+                ean.Text = twr_ean;
+                symbol.Text = twr_symbol;
+                nazwa.Text = twr_nazwa;
+                foto.Source = twr_url; 
+                stan.Text = "Stan : " + stan_szt;
+                ilosc.Focus();
+
+            }
         }
     }
 }

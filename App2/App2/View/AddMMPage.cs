@@ -32,7 +32,7 @@ namespace App2.View
 
             _opis = new Entry();
             _opis.Keyboard = Keyboard.Text;
-            _opis.Placeholder = "Opis";
+            _opis.Placeholder = "Opis (bez kto pakował - dodane z loginu)";
             stackLayout.Children.Add(_opis);
 
             //_btnListSklep = new Button();
@@ -88,7 +88,7 @@ namespace App2.View
             else { 
             Model.DokMM dokMM = new Model.DokMM();
             dokMM.mag_dcl = _magDcl.Text;
-            dokMM.opis = _opis.Text;
+            dokMM.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
             dokMM.fl_header = 1;
 
             dokMM.SaveMM(dokMM);

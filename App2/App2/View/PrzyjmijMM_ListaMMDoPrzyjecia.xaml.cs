@@ -29,7 +29,7 @@ namespace App2.View
 
             PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
-            await PrzyjmijMMClass.getListMM();
+            await PrzyjmijMMClass.getListMM(View.SettingsPage.IsBuforOff);
 
             BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
             ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;

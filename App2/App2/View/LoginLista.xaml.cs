@@ -238,7 +238,7 @@ namespace App2.View
         
         private void Button_Clicked(object sender, EventArgs e)
         {
-            if (entry_haslo.Text!="")
+            if (entry_haslo.Text != null) //entry_haslo.Text!=""
             {
                 string hasloAll = haslo_chk + haslo;
 

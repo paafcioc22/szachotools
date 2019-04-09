@@ -15,7 +15,7 @@
             <StackLayout Orientation="Horizontal" 
                          HorizontalOptions="StartAndExpand">
                 <Label Text="opis:" VerticalOptions="Center" TextColor="Bisque" Margin="5,0,0,0"/>
-                <Entry Placeholder="opis" x:Name="_opis" TextColor="Bisque"/>
+                <Entry Placeholder="opis" x:Name="_opis" TextColor="Bisque" />
 
             </StackLayout >
         </StackLayout>
@@ -48,9 +48,8 @@
                                 <Label Text="{Binding opis}" FontSize="25"  TextColor="#47BFA7" FontAttributes="Bold"
                                        VerticalOptions="Center" WidthRequest="30" HorizontalOptions="Center"/>
                                 <StackLayout Spacing="1" Padding="5">
-                                    <Label Text="{Binding twrkod} " 
-                               TextColor="DarkCyan" FontAttributes="Bold"/>
-
+                                    <Label Text="{Binding twrkod} "  TextColor="DarkCyan" FontAttributes="Bold"/>
+                                    <Label Text="{Binding twrNazwa} "  TextColor="DarkCyan" FontAttributes="Italic"/> 
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding szt, StringFormat= '{0} szt'}"  
                                            Style="{DynamicResource ListItemDetailTextStyle}" 

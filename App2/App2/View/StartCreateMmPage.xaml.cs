@@ -27,6 +27,7 @@ namespace App2.View
                     DokMM = new Model.DokMM();
                     BindingContext = Model.DokMM.dokMMs; //DokMMViewModel.dokMMs; 
                     ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;
+
                     flagaMM = 1;
                     StartTimer(true);
                // }

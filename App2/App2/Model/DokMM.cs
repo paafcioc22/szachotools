@@ -15,6 +15,7 @@ namespace App2.Model
         public int gidnumer { set; get; }
         public string mag_dcl { set; get; }
         public string twrkod { set; get; }
+        public string twrNazwa { set; get; }
         public int szt { set; get; }
         public Int16 fl_header { set; get; }
         public Int16 statuss { set; get; }
@@ -278,7 +279,7 @@ namespace App2.Model
             //    ConnectionString = "SERVER=" + MainPage._serwer + ";DATABASE=" + MainPage._database + ";TRUSTED_CONNECTION=No;UID=" + MainPage._uid + ";PWD=" + MainPage._pwd
             //};
             connection.Open();
-            string query = "Select m.*, twr_numerkat  from [dbo].[MM] m " +
+            string query = "Select m.*, twr_numerkat, twr_nazwa  from [dbo].[MM] m " +
                 "join cdn.towary on twr_kod=kod "+
                 "where fl_header =0 and gidnumer=" + gidnumer.ToString() +" order by cast(opis as int)";
 
@@ -295,8 +296,9 @@ namespace App2.Model
                     twrkod = Convert.ToString(sqlData["kod"]),
                     szt = Convert.ToInt32(sqlData["ile"]),
                     opis = Convert.ToString(sqlData["opis"]),//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
-                    symbol = Convert.ToString(sqlData["twr_numerkat"])//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
-                    
+                    symbol = Convert.ToString(sqlData["twr_numerkat"]),//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
+                    twrNazwa = Convert.ToString(sqlData["twr_nazwa"])//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
+                     
                 });
             }
             sqlData.Close();

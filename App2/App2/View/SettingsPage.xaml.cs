@@ -15,6 +15,8 @@ namespace App2.View
     public partial class SettingsPage : ContentPage
     {
 
+        public static bool IsBuforOff;
+
         //private string _version;
         public SettingsPage()
         {
@@ -36,6 +38,7 @@ namespace App2.View
                 //pickerlist.Items.Add(cenniki.RodzajCeny);
             }
             sprwersja();
+            SwitchStatus.IsToggled = IsBuforOff;
         }
 
         private async void sprwersja()
@@ -43,7 +46,7 @@ namespace App2.View
             var version = DependencyService.Get<Model.IAppVersionProvider>();
             var versionString = version.AppVersion;
             var bulidVer = version.BuildVersion;
-            lbl_appVersion.Text = versionString;
+            lbl_appVersion.Text = "Wersja " +versionString;
             //_version = bulidVer;
 
             var AktualnaWersja = await App.TodoManager.GetBuildVer();
@@ -72,13 +75,15 @@ namespace App2.View
                     try
                     {
                         conn.Open();
-                        GetBaseName();
+                        if (GetBaseName())
+                        {
+                            DisplayAlert("Connected", "Połączono z siecia", "OK");
+                            Navigation.PopModalAsync(); 
+                        }
                         // GetCenniki().Clear();
                         //cennikClasses.Clear();
                         //cennikClasses = GetCenniki();
                         //pickerlist.ItemsSource = GetCenniki().ToList();
-                        DisplayAlert("Connected", "Połączono z siecia", "OK");
-                        Navigation.PopModalAsync();
 
                     }
                     catch (Exception ex)
@@ -255,7 +260,7 @@ namespace App2.View
                 SqlCommand query = new SqlCommand(command.CommandText, connection);
                 SqlDataReader rs;
                 rs = query.ExecuteReader();
-                if (rs.Read())
+                while (rs.Read())
                 {
                     string bazaProd = Convert.ToString(rs["nazwaBazy"]);
                     app.BazaProd = bazaProd;
@@ -265,12 +270,13 @@ namespace App2.View
                 rs.Close();
                 rs.Dispose();
                 connection.Close();
-            }
-            catch
-            {
-                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane", "OK");
-            }
             return true;
+            }
+            catch (Exception s)
+            {
+                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane"+s.Message, "OK");
+                return false;
+            }
         
         }
 
@@ -360,6 +366,11 @@ namespace App2.View
                 //GetCenniki().Clear();
                 //pickerlist.ItemsSource = GetCenniki().ToList();
             }
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            IsBuforOff = e.Value;
         }
     }
 
