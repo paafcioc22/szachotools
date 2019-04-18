@@ -190,7 +190,7 @@ namespace App2.Model
 
             if (String.IsNullOrWhiteSpace(searchText))
                 return ListOfTwrOnMM;
-            return ListOfTwrOnMM.Where(c => c.twrkod.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase));
+            return ListOfTwrOnMM.Where(c => c.twrkod.Contains(searchText.ToUpper()));//, StringComparison.CurrentCultureIgnoreCase));
         }
 
 
@@ -273,15 +273,17 @@ namespace App2.Model
                          TrN_NumerPelny TrN_DokumentObcy,
                           cast(TrE_ilosc as int) ilosc
                          ,twr_kod, mag_gidnumer trn_magzrdID
-                         ,twr_numerkat as symbol
+                         ,twr_numerkat as symbol , twr_ean ean
                          ,case when len(twr_kod) > 5 and len(twr_url)> 5 then
                          replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
                         substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as urltwr,
+                        cast(twc_wartosc as decimal(5,2))cena,
                         cast(trn_datadok as date) dataMM
                                 from cdn.TraNag
                                 join cdn.traelem on TrN_TrNID = TrE_TrNId
                                 join cdn.magazyny on trn_magdocid=mag_magid
                                 join cdn.towary on TrE_TwrId = Twr_TwrId
+                                left join cdn.TwrCeny on twr_gidnumer=TwC_TwrNumer and TwC_TwrLp=2
                                 where (trn_gidnumer = @trnGidnumer or trn_trnid=@trnGidnumer)
                                 and  (trn_rodzaj=312010 )
                              order by tre_lp";// tre_lp;
@@ -313,19 +315,21 @@ namespace App2.Model
                     string pozycja = mmtwrkod;
                     int xlGidNumer = System.Convert.ToInt32(rs["trn_gidnumer"]);
                     ListOfTwrOnMM.Add(new PrzyjmijMMClass
-                    {
-                        id = mmid,
-                        twrkod = mmtwrkod,
-                        ilosc = mmilosc,
-                        url = mmurl,
-                        nazwa = mmtwrnazwa,
-                        symbol = this.symbol,
-                        GIDdokumentuMM = mmgidnumer,
-                        nrdokumentuMM = GetNrDokMmp,
-                        GIDMagazynuMM = GidMagazynu,
-                        DatadokumentuMM = dateTime.ToString("yyyy-MM-dd"),
-                        XLGIDMM = xlGidNumer
-                    }
+                        {
+                            id = mmid,
+                            twrkod = mmtwrkod,
+                            ilosc = mmilosc,
+                            url = mmurl,
+                            nazwa = mmtwrnazwa,
+                            symbol = this.symbol,
+                            GIDdokumentuMM = mmgidnumer,
+                            nrdokumentuMM = GetNrDokMmp,
+                            GIDMagazynuMM = GidMagazynu,
+                            DatadokumentuMM = dateTime.ToString("yyyy-MM-dd"),
+                            XLGIDMM = xlGidNumer,
+                            cena = System.Convert.ToString(rs["cena"]) ,
+                            ean = System.Convert.ToString(rs["ean"]) 
+                        }
                     );
                 }
                 rs.Close();

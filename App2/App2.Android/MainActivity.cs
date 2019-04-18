@@ -38,7 +38,6 @@ namespace App2.Droid
         {
             global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
         //private void CheckUpdate(Action doIfUpToDate)
         //{
         //    if (NeedUpdate())

@@ -19,14 +19,16 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginLista : ContentPage
     {
-        public ObservableCollection<pracownik> Items { get; set; }
+        public   ObservableCollection<Pracownik> ListaLogin { get; set; }
         SqlConnection connection;
         string konfiguracyjna;
 
         static string haslo;
-        static string _user;
+        static public string _user;
         static public string _nazwisko;
         static string haslo_chk;
+
+        public ListView ListViewLogin { get { return MyListView; } }
 
         public LoginLista()
         {
@@ -74,40 +76,20 @@ namespace App2.View
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        public async void SkanujIdetyfikator()
         {
-            if (e.Item == null)
-                return;
-
-            var prac = e.Item as pracownik;
-            haslo = prac.opehaslo;
-            haslo_chk = prac.opechk;
-            _user = "Zalogowany : " +prac.opekod;
-            _nazwisko = prac.openazwa;
-            //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
-
             if (SettingsPage.SprConn())
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
                     AutoRotate = false,
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
-               
-                ZXing.BarcodeFormat.EAN_13,
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODABAR,
-                ZXing.BarcodeFormat.CODE_39,
-                },
-                    //CameraResolutionSelector = availableResolutions => {
-
-                    //    foreach (var ar in availableResolutions)
-                    //    {
-                    //        Console.WriteLine("Resolution: " + ar.Width + "x" + ar.Height);
-                    //    }
-                    //    return availableResolutions[0];
-                    //},
-                    
+                    PossibleFormats = new List<ZXing.BarcodeFormat>()
+                    { 
+                        ZXing.BarcodeFormat.EAN_13,
+                        ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.CODABAR,
+                        ZXing.BarcodeFormat.CODE_39,
+                    }, 
 
                 };
 
@@ -182,11 +164,11 @@ namespace App2.View
                             if (scanPage.IsScanning) scanPage.AutoFocus(); return true;
                         });
                         Navigation.PopModalAsync();
-                        entry_haslo.Text= (result.Text);
+                        entry_haslo.Text = (result.Text);
                         entry_haslo.Focus();
                     });
                 };
-                 
+
                 await Navigation.PushModalAsync(scanPage);
             }
             else
@@ -194,17 +176,30 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
 
             }
-
-
-            //Deselect Item
-          //  ((ListView)sender).SelectedItem = null;
         }
 
+        void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item == null)
+                return;
 
+            var prac = e.Item as Pracownik;
+            haslo = prac.opehaslo;
+            haslo_chk = prac.opechk;
+            _user = prac.opekod; //"Zalogowany : "
+            _nazwisko = prac.openazwa;
+            
+
+           // SkanujIdetyfikator();
+             
+ 
+        }
+
+         
 
         private void GetLogins()
         {
-            Items = new ObservableCollection<pracownik>();
+            ListaLogin = new ObservableCollection<Pracownik>();
             SqlCommand command = new SqlCommand();
          
             connection.Open();
@@ -220,7 +215,7 @@ namespace App2.View
 
             while (rs.Read())
             {
-                 Items.Add(new pracownik
+                 ListaLogin.Add(new Pracownik
                 {
                     opekod = Convert.ToString(rs["ope_kod"]),
                     openazwa = Convert.ToString(rs["Ope_Nazwisko"]),
@@ -233,7 +228,7 @@ namespace App2.View
             rs.Dispose();
             connection.Close();
 
-            MyListView.ItemsSource = Items;
+            MyListView.ItemsSource = ListaLogin;
         }
         
         private void Button_Clicked(object sender, EventArgs e)
@@ -272,11 +267,12 @@ namespace App2.View
                 {
                     // DisplayAlert(null, "Brawo- OK", "OK");
                     View.StartPage.user = _user;
-
+                    
                     //View.StartPage.CzyPrzyciskiWlaczone = true;
                     View.StartPage startPage = new StartPage();
                     startPage.OdblokujPrzyciski();
-
+                    //startPage.user = _user;
+                   // startPage.user = _user;
                     Navigation.PopModalAsync();
                 }
                 else
@@ -444,11 +440,12 @@ namespace App2.View
             if (check)
             {
                 // DisplayAlert(null, "Brawo- OK", "OK");
-                View.StartPage.user = _user;
+               View.StartPage.user = _user;
 
                 //View.StartPage.CzyPrzyciskiWlaczone = true;
                 View.StartPage startPage = new StartPage();
                 startPage.OdblokujPrzyciski();
+                //startPage.user = _user;
 
                 Navigation.PopModalAsync();
             }
@@ -514,7 +511,7 @@ namespace App2.View
         //}
     }
 
-    public class pracownik
+    public  class Pracownik
     {
         public string opekod { get; set; }
         public string openazwa { get; set; }

@@ -148,7 +148,7 @@ namespace App2.View
                     DataDokumentu = ww.DatadokumentuMM,
                     TwrNazwa = ww.nazwa,
                     GidDokumentu= ww.GIDdokumentuMM,
-                    Operator = View.LoginLista._nazwisko,
+                    Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
                     XLGidMM = ww.XLGIDMM
                 });
                 _nrdokumentu = ww.nrdokumentuMM;
@@ -175,7 +175,7 @@ namespace App2.View
                     GidMagazynu = _MagGidnumer,
                     TwrNazwa = ww.nazwa,
                     GidDokumentu = _gidnumer,
-                    Operator = View.LoginLista._nazwisko,
+                    Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
                     XLGidMM = _XLgidnumer
                 });
             }
@@ -355,7 +355,7 @@ namespace App2.View
                         NrDokumentu = _nrdokumentu,
                         GidMagazynu = _MagGidnumer,
                         DataDokumentu = _DataDokumentu,
-                        Operator = View.LoginLista._nazwisko,
+                        Operator = View.LoginLista._user +" "+View.LoginLista._nazwisko,
                         XLGidMM = _XLgidnumer
                     });
 

@@ -218,7 +218,7 @@ namespace App2.View
                 InitialCatalog = app.BazaProd, //_database,
                 UserID = app.User,//_uid,
                 Password = app.Password, //_pwd,
-                ConnectTimeout = 1
+                ConnectTimeout = 2
             }.ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {

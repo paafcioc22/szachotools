@@ -10,47 +10,7 @@
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">
                 <Image x:Name="img_foto" /> <!--Source="{Binding twr_url}"/>-->
                 <Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>
-                <!--<Label     x:Name="twr_kod" 
-                VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="DarkGray"/>
-            <Label Text="" 
-               x:Name="lbl_twrkod" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="DarkGray"/>
-            <Label Text="" 
-               x:Name="lbl_twrnazwa" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="SlateGray"/>
-            <Label Text="" 
-               x:Name="lbl_twrsymbol" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="Black"/>
-            <Label Text="" 
-               x:Name="lbl_twrcena" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="Accent" />
-            <Label Text="" 
-               x:Name="lbl_stan" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" 
-               FontSize="Medium" 
-               FontAttributes="Bold" 
-               TextColor="Accent" />-->
+             
                 <TableView Intent="Data" RowHeight="30"  >
                     <TableRoot >
                         <TableSection Title="" >

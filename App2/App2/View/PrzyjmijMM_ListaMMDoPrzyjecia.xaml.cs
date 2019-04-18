@@ -18,7 +18,7 @@ namespace App2.View
         public   PrzyjmijMM_ListaMMDoPrzyjecia()
         {
             InitializeComponent();
-            this.BindingContext = this;
+            BindingContext = this;
            
         }
 
@@ -31,11 +31,20 @@ namespace App2.View
             //PobierzListe();
             await PrzyjmijMMClass.getListMM(View.SettingsPage.IsBuforOff);
 
-            BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+            //BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
+            BindingContext = this;
             ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
 
             base.OnAppearing();
 
+        }
+
+        private BindableProperty IsSearchingProperty =
+            BindableProperty.Create("IsSearching", typeof(bool), typeof(PrzyjmijMM_ListaMMDoPrzyjecia), false);
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
         }
 
 
@@ -58,22 +67,39 @@ namespace App2.View
         bool _userTapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            IsBusy = true;
-            if (e.Item == null)
-                return;
 
-                if (_userTapped)
-                    return;
-
-                _userTapped = true;
-                var mm = e.Item as Model.PrzyjmijMMClass;
+            IsSearching = true;
+                    var mm = e.Item as Model.PrzyjmijMMClass;
              
-                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM));
-               
-                IsBusy = false;
-              
-                ((ListView)sender).SelectedItem = null;
+
+            
+            ((ListView)sender).SelectedItem = null;
             _userTapped = false;
+
+
+            var delay = await Task.Run(async delegate
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+
+                    if (e.Item == null)
+                        return;
+
+                    if (_userTapped)
+                        return;
+
+                    _userTapped = true;
+
+                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM)); 
+
+                    IsSearching = false;
+
+                });
+                return 0;
+            });
+
+             
         }
 
         ZXing.Mobile.MobileBarcodeScanningOptions opts;

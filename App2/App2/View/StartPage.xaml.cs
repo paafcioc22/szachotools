@@ -15,14 +15,14 @@ namespace App2.View
 	public partial class StartPage : ContentPage
 	{
         private bool connected;
-        public static string user="";
+        public static string user;
         public StartPage ()
 		{
 			InitializeComponent ();
             this.BindingContext = this;
             this.IsBusy = false;
             //this.IsEnabled = false;
-
+            user = "";
             // sprwersja();
              
         }
@@ -39,7 +39,7 @@ namespace App2.View
             {
                 HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
 
-                iNetRequest.Timeout = 2000;
+                iNetRequest.Timeout = 3000;
 
                 WebResponse iNetResponse = iNetRequest.GetResponse();
 
@@ -132,14 +132,19 @@ namespace App2.View
 
         }
 
-        protected override void OnAppearing()
+        protected   override void OnAppearing()
         {
-            lbl_user.Text = user;
+            base.OnAppearing();
+
+            if (user != "" )
+            {
+                lbl_user.Text = user;
+            }
 
            
                 sprwersja();
 
-                if ((lbl_user.Text == "") || (lbl_user.Text is null) || (lbl_user.Text == "Wylogowany"))
+                if ((lbl_user.Text == "") || (lbl_user.Text == null) || (lbl_user.Text == "Wylogowany"))
                 {
                     blokujPrzyciski();
                 }
@@ -147,7 +152,7 @@ namespace App2.View
                 {
                     OdblokujPrzyciski();
                 }
-               
+
                 
         }
 
@@ -217,15 +222,31 @@ namespace App2.View
             connected = SettingsPage.SprConn();
             if (connected)
             {
-                 
-                await Navigation.PushModalAsync(new LoginLista());
+
+                // await Navigation.PushModalAsync(new LoginLista());
+
+                var page = new LoginLista();
+
+                page.ListViewLogin.ItemSelected += (source, args) =>
+                {
+                    var pracownik = args.SelectedItem as Pracownik;
+                    page.SkanujIdetyfikator();
+                    lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
+                   // Navigation.PopModalAsync();
+                };
+
+               await Navigation.PushModalAsync(page);
+
                 btn_login.IsEnabled = true;
 
-                //WaitIco.IsRunning = false;
+                 
             }
             else
                 await DisplayAlert(null, "Brak połączenia z siecią", "OK");
             btn_login.IsEnabled = true;
+
+
+            
 
         }
 

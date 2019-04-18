@@ -46,6 +46,7 @@
         <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
             <Label Text="Lista MMek do przyjęcia" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
         </StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}"  />
         <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.PrzyjmijMMClass.ListaMMDoPrzyjcia}" 
                   ItemTapped="Handle_ItemTapped" SeparatorColor="DarkCyan" SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement" 
@@ -68,7 +69,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-                            <ActivityIndicator x:Name="waiticon" IsRunning="{Binding IsBusy}" />
+                            <!--<ActivityIndicator x:Name="waiticon" IsRunning="{Binding IsBusy}" />-->
         <Button Text="Skanuj MMkę" Clicked="Btn_Skanuj_Clicked"  Image="scan48x2.png" ContentLayout="right,10"/>
         <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
     </StackLayout>

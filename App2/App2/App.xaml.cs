@@ -31,14 +31,38 @@ namespace App2
 
         protected override void OnSleep()
         {
-            View.StartPage.user = "Wylogowany";
+
+
+
+            var pages = Application.Current.MainPage.Navigation.ModalStack;
+            if (pages.Count > 0)
+            {
+                var nazwa = pages[pages.Count - 1].GetType().Name;
+
+                if (nazwa != "RaportLista_AddTwrKod")
+                    View.StartPage.user = "Wylogowany";
+
+            }
+            else {
+                View.StartPage.user = "Wylogowany";
+
+            }
+
+
+            //foreach (var page in pages)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(page.Title);
+            //}
+
+
+
             //View.StartPage.CzyPrzyciskiWlaczone = false;
 
             //Model.Analyze.DataPresent = false;
             //View.StartPage.blokujPrzyciski();
 
             //View.StartPage startPage = new View.StartPage();
-            //startPage.blokujPrzyciski();
+            //startPage.user= "Wylogowany";
         }
 
         protected override void OnResume()

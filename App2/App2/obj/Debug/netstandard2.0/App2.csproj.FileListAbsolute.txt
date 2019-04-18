@@ -33,7 +33,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.csproj.GenerateResource.cache
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\App.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\AddElementMMList.xaml.g.cs
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\ListaMMP.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\ListaSklepowPage.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\LoginLista.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\PrzyjmijMM_ListaElementowMM.xaml.g.cs
