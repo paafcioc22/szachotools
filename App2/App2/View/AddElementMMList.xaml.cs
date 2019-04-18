@@ -43,25 +43,7 @@ namespace App2.View
             int _gidnumer;
 
 
-        //public Item SelectedItem
-        //{
-        //    get
-        //    {
-        //        return _selectedItem;
-        //    }
-        //    set
-        //    {
-        //        _selectedItem = value;
-
-        //        if (_selectedItem == null)
-        //            return;
-
-        //        SomeCommand.Execute(_selectedItem);
-
-        //        SelectedItem = null;
-        //    }
-        //}
-
+         
 
 
 

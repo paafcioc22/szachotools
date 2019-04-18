@@ -110,7 +110,6 @@ class MonoPackageManager_Resources {
 		"Acr.UserDialogs.dll",
 		"AndHUD.dll",
 		"App2.dll",
-		"BCrypt.Net-Next.dll",
 		"CryptSharp.dll",
 		"FastAndroidCamera.dll",
 		"FormsViewGroup.dll",

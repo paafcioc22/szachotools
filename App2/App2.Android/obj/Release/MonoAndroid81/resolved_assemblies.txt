@@ -2,7 +2,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoA
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\Acr.UserDialogs.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\AndHUD.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\App2.dll
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\BCrypt.Net-Next.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\CryptSharp.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\FastAndroidCamera.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\FormsViewGroup.dll

@@ -40,25 +40,14 @@ namespace App2.View
         public RaportListaElementow(Model.RaportListaMM raportListaMM)
         {
             InitializeComponent();
-
-            //Model.PrzyjmijMMClass.ListOfTwrOnMM.Clear();
-            //Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
-
-            //przyjmijMMClass.GetlistMMElements(EAN_mmka, gidnumer);
-            //tytul.Text = przyjmijMMClass.GetNrDokMmp;// mmp; 
+             
 
             MyListView.ItemsSource = Model.RaportListaMM.RaportListaMMs;
         }
 
          private async  void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //if (e.Item == null)
-            //    return;
-
-            //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
-            ////Deselect Item
-            //((ListView)sender).SelectedItem = null;
+           
 
 
             try

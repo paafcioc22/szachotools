@@ -407,7 +407,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoA
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Xamarin.Forms.Core.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Xamarin.Forms.Xaml.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\App2.Android.dll
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\App2.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\App2.Android.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Acr.UserDialogs.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\FormsViewGroup.dll.mdb

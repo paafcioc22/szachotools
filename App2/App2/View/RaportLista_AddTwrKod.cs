@@ -332,17 +332,17 @@ namespace App2.View
         }
 
 
-        public async Task ZapiszISkanujDalej()
-        {
-            await Task.Run(() => //Task.Run automatically unwraps nested Task types!
-            {
-                //  Zapisz();
-                Task.Delay(5000);
-                DisplayAlert(null, "po zapisie", "ok");
-                // SkanowanieEan();
-            });
+        //public async Task ZapiszISkanujDalej()
+        //{
+        //    await Task.Run(() => //Task.Run automatically unwraps nested Task types!
+        //    {
+        //        //  Zapisz();
+        //        Task.Delay(5000);
+        //        DisplayAlert(null, "po zapisie", "ok");
+        //        // SkanowanieEan();
+        //    });
 
-        }
+        //}
 
 
         public async void Zapisz()
@@ -450,38 +450,7 @@ namespace App2.View
         ZXingScannerView zxing;
         // ZXingDefaultOverlay overlay;
 
-
-        //private async void SkanowanieEan()
-        //{
-
-        //        var customOverlay = new StackLayout
-        //        {
-        //            HorizontalOptions = LayoutOptions.FillAndExpand,
-        //            VerticalOptions = LayoutOptions.FillAndExpand
-        //        };
-        //        var torch = new Button
-        //        {
-        //            Text = "Toggle Torch"
-        //        };
-        //        torch.Clicked += delegate {
-        //            scanPage.ToggleTorch();
-        //        };
-        //        customOverlay.Children.Add(torch);
-
-        //        scanPage = new ZXingScannerPage(new ZXing.Mobile.MobileBarcodeScanningOptions { AutoRotate = true }, 
-        //            customOverlay: customOverlay);
-        //        scanPage.OnScanResult += (result) => {
-        //            scanPage.IsScanning = false;
-        //            scanPage.AutoFocus();
-        //            Device.BeginInvokeOnMainThread(() =>
-        //            {
-        //                 Navigation.PopModalAsync();
-        //                DisplayAlert("Scanned Barcode", result.Text, "OK");
-        //            });
-        //        };
-        //        await Navigation.PushModalAsync(scanPage); 
-
-        //}
+             
         private async void SkanowanieEan()
         {
             if (SettingsPage.SprConn())
@@ -622,14 +591,14 @@ namespace App2.View
 
 
 
-        private void Abort_Clicked(object sender, EventArgs e)
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                this.scanPage.IsScanning = false;
-                await Navigation.PopModalAsync();
-            });
-        }
+        //private void Abort_Clicked(object sender, EventArgs e)
+        //{
+        //    Device.BeginInvokeOnMainThread(async () =>
+        //    {
+        //        this.scanPage.IsScanning = false;
+        //        await Navigation.PopModalAsync();
+        //    });
+        //}
 
         private void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
