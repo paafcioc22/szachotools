@@ -394,8 +394,8 @@ namespace App2.View
                 //ZXing.BarcodeFormat.EAN_8,
                 ZXing.BarcodeFormat.EAN_13,
 
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODABAR,
+                //ZXing.BarcodeFormat.CODE_128,
+                //ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.CODE_39,
                 },
                     //CameraResolutionSelector = availableResolutions => {
@@ -523,7 +523,7 @@ namespace App2.View
 
         public void pobierztwrkod(string _ean)
         {
-             var app = Application.Current as App;
+            var app = Application.Current as App;
             if (SettingsPage.SprConn())
             {
                 try

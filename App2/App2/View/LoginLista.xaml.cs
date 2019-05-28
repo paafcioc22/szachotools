@@ -87,7 +87,7 @@ namespace App2.View
                     { 
                         ZXing.BarcodeFormat.EAN_13,
                         ZXing.BarcodeFormat.CODE_128,
-                        ZXing.BarcodeFormat.CODABAR,
+                        ZXing.BarcodeFormat.EAN_8,
                         ZXing.BarcodeFormat.CODE_39,
                     }, 
 

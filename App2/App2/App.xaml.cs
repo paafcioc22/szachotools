@@ -39,8 +39,13 @@ namespace App2
             {
                 var nazwa = pages[pages.Count - 1].GetType().Name;
 
-                if (nazwa != "RaportLista_AddTwrKod")
-                    View.StartPage.user = "Wylogowany";
+                if (nazwa == "RaportLista_AddTwrKod" || nazwa == "WeryfikatorCenPage")
+                    return;
+
+                   View.StartPage.user = "Wylogowany";
+
+                //if(nazwa != "WeryfikatorCenPage")
+                //    View.StartPage.user = "Wylogowany";
 
             }
             else {
@@ -49,25 +54,12 @@ namespace App2
             }
 
 
-            //foreach (var page in pages)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(page.Title);
-            //}
-
-
-
-            //View.StartPage.CzyPrzyciskiWlaczone = false;
-
-            //Model.Analyze.DataPresent = false;
-            //View.StartPage.blokujPrzyciski();
-
-            //View.StartPage startPage = new View.StartPage();
-            //startPage.user= "Wylogowany";
+            
         }
 
         protected override void OnResume()
         {
-          //  View.StartPage.user = "";
+           
         }
 
         public string BazaConf

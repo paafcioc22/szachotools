@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio\2017\community\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="15.0">
+ <Targets>
+  <Target Name="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\App2.Android.dll">
+   <Modules>
+    <Module Name="app2.android.dll">
+     <Namespaces>
+      <Namespace Name="App2.Droid">
+       <Types>
+        <Type Name="AppVersionProvider" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesMustBeAtLeastAsCriticalAsBaseTypesFxCopRule" Category="Microsoft.Security" CheckId="CA2146" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+           <Issue Name="DeriveFromCritical" Certainty="99" Level="CriticalError">Transparent or safe-critical type 'AppVersionProvider' derives from critical type 'IAppVersionProvider' in violation of the transparency inheritance rules.  'AppVersionProvider' must be critical to derive from a critical type or implement a critical interface.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#AppVersion" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_AppVersion()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="26">Transparent or safe critical method 'AppVersionProvider.AppVersion.get()' is overriding critical method 'IAppVersionProvider.AppVersion.get()' in violation of method override rules.  'AppVersionProvider.AppVersion.get()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+              </Message>
+              <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+               <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="26">Add the following security attribute to 'AppVersionProvider.AppVersion.get()' in order to match a LinkDemand on base method 'IAppVersionProvider.AppVersion.get()':  'SecurityCriticalAttribute'.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+          <Member Name="#BuildVersion" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_BuildVersion()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="37">Transparent or safe critical method 'AppVersionProvider.BuildVersion.get()' is overriding critical method 'IAppVersionProvider.BuildVersion.get()' in violation of method override rules.  'AppVersionProvider.BuildVersion.get()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+              </Message>
+              <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+               <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="37">Add the following security attribute to 'AppVersionProvider.BuildVersion.get()' in order to match a LinkDemand on base method 'IAppVersionProvider.BuildVersion.get()':  'SecurityCriticalAttribute'.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+          <Member Name="#OpenAppInStore()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="47">Transparent or safe critical method 'AppVersionProvider.OpenAppInStore()' is overriding critical method 'IAppVersionProvider.OpenAppInStore()' in violation of method override rules.  'AppVersionProvider.OpenAppInStore()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="AppVersionProvider.cs" Line="47">Add the following security attribute to 'AppVersionProvider.OpenAppInStore()' in order to match a LinkDemand on base method 'IAppVersionProvider.OpenAppInStore()':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="MainActivity" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#OnCreate(Android.OS.Bundle)" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="MainActivity.cs" Line="23">Transparent method 'MainActivity.OnCreate(Bundle)' references security critical method 'App.App()'.  In order for this reference to be allowed under the security transparency rules, either 'MainActivity.OnCreate(Bundle)' must become security critical or safe-critical, or 'App.App()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="MainActivity.cs" Line="23">Transparent method 'MainActivity.OnCreate(Bundle)' references security critical method 'App.TodoManager.set(WebMenager)'.  In order for this reference to be allowed under the security transparency rules, either 'MainActivity.OnCreate(Bundle)' must become security critical or safe-critical, or 'App.TodoManager.set(WebMenager)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="MainActivity.cs" Line="23">Transparent method 'MainActivity.OnCreate(Bundle)' references security critical method 'WebMenager.WebMenager(IMagazynSerwis)'.  In order for this reference to be allowed under the security transparency rules, either 'MainActivity.OnCreate(Bundle)' must become security critical or safe-critical, or 'WebMenager.WebMenager(IMagazynSerwis)' become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="SQLiteDb" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesMustBeAtLeastAsCriticalAsBaseTypesFxCopRule" Category="Microsoft.Security" CheckId="CA2146" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+           <Issue Name="DeriveFromCritical" Certainty="99" Level="CriticalError">Transparent or safe-critical type 'SQLiteDb' derives from critical type 'ISQLiteDb' in violation of the transparency inheritance rules.  'SQLiteDb' must be critical to derive from a critical type or implement a critical interface.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#GetConnection()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="SQLiteDb.cs" Line="17">Transparent or safe critical method 'SQLiteDb.GetConnection()' is overriding critical method 'ISQLiteDb.GetConnection()' in violation of method override rules.  'SQLiteDb.GetConnection()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="SQLiteDb.cs" Line="17">Add the following security attribute to 'SQLiteDb.GetConnection()' in order to match a LinkDemand on base method 'ISQLiteDb.GetConnection()':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="SQLiteDb.cs" Line="17">Transparent method 'SQLiteDb.GetConnection()' references security critical method 'SQLiteAsyncConnection.SQLiteAsyncConnection(string, bool)'.  In order for this reference to be allowed under the security transparency rules, either 'SQLiteDb.GetConnection()' must become security critical or safe-critical, or 'SQLiteAsyncConnection.SQLiteAsyncConnection(string, bool)' become security safe-critical or transparent.</Issue>
+             <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="SQLiteDb.cs" Line="17">Transparent method 'SQLiteDb.GetConnection()' returns security critical type 'SQLiteAsyncConnection'.  In order for this return type to be allowed under the security transparency rules, either 'SQLiteDb.GetConnection()' must become security critical or safe-critical, or 'SQLiteAsyncConnection' must become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebSerwisSzacho" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesMustBeAtLeastAsCriticalAsBaseTypesFxCopRule" Category="Microsoft.Security" CheckId="CA2146" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+           <Issue Name="DeriveFromCritical" Certainty="99" Level="CriticalError">Transparent or safe-critical type 'WebSerwisSzacho' derives from critical type 'IMagazynSerwis' in violation of the transparency inheritance rules.  'WebSerwisSzacho' must be critical to derive from a critical type or implement a critical interface.</Issue>
+          </Message>
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Zaimplementuj interfejs IDisposable w typie 'WebSerwisSzacho', ponieważ tworzy on składowe następujących typów interfejsu IDisposable: 'CDNOffLineSrv'. Jeśli typ 'WebSerwisSzacho' został wcześniej dostarczony, dodanie do tego typu składowych, które implementują interfejs IDisposable, jest uznawane za istotną zmianę dla istniejących konsumentów.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#FromASMXServiceTodoItem(App2.Model.Magazynn)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Id.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Id.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Id.set(int)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Id.set(int)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Ilosc.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Ilosc.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Ilosc.set(int)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Ilosc.set(int)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Magazyn.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Magazyn.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Magazyn.set(string)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Magazyn.set(string)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Magazynn()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Magazynn()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Region.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Region.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' references security critical method 'Magazynn.Region.set(string)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn.Region.set(string)' become security safe-critical or transparent.</Issue>
+             <Issue Name="Parameter" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' has parameter 'item' of security critical type 'Magazynn'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn' must become security safe-critical or transparent.</Issue>
+             <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="36">Transparent method 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' returns security critical type 'Magazynn'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.FromASMXServiceTodoItem(Magazynn)' must become security critical or safe-critical, or 'Magazynn' must become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetAllCustomers(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError">Transparent or safe critical method 'WebSerwisSzacho.GetAllCustomers(string)' is overriding critical method 'IMagazynSerwis.GetAllCustomers(string)' in violation of method override rules.  'WebSerwisSzacho.GetAllCustomers(string)' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError">Add the following security attribute to 'WebSerwisSzacho.GetAllCustomers(string)' in order to match a LinkDemand on base method 'IMagazynSerwis.GetAllCustomers(string)':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="Local" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' has a local variable 'local$1' of security critical type 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;'.  In order for this local variable to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;' must become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Create()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Create()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Start&lt;WebSerwisSzacho.&lt;GetAllCustomers&gt;d__11&gt;(ref WebSerwisSzacho.&lt;GetAllCustomers&gt;d__11)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Start&lt;WebSerwisSzacho.&lt;GetAllCustomers&gt;d__11&gt;(ref WebSerwisSzacho.&lt;GetAllCustomers&gt;d__11)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Task.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;.Task.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="ReturnType" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' returns security critical type 'Task&lt;List&lt;Magazynn&gt;&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'Task&lt;List&lt;Magazynn&gt;&gt;' must become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;' become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;' become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.GetAllCustomers(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.GetAllCustomers(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;Magazynn&gt;&gt;' become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#InsertDataNiezgodnosci(System.Collections.ObjectModel.ObservableCollection`1&lt;App2.Model.ListDiffrence&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError">Transparent or safe critical method 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' is overriding critical method 'IMagazynSerwis.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' in violation of method override rules.  'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError">Add the following security attribute to 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' in order to match a LinkDemand on base method 'IMagazynSerwis.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="Parameter" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' has parameter 'polecenie' of security critical type 'ObservableCollection&lt;ListDiffrence&gt;'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' must become security critical or safe-critical, or 'ObservableCollection&lt;ListDiffrence&gt;' must become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' references security critical type 'ObservableCollection&lt;ListDiffrence&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.InsertDataNiezgodnosci(ObservableCollection&lt;ListDiffrence&gt;)' must become security critical or safe-critical, or 'ObservableCollection&lt;ListDiffrence&gt;' become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Items" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_Items()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="24">Transparent method 'WebSerwisSzacho.Items.get()' returns security critical type 'List&lt;Magazynn&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.Items.get()' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="24">Transparent method 'WebSerwisSzacho.Items.get()' references security critical type 'List&lt;Magazynn&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.Items.get()' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+            <Accessor Name="#set_Items(System.Collections.Generic.List`1&lt;App2.Model.Magazynn&gt;)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="Parameter" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="24">Transparent method 'WebSerwisSzacho.Items.set(List&lt;Magazynn&gt;)' has parameter 'value' of security critical type 'List&lt;Magazynn&gt;'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.Items.set(List&lt;Magazynn&gt;)' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="24">Transparent method 'WebSerwisSzacho.Items.set(List&lt;Magazynn&gt;)' references security critical type 'List&lt;Magazynn&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.Items.set(List&lt;Magazynn&gt;)' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+          <Member Name="#PobierzTwr(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError">Transparent or safe critical method 'WebSerwisSzacho.PobierzTwr(string)' is overriding critical method 'IMagazynSerwis.PobierzTwr(string)' in violation of method override rules.  'WebSerwisSzacho.PobierzTwr(string)' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError">Add the following security attribute to 'WebSerwisSzacho.PobierzTwr(string)' in order to match a LinkDemand on base method 'IMagazynSerwis.PobierzTwr(string)':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="Local" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' has a local variable 'local$1' of security critical type 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;'.  In order for this local variable to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;' must become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Create()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Create()' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Start&lt;WebSerwisSzacho.&lt;PobierzTwr&gt;d__14&gt;(ref WebSerwisSzacho.&lt;PobierzTwr&gt;d__14)'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Start&lt;WebSerwisSzacho.&lt;PobierzTwr&gt;d__14&gt;(ref WebSerwisSzacho.&lt;PobierzTwr&gt;d__14)' become security safe-critical or transparent.</Issue>
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical method 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Task.get()'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;.Task.get()' become security safe-critical or transparent.</Issue>
+             <Issue Name="ReturnType" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' returns security critical type 'Task&lt;List&lt;RaportListaMM&gt;&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'Task&lt;List&lt;RaportListaMM&gt;&gt;' must become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;' become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;' become security safe-critical or transparent.</Issue>
+             <Issue Name="TypeReference" Certainty="99" Level="CriticalError">Transparent method 'WebSerwisSzacho.PobierzTwr(string)' references security critical type 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.PobierzTwr(string)' must become security critical or safe-critical, or 'AsyncTaskMethodBuilder&lt;List&lt;RaportListaMM&gt;&gt;' become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#PobierzWersjeApki()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError">Transparent or safe critical method 'WebSerwisSzacho.PobierzWersjeApki()' is overriding critical method 'IMagazynSerwis.PobierzWersjeApki()' in violation of method override rules.  'WebSerwisSzacho.PobierzWersjeApki()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError">Add the following security attribute to 'WebSerwisSzacho.PobierzWersjeApki()' in order to match a LinkDemand on base method 'IMagazynSerwis.PobierzWersjeApki()':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#TwrkodList" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_TwrkodList()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="25">Transparent method 'WebSerwisSzacho.TwrkodList.get()' returns security critical type 'List&lt;RaportListaMM&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrkodList.get()' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="25">Transparent method 'WebSerwisSzacho.TwrkodList.get()' references security critical type 'List&lt;RaportListaMM&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrkodList.get()' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+            <Accessor Name="#set_TwrkodList(System.Collections.Generic.List`1&lt;App2.Model.RaportListaMM&gt;)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="Parameter" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="25">Transparent method 'WebSerwisSzacho.TwrkodList.set(List&lt;RaportListaMM&gt;)' has parameter 'value' of security critical type 'List&lt;RaportListaMM&gt;'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrkodList.set(List&lt;RaportListaMM&gt;)' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="25">Transparent method 'WebSerwisSzacho.TwrkodList.set(List&lt;RaportListaMM&gt;)' references security critical type 'List&lt;RaportListaMM&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrkodList.set(List&lt;RaportListaMM&gt;)' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebSerwisSzacho+MagazynLista" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#MagazynList" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_MagazynList()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="182">Transparent method 'WebSerwisSzacho.MagazynLista.MagazynList.get()' returns security critical type 'List&lt;Magazynn&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.MagazynLista.MagazynList.get()' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="182">Transparent method 'WebSerwisSzacho.MagazynLista.MagazynList.get()' references security critical type 'List&lt;Magazynn&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.MagazynLista.MagazynList.get()' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+            <Accessor Name="#set_MagazynList(System.Collections.Generic.List`1&lt;App2.Model.Magazynn&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="Parameter" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="182">Transparent method 'WebSerwisSzacho.MagazynLista.MagazynList.set(List&lt;Magazynn&gt;)' has parameter 'value' of security critical type 'List&lt;Magazynn&gt;'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.MagazynLista.MagazynList.set(List&lt;Magazynn&gt;)' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="182">Transparent method 'WebSerwisSzacho.MagazynLista.MagazynList.set(List&lt;Magazynn&gt;)' references security critical type 'List&lt;Magazynn&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.MagazynLista.MagazynList.set(List&lt;Magazynn&gt;)' must become security critical or safe-critical, or 'List&lt;Magazynn&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebSerwisSzacho+TwrLista" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#TwrList" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Accessors>
+            <Accessor Name="#get_TwrList()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="ReturnType" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="189">Transparent method 'WebSerwisSzacho.TwrLista.TwrList.get()' returns security critical type 'List&lt;RaportListaMM&gt;'.  In order for this return type to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrLista.TwrList.get()' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="189">Transparent method 'WebSerwisSzacho.TwrLista.TwrList.get()' references security critical type 'List&lt;RaportListaMM&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrLista.TwrList.get()' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+            <Accessor Name="#set_TwrList(System.Collections.Generic.List`1&lt;App2.Model.RaportListaMM&gt;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+             <Messages>
+              <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+               <Issue Name="Parameter" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="189">Transparent method 'WebSerwisSzacho.TwrLista.TwrList.set(List&lt;RaportListaMM&gt;)' has parameter 'value' of security critical type 'List&lt;RaportListaMM&gt;'.  In order for this parameter to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrLista.TwrList.set(List&lt;RaportListaMM&gt;)' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' must become security safe-critical or transparent.</Issue>
+               <Issue Name="TypeReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android" File="WebSerwisSzacho.cs" Line="189">Transparent method 'WebSerwisSzacho.TwrLista.TwrList.set(List&lt;RaportListaMM&gt;)' references security critical type 'List&lt;RaportListaMM&gt;'.  In order for this reference to be allowed under the security transparency rules, either 'WebSerwisSzacho.TwrLista.TwrList.set(List&lt;RaportListaMM&gt;)' must become security critical or safe-critical, or 'List&lt;RaportListaMM&gt;' become security safe-critical or transparent.</Issue>
+              </Message>
+             </Messages>
+            </Accessor>
+           </Accessors>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="App2.Droid.Effects">
+       <Types>
+        <Type Name="OnDrawableTouchListener" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+           <Issue Name="IDisposableReimplementation" Certainty="95" Level="Error">Usuń interfejs IDisposable z listy interfejsów implementowanych przez element 'OnDrawableTouchListener' i przesłoń implementację metody Dispose w klasie bazowej.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="ShowHidePassEffect" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ConfigureControl()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="MethodReference" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\Effects" File="ShowHidePassEffect.cs" Line="27">Transparent method 'ShowHidePassEffect.ConfigureControl()' references security critical method 'PlatformEffect&lt;ViewGroup, View&gt;.Control.get()'.  In order for this reference to be allowed under the security transparency rules, either 'ShowHidePassEffect.ConfigureControl()' must become security critical or safe-critical, or 'PlatformEffect&lt;ViewGroup, View&gt;.Control.get()' become security safe-critical or transparent.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#OnAttached()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\Effects" File="ShowHidePassEffect.cs" Line="18">Transparent or safe critical method 'ShowHidePassEffect.OnAttached()' is overriding critical method 'Effect.OnAttached()' in violation of method override rules.  'ShowHidePassEffect.OnAttached()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\Effects" File="ShowHidePassEffect.cs" Line="18">Add the following security attribute to 'ShowHidePassEffect.OnAttached()' in order to match a LinkDemand on base method 'Effect.OnAttached()':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#OnDetached()" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="DependsOnFix">
+             <Issue Name="TransparentOverrideCritical" Certainty="99" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\Effects" File="ShowHidePassEffect.cs" Line="23">Transparent or safe critical method 'ShowHidePassEffect.OnDetached()' is overriding critical method 'Effect.OnDetached()' in violation of method override rules.  'ShowHidePassEffect.OnDetached()' must become security critical in order to override a critical virtual method or implement a critical interface method.</Issue>
+            </Message>
+            <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Status="Active" Created="2019-04-24 10:26:27Z" FixCategory="Breaking">
+             <Issue Name="BaseOnly" Certainty="33" Level="CriticalError" Path="C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\Effects" File="ShowHidePassEffect.cs" Line="23">Add the following security attribute to 'ShowHidePassEffect.OnDetached()' in order to match a LinkDemand on base method 'Effect.OnDetached()':  'SecurityCriticalAttribute'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
+   <Name>Poprawnie zaimplementuj interfejs IDisposable</Name>
+   <Description>Wszystkie typy interfejsu IDisposable powinny poprawnie implementować wzorzec Dispose.</Description>
+   <Resolution Name="IDisposableReimplementation">Usuń interfejs IDisposable z listy interfejsów implementowanych przez element {0} i przesłoń implementację metody Dispose w klasie bazowej.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms244737.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="designrules.dll" Version="15.0.0.0" />
+  </Rule>
+  <Rule TypeName="MethodsMustOverrideWithConsistentTransparencyFxCopRule" Category="Microsoft.Security" CheckId="CA2134">
+   <Name>Methods must keep consistent transparency when overriding base methods</Name>
+   <Description>Transparency visibility must be preserved between overriding methods and the methods that are being overridden.  If the virtual method being overridden or interface method being implemented is security safe-critical or security transparent, then the overriding method must also be either security safe-critical or security transparent.  Similarly, if the method being overridden is security critical, the overriding method must be security critical.</Description>
+   <Resolution Name="TransparentOverrideCritical">Transparent or safe critical method {0} is overriding critical method {1} in violation of method override rules.  {0} must become security critical in order to override a critical virtual method or implement a critical interface method.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/dd997447(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="99">CriticalError</MessageLevel>
+   <File Name="securitytransparencyrules.dll" Version="4.0.0.0" />
+  </Rule>
+  <Rule TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123">
+   <Name>Override link demands should be identical to base</Name>
+   <Description>If a virtual method has a LinkDemand, in many cases, so should any override of it, and if an override has a LinkDemand, so should the overridden virtual method. Because it is possible to call any of the overrides of a virtual method explicitly, they should all have the same LinkDemand status or, if not, should be reviewed. This also applies to LinkDemand security checks for methods that part of an interface implementation, because the caller might use an interface-typed reference to access the method.</Description>
+   <Resolution Name="BaseOnly">Add the following security attribute to {0} in order to match a LinkDemand on base method {1}:  {2}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182305(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="33">CriticalError</MessageLevel>
+   <File Name="securitytransparencyrules.dll" Version="4.0.0.0" />
+  </Rule>
+  <Rule TypeName="TransparentMethodsMustNotReferenceCriticalCodeFxCopRule" Category="Microsoft.Security" CheckId="CA2140">
+   <Name>Transparent code must not reference security critical items</Name>
+   <Description>Transparent code cannot refer to security critical methods, types, or fields.  At runtime these references will result in MemberAccessExceptions or TypeLoadExceptions.</Description>
+   <Resolution Name="Local">Transparent method {0} has a local variable {1} of security critical type {2}.  In order for this local variable to be allowed under the security transparency rules, either {0} must become security critical or safe-critical, or {2} must become security safe-critical or transparent.</Resolution>
+   <Resolution Name="MethodReference">Transparent method {0} references security critical method {1}.  In order for this reference to be allowed under the security transparency rules, either {0} must become security critical or safe-critical, or {1} become security safe-critical or transparent.</Resolution>
+   <Resolution Name="Parameter">Transparent method {0} has parameter {1} of security critical type {2}.  In order for this parameter to be allowed under the security transparency rules, either {0} must become security critical or safe-critical, or {2} must become security safe-critical or transparent.</Resolution>
+   <Resolution Name="ReturnType">Transparent method {0} returns security critical type {1}.  In order for this return type to be allowed under the security transparency rules, either {0} must become security critical or safe-critical, or {1} must become security safe-critical or transparent.</Resolution>
+   <Resolution Name="TypeReference">Transparent method {0} references security critical type {1}.  In order for this reference to be allowed under the security transparency rules, either {0} must become security critical or safe-critical, or {1} become security safe-critical or transparent.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/bb264475(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="99">CriticalError</MessageLevel>
+   <File Name="securitytransparencyrules.dll" Version="4.0.0.0" />
+  </Rule>
+  <Rule TypeName="TypesMustBeAtLeastAsCriticalAsBaseTypesFxCopRule" Category="Microsoft.Security" CheckId="CA2146">
+   <Name>Types must be at least as critical as their base types and interfaces</Name>
+   <Description>While any type may derive from a transparent type or interface, restrictions apply as to the types that can inherit from or implement safe-critical or critical types.  Only safe-critical or critical types may derive from or implement safe-critical interfaces and base types.  Only critical types may derive from or implement critical interfaces and base types.</Description>
+   <Resolution Name="DeriveFromCritical">Transparent or safe-critical type {0} derives from critical type {1} in violation of the transparency inheritance rules.  {0} must be critical to derive from a critical type or implement a critical interface.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/dd997443(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="99">CriticalError</MessageLevel>
+   <File Name="securitytransparencyrules.dll" Version="4.0.0.0" />
+  </Rule>
+  <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
+   <Name>Typy, do których należą pola możliwe do rozporządzania, powinny być możliwe do rozporządzania</Name>
+   <Description>Typy deklarujące możliwe do rozporządzania składowe powinny również implementować interfejs IDisposable. Jeśli typ nie ma żadnych niezarządzanych zasobów, nie należy implementować w nim finalizatora.</Description>
+   <Resolution Name="DependsOnFix">Zaimplementuj interfejs IDisposable w typie {0}, ponieważ tworzy on składowe następujących typów interfejsu IDisposable: {1}. Jeśli typ {0} został wcześniej dostarczony, dodanie do tego typu składowych, które implementują interfejs IDisposable, jest uznawane za istotną zmianę dla istniejących konsumentów.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182172.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="15.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Kategoria</String>
+  <String Key="Certainty">Pewność</String>
+  <String Key="CollapseAll">Zwiń wszystko</String>
+  <String Key="CheckId">Identyfikator testu</String>
+  <String Key="Error">Błąd</String>
+  <String Key="Errors">błędy</String>
+  <String Key="ExpandAll">Rozwiń wszystko</String>
+  <String Key="Help">Pomoc</String>
+  <String Key="Line">Wiersz</String>
+  <String Key="Messages">komunikaty</String>
+  <String Key="LocationNotStoredInPdb">[Lokalizacja nie jest przechowywana w pliku PDB]</String>
+  <String Key="Project">Projekt</String>
+  <String Key="Resolution">Rozwiązanie</String>
+  <String Key="Rule">Reguła</String>
+  <String Key="RuleFile">Plik reguł</String>
+  <String Key="RuleDescription">Opis reguły</String>
+  <String Key="Source">Źródło</String>
+  <String Key="Status">Stan</String>
+  <String Key="Target">Element docelowy</String>
+  <String Key="Warning">Ostrzeżenie</String>
+  <String Key="Warnings">ostrzeżenia</String>
+  <String Key="ReportTitle">Raport z analizy kodu</String>
+ </Localized>
+</FxCopReport>

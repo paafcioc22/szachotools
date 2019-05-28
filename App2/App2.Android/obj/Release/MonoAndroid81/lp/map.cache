@@ -1,6 +1,7 @@
 Acr.UserDialogs
 AndHUD
 App2
+CryptSharp
 FastAndroidCamera
 FormsViewGroup
 SharpCifs.Std
@@ -55,7 +56,3 @@ System.Console
 System.Text.Encoding.Extensions
 System.IO.FileSystem.Primitives
 System.Reflection.Extensions
-BCrypt.Net-Next
-CryptSharp
-Plugin.LatestVersion.Abstractions
-Plugin.LatestVersion

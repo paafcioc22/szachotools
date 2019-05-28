@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -19,9 +19,21 @@ namespace App2.View
         {
             InitializeComponent();
             BindingContext = this;
-           
+            ToggleScreenLock();
         }
 
+         
+            public void ToggleScreenLock()
+            {
+                DeviceDisplay.KeepScreenOn = !DeviceDisplay.KeepScreenOn;
+            }
+
+
+        protected override bool OnBackButtonPressed()
+        {
+            ToggleScreenLock();
+            return base.OnBackButtonPressed();
+        }
 
 
         protected async override void OnAppearing()

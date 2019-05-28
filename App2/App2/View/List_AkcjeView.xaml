@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.List_AkcjeView">
+
+
+
+    <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20">
+        <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="DarkCyan" >
+            <Label Text="Lista aktualnych zadań" 
+                   HorizontalOptions="Center"  
+                   TextColor="Beige" 
+                   VerticalOptions="Center"/>
+        </StackLayout>
+        <ListView x:Name="MyListView" HasUnevenRows="True"
+                ItemsSource="{Binding Items}"
+                ItemTapped="Handle_ItemTapped"
+                CachingStrategy="RecycleElement">
+
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame HasShadow="true" Margin="5" BorderColor="DarkCyan" BackgroundColor="#54c4b4" CornerRadius="10" OutlineColor="Cyan" >
+                            <Frame.Content>
+
+                                <StackLayout Orientation="Horizontal" Spacing="8">
+
+                                    <Label Text="{Binding AkN_GidNazwa}" TextColor="White" 
+                                   FontSize="Large" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="CenterAndExpand"/>
+                                    <!--<Label Text="{Binding twrkod}"/>
+                                    <Label Text="{Binding ilosc}"/>-->
+                                </StackLayout>
+                            </Frame.Content>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+        <!--<Button Text="zmien ilosc " Clicked="Button_Clicked"/>-->
+    </StackLayout>
+
+    <!--Custom View Cells-->
+    <!--
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <ViewCell>
+          <StackLayout>
+            <Label Text="{Binding Text}" 
+                   Style="{DynamicResource ListItemTextStyle}" />
+            <Label Text="{Binding Detail}" 
+                   Style="{DynamicResource ListItemDetailTextStyle}"/>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+    -->
+
+</ContentPage>

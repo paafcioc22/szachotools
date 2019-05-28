@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,9 @@ namespace App2.Droid
 {
     public sealed class WebSerwisSzacho : IMagazynSerwis
     {
-        public List<Magazynn> Items { get; private set; } 
+        public ObservableCollection<Magazynn> Items { get; private set; } 
         public List<RaportListaMM> TwrkodList { get; private set; } 
+        public ObservableCollection<AkcjeNagElem> AkcjeGidNazwaList { get; private set; } 
 
         public WebSzacho.CDNOffLineSrv client;
 
@@ -42,11 +44,11 @@ namespace App2.Droid
             };
         }
         #endregion
-        public async Task<List<Magazynn>> GetAllCustomers(string  criteria = null)
+        public async Task<ObservableCollection<Magazynn>> GetAllCustomers(string  criteria = null)
         {
             return await Task.Run(() =>
             {
-                Items = new List<Magazynn>();
+                Items = new ObservableCollection<Magazynn>();
                 var respone = client.ExecuteSQLCommand(criteria);
 
                 XmlDocument xmlDoc = new XmlDocument();
@@ -132,6 +134,8 @@ namespace App2.Droid
                 return TwrkodList;
             });
         }
+
+
         Wersja wersja;
 
         
@@ -161,11 +165,62 @@ namespace App2.Droid
             });
         }
 
+        public async Task<ObservableCollection<AkcjeNagElem>> GetGidAkcje(string query)
+        {
+
+            return await Task.Run(() =>
+            {
+                AkcjeGidNazwaList = new ObservableCollection<AkcjeNagElem>();
+
+                var respone = client.ExecuteSQLCommand(query);
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(respone);
+
+                TextReader reader = new StringReader(respone);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(GidNazwa));
+                GidNazwa gidNazwa = (GidNazwa)serializer.Deserialize(reader);
+
+                foreach (var akcje in gidNazwa.GidNazwaLista)
+                {
+                    var datastart = Convert.ToDateTime(akcje.AkN_DataStart).AddHours(2);
+                    AkcjeGidNazwaList.Add(new AkcjeNagElem
+                    {
+                        AkN_GidNumer = akcje.AkN_GidNumer,
+                        AkN_GidTyp = akcje.AkN_GidTyp,
+                        AkN_GidNazwa = akcje.AkN_GidNazwa,
+                        AkN_NazwaAkcji = akcje.AkN_NazwaAkcji,
+                        Ake_ElemLp = akcje.Ake_ElemLp,
+                        Ake_FiltrSQL = akcje.Ake_FiltrSQL,
+                        AkN_DataStart = datastart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                        //CultureInfo.InvariantCulture
+                        AkN_DataKoniec = akcje.AkN_DataKoniec,
+                        Ake_NazwaFiltrSQL = akcje.Ake_NazwaFiltrSQL,
+                        TwrKod = akcje.TwrKod,
+                        TwrNazwa = akcje.TwrNazwa,
+                        TwrGrupa = akcje.TwrGrupa,
+                        TwrDep = akcje.TwrDep,
+                        TwrGidNumer = akcje.TwrGidNumer,
+                        TwrStan = akcje.TwrStan,
+                        TwrUrl = akcje.TwrUrl,
+                        TwrSymbol = akcje.TwrSymbol,
+                        TwrCena = akcje.TwrCena,
+                        TwrSkan = 0,
+                        TwrEan = akcje.TwrEan
+                    });
+                }
+
+                return AkcjeGidNazwaList;
+            });
+        }
+
         public class Wersja
         {
             public string VersionApp { get; set; }
         }
 
+       
         [XmlRoot("ROOT")]
         public class AppVersionList
         {
@@ -174,12 +229,18 @@ namespace App2.Droid
 
         }
 
+        [XmlRoot("ROOT")]
+        public class GidNazwa
+        {
+            [XmlElement("Table", typeof(AkcjeNagElem))]
+            public List<AkcjeNagElem> GidNazwaLista { get; set; }
+        }
 
         [XmlRoot("ROOT")]
         public class MagazynLista
         {
             [XmlElement("Table", typeof(Magazynn))]
-            public List<Magazynn> MagazynList { get; set; }
+            public ObservableCollection<Magazynn> MagazynList { get; set; }
         }
 
         [XmlRoot("ROOT")]

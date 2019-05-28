@@ -72,7 +72,7 @@ namespace App2.View
                     if (bulidVer != AktualnaWersja)
                     // await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
                     {
-                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać??", "Tak", "Nie");
+                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
 
                         if (update)
                         {
@@ -248,6 +248,11 @@ namespace App2.View
 
             
 
+        }
+
+        private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new List_AkcjeView());
         }
 
 

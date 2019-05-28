@@ -11,20 +11,24 @@ using ZXing.Net.Mobile.Forms;
 
 namespace App2.View
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class WeryfikatorCenPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class WeryfikatorCenPage : ContentPage
+    {
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
 
         string NazwaCennika;
-        int NrCennika; 
-        public WeryfikatorCenPage ()
-		{
-			InitializeComponent ();
+        int NrCennika;
+        SqlConnection connection;
+         
+        public WeryfikatorCenPage()
+        {
+            InitializeComponent();
             var app = Application.Current as App;
+
              
+
             SettingsPage settingsPage = new SettingsPage();
             var idceny = settingsPage.cennikClasses;
             if (idceny != null)
@@ -34,6 +38,13 @@ namespace App2.View
                 lbl_cennik.Text = NazwaCennika;
                 NrCennika = nrcenika.Id;
             }
+            connection = new SqlConnection
+            {
+                ConnectionString = "SERVER=" + app.Serwer +
+                ";DATABASE=" + app.BazaProd +
+                ";TRUSTED_CONNECTION=No;UID=" + app.User +
+                ";PWD=" + app.Password
+            };
             SkanowanieEan();
         }
 
@@ -47,9 +58,9 @@ namespace App2.View
                 {
                     AutoRotate = false,
                     PossibleFormats = new List<ZXing.BarcodeFormat>() {
-                 
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODABAR,
+
+                //ZXing.BarcodeFormat.CODE_128,
+                //ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.CODE_39,
                 ZXing.BarcodeFormat.EAN_13,
                 }
@@ -91,14 +102,14 @@ namespace App2.View
                     ShowFlashButton = true,
                     AutomationId = "zxingDefaultOverlay",
 
-                }; 
+                };
 
                 var customOverlay = new StackLayout
                 {
                     HorizontalOptions = LayoutOptions.EndAndExpand,
                     VerticalOptions = LayoutOptions.EndAndExpand
                 };
-              
+
                 grid.Children.Add(Overlay);
                 Overlay.Children.Add(torch);
                 Overlay.BindingContext = Overlay;
@@ -123,8 +134,8 @@ namespace App2.View
                         });
                         Navigation.PopModalAsync();
                         pobierztwrkod(result.Text);
-                       
-                        
+
+
                     });
                 };
                 await Navigation.PushModalAsync(scanPage);
@@ -144,25 +155,20 @@ namespace App2.View
         string twr_symbol;
         string twr_ean;
         string twr_cena;
-        public void pobierztwrkod(string _ean)
+
+        public async void pobierztwrkod(string _ean)
         {
             var app = Application.Current as App;
             //SettingsPage settingsPage = new SettingsPage();
             //var idceny = settingsPage.cennikClasses;
             //var nrcenika = idceny[app.Cennik];
-            
+
             if (SettingsPage.SprConn())
             {
                 try
                 {
                     SqlCommand command = new SqlCommand();
-                    SqlConnection connection = new SqlConnection
-                    {
-                        ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
-                    };
+
                     connection.Open();
                     command.CommandText = "Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
                         ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
@@ -191,8 +197,16 @@ namespace App2.View
                     }
                     else
                     {
+                        string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                        var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                        twrgidnumer = dane[0].TwrGidnumer.ToString();
+                        twrkod = dane[0].twrkod;
+                        twr_url = dane[0].url;
+                        twr_nazwa = dane[0].nazwa;
+                        twr_ean = dane[0].ean;
+                        twr_cena = dane[0].cena;
 
-                        DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+                        await DisplayAlert("Uwaga", "Brak stanów lub nie istnieje!", "OK");
                     }
                     rs.Close();
                     rs.Dispose();
@@ -201,12 +215,12 @@ namespace App2.View
                 }
                 catch (Exception exception)
                 {
-                    DisplayAlert("Uwaga", exception.Message, "OK");
+                    await DisplayAlert("Uwaga", exception.Message, "OK");
                 }
             }
             else
             {
-                DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
             }
             //return twrkod; lbl_twrkod.Text = "Kod : " + twrkod;
 
@@ -215,9 +229,15 @@ namespace App2.View
             lbl_twrkod.Text = twr_ean;
             lbl_twrsymbol.Text = twr_symbol;
             lbl_twrnazwa.Text = twr_nazwa;
-            lbl_stan.Text =  stan_szt+ " szt";
-            lbl_twrcena.Text = twr_cena +" zł";
+            lbl_stan.Text = stan_szt + " szt";
+            lbl_twrcena.Text = twr_cena + " zł";
             img_foto.Source = twr_url;
+
+            
+         //   img_foto.GestureRecognizers.Add(tapGestureRecognizer);
+
+            connection.Close();
+
         }
 
         private void ScanTwr_Clicked(object sender, EventArgs e)
@@ -231,12 +251,54 @@ namespace App2.View
             manualEAN.Text = "";
         }
 
-        
+
 
         private async void BtnShowOther_Clicked(object sender, EventArgs e)
         {
-            if(twrgidnumer != null)
-            await  Navigation.PushModalAsync(new StanyTwrInnych(twrgidnumer));
+            if (twrgidnumer != null)
+                await Navigation.PushModalAsync(new StanyTwrInnych(twrgidnumer));
+        }
+
+        List<string> ceny;
+        private void ViewCell_Tapped(object sender, EventArgs e)
+        {
+            ceny = new List<string>();
+            connection.Open();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+
+                command.CommandText = $@"SELECT DfC_Nazwa +' : '+cast(CAST(TwC_Wartosc AS DECimal(8,2)) as varchar)+' zł' ceny FROM   cdn.towary 
+                join cdn.TwrCeny on Twr_twrid = TwC_Twrid  
+                join  CDN.DefCeny on TwC_TwCNumer=DfC_lp
+                where DfC_Nieaktywna = 0
+                 and Twr_GIDNumer={twrgidnumer}";
+
+                SqlCommand query = new SqlCommand(command.CommandText, connection);
+                SqlDataReader rs;
+                rs = query.ExecuteReader();
+                while (rs.Read())
+                {
+                    ceny.Add(Convert.ToString(rs["ceny"]));
+                }
+                DisplayActionSheet("Ceny:", "OK", null, ceny.ToArray());
+
+                rs.Close();
+                rs.Dispose();
+
+
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Uwaga", ex.Message, "OK");
+            }
+             
+            connection.Close();
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            Device.OpenUri(new Uri(twr_url.Replace("Miniatury/", "")));
         }
     }
 }

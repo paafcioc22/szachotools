@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+ 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -53,12 +53,13 @@ namespace App2.View
             if (bulidVer != AktualnaWersja)
                 await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
         }
-       
+
+         
 
         private void SprConn_Clicked(object sender, EventArgs e)
         {
-            //GetBaseName();
-            // NadajWartosci();
+               
+         
             try
             {
                 var app = Application.Current as App;
@@ -68,7 +69,7 @@ namespace App2.View
                     InitialCatalog = app.BazaConf, //_database,
                     UserID = app.User,//_uid,
                     Password = app.Password, //_pwd,
-                    ConnectTimeout = 1
+                    ConnectTimeout = 2
                 }.ConnectionString;
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
@@ -107,7 +108,7 @@ namespace App2.View
                 InitialCatalog = app.BazaProd, //_database,
                 UserID = app.User,//_uid,
                 Password = app.Password, //_pwd,
-                ConnectTimeout = 2
+                ConnectTimeout =5
             }.ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {

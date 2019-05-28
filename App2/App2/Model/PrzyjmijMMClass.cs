@@ -95,7 +95,7 @@ namespace App2.Model
         {
             //DokMM dokMM = new DokMM();
             string queryZatwierdzone = CzyZatwierdzone ?
-                                        "or (trn_rodzaj = 312010 and trn_datadok > getdate() - 8)" :
+                                        "or (trn_rodzaj = 312010 and trn_datadok > getdate() - 10)" :
                                         "";
 
 

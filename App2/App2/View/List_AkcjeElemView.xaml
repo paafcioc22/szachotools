@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.List_AkcjeElemView">
+
+    <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20 ">
+        <ListView x:Name="MyListView2" HasUnevenRows="True"
+                ItemsSource="{Binding Items2}" SeparatorVisibility="None"
+                ItemTapped="Handle_ItemTapped"
+                CachingStrategy="RecycleElement">
+
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame HasShadow="true" Margin="2" BorderColor="DarkCyan"   CornerRadius="10" OutlineColor="Cyan" >
+                            <!--<Frame.Content>-->
+                                <StackLayout Orientation="Vertical" >
+                                    <Label Text="{Binding AkN_GidNazwa}" TextColor="Black"/>
+                                    <Label Text="{Binding AkN_NazwaAkcji}" TextColor="Black" 
+                                   FontSize="16" FontAttributes="Bold" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding AkN_DataStart}" FontSize="12" 
+                                   VerticalOptions="Center" TextColor="Black"
+                                   HorizontalOptions="CenterAndExpand"/>
+                                </StackLayout>
+                            <!--</Frame.Content>-->
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+    </StackLayout>
+</ContentPage>

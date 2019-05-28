@@ -16,7 +16,7 @@ namespace App2.Model
             soapService = service;
         }
 
-        public Task<List<Magazynn>> GetTodoItemsAsync(string query)
+        public Task<ObservableCollection<Magazynn>> GetTodoItemsAsync(string query)
         {
             return soapService.GetAllCustomers(query);
         }
@@ -29,6 +29,11 @@ namespace App2.Model
         public Task<List<RaportListaMM>> PobierzTwrAsync(string ean)
         {
             return soapService.PobierzTwr(ean);
+        }
+         
+        public Task<ObservableCollection<AkcjeNagElem>> GetGidAkcjeAsync(string query)
+        {
+            return soapService.GetGidAkcje(query);
         }
 
         public Task<string> GetBuildVer()

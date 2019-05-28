@@ -52,18 +52,18 @@
                     x:Name="btn_weryfikator" 
 
                 />
-            <Button Text="Zrób przecenę" Grid.Column="1" Grid.Row="1" 
+            <Button Text="Lista Akcji" Grid.Column="1" Grid.Row="1" 
                     BackgroundColor="DarkCyan" 
                     FontSize="Medium" 
-                    TextColor="DarkCyan"  
+                    TextColor="Bisque"  
                     CornerRadius="10" 
-                    BorderColor="black" 
+                    BorderColor="mediumturquoise" 
                     BorderWidth="5" 
                     FontAttributes="Bold" 
                     Image="znizka100"
                     ContentLayout="Top,1"
-                    IsEnabled="False"
                     
+                    Clicked="Btn_ListAkcje_Clicked"
                     />
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
