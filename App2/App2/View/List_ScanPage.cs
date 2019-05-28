@@ -29,7 +29,7 @@ namespace App2.View
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         private ZXingScannerView zxing;
-
+        int ile_zeskanowancyh = 0;
 
         public List_ScanPage(Model.AkcjeNagElem akcje) //edycja
         {
@@ -38,10 +38,10 @@ namespace App2.View
             _akcja = akcje;
 
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
-
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            FlexLayout stackLayout = new FlexLayout();
+            StackLayout stackLayout = new StackLayout();
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stack_naglowek = new StackLayout();
 
@@ -136,6 +136,9 @@ namespace App2.View
                 scanPage.ToggleTorch();
             };
 
+            
+             
+
             overlay.Children.Add(torch);
             open_url.Clicked += async delegate {
                 scanPage = new ZXingScannerPage(
@@ -151,6 +154,7 @@ namespace App2.View
                         overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}";
                         DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
 
+                        Zapisz();
                         entry_kodean.Text = ile_zeskanowancyh.ToString();
 
                     }
@@ -180,12 +184,41 @@ namespace App2.View
             stackLayout.Padding = 8;
             stackLayout_gl.Children.Add(stackLayout);
             stackLayout_gl.Children.Add(open_url);
+            stackLayout_gl.Padding = new Thickness(15);
 
             Content = stackLayout_gl; 
         }
 
+        private  async void Zapisz()
+        {
 
-        int ile_zeskanowancyh = 0;
+            Model.AkcjeNagElem akcjeNagElem = new Model.AkcjeNagElem();
+            akcjeNagElem.AkN_GidNumer = _akcja.AkN_GidNumer;
+            akcjeNagElem.TwrKod = _akcja.TwrKod;
+            akcjeNagElem.TwrGrupa = _akcja.TwrGrupa;
+            akcjeNagElem.TwrDep = _akcja.TwrDep;
+            akcjeNagElem.TwrCena = _akcja.TwrCena;
+            akcjeNagElem.TwrEan = _akcja.TwrEan;
+            akcjeNagElem.TwrSymbol = _akcja.TwrSymbol;
+            akcjeNagElem.TwrUrl = _akcja.TwrUrl;
+
+            var wynik = await _connection.QueryAsync<Model.AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", akcjeNagElem.AkN_GidNumer, akcjeNagElem.TwrKod);
+
+            if (wynik.Count > 0)
+            {
+                var wpis = wynik[0];
+                wpis.TwrSkan = ile_zeskanowancyh;
+                await _connection.UpdateAsync(wpis);
+            }
+            else
+            {
+                akcjeNagElem.TwrSkan = ile_zeskanowancyh;
+                await _connection.InsertAsync(akcjeNagElem);
+            }
+        }
+
+
+        
         private void Open_url_Clicked(object sender, EventArgs e)
         {
             //Device.OpenUri(new Uri(_MMElement.url.Replace("Miniatury/", "")));

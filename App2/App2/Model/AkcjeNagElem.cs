@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -7,8 +8,10 @@ namespace App2.Model
 {
     public class AkcjeNagElem : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged; 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        [PrimaryKey, AutoIncrement]
+        public int Lp { get; set; } 
         public int AkN_GidNumer { get; set; }
         public byte AkN_GidTyp { get; set; }
         public string AkN_GidNazwa { get; set; }
@@ -21,6 +24,7 @@ namespace App2.Model
 
 
         public string TwrKod { get; set; }
+        [Indexed]
         public int TwrGidNumer { get; set; }
         public int TwrStan { get; set; }
         //public int TwrSkan { get; set; }

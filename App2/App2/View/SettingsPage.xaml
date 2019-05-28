@@ -36,13 +36,13 @@
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
             
-            <Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+            <!--<Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
             <Entry 
                 x:Name="Login" Text="{Binding User}"
                 Placeholder="Login.." 
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
-                />
+                />-->
             <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
              
             
@@ -87,6 +87,7 @@
 
         <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
             <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked"/>
+            
         </StackLayout>
     </StackLayout>
  

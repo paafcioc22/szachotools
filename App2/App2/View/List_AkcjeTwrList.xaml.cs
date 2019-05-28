@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace App2.View
         //public ObservableCollection<Model.AkcjeGrupy> GroupLista { get; set; }
         public IEnumerable<Model.AkcjeNagElem> SumaList { get; set; }
         SqlConnection connection;
+        private SQLiteAsyncConnection _connection;
 
         public List_AkcjeTwrList( List<Model.AkcjeNagElem> nagElem)
         {
@@ -33,7 +35,8 @@ namespace App2.View
                 ";TRUSTED_CONNECTION=No;UID=" + app.User +
                 ";PWD=" + app.Password
             };
-
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            //_connection.DropTableAsync<Model.AkcjeNagElem>();
             GetListFromLocal( nagElem);
             GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
         }
@@ -193,9 +196,11 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
 
        
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing();
+            await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+
+            var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
             var nowa = SumaList.GroupBy(g => g.TwrGrupa).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
             {
                 TwrGrupa = cs.TwrGrupa,
@@ -212,6 +217,7 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
 
 
             MyListView3.ItemsSource = sorted;
+            base.OnAppearing();
 
             //MyListView3.ItemsSource = nowa;
 
