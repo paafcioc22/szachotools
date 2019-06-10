@@ -373,6 +373,8 @@ cpclConst.LK_CPCL_BCS_0RATIO, 35, 75, 80, _akcja.TwrEan ,0);
 
                 ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
                 Zapisz();
+                if (ile_zeskanowancyh > 0)
+                    _akcja.TwrSkan = ile_zeskanowancyh;
                 Navigation.PopModalAsync();
             }
             else
