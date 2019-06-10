@@ -2,69 +2,82 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.List_AkcjeAfterFiltr">
-    <ListView x:Name="MyListView" HasUnevenRows="True"
-            ItemsSource="{Binding Items}"
-              BindingContext="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
-
-        <!--Built in Cells-->
 
 
-        <!--Custom View Cells-->
 
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <FlexLayout    Padding="5"  > 
 
-                        <StackLayout FlexLayout.Grow="1" 
-                                     FlexLayout.Basis="55%" 
-                                     Orientation="Vertical" 
-                                     Spacing="5" Padding="5" 
-                                     VerticalOptions="FillAndExpand"    >
-                            <Label Text="{Binding TwrKod }" TextColor="Black" FlexLayout.Shrink="0"/>
-                            <Label Text="{Binding TwrNazwa }" TextColor="Black" 
-                                       FontSize="12" 
-                                       VerticalOptions="Center" 
-                                       HorizontalOptions="CenterAndExpand"/>
-                            <Label Text="{Binding TwrSymbol}" FontSize="12" 
-                                       VerticalOptions="Center" TextColor="Black"
-                                       HorizontalOptions="CenterAndExpand"/>
-                        </StackLayout>
+
+    <StackLayout Padding="10">
+        <StackLayout  Orientation="Horizontal" BackgroundColor="DarkCyan" >
+            <Label Text="Kod" TextColor="Beige" HorizontalOptions="StartAndExpand" FontSize="15" Margin="20,0,0,0"/>
+            <Label Text="Skanowane/Stan" TextColor="Beige" HorizontalOptions="End" FontSize="15" Margin="0,0,60,0"/>
+        </StackLayout>
+         
+    
+        <ListView x:Name="MyListView" HasUnevenRows="True"
+                ItemsSource="{Binding Items}"
+                  BindingContext="{Binding Items}"
+                ItemTapped="Handle_ItemTapped"
+                CachingStrategy="RecycleElement">
+
+            <!--Built in Cells-->
+
+
+            <!--Custom View Cells-->
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <FlexLayout    Padding="5"  > 
+
+                            <StackLayout FlexLayout.Grow="1" 
+                                         FlexLayout.Basis="55%" 
+                                         Orientation="Vertical" 
+                                         Spacing="5" Padding="5" 
+                                         VerticalOptions="FillAndExpand"    >
+                                <Label Text="{Binding TwrKod }" TextColor="Black" FlexLayout.Shrink="0"/>
+                                <Label Text="{Binding TwrNazwa }" TextColor="Black" 
+                                           FontSize="12" 
+                                           VerticalOptions="Center" 
+                                           HorizontalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding TwrSymbol}" FontSize="12" 
+                                           VerticalOptions="Center" TextColor="Black"
+                                           HorizontalOptions="CenterAndExpand"/>
+                            </StackLayout>
 
  
-                        <StackLayout FlexLayout.AlignSelf="Center" 
-                                     FlexLayout.Grow="1" 
-                                     FlexLayout.Basis="25%" 
-                                     Orientation="Vertical" 
-                                     VerticalOptions="Center"   
-                                     Spacing="5" >
-                            <StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="Center"  >
-                                <Label Text="{Binding TwrSkan }" FontSize="20" 
-                                           VerticalOptions="Center" TextColor="Black"
-                                           HorizontalOptions="Center"/>
-                                <Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" 
-                                           VerticalOptions="Center" TextColor="Black"
-                                           HorizontalOptions="Center"/>
+                            <StackLayout FlexLayout.AlignSelf="Center" 
+                                         FlexLayout.Grow="1" 
+                                         FlexLayout.Basis="25%" 
+                                         Orientation="Vertical" 
+                                         VerticalOptions="Center"   
+                                         Spacing="5" >
+                                <StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="Center"  >
+                                    <Label Text="{Binding TwrSkan }" FontSize="20" 
+                                               VerticalOptions="Center" TextColor="Black"
+                                               HorizontalOptions="Center"/>
+                                    <Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" 
+                                               VerticalOptions="Center" TextColor="Black"
+                                               HorizontalOptions="Center"/>
+                                </StackLayout>
+                                <Label Text="{Binding TwrCena, StringFormat='{0}zł'}" TextColor="Black" FontSize="16" VerticalOptions="End" HorizontalOptions="Center"/>
                             </StackLayout>
-                            <Label Text="{Binding TwrCena, StringFormat='{0}zł'}" TextColor="Black" FontSize="16" VerticalOptions="End" HorizontalOptions="Center"/>
-                        </StackLayout>
 
 
-                        <StackLayout FlexLayout.Grow="1" 
-                                     FlexLayout.Basis="20%"    
-                                     VerticalOptions="CenterAndExpand">
-                            <Image FlexLayout.Grow="1" Source="{Binding TwrUrl}" 
-                                   VerticalOptions="CenterAndExpand" 
-                                   HorizontalOptions="EndAndExpand" 
-                                   FlexLayout.AlignSelf="Stretch"/>
-                        </StackLayout> 
+                            <StackLayout FlexLayout.Grow="1" 
+                                         FlexLayout.Basis="20%"    
+                                         VerticalOptions="CenterAndExpand">
+                                <Image FlexLayout.Grow="1" Source="{Binding TwrUrl}" 
+                                       VerticalOptions="CenterAndExpand" 
+                                       HorizontalOptions="EndAndExpand" 
+                                       FlexLayout.AlignSelf="Stretch"/>
+                            </StackLayout> 
 
-                    </FlexLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
+                        </FlexLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-    </ListView>
+        </ListView> 
+    </StackLayout>
 </ContentPage>

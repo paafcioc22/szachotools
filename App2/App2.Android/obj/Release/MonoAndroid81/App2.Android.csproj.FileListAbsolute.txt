@@ -206,8 +206,17 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoA
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\System.Xml.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\Xamarin.Forms.Core.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\Xamarin.Forms.Xaml.pdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\BlueToothPrinter.Android.dll
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\BlueToothPrinter.dll
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\System.Numerics.Vectors.pdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\System.Numerics.Vectors.pdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\Xamarin.Essentials.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Xamarin.Essentials.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\Xamarin.Essentials.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\android\assets\System.Numerics.Vectors.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\App2.Android.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\App2.Android.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Acr.UserDialogs.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\FormsViewGroup.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Xamarin.Essentials.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\linksrc\Xamarin.Forms.Platform.Android.dll.mdb

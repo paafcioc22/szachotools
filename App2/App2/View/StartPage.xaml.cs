@@ -155,7 +155,7 @@ namespace App2.View
 
                 
         }
-
+        //przyjmij mm
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
             btn_CreateMM.IsEnabled = false;
@@ -171,7 +171,7 @@ namespace App2.View
             btn_CreateMM.IsEnabled = true;
 
         }
-
+        //weryfikator
         private async void SkanTwr_Clicked(object sender, EventArgs e)
         {
             btn_weryfikator.IsEnabled = false;
@@ -188,7 +188,7 @@ namespace App2.View
             btn_weryfikator.IsEnabled = true;
 
         }
-
+        //utwórz MM
         private async void BtnListaMMp_Clicked(object sender, EventArgs e)
         {
             //IsBusy = true;
@@ -252,8 +252,23 @@ namespace App2.View
 
         private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new List_AkcjeView());
+            btn_ListaAkcji.IsEnabled = false;
+            connected = SettingsPage.SprConn();
+            if (connected)
+            { 
+                   
+                await Navigation.PushModalAsync(new List_AkcjeView());
+
+                btn_ListaAkcji.IsEnabled = true; 
+            }
+            else
+                await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+            btn_ListaAkcji.IsEnabled = true;
+
+
         }
+
+        
 
 
 

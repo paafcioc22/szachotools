@@ -1,8 +1,13 @@
-﻿using System;
+﻿using App2.Model;
+using Plugin.SewooXamarinSDK;
+using Plugin.SewooXamarinSDK.Abstractions;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
  
 using Xamarin.Forms;
@@ -11,22 +16,31 @@ using Xamarin.Forms.Xaml;
 namespace App2.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-     
+
+
     public partial class SettingsPage : ContentPage
     {
-
+       
         public static bool IsBuforOff;
+        private ISewooXamarinCPCL _cpclPrinter;
+        private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
+        CPCLConst cpclConst;
+
 
         //private string _version;
         public SettingsPage()
         {
             InitializeComponent();
             // ZaladujUstawienia();
-            var app = Application.Current as App;
+            cpclConst = new CPCLConst();
+            var  app = Application.Current as App;
             BindingContext = Application.Current;
             if (SprConn())
             {
                 GetBaseName();
+                 
+                _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+                GetDevices();
 
                 cennikClasses = GetCenniki();
                 if (cennikClasses.Count > 0)
@@ -34,9 +48,13 @@ namespace App2.View
                     pickerlist.ItemsSource = GetCenniki().ToList();
                     pickerlist.SelectedIndex = app.Cennik;
                 }
-                //foreach (var cenniki in _cennikClasses)
-                //pickerlist.Items.Add(cenniki.RodzajCeny);
+
+                
+                     
             }
+
+             
+        
             sprwersja();
             SwitchStatus.IsToggled = IsBuforOff;
         }
@@ -54,7 +72,95 @@ namespace App2.View
                 await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
         }
 
-         
+ 
+
+        public static ObservableCollection<DrukarkaClass> listaDrukarek;
+        async void GetDevices()
+        {
+
+            var app = Application.Current as App;
+            BindingContext = Application.Current;
+            try
+            {
+
+                listaDrukarek = new ObservableCollection<DrukarkaClass>();
+                listaDrukarek.Clear();
+                var list = await _cpclPrinter.connectableDevice();
+
+                if (list.Count > 0)
+                {
+
+                    for (int i = 0; i < list.Count(); i++)
+                    {
+                        listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
+                        PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
+                    }
+
+                    try
+                    {
+                        //PrinterList.ItemsSource = listaDrukarek;
+
+                        PrinterList.SelectedIndex = app.Drukarka;
+                    }
+                    catch
+                    {
+                        PrinterList.SelectedIndex = -1;
+                    }
+                }
+            }
+            catch (Exception ss)
+            {
+
+                System.Diagnostics.Debug.WriteLine(ss.Message);
+            }
+        }
+
+        async void btnConnectClicked(DrukarkaClass drukarkaClass)
+        {
+            int iResult;
+            await printSemaphore.WaitAsync();
+            try
+            {
+                iResult = await _cpclPrinter.connect(drukarkaClass.AdresDrukarki);
+                 
+                if (iResult == cpclConst.LK_SUCCESS)
+                {
+                    await DisplayAlert("Connection", "Połaczono z drukarką", "OK");
+
+                }
+                else
+                {
+                    await DisplayAlert("Connection", "Connection failed", "OK");
+                }
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                await DisplayAlert("Exception", e.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+
+        }
+
+        //private IList<string> _deviceList;
+        //public IList<string> DeviceList;
+
+
+        private string _selectedDevice;
+        public string SelectedDevice
+        {
+            get
+            {
+                return _selectedDevice;
+            }
+            set
+            {
+                _selectedDevice = value;
+            }
+        }
 
         private void SprConn_Clicked(object sender, EventArgs e)
         {
@@ -62,7 +168,7 @@ namespace App2.View
          
             try
             {
-                var app = Application.Current as App;
+                 var app = Application.Current as App;
                 var connStr = new SqlConnectionStringBuilder
                 {
                     DataSource = app.Serwer,//_serwer,
@@ -96,12 +202,12 @@ namespace App2.View
            // ZapiszUstawienia();
         }
 
-         
-           
+
+        
         public static bool SprConn() //Third way, slightly slower than Method 1
         {
             // NadajWartosci();
-            var app = Application.Current as App;
+           var app = Application.Current as App;
             var connStr = new SqlConnectionStringBuilder
             {
                 DataSource = app.Serwer,//_serwer,
@@ -175,7 +281,7 @@ namespace App2.View
         {
             try
             {
-                var app = Application.Current as App;
+               var app = Application.Current as App;
                 string nazwaCennika;
                 int IdCennik;
                 SqlCommand command = new SqlCommand();
@@ -244,6 +350,8 @@ namespace App2.View
 
         }
 
+
+        public  Picker PickerDrukarki { get { return pickerlist; } }
         private void pickerlist_Focused(object sender, FocusEventArgs e)
         {
             if (!SprConn())
@@ -262,11 +370,34 @@ namespace App2.View
         {
             IsBuforOff = e.Value;
         }
+        
+        private void PrinterList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var appp = Application.Current as App;
+            //var nazwa = PrinterList.Items[PrinterList.SelectedIndex];
+            //var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki == nazwa);
+             
+             int selectedIndex = PrinterList.SelectedIndex;
+            appp.Drukarka = selectedIndex;
+
+            var printer = PrinterList.Items[PrinterList.SelectedIndex];
+            var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki+ "\r\n"+c.AdresDrukarki == printer);
+
+            btnConnectClicked(wybrana);
+
+        }
     }
 
     public class CennikClass
     {
         public int Id { get; set; }
         public string RodzajCeny { get; set; }
-    } 
+    }
+
+    public class DrukarkaClass
+    {
+        public int Id { get; set; }
+        public string NazwaDrukarki { get; set; }
+        public string AdresDrukarki { get; set; }
+    }
 }

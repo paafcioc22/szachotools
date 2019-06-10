@@ -36,7 +36,7 @@ namespace App2.View
         ZXingDefaultOverlay overlay;
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
-        readonly ZXingScannerView zxing;
+       
 
         //public event EventHandler DoPush;
         ////call this on putton click or whenever you want

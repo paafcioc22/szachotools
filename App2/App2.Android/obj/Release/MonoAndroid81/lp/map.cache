@@ -56,3 +56,10 @@ System.Console
 System.Text.Encoding.Extensions
 System.IO.FileSystem.Primitives
 System.Reflection.Extensions
+BlueToothPrinter.Android
+BlueToothPrinter
+Plugin.SewooXamarinSDK.Abstractions
+Plugin.SewooXamarinSDK
+Xamarin.Android.Support.CustomTabs
+Xamarin.Essentials
+Xamarin.Sewoo.AndroidSDK

@@ -16,6 +16,7 @@ namespace App2
         private const string password = "password";
         private const string bazaProd = "bazaProd";
         private const string cennik = "cennik";
+        private const string drukarka = "drukarka";
 
         public App()
         {
@@ -131,6 +132,7 @@ namespace App2
             }
 
         }
+
         public int Cennik
         {
             get
@@ -142,6 +144,21 @@ namespace App2
             set
             {
                 Properties[cennik] = value;
+            }
+
+        }
+
+        public int Drukarka
+        {
+            get
+            {
+                if (Properties.ContainsKey(drukarka))
+                    return (Int32)Properties[drukarka];
+                return -1;
+            }
+            set
+            {
+                Properties[drukarka] = value;
             }
 
         }

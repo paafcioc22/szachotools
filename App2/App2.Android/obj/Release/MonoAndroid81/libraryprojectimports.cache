@@ -21,6 +21,8 @@
     <Jar>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\31\jl\bin\classes.jar</Jar>
     <Jar>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\32\jl\bin\classes.jar</Jar>
     <Jar>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\5\jl\formsviewgroup.jar</Jar>
+    <Jar>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\62\jl\bin\classes.jar</Jar>
+    <Jar>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\64\jl\Sewoo_XamarinAndroid_1007C.jar</Jar>
   </Jars>
   <ResolvedResourceDirectories>
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\1\jl\res</ResolvedResourceDirectory>
@@ -39,6 +41,7 @@
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\28\jl\res</ResolvedResourceDirectory>
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\29\jl\res</ResolvedResourceDirectory>
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\31\jl\res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\63\jl\res</ResolvedResourceDirectory>
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\38\jl\res</ResolvedResourceDirectory>
     <ResolvedResourceDirectory>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\41\jl\res</ResolvedResourceDirectory>
   </ResolvedResourceDirectories>
@@ -51,6 +54,7 @@
     <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\11\jl\assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\12\jl\assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\26\jl\assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\63\jl\assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\38\jl\assets</ResolvedAssetDirectory>
     <ResolvedAssetDirectory>obj\\Release\MonoAndroid81\lp\41\jl\assets</ResolvedAssetDirectory>
   </ResolvedAssetDirectories>
@@ -72,6 +76,7 @@
     <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\28.stamp</ResolvedResourceDirectoryStamp>
     <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\29.stamp</ResolvedResourceDirectoryStamp>
     <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\31.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\63.stamp</ResolvedResourceDirectoryStamp>
     <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\38.stamp</ResolvedResourceDirectoryStamp>
     <ResolvedResourceDirectoryStamp>C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\MonoAndroid81\lp\41.stamp</ResolvedResourceDirectoryStamp>
   </ResolvedResourceDirectoryStamps>

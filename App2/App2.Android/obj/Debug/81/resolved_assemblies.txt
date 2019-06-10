@@ -2,7 +2,6 @@ C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\8
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Acr.UserDialogs.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\AndHUD.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\App2.dll
-C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\BCrypt.Net-Next.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\CryptSharp.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\FastAndroidCamera.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\FormsViewGroup.dll
@@ -21,6 +20,8 @@ C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\8
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Data.Services.Client.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.EnterpriseServices.dll
+C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Numerics.dll
+C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Numerics.Vectors.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Web.Services.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Xml.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Xml.Linq.dll
@@ -32,6 +33,7 @@ C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\8
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Compat.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Core.UI.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Core.Utils.dll
+C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.CustomTabs.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Design.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Fragment.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Media.Compat.dll
@@ -43,6 +45,7 @@ C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\8
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.v7.Palette.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.v7.RecyclerView.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Android.Support.Vector.Drawable.dll
+C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Essentials.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Core.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Platform.Android.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Platform.dll
@@ -57,7 +60,6 @@ C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\8
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.IO.Compression.FileSystem.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.ComponentModel.Composition.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Net.Http.dll
-C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Numerics.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Runtime.Serialization.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.ServiceModel.Internals.dll
 C:\Users\pawel\Source\Repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\81\android\assets\System.Transactions.dll

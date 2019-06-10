@@ -29,9 +29,9 @@ namespace App2.View
         {
             try
             {
-                string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart, Ake_FiltrSQL
+                string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
-                     where AkN_GidTyp={_gidtyp} 
+                     where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10
                      '";
                 var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
                 ListaZFiltrem = AkcjeElemLista;

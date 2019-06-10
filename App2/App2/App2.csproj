@@ -30,8 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.3" />
-    <PackageReference Include="CryptSharp" Version="1.3.0" />
-    <PackageReference Include="SharpCifs.Std" Version="0.2.12" />
+    <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.258-beta" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0-preview2-26905-02" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />

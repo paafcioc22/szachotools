@@ -185,6 +185,7 @@ namespace App2.Droid
                 foreach (var akcje in gidNazwa.GidNazwaLista)
                 {
                     var datastart = Convert.ToDateTime(akcje.AkN_DataStart).AddHours(2);
+                    var datakoniec = Convert.ToDateTime(akcje.AkN_DataKoniec).AddHours(2);
                     AkcjeGidNazwaList.Add(new AkcjeNagElem
                     {
                         AkN_GidNumer = akcje.AkN_GidNumer,
@@ -194,8 +195,7 @@ namespace App2.Droid
                         Ake_ElemLp = akcje.Ake_ElemLp,
                         Ake_FiltrSQL = akcje.Ake_FiltrSQL,
                         AkN_DataStart = datastart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                        //CultureInfo.InvariantCulture
-                        AkN_DataKoniec = akcje.AkN_DataKoniec,
+                        AkN_DataKoniec = datakoniec.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), 
                         Ake_NazwaFiltrSQL = akcje.Ake_NazwaFiltrSQL,
                         TwrKod = akcje.TwrKod,
                         TwrNazwa = akcje.TwrNazwa,

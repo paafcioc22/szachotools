@@ -15,7 +15,7 @@ namespace App2.View
     {
         public ObservableCollection<Model.AkcjeNagElem> Items { get; set; }
         public ObservableCollection<Model.Test> Items_test { get; set; }
-         
+        public static string TypAkcji;
 
         public List_AkcjeView()
         {
@@ -25,26 +25,7 @@ namespace App2.View
             //StworzListe();
         }
 
-        void StworzListe()
-        {
-            Items_test = new ObservableCollection<Model.Test>();
-
-            Items_test.Add(new Model.Test { gidnumer = 1, mag_dcl = "bol", twrkod = "twr1", ilosc = 2 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr2", ilosc = 42 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr3", ilosc = 51 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr4", ilosc = 8 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr5", ilosc = 9 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr6", ilosc = 11 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr7", ilosc = 1 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr8", ilosc = 2 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr9", ilosc = 44 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr10", ilosc = 4 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr11", ilosc = 6 });
-            Items_test.Add(new Model.Test { gidnumer = 2, mag_dcl = "bol", twrkod = "twr12", ilosc = 99 }); 
-            
-
-            MyListView.ItemsSource = Items_test;
-        }
+         
 
         private async  void GetAkcje()
         {
@@ -52,7 +33,7 @@ namespace App2.View
             {
                 string Webquery = @"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  ,AkN_GidNazwa +'' (''+cast( count(distinct Ake_AknNumer)as varchar)+'')'' AkN_GidNazwa  
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
-                    
+                    where AkN_DataKoniec>=GETDATE() -10 
                     group by AkN_GidTyp  , AkN_GidNazwa '";
                 var twrdane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 
@@ -76,6 +57,7 @@ namespace App2.View
             //pozycja.ilosc += 1;
             await Navigation.PushModalAsync(new View.List_AkcjeElemView(pozycja.AkN_GidTyp));
 
+            TypAkcji = pozycja.AkN_GidNazwa;
 
 
 

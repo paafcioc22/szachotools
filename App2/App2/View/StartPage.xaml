@@ -62,7 +62,7 @@
                     FontAttributes="Bold" 
                     Image="znizka100"
                     ContentLayout="Top,1"
-                    
+                    x:Name="btn_ListaAkcji"
                     Clicked="Btn_ListAkcje_Clicked"
                     />
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
@@ -81,7 +81,17 @@
                     x:Name="btn_login" 
                     BackgroundColor="#54c4b4" 
                     CornerRadius="15" Margin="40,0,15,0"/>
-        
+            <!--<Button Text="drukowanie" 
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Center" 
+                    HeightRequest="65" 
+                    TextColor="White"
+                    BorderWidth="3" 
+                    BorderColor="DarkCyan" 
+                    BackgroundColor="#54c4b4" 
+                    CornerRadius="15" Margin="40,0,15,0"
+                    />-->
             <Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings"/>

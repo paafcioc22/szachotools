@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ef1="clr-namespace:ShowHidePassEx.Effects" 
              x:Class="App2.View.SettingsPage">
+             <!--xmlns:ViewModel="clr-namespace:App2.ViewModel"--> 
 
+    <!--<ContentPage.BindingContext>-->
+        <!--<ViewModel:PrintPageViewModel />
+    </ContentPage.BindingContext>-->
+    
     <StackLayout Padding="10">
         <!--<Label Text="Ustawienia"  HorizontalOptions="Center"/>-->
         <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
@@ -36,13 +41,13 @@
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
             
-            <Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+            <!--<Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
             <Entry 
                 x:Name="Login" Text="{Binding User}"
                 Placeholder="Login.." 
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
-                />
+                />-->
             <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
              
             
@@ -76,17 +81,28 @@
             <Picker Title="cennik" x:Name="pickerlist" 
                     SelectedIndexChanged="pickerlist_OnChanged" 
                     HorizontalOptions="Center"  
-                    ItemsSource="{Binding cennikClasses}" 
                     ItemDisplayBinding="{Binding RodzajCeny}" 
                     WidthRequest="150" Focused="pickerlist_Focused"
                     >
+                    <!--ItemsSource="{Binding cennikClasses}"--> 
 
             </Picker>
+            <Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
 
+                    <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
+                    <!--ItemDisplayBinding="{Binding  Drukarka}"-->
+            <Picker x:Name="PrinterList"
+                    Title="Select Device"
+                    SelectedIndexChanged="PrinterList_SelectedIndexChanged" 
+               
+                    >
+            </Picker>
         </StackLayout>
 
         <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
             <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked"/>
+            
         </StackLayout>
     </StackLayout>
  

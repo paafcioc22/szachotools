@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace App2.View
         //public ObservableCollection<Model.AkcjeGrupy> GroupLista { get; set; }
         public IEnumerable<Model.AkcjeNagElem> SumaList { get; set; }
         SqlConnection connection;
+        private SQLiteAsyncConnection _connection;
 
         public List_AkcjeTwrList( List<Model.AkcjeNagElem> nagElem)
         {
@@ -33,7 +35,8 @@ namespace App2.View
                 ";TRUSTED_CONNECTION=No;UID=" + app.User +
                 ";PWD=" + app.Password
             };
-
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            //_connection.DropTableAsync<Model.AkcjeNagElem>();
             GetListFromLocal( nagElem);
             GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
         }
@@ -45,7 +48,7 @@ namespace App2.View
 
             var nazwa = e.Item as Model.AkcjeNagElem;
 
-            var nowa = SumaList.Where(x => x.TwrGrupa == nazwa.TwrGrupa).OrderByDescending(x => x.TwrStan-x.TwrSkan).ToList();  
+            var nowa = SumaList.Where(x => x.TwrDep == nazwa.TwrDep).OrderByDescending(x => x.TwrStan-x.TwrSkan).ToList();  
 
             await Navigation.PushModalAsync(new List_AkcjeAfterFiltr(nowa));
 
@@ -164,7 +167,7 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
 
 
                 MyListView3.ItemsSource = SumaList.GroupBy(dd => dd.TwrGrupa).Select(a => a.First()).ToList();
-                var nowa = SumaList.GroupBy(g => g.TwrGrupa).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
                 {
                     TwrGrupa = cs.TwrGrupa,
                     TwrSkan = s.Sum(cc => cc.TwrSkan),
@@ -193,10 +196,12 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
 
        
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing();
-            var nowa = SumaList.GroupBy(g => g.TwrGrupa).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+            await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+
+            var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
+            var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
             {
                 TwrGrupa = cs.TwrGrupa,
                 TwrSkan = s.Sum(cc => cc.TwrSkan),
@@ -212,6 +217,7 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
 
 
             MyListView3.ItemsSource = sorted;
+            base.OnAppearing();
 
             //MyListView3.ItemsSource = nowa;
 

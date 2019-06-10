@@ -21,7 +21,7 @@
                                    FontSize="16" FontAttributes="Bold" 
                                    VerticalOptions="Center" 
                                    HorizontalOptions="CenterAndExpand"/>
-                                    <Label Text="{Binding AkN_DataStart}" FontSize="12" 
+                                <Label Text="{Binding AkN_ZakresDat }" FontSize="12" 
                                    VerticalOptions="Center" TextColor="Black"
                                    HorizontalOptions="CenterAndExpand"/>
                                 </StackLayout>

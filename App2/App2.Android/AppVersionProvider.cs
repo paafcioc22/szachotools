@@ -26,7 +26,7 @@ namespace App2.Droid
                 var context = Android.App.Application.Context;
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
 
-                return $"{info.VersionName}.{info.VersionCode.ToString()}";
+                return $"{info.VersionName}";
             }
         }
 
