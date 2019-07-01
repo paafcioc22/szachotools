@@ -36,10 +36,10 @@
                                          Spacing="5" Padding="5" 
                                          VerticalOptions="FillAndExpand"    >
                                 <Label Text="{Binding TwrKod }" TextColor="Black" FlexLayout.Shrink="0"/>
-                                <Label Text="{Binding TwrNazwa }" TextColor="Black" 
+                                <Label Text="{Binding TwrNazwa }" TextColor="Black" Margin="5,0,0,0"
                                            FontSize="12" 
                                            VerticalOptions="Center" 
-                                           HorizontalOptions="CenterAndExpand"/>
+                                           HorizontalOptions="StartAndExpand"/>
                                 <Label Text="{Binding TwrSymbol}" FontSize="12" 
                                            VerticalOptions="Center" TextColor="Black"
                                            HorizontalOptions="CenterAndExpand"/>

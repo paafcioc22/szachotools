@@ -28,6 +28,8 @@ namespace App2.Model
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+
         
+
     }
 }

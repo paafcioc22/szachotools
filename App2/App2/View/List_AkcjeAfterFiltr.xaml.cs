@@ -39,21 +39,24 @@ namespace App2.View
             return new ObservableCollection<T>(original);
         }
 
+
+        private bool _istapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
 
+            if (_istapped)
+                return;
+
+            _istapped = true;
 
             var pozycja = e.Item as Model.AkcjeNagElem;
 
             await Navigation.PushModalAsync(new List_ScanPage(pozycja));
-           // await Navigation.PushModalAsync(new SkanNowy());
-           // pozycja.TwrSkan += 1;
 
+            _istapped = false;
 
-
-            //Deselect Item
             ((ListView)sender).SelectedItem = null;
         }
     }

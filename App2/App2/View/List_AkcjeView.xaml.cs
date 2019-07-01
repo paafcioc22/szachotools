@@ -47,18 +47,26 @@ namespace App2.View
             }
         }
 
+
+        bool _istapped;
          async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
 
+
+            if (_istapped)
+                return;
+
+            _istapped = true;
+
             var pozycja = e.Item as Model.AkcjeNagElem;
-            //var pozycja = e.Item as Model.Test;
-            //pozycja.ilosc += 1;
-            await Navigation.PushModalAsync(new View.List_AkcjeElemView(pozycja.AkN_GidTyp));
+       
+                await Navigation.PushModalAsync(new View.List_AkcjeElemView(pozycja.AkN_GidTyp));
 
-            TypAkcji = pozycja.AkN_GidNazwa;
+                TypAkcji = pozycja.AkN_GidNazwa;
 
+            _istapped = false;
 
 
             ((ListView)sender).SelectedItem = null;
@@ -66,8 +74,7 @@ namespace App2.View
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            //var nowa = Items_test.Where(z => z.twrkod == "twr2").ToList();
-            //nowa[0].ilosc += 1;
+           
             var nowa = Items_test.Where(n => n.twrkod == "twr2").Select(n => { n.ilosc+=1; return n; }).ToList();
             MyListView.ItemsSource = nowa;
         }

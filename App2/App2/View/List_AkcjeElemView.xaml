@@ -16,7 +16,7 @@
                         <Frame HasShadow="true" Margin="2" BorderColor="DarkCyan"   CornerRadius="10" OutlineColor="Cyan" >
                             <!--<Frame.Content>-->
                                 <StackLayout Orientation="Vertical" >
-                                    <Label Text="{Binding AkN_GidNazwa}" TextColor="Black"/>
+                                    <Label Text="{Binding AkN_GidNazwa}" TextColor="Black" HorizontalOptions="CenterAndExpand"/>
                                     <Label Text="{Binding AkN_NazwaAkcji}" TextColor="Black" 
                                    FontSize="16" FontAttributes="Bold" 
                                    VerticalOptions="Center" 

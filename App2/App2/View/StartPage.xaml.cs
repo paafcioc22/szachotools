@@ -113,24 +113,8 @@ namespace App2.View
         }
 
 
-        private bool _userTapped;
-        private async void TapGestureRecognizer_Tapped()
-        {
-            //  string query = "[CDN].[PC_WykonajSelect] 58611";
-            //  var Maglista =  App.TodoManager.InsertDataNiezgodnosci(query); 
-
-
-            if (_userTapped)
-                return;
-
-            _userTapped = true;
-             
-                await Navigation.PushModalAsync(new View.SettingsPage());
-
-            _userTapped = false;
-
-
-        }
+       
+         
 
         protected   override void OnAppearing()
         {
@@ -268,7 +252,21 @@ namespace App2.View
 
         }
 
-        
+
+        private bool _userTapped;
+        private async void Btn_settings_Tapped(object sender, EventArgs e)
+        {
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            await Navigation.PushModalAsync(new View.SettingsPage());
+
+            _userTapped = false;
+        }
+
+
 
 
 

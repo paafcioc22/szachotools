@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
- 
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,7 +22,7 @@ namespace App2.View
     {
        
         public static bool IsBuforOff;
-        private ISewooXamarinCPCL _cpclPrinter;
+        public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         CPCLConst cpclConst;
 
@@ -32,6 +32,11 @@ namespace App2.View
         {
             InitializeComponent();
             // ZaladujUstawienia();
+
+            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+            GetDevices();
+            
+
             cpclConst = new CPCLConst();
             var  app = Application.Current as App;
             BindingContext = Application.Current;
@@ -39,8 +44,6 @@ namespace App2.View
             {
                 GetBaseName();
                  
-                _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
-                GetDevices();
 
                 cennikClasses = GetCenniki();
                 if (cennikClasses.Count > 0)
@@ -61,15 +64,22 @@ namespace App2.View
 
         private async void sprwersja()
         {
-            var version = DependencyService.Get<Model.IAppVersionProvider>();
-            var versionString = version.AppVersion;
-            var bulidVer = version.BuildVersion;
-            lbl_appVersion.Text = "Wersja " +versionString;
-            //_version = bulidVer;
+            try
+            {
+                var version = DependencyService.Get<Model.IAppVersionProvider>();
+                var versionString = version.AppVersion;
+                var bulidVer = version.BuildVersion;
+                lbl_appVersion.Text = "Wersja " + versionString;
+                //_version = bulidVer;
 
-            var AktualnaWersja = await App.TodoManager.GetBuildVer();
-            if (bulidVer != AktualnaWersja)
-                await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+                var AktualnaWersja = await App.TodoManager.GetBuildVer();
+                if (bulidVer != AktualnaWersja)
+                    await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+            }
+            catch (Exception )
+            {
+                await DisplayAlert(null, "Nie można sprawdzić aktualnej wersji", "OK");
+            }
         }
 
  
@@ -114,7 +124,7 @@ namespace App2.View
                 System.Diagnostics.Debug.WriteLine(ss.Message);
             }
         }
-
+        public static bool CzyDrukarkaOn= false;
         async void btnConnectClicked(DrukarkaClass drukarkaClass)
         {
             int iResult;
@@ -126,6 +136,7 @@ namespace App2.View
                 if (iResult == cpclConst.LK_SUCCESS)
                 {
                     await DisplayAlert("Connection", "Połaczono z drukarką", "OK");
+                    CzyDrukarkaOn = true;
 
                 }
                 else
@@ -207,7 +218,9 @@ namespace App2.View
         public static bool SprConn() //Third way, slightly slower than Method 1
         {
             // NadajWartosci();
-           var app = Application.Current as App;
+
+            
+            var app = Application.Current as App;
             var connStr = new SqlConnectionStringBuilder
             {
                 DataSource = app.Serwer,//_serwer,
@@ -383,7 +396,54 @@ namespace App2.View
             var printer = PrinterList.Items[PrinterList.SelectedIndex];
             var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki+ "\r\n"+c.AdresDrukarki == printer);
 
-            btnConnectClicked(wybrana);
+            //btnConnectClicked(wybrana);
+
+        }
+
+        private async  void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        {
+
+            var profiles = Connectivity.ConnectionProfiles;
+            if (profiles.Contains(ConnectionProfile.WiFi))
+            {
+                System.Diagnostics.Debug.WriteLine("połączenie wigi");
+            }
+
+            var current = Connectivity.NetworkAccess;
+
+            if (current == NetworkAccess.Internet)
+            {
+                System.Diagnostics.Debug.WriteLine("połączenie dostępne");
+            }
+
+
+
+
+            var version = DependencyService.Get<Model.IWifiConnector>();
+            if (version.IsConnectedToWifi("JOART_WiFi"))
+            {
+                await DisplayAlert("Info", "Połączono już z Wifi szachownicy","OK");
+                return;
+            } 
+
+
+            version.ConnectToWifi("JOART_WiFi", "J0@rt11a");
+
+            await Task.Delay(1000);
+
+            if (version.IsConnectedToWifi("JOART_WiFi"))
+            {
+                await DisplayAlert("Info", "Połączono z Wifi szachownicy", "OK");
+
+            }
+            else {
+                await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
+
+            }
+
+
+
+
 
         }
     }

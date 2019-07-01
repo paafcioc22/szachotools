@@ -17,7 +17,7 @@
     <ManifestDocument>obj\\Release\MonoAndroid81\lp\30\jl\AndroidManifest.xml</ManifestDocument>
     <ManifestDocument>obj\\Release\MonoAndroid81\lp\31\jl\AndroidManifest.xml</ManifestDocument>
     <ManifestDocument>obj\\Release\MonoAndroid81\lp\32\jl\AndroidManifest.xml</ManifestDocument>
-    <ManifestDocument>obj\\Release\MonoAndroid81\lp\62\jl\AndroidManifest.xml</ManifestDocument>
+    <ManifestDocument>obj\\Release\MonoAndroid81\lp\33\jl\AndroidManifest.xml</ManifestDocument>
   </ManifestDocuments>
   <NativeLibraries />
   <Jars>
@@ -40,8 +40,8 @@
     <Jar>obj\\Release\MonoAndroid81\lp\30\jl\bin\classes.jar</Jar>
     <Jar>obj\\Release\MonoAndroid81\lp\31\jl\bin\classes.jar</Jar>
     <Jar>obj\\Release\MonoAndroid81\lp\32\jl\bin\classes.jar</Jar>
-    <Jar>obj\\Release\MonoAndroid81\lp\5\jl\formsviewgroup.jar</Jar>
-    <Jar>obj\\Release\MonoAndroid81\lp\62\jl\bin\classes.jar</Jar>
-    <Jar>obj\\Release\MonoAndroid81\lp\64\jl\Sewoo_XamarinAndroid_1007C.jar</Jar>
+    <Jar>obj\\Release\MonoAndroid81\lp\33\jl\bin\classes.jar</Jar>
+    <Jar>obj\\Release\MonoAndroid81\lp\39\jl\Sewoo_XamarinAndroid_1007C.jar</Jar>
+    <Jar>obj\\Release\MonoAndroid81\lp\4\jl\formsviewgroup.jar</Jar>
   </Jars>
 </Paths>

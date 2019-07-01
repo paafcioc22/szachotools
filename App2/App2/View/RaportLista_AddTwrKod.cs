@@ -159,14 +159,14 @@ namespace App2.View
             btn_Skanuj = new Button();
             btn_Skanuj.Text = "Skanuj EAN";
             btn_Skanuj.Clicked += Btn_Skanuj_Clicked;
-            btn_Skanuj.Image = "scan48x2.png";
+            btn_Skanuj.ImageSource = "scan48x2.png";
             btn_Skanuj.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Skanuj);
 
             btn_Zapisz = new Button();
             btn_Zapisz.Text = "Zapisz pozycję";
             btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
-            btn_Zapisz.Image = "save48x2.png";
+            btn_Zapisz.ImageSource = "save48x2.png";
             btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Zapisz);
 

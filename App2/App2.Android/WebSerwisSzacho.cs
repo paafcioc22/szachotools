@@ -206,6 +206,7 @@ namespace App2.Droid
                         TwrUrl = akcje.TwrUrl,
                         TwrSymbol = akcje.TwrSymbol,
                         TwrCena = akcje.TwrCena,
+                        TwrCena1 = akcje.TwrCena1,
                         TwrSkan = 0,
                         TwrEan = akcje.TwrEan
                     });

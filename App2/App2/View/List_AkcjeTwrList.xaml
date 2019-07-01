@@ -44,7 +44,7 @@
                     <ViewCell>
 
 
-                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="10">
+                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="8" HorizontalOptions="FillAndExpand">
                             <!--<Label Text="{Binding TwrKod }" TextColor="Black"/>
                             <Label Text="{Binding TwrNazwa }" TextColor="Black" 
                                    FontSize="12" 
@@ -53,12 +53,12 @@
                             <!--<Label Text="{Binding TwrGrupa }" FontSize="12" 
                                    VerticalOptions="Center" TextColor="Black"
                                    HorizontalOptions="CenterAndExpand"/>-->
-                            <Label Text="{Binding TwrDep }" FontSize="20" 
+                            <Label Text="{Binding TwrDep }" FontSize="18" 
                                    VerticalOptions="Center" TextColor="Black"
-                                   HorizontalOptions="StartAndExpand" Margin="10,0,0,0"/>
-                            <Label Text="{Binding TwrStanVsSKan }" FontSize="20" 
+                                   HorizontalOptions="StartAndExpand" Margin="5,0,0,0"  />
+                            <Label Text="{Binding TwrStanVsSKan }" FontSize="18" 
                                    VerticalOptions="Center" TextColor="Black"
-                                   HorizontalOptions="EndAndExpand"/>
+                                   HorizontalOptions="EndAndExpand"  />
                         </StackLayout>
 
                     </ViewCell>

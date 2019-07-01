@@ -62,7 +62,7 @@ namespace App2.View
                 //ZXing.BarcodeFormat.CODE_128,
                 //ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.CODE_39,
-                ZXing.BarcodeFormat.EAN_13,
+                ZXing.BarcodeFormat.EAN_13
                 }
 
                 };

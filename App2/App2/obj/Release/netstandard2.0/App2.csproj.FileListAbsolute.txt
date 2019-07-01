@@ -28,11 +28,16 @@ C:\Users\pawel\source\repos\App2\App2\App2\obj\Release\netstandard2.0\View\Rapor
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\bin\Release\netstandard2.0\App2.deps.json
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\bin\Release\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\bin\Release\netstandard2.0\App2.pdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.csprojAssemblyReference.cache
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.Properties.Resources.resources
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.csproj.GenerateResource.cache
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\AddElementMMList.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\ListaSklepowPage.xaml.g.cs
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeAfterFiltr.xaml.g.cs
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeElemView.xaml.g.cs
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeTwrList.xaml.g.cs
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeView.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\LoginLista.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\PrzyjmijMM_ListaElementowMM.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\PrzyjmijMM_ListaMMDoPrzyjecia.xaml.g.cs
@@ -50,8 +55,3 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\XamlC.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.pdb
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.csprojAssemblyReference.cache
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeAfterFiltr.xaml.g.cs
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeElemView.xaml.g.cs
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeTwrList.xaml.g.cs
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\View\List_AkcjeView.xaml.g.cs

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.11" package="com.SzachoTools" android:installLocation="auto" android:versionCode="11">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.12" package="com.SzachoTools" android:installLocation="auto" android:versionCode="12">
   <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.FLASHLIGHT" />
-  <application android:label="SzachoTools" android:icon="@drawable/newszacho" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
+  <application android:label="SzachoTools" android:icon="@drawable/newszacho" android:usesCleartextTraffic="true" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
     <activity android:configChanges="orientation|screenSize" android:icon="@drawable/newszacho" android:label="SzachoTools" android:theme="@style/MainTheme" android:name="md5ce51fed3f5ce2f508bfc10049c6540f6.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

@@ -43,7 +43,7 @@ namespace App2.View
             _btnSave = new Button();
             _btnSave.Text = "Utwórz MMkę";
             _btnSave.Clicked += Button_Clicked;
-            _btnSave.Image = "create48x2.png";
+            _btnSave.ImageSource = "create48x2.png";
             _btnSave.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(_btnSave);
             //stackLayout.HorizontalOptions = LayoutOptions.Center;

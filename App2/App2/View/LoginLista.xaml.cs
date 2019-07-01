@@ -215,26 +215,31 @@ namespace App2.View
         bool IsPassCorrect()
         {
 
-            int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
-            int znak24 = Convert.ToInt32(entry_haslo.Text.Substring(1, 3));
-            if (znak1 == 0 && entry_haslo.Text.Length == 8)
+            var isNumeric = int.TryParse(entry_haslo.Text, out int n);
+
+            if (isNumeric)
             {
-                if (znak24 == _opeGid)
+                int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
+                int znak24 = Convert.ToInt32(entry_haslo.Text.Substring(1, 3));
+                if (znak1 == 0 && entry_haslo.Text.Length == 8)
+                {
+                    if (znak24 == _opeGid)
+                    {
+                        return true;
+                    }
+                    else { return false; }
+
+                }
+                else if (entry_haslo.Text.Length != 6)
+                {
+                    return false;
+                }
+                else
                 {
                     return true;
                 }
-                else { return false; }
-
             }
-            else if (entry_haslo.Text.Length != 6)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-             
+            return false;
              
         }
 

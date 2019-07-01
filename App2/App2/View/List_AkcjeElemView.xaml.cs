@@ -32,6 +32,7 @@ namespace App2.View
                 string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
                      where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10
+                     order by AkN_DataStart desc
                      '";
                 var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
                 ListaZFiltrem = AkcjeElemLista;
@@ -46,18 +47,25 @@ namespace App2.View
             }
         }
 
-
+        bool _istapped;
          void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
 
 
-            var pozycja = e.Item as Model.AkcjeNagElem;
+            if (_istapped)
+                return;
 
-            var nowa =ListaZFiltrem.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
+            _istapped = true;
 
-            Navigation.PushModalAsync(new View.List_AkcjeTwrList(nowa));
+                var pozycja = e.Item as Model.AkcjeNagElem;
+
+                var nowa =ListaZFiltrem.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
+
+                Navigation.PushModalAsync(new View.List_AkcjeTwrList(nowa));
+
+            _istapped = false;
 
             // await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
 

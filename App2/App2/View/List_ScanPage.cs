@@ -4,8 +4,10 @@ using Plugin.SewooXamarinSDK.Abstractions;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Input;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
@@ -20,40 +22,38 @@ namespace App2.View
         private Label lbl_symbol;
         private Label lbl_nazwa;
         private Label lbl_cena;
+        private Label lbl_cena1;
         private Entry entry_kodean;
-        //private Entry entry_ilosc;
         private Image img_foto;
-        //private Button btn_Skanuj;
-        //private Button btn_AddEanPrefix;
-        //private Button btn_Zapisz;
-        //private Int32 _gidnumer;
+       
         private SQLiteAsyncConnection _connection;
         private string skanean;
         private Model.AkcjeNagElem _akcja;
         ZXingDefaultOverlay overlay;
-        //ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
-        //private ZXingScannerView zxing;
         int ile_zeskanowancyh = 0;
-        private ISewooXamarinCPCL _cpclPrinter;
+        //private ISewooXamarinCPCL SettingsPage._cpclPrinter =  SettingsPage._cpclPrinter;
         CPCLConst cpclConst;
+        int IResult;
+        bool CanPrint;
 
-     
-
+        private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
+        private  ISewooXamarinCPCL cpclPrinter;
         string drukarka; 
 
         public List_ScanPage(Model.AkcjeNagElem akcje) //edycja
         {
             this.Title = "Dodaj MM";
             //_blueToothService = DependencyService.Get<IBlueToothService>();
-            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
-            cpclConst = new CPCLConst();
+
+            
+            // CrossSewooXamarinCPCL.Current.createCpclService(int iCodePage);
             _akcja = akcje;
 
-
-           
-
-            deviceListe();
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                deviceListe();
+            
+           cpclConst = new CPCLConst();
            ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -129,6 +129,9 @@ namespace App2.View
             lbl_cena.HorizontalOptions = LayoutOptions.Center;
             lbl_cena.Text = "Cena : " + akcje.TwrCena + " Zł";
 
+            lbl_cena1 = new Label();
+            lbl_cena1.HorizontalOptions = LayoutOptions.Center;
+            lbl_cena1.Text = "Cena pierwsza : " + akcje.TwrCena1 + " Zł";
 
             Button open_url = new Button();
             open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut")?"Zapisz": "Zacznij skanowanie";
@@ -137,66 +140,7 @@ namespace App2.View
             
             open_url.Clicked += Open_url_Clicked;
 
-            //overlay = new ZXingDefaultOverlay
-            //{
-            //    TopText = $"Skanowany : {akcje.TwrKod}",
-            //    BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}",
-            //    AutomationId = "zxingDefaultOverlay",
-
-
-            //};
-
-            //var torch = new Switch
-            //{
-            //};
-
-            //torch.Toggled += delegate
-            //{
-            //    scanPage.ToggleTorch();
-            //};
-
-
-
-            //try
-            //{
-
-
-
-            //    overlay.Children.Add(torch);
-            //    open_url.Clicked += async delegate
-            //    {
-            //        scanPage = new ZXingScannerPage(
-            //            new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay);
-            //        scanPage.DefaultOverlayShowFlashButton = true;
-            //        scanPage.OnScanResult += (result) =>
-            //        Device.BeginInvokeOnMainThread(() =>
-            //        {
-            //            skanean = result.Text;
-
-            //            if (skanean == lbl_ean.Text)
-            //            {
-            //                ile_zeskanowancyh += 1;
-            //                overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}";
-            //                DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
-            //                PrintCommand();
-                            
-            //                Zapisz();
-            //                entry_kodean.Text = ile_zeskanowancyh.ToString();
-
-            //            }
-            //            else
-            //            {
-
-            //                DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
-            //            }
-            //        });
-            //        await Navigation.PushModalAsync(scanPage);
-            //    };
-            //}
-            //catch (Exception x)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(x.Message);
-            //} 
+           
             open_url.VerticalOptions = LayoutOptions.EndAndExpand; 
 
 
@@ -206,6 +150,7 @@ namespace App2.View
             stackLayout.Children.Add(entry_kodean);
             stackLayout.Children.Add(lbl_symbol);
             stackLayout.Children.Add(lbl_cena);
+            stackLayout.Children.Add(lbl_cena1);
              
 
             stackLayout.VerticalOptions = LayoutOptions.Center;
@@ -230,7 +175,7 @@ namespace App2.View
 
             };
 
-            var torch = new Switch
+            var torch = new Xamarin.Forms.Switch
             {
             };
 
@@ -261,6 +206,7 @@ namespace App2.View
                             ile_zeskanowancyh += 1;
                             overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}";
                             DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
+                            if(CanPrint)
                             PrintCommand();
 
                             Zapisz();
@@ -282,59 +228,240 @@ namespace App2.View
             }
         }
 
+
+         
         private  async void deviceListe()
         {
-            var app = Application.Current as App;
-
             try
             {
-                var list = await _cpclPrinter.connectableDevice();
+            var app = Application.Current as App;
+            SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+             
+            await printSemaphore.WaitAsync();
+            
+                var list = await SettingsPage._cpclPrinter.connectableDevice();
 
 
-                if (list.Count > 0)
+                if (list.Count > 0 && app.Drukarka > 0)
+                {
                     drukarka = list[app.Drukarka].Address;
+                    System.Diagnostics.Debug.WriteLine("lista pełna");
+
+                }
+                else
+                {
+                    drukarka = "00:00:00:00:00:00";
+                    System.Diagnostics.Debug.WriteLine("lista zerowa");
+                }
+
             }
             catch (Exception ss)
             {
                 System.Diagnostics.Debug.WriteLine(ss.Message);
-                 
+                System.Diagnostics.Debug.WriteLine("coś nie pykło");
+
+            }
+            finally
+            {
+                printSemaphore.Release();
+
+            }
+
+            try
+            {
+                if (!View.SettingsPage.CzyDrukarkaOn)
+                {
+
+                    IResult = await SettingsPage._cpclPrinter.connect(drukarka);
+                    if (IResult == cpclConst.LK_SUCCESS)
+                    {
+                        CanPrint = true;
+                        await DisplayAlert(null, "Drukarka OK", "OK");
+                        View.SettingsPage.CzyDrukarkaOn = true;
+                    }
+                    else
+                    {
+                        CanPrint = false;
+                        //await DisplayAlert(null, "Drukarka Nie podłączone", "OK");
+
+                        ErrorStatusDisp("Printer error", IResult);
+                        View.SettingsPage.CzyDrukarkaOn = false;
+
+                    }
+
+                }
+                else
+                {
+                    CanPrint = true;
+                    View.SettingsPage.CzyDrukarkaOn = true;
+
+                }
+            }
+            catch (Exception x)
+            {
+                await DisplayAlert(null, "Błąd", "OK");
             }
 
 
-             
-
         }
-         
-        public async void PrintCommand ()//=> new Command(async () =>
+
+
+        int polozenie;
+        public async void PrintCommand ()
         {
 
+            
+            //_cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2); 
+
+            
              
-            await _cpclPrinter.setForm(0, 200, 200, 250,350, 1);
-            await _cpclPrinter.setBarCodeText(0, 1, 0);
-            await _cpclPrinter.setMedia(cpclConst.LK_MEDIA_LABEL);
              
-            await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 111, 5, "SZACHOWNICA", 0);
-            await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, _akcja.TwrKod, 0);
-            await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 50, _akcja.TwrNazwa, 0);
-            await _cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 1, 
-cpclConst.LK_CPCL_BCS_0RATIO, 35, 75, 80, _akcja.TwrEan ,0);
 
 
-            await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_5, 3, 111, 120, _akcja.TwrCena+" pln", 0);
+            await printSemaphore.WaitAsync();
+            try
+            {
+                //int iResult;
 
+                //iResult = await SettingsPage._cpclPrinter.printerCheck();
+                //switch (Device.RuntimePlatform)
+                //{
+                //    case Device.iOS:
+                //        iResult = await SettingsPage._cpclPrinter.printStatus();
+                //        Debug.WriteLine("PrinterStatus = " + iResult);
+                //        break;
+                //    default:
+                //        Debug.WriteLine("printerCheck = " + iResult);
+                //        break;
+                //}
 
-            //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 120, 10, "SZACHOWNICA", 0);
-            //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 10, 70, _akcja.TwrKod, 0);
-            //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 10, 120, _akcja.TwrNazwa, 0);
-            //await _cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 2, cpclConst.LK_CPCL_BCS_1RATIO, 60, 20, 210, _akcja.TwrEan, 0);
+                //if (iResult != cpclConst.LK_SUCCESS)
+                //{
+                //    ErrorStatusDisp("Printer error", iResult);
+                //    return;
+                //}
 
-            //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 2, 120, 300, _akcja.TwrCena, 0);
+                var cenaZl = _akcja.TwrCena.Substring(0, _akcja.TwrCena.IndexOf(".", 0));
+                var cenaGr = _akcja.TwrCena.Substring(_akcja.TwrCena.IndexOf(".", 0) + 1, 2);
 
-            await _cpclPrinter.printForm();
+                switch (cenaZl.Length)
+                {
+                    case 1:
+                        polozenie = 125;
+                        break;
+
+                    case 2:
+                        polozenie = 110;
+                        break;
+
+                    case 3:
+                        polozenie = 85;
+                        break;
+
+                    default:
+                        polozenie = 100;
+                        break;
+                }
+
+                int koniecLinii = (_akcja.TwrCena1.Length <= 5) ? 155 : 175;
+                 
+
+                string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
+                 
+                string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
+
+                await SettingsPage._cpclPrinter.setForm(0, 200, 200, 370, 350, 1);
+                await SettingsPage._cpclPrinter.setBarCodeText(7, 0, 0);
+                await SettingsPage._cpclPrinter.setMedia(cpclConst.LK_MEDIA_LABEL);
+
+                // Set the code page of font number(7) 
+                await SettingsPage._cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+
+                //await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 111, 0, "Szachownica", 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 5, _akcja.TwrKod, 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 30, twr_nazwa, 0);
+                await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 1,
+    cpclConst.LK_CPCL_BCS_0RATIO, 35, 70, 55, _akcja.TwrEan, 0);
+
+                // await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 125, _akcja.TwrCena1, 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 1, polozenie, 160, cenaZl, 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 158, 160, cenaGr, 0);
+                //190
+
+                await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, 105);
+                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
+                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);
+                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł"); 
+                await SettingsPage._cpclPrinter.resetConcat();
+
+                //wait SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 220, 150, "pln", 0);
+                //  await SettingsPage._cpclPrinter.printLine(40, 165, koniecLinii, 135, 10);
+                if(Convert.ToInt16(procent)<-20)
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 170, $"{procent}%", 0);
+
+                await SettingsPage._cpclPrinter.printForm();
+
+                //iResult = await SettingsPage._cpclPrinter.printResults();
+                //switch (Device.RuntimePlatform)
+                //{
+                //    case Device.iOS:
+                //        iResult = await SettingsPage._cpclPrinter.printStatus();
+                //        Debug.WriteLine("PrinterStatus = " + iResult);
+                //        break;
+                //    default:
+                //        Debug.WriteLine("PrinterResults = " + iResult);
+                //        break;
+                //}
+                //if (iResult != cpclConst.LK_SUCCESS)
+                //{
+                //    ErrorStatusDisp("Printing error", iResult);
+                //}
+                //else
+                //{
+                //    await DisplayAlert("Printing Result", "Printing success", "OK");
+                //}
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                await DisplayAlert("Exception", e.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+
 
 
         }
-     
+
+
+        async void ErrorStatusDisp(string strStatus, int errCode)
+        {
+            string errMsg = string.Empty;
+
+            if (errCode > 0)
+            {
+                if ((errCode & cpclConst.LK_STS_CPCL_BATTERY_LOW) > 0)
+                    errMsg += "Battery Low\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_COVER_OPEN) > 0)
+                    errMsg += "Cover Open\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_PAPER_EMPTY) > 0)
+                    errMsg += "Paper Empty\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_POWEROFF) > 0)
+                    errMsg += "Power OFF\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_TIMEOUT) > 0)
+                    errMsg += "Timeout\n";
+                 
+                    
+                await DisplayAlert(strStatus, errMsg, "OK");
+            }
+            else
+            {
+                errMsg += "Nie znaleziono drukarki\n";
+                await DisplayAlert(strStatus, "Return value = " + errMsg, "OK");
+            }
+        }
 
         private  async void Zapisz()
         {
@@ -366,20 +493,48 @@ cpclConst.LK_CPCL_BCS_0RATIO, 35, 75, 80, _akcja.TwrEan ,0);
 
 
         
-        private void Open_url_Clicked(object sender, EventArgs e)
+                  int iResult;
+        private async void Open_url_Clicked(object sender, EventArgs e)
         {
-            if (List_AkcjeView.TypAkcji.Contains("Przerzut"))
+            //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+            if (List_AkcjeView.TypAkcji.Contains("Przerzuty"))
             {
 
                 ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
                 Zapisz();
                 if (ile_zeskanowancyh > 0)
                     _akcja.TwrSkan = ile_zeskanowancyh;
-                Navigation.PopModalAsync();
+                await Navigation.PopModalAsync();
             }
             else
             {
-                Skanuj(); 
+                try
+                {
+
+                    //  if (Object.ReferenceEquals(null,   SettingsPage._cpclPrinter))
+                    if (View.SettingsPage.CzyDrukarkaOn)
+                    {
+                        iResult = await SettingsPage._cpclPrinter.printerCheck();
+
+                        if (iResult != cpclConst.LK_SUCCESS)
+                        {
+                            ErrorStatusDisp("Printer error", iResult);
+
+                            CanPrint = false;
+                            return;
+                        }
+                    }
+                    if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
+                        Skanuj();
+                    else if(List_AkcjeView.TypAkcji.Contains("Przecena")&& CanPrint == false)
+                        await DisplayAlert(null, "Do przeceny wymagana drukarka", "OK");
+                    else 
+                        Skanuj();
+                }
+                catch (Exception s){
+                    await DisplayAlert(null, s.Message, "OK");
+                }
+               // Navigation.PushModalAsync(new Drukowanie(_akcja));
             }
             //_akcja.TwrSkan = Convert.ToInt32(entry_kodean.Text);
             //Navigation.PopModalAsync();

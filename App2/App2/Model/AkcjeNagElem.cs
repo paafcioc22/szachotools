@@ -34,6 +34,7 @@ namespace App2.Model
         public string TwrUrl { get; set; }
         public string TwrSymbol { get; set; }
         public string TwrCena { get; set; }
+        public string TwrCena1 { get; set; }
         public string TwrEan { get; set; }
 
         public string AkN_ZakresDat
