@@ -14,13 +14,14 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeElemView : ContentPage
     {
-        public IEnumerable<Model.AkcjeNagElem> Items2 { get; set; }
+        public IList<Model.AkcjeNagElem> Items2 { get; set; }
         public ObservableCollection<Model.AkcjeNagElem> ListaZFiltrem { get; set; }
          
         public List_AkcjeElemView( int gidtyp)
         {
             InitializeComponent();
-
+             
+            BindingContext = this;
             GetAkcje( gidtyp);
 
         }
@@ -37,7 +38,7 @@ namespace App2.View
                 var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
                 ListaZFiltrem = AkcjeElemLista;
 
-                Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.First());
+                Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.First()).ToList();
                 MyListView2.ItemsSource = Items2;
             }
             catch (Exception x)
@@ -48,7 +49,7 @@ namespace App2.View
         }
 
         bool _istapped;
-         void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void  Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
@@ -63,7 +64,7 @@ namespace App2.View
 
                 var nowa =ListaZFiltrem.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
 
-                Navigation.PushModalAsync(new View.List_AkcjeTwrList(nowa));
+            await    Navigation.PushModalAsync(new View.List_AkcjeTwrList(nowa));
 
             _istapped = false;
 

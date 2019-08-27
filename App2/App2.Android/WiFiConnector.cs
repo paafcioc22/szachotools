@@ -19,6 +19,8 @@ namespace App2.Droid
 {
     class WiFiConnector : IWifiConnector
     {
+
+
         public void ConnectToWifi(string ssid, string password)
         {
             string networkSSID = ssid;
@@ -61,7 +63,10 @@ namespace App2.Droid
 
             string ssid = string.Format("\"{0}\"", ssid2);
             string ss1 = wifiManager.ConnectionInfo.SSID;
-            if (wifiManager.ConnectionInfo.SSID == ssid)
+
+            Task.Delay(1000);
+
+            if (wifiManager.ConnectionInfo.SSID == ssid&& wifiManager.IsWifiEnabled)
                 {
                     return true;
                 }

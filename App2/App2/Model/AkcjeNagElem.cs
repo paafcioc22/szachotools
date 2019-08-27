@@ -60,7 +60,7 @@ namespace App2.Model
         {
             get
             {
-                _skan= String.Format("{0}/{1}", TwrSkan, TwrStan);
+                _skan= String.Format("{0}/{1}", _iloscOK, TwrStan);
                 return _skan;
             }
             set

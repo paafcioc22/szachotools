@@ -69,7 +69,8 @@ namespace App2.View
                     //_version = bulidVer;
 
                     var AktualnaWersja = await App.TodoManager.GetBuildVer();
-                    if (bulidVer != AktualnaWersja)
+
+                    if (bulidVer < Convert.ToInt16(AktualnaWersja))
                     // await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
                     {
                         var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
@@ -252,6 +253,43 @@ namespace App2.View
 
         }
 
+
+        private async void ImageButton_Clicked(object sender, EventArgs e)
+        {
+
+            //WaitIco.IsRunning = true;
+            //WaitIco.IsVisible = true;
+
+
+
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            //await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM));
+            await Navigation.PushModalAsync(new View.SettingsPage());
+
+            _userTapped = false;
+
+            //WaitIco.IsRunning = false;
+            //WaitIco.IsVisible = false;
+
+
+            //var delay = await Task.Run(async delegate
+            //{
+            //    await Task.Delay(TimeSpan.FromSeconds(0));
+            //    Device.BeginInvokeOnMainThread(async () =>
+            //    {
+
+
+
+
+
+            //    });
+            //    return 0;
+            //});
+        }
 
         private bool _userTapped;
         private async void Btn_settings_Tapped(object sender, EventArgs e)

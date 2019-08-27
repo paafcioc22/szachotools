@@ -22,6 +22,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.EnterpriseServices.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Numerics.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Numerics.Vectors.dll
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Runtime.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Web.Services.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Xml.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Xml.Linq.dll
@@ -76,6 +77,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\zxing.portable.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\ZXingNetMobile.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\netstandard.dll
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Drawing.Common.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.IO.Compression.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.IO.Compression.FileSystem.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.ComponentModel.Composition.dll
@@ -84,7 +86,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.ServiceModel.Internals.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Transactions.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Data.SqlClient.dll
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Runtime.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Resources.ResourceManager.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.Threading.Tasks.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\assets\System.ObjectModel.dll

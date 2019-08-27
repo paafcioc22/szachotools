@@ -1,12 +1,11 @@
-﻿using SQLite;
+﻿using App2.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
- 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,14 +14,16 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeTwrList : ContentPage
     {
-        public IEnumerable<Model.AkcjeNagElem> TwrListWeb { get; set; }
+        public IList<Model.AkcjeNagElem> TwrListWeb { get; set; }
         public ObservableCollection<Model.AkcjeNagElem> TwrListLocal { get; set; }
         //public ObservableCollection<Model.AkcjeGrupy> GroupLista { get; set; }
-        public IEnumerable<Model.AkcjeNagElem> SumaList { get; set; }
+        public IList<Model.AkcjeNagElem> SumaList { get; set; }
         SqlConnection connection;
         private SQLiteAsyncConnection _connection;
 
-        public List_AkcjeTwrList( List<Model.AkcjeNagElem> nagElem)
+        private List<Model.AkcjeNagElem> _nagElem;
+
+        public List_AkcjeTwrList(List<Model.AkcjeNagElem> nagElem)
         {
             InitializeComponent();
             BindingContext = this;
@@ -37,8 +38,9 @@ namespace App2.View
             };
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             //_connection.DropTableAsync<Model.AkcjeNagElem>();
-            GetListFromLocal( nagElem);
-            GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
+            _nagElem = nagElem;
+            //GetListFromLocal( nagElem);
+            //GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
         }
 
 
@@ -63,9 +65,9 @@ namespace App2.View
                 await Navigation.PushModalAsync(new List_AkcjeAfterFiltr(nowa));
 
             }
-                _istapped = false;
-          
-             
+            _istapped = false;
+
+
             ((ListView)sender).SelectedItem = null;
         }
 
@@ -77,7 +79,7 @@ namespace App2.View
             SqlCommand command = new SqlCommand();
 
             connection.Open();
-            
+
             if (SettingsPage.SprConn())
             {
                 foreach (var _lista in lista)
@@ -105,7 +107,7 @@ namespace App2.View
                                 TwrGidNumer = Convert.ToInt32(rs["twr_gidnumer"]),
                                 TwrNazwa = Convert.ToString(rs["twr_nazwa"]),
                                 TwrGrupa = Convert.ToString(rs["grupa"]),
-                                TwrStan = Convert.ToInt32(rs["ilosc"]) 
+                                TwrStan = Convert.ToInt32(rs["ilosc"])
                             });
 
                             // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
@@ -113,12 +115,12 @@ namespace App2.View
 
                         rs.Close();
                         rs.Dispose();
-                        
+
 
                     }
                     catch (Exception exception)
                     {
-                        await  DisplayAlert("Uwaga", exception.Message, "OK");
+                        await DisplayAlert("Uwaga", exception.Message, "OK");
                     }
                 }
                 connection.Close();
@@ -130,92 +132,186 @@ namespace App2.View
 
         }
 
-        private async void GetTwrListFromWeb(int _gidNumer)
+        private ObservableCollection<Model.AkcjeNagElem> _fromWeb;
+        private async Task<ObservableCollection<Model.AkcjeNagElem>> GetTwrListFromWeb(int _gidNumer)
         {
-            try
+
+            return await Task.Run(async () =>
             {
-                string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
-set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
-where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
+                
+                    TwrListWeb = new ObservableCollection<Model.AkcjeNagElem>();
 
-set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,case when len(twr_kod) > 5 and len(twr_url)> 5 then
-                         replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
-                        substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + ''''Miniatury/'''') else twr_kod end as  TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
-when 2 then ''''Meski_''''  
-when 3 then ''''Dzieciak_''''
-when 4 then ''''Dzieciak_''''
-when 5 then ''''Akcesoria_'''' 
-when 6 then ''''Bielizna_''''end +Twg_kod as TwrDep, twg_kod TwrGrupa
-,cast(cd.twc_wartosc as decimal(5,2))TwrCena
-,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer=25  )AkN_GidNumer 
-from cdn.TwrKarty
- INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
-INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
-join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp = 2  
-left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
-where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
+                    string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
+                set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
+                where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
 
-                var twrdane = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
+                set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,case when len(twr_kod) > 5 and len(twr_url)> 5 then
+                                         replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
+                                        substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + ''''Miniatury/'''') else twr_kod end as  TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
+                when 2 then ''''Meski_''''  
+                when 3 then ''''Dzieciak_''''
+                when 4 then ''''Dzieciak_''''
+                when 5 then ''''Akcesoria_'''' 
+                when 6 then ''''Bielizna_''''
+                when 7 then ''''Buty_''''
+                end +Twg_kod as TwrDep, twg_kod TwrGrupa
+                ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
+                ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
+                from cdn.TwrKarty
+                 INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
+                INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
+                join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp = 2  
+                left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
+                where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
 
-                TwrListWeb = twrdane.GroupBy(dd => dd.TwrGrupa).Select(a => a.First()).ToList();
+                    _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
 
-                SumaList = (TwrListLocal.Concat(twrdane)).GroupBy(g => g.TwrGidNumer).SelectMany(c => c.Select(cs => new Model.AkcjeNagElem
-                {
-                    TwrGidNumer = cs.TwrGidNumer,
-                    TwrKod = cs.TwrKod,
-                    TwrStan = c.Sum(cc => cc.TwrStan),
-                    TwrNazwa = cs.TwrNazwa,
-                    TwrGrupa = cs.TwrGrupa,
-                    TwrDep = string.Concat("", cs.TwrDep),
-                    TwrUrl = string.Concat("", cs.TwrUrl),
-                    TwrSymbol = cs.TwrSymbol,
-                    TwrSkan = cs.TwrSkan,
-                    TwrCena = string.Concat("", cs.TwrCena),
-                    TwrCena1 = cs.TwrCena1,
-                    TwrEan = string.Concat("", cs.TwrEan),
-                    AkN_GidNumer = cs.AkN_GidNumer
-                })).GroupBy(p => new { p.TwrGidNumer, p.TwrStan }).Select(f => f.Last()).Where(x => x.TwrDep != "" && x.TwrStan > 0).ToList();
+                return _fromWeb;
+                    #region MyRegion
+                //var listFromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
+
+                // TwrListWeb = listFromWeb;//.GroupBy(dd => dd.TwrGrupa).Select(a => a.First()).ToList();
+
+                //await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+
+                //var listFromSkan = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
 
 
+                //var nowa2 = TwrListLocal.Concat(twrdane).GroupBy(g => g.TwrGidNumer).SelectMany(c => c.Select(cs => new Model.AkcjeNagElem
+                //{
+                //    TwrGidNumer = cs.TwrGidNumer,
+                //    TwrKod = cs.TwrKod,
+                //    TwrStan = cs.TwrStan,
+                //    TwrNazwa = cs.TwrNazwa,
+                //    TwrGrupa = cs.TwrGrupa,
+                //    TwrDep = string.Concat("", cs.TwrDep),
+                //    TwrUrl = string.Concat("", cs.TwrUrl),
+                //    TwrSymbol = cs.TwrSymbol,
+                //    TwrSkan = c.Sum(cc => cc.TwrSkan),
+                //    TwrCena = string.Concat("", cs.TwrCena),
+                //    TwrCena1 = cs.TwrCena1,
+                //    TwrEan = string.Concat("", cs.TwrEan),
+                //    AkN_GidNumer = cs.AkN_GidNumer
+
+                //})).GroupBy(p => new { p.TwrGidNumer, p.TwrSkan }).Select(f => f.Last()).Where(x => x.TwrDep != "" && x.TwrStan > 0).ToList();
+
+                //SumaList = (nowa2.Concat(SavedList)).GroupBy(g => g.TwrGidNumer).SelectMany(c => c.Select(cs => new Model.AkcjeNagElem
+                //{
+                //    TwrGidNumer = cs.TwrGidNumer,
+                //    TwrKod = cs.TwrKod,
+                //    TwrStan = c.Sum(cc => cc.TwrStan),
+                //    TwrNazwa = cs.TwrNazwa,
+                //    TwrGrupa = cs.TwrGrupa,
+                //    TwrDep = string.Concat("", cs.TwrDep),
+                //    TwrUrl = string.Concat("", cs.TwrUrl),
+                //    TwrSymbol = cs.TwrSymbol,
+                //    TwrSkan = cs.TwrSkan,
+                //    TwrCena = string.Concat("", cs.TwrCena),
+                //    TwrCena1 = cs.TwrCena1,
+                //    TwrEan = string.Concat("", cs.TwrEan),
+                //    AkN_GidNumer = cs.AkN_GidNumer
+                //})).GroupBy(p => new { p.TwrGidNumer, p.TwrStan }).Select(f => f.Last()).Where(x => x.TwrDep != "" && x.TwrStan > 0).ToList();
+
+                //SumaList = (
+                //  from lWeb in listFromWeb
+                //  join local in TwrListLocal on lWeb.TwrGidNumer equals local.TwrGidNumer
+                //  join skan in listFromSkan on
+                //            new { lWeb.TwrGidNumer, lWeb.AkN_GidNumer } equals new { skan.TwrGidNumer, skan.AkN_GidNumer } into a
+                //  from alles in a.DefaultIfEmpty(new AkcjeNagElem { TwrSkan = 0 })
+                //  select new AkcjeNagElem
+                //  {
+                //      AkN_GidNumer=lWeb.AkN_GidNumer,
+                //      TwrGidNumer=lWeb.TwrGidNumer,
+                //      TwrKod=lWeb.TwrKod,
+                //      TwrGrupa=lWeb.TwrGrupa,
+                //      TwrDep=lWeb.TwrDep,
+                //      TwrStan=local.TwrStan,
+                //      TwrSkan=alles.TwrSkan,
+                //      TwrCena=lWeb.TwrCena,
+                //      TwrCena1=lWeb.TwrCena1,
+                //      TwrEan=lWeb.TwrEan,
+                //      TwrNazwa=lWeb.TwrNazwa,
+                //      TwrSymbol=lWeb.TwrSymbol,
+                //      TwrUrl=lWeb.TwrUrl,
+                //  });
 
 
+                ////MyListView3.ItemsSource = SumaList.GroupBy(dd => dd.TwrGrupa).Select(a => a.First()).ToList();
+                ////MyListView3.ItemsSource = SumaList.GroupBy(dd => dd.TwrGrupa).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                ////{
+                ////    TwrGrupa = cs.TwrGrupa,
+                ////    TwrSkan = s.Sum(cc => cc.TwrSkan),
+                ////    TwrStan = s.Sum(cc => cc.TwrStan),
+                ////    TwrStanVsSKan = cs.TwrStanVsSKan,
+
+                ////    AkN_GidNumer = cs.AkN_GidNumer
+                ////})).GroupBy(p => new { p.TwrGrupa }).Select(f => f.First()).OrderByDescending(x => x.TwrStan).ToList(); 
+
+                //var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                //{
+                //    TwrGrupa = cs.TwrGrupa,
+                //    TwrSkan = s.Sum(cc => cc.TwrSkan),
+                //    TwrStan = s.Sum(cc => cc.TwrStan),
+                //    TwrStanVsSKan = cs.TwrStanVsSKan,
+                //    TwrDep = cs.TwrDep,
+                //    AkN_GidNumer = cs.AkN_GidNumer
+                //})).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan).ToList();
 
 
-                MyListView3.ItemsSource = SumaList.GroupBy(dd => dd.TwrGrupa).Select(a => a.First()).ToList();
-                var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
-                {
-                    TwrGrupa = cs.TwrGrupa,
-                    TwrSkan = s.Sum(cc => cc.TwrSkan),
-                    TwrStan = s.Sum(cc => cc.TwrStan),
-                    TwrStanVsSKan = cs.TwrStanVsSKan,
-                    TwrDep = cs.TwrDep,
-                    AkN_GidNumer = cs.AkN_GidNumer
-                })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan).ToList();
+                //var sorted = from towar in nowa
+                //             orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
+                //             group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
+                //             select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
 
 
-                var sorted = from towar in nowa
-                             orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
-                             group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
-                             select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
+                // MyListView3.ItemsSource = sorted;
+                // SumaList.GroupBy(dd => dd.TwrGrupa).Select(g => new { TwrGrupa = g.TwrGrupa });  
+                #endregion
 
 
-                MyListView3.ItemsSource = sorted;
-                // SumaList.GroupBy(dd => dd.TwrGrupa).Select(g => new { TwrGrupa = g.TwrGrupa }); 
-            }
-            catch (Exception x)
-            {
-
-                await DisplayAlert(null, x.Message, "OK");
-            }
+            });
         }
 
-       
+
 
         protected override async void OnAppearing()
         {
+
+
+
+            TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
+            GetListFromLocal(_nagElem);
+
             await _connection.CreateTableAsync<Model.AkcjeNagElem>();
 
             var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
+
+
+            SumaList = (
+                 from lWeb in TwrListWeb
+                 join local in TwrListLocal on lWeb.TwrGidNumer equals local.TwrGidNumer
+                 join skan in SavedList on
+                           new { lWeb.TwrGidNumer, lWeb.AkN_GidNumer } equals new { skan.TwrGidNumer, skan.AkN_GidNumer } into a
+                 from alles in a.DefaultIfEmpty(new AkcjeNagElem { TwrSkan = 0 })
+                 select new AkcjeNagElem
+                 {
+                     AkN_GidNumer = lWeb.AkN_GidNumer,
+                     TwrGidNumer = lWeb.TwrGidNumer,
+                     TwrKod = lWeb.TwrKod,
+                     TwrGrupa = lWeb.TwrGrupa,
+                     TwrDep = lWeb.TwrDep,
+                     TwrStan = local.TwrStan,
+                     TwrSkan = alles.TwrSkan,
+                     TwrCena = lWeb.TwrCena,
+                     TwrCena1 = lWeb.TwrCena1,
+                     TwrEan = lWeb.TwrEan,
+                     TwrNazwa = lWeb.TwrNazwa,
+                     TwrSymbol = lWeb.TwrSymbol,
+                     TwrUrl = lWeb.TwrUrl,
+                 }).ToList();
+
+
+
 
             var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
             {
@@ -226,42 +322,52 @@ where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D
                 TwrDep = cs.TwrDep
             })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
 
-            var sorted = from monkey in nowa
-                         orderby monkey.TwrDep.Replace(monkey.TwrGrupa, "")
-                         group monkey by monkey.TwrDep.Replace(monkey.TwrGrupa, "") into monkeyGroup
+
+
+            var sorted = from towar in nowa
+                         orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
+                         group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
                          select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
 
 
+
+
             MyListView3.ItemsSource = sorted;
+
+
             base.OnAppearing();
 
 
 
         }
 
-        
+
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-           // var sss = sender.GetType();
+            // var sss = sender.GetType();
             var stack = (StackLayout)sender;
             var label = (Label)stack.Children[0];
 
-             string dep = label.Text;
+            string dep = label.Text;
 
             if (_istapped)
                 return;
 
             _istapped = true;
 
-                var nowa = SumaList.Where(x => x.TwrDep.Replace(x.TwrGrupa, "") == dep).OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
+            var nowa = SumaList.Where(x => x.TwrDep.Replace(x.TwrGrupa, "") == dep).OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
 
-                await Navigation.PushModalAsync(new List_AkcjeAfterFiltr(nowa));
+            await Navigation.PushModalAsync(new List_AkcjeAfterFiltr(nowa));
 
             _istapped = false;
 
         }
 
-         
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+
+            await _connection.DropTableAsync<Model.AkcjeNagElem>();
+        }
     }
 }

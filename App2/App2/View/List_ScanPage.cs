@@ -1,14 +1,11 @@
-﻿using App2.Model;
+﻿using Acr.UserDialogs;
+using App2.Model;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Windows.Input;
+
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
  
@@ -24,6 +21,7 @@ namespace App2.View
         private Label lbl_cena;
         private Label lbl_cena1;
         private Entry entry_kodean;
+        private Entry entry_EanSkaner;
         private Image img_foto;
        
         private SQLiteAsyncConnection _connection;
@@ -39,7 +37,10 @@ namespace App2.View
 
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         private  ISewooXamarinCPCL cpclPrinter;
-        string drukarka; 
+        string drukarka;
+
+
+        
 
         public List_ScanPage(Model.AkcjeNagElem akcje) //edycja
         {
@@ -50,17 +51,48 @@ namespace App2.View
             // CrossSewooXamarinCPCL.Current.createCpclService(int iCodePage);
             _akcja = akcje;
 
-            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                deviceListe();
+                        
+                if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                    deviceListe();
+
             
-           cpclConst = new CPCLConst();
-           ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
+
+            cpclConst = new CPCLConst();
+            ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
+
+            if (SettingsPage.SelectedDeviceType == 1)
+            {
+                WidokAparat();
+            } else
+            {
+                WidokSkaner();
+            }
+
+
+        }
+
+        void WidokAparat()
+        {
+
+            //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+            //deviceListe();
+
+            var scrollView = new ScrollView();
+
+            cpclConst = new CPCLConst();
+            ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            NavigationPage.SetHasNavigationBar(this, false);
+
+            var layout = new AbsoluteLayout();
 
             StackLayout stackLayout = new StackLayout();
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stack_naglowek = new StackLayout();
+
+
 
             Label lbl_naglowek = new Label();
             lbl_naglowek.HorizontalOptions = LayoutOptions.CenterAndExpand;
@@ -80,69 +112,79 @@ namespace App2.View
 
 
             img_foto = new Image();
-            img_foto.Source = akcje.TwrUrl.Replace("Miniatury/", "");
+            img_foto.Source = _akcja.TwrUrl.Replace("Miniatury/", "");
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Device.OpenUri(new Uri(akcje.TwrUrl.Replace("Miniatury/", "")));
+                Device.OpenUri(new Uri(_akcja.TwrUrl.Replace("Miniatury/", "")));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
+
+            //AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(.1,.1,1,1));
+            //AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
+
+            //layout.Children.Add(img_foto);
             stackLayout.Children.Add(img_foto);
             //_gidnumer = mmka.gi;
 
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
-            lbl_stan.Text = "Stan : " + akcje.TwrStan + " szt";
+            lbl_stan.Text = "Stan : " + _akcja.TwrStan + " szt";
             lbl_stan.FontAttributes = FontAttributes.Bold;
 
             stackLayout.Children.Add(lbl_stan);
 
             lbl_twrkod = new Label();
             lbl_twrkod.HorizontalOptions = LayoutOptions.Center;
-            lbl_twrkod.Text = "Kod towaru : " + akcje.TwrKod;
+            lbl_twrkod.Text = "Kod towaru : " + _akcja.TwrKod;
 
             lbl_ean = new Label();
             lbl_ean.HorizontalOptions = LayoutOptions.Center;
-            lbl_ean.Text = akcje.TwrEan;
+            lbl_ean.Text = _akcja.TwrEan;
 
             entry_kodean = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
-                Text = akcje.TwrSkan == 0 ? "" : akcje.TwrSkan.ToString(),
+                Text = _akcja.TwrSkan == 0 ? "" : _akcja.TwrSkan.ToString(),
                 WidthRequest = 60,
-                
-                FontAttributes=FontAttributes.Bold,
-                TextColor =Color.Black
+
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.Black
             };
 
             lbl_symbol = new Label();
             lbl_symbol.HorizontalOptions = LayoutOptions.Center;
-            lbl_symbol.Text = "Symbol : " + akcje.TwrSymbol;
+            lbl_symbol.Text = "Symbol : " + _akcja.TwrSymbol;
 
             lbl_nazwa = new Label();
             lbl_nazwa.HorizontalOptions = LayoutOptions.Center;
-            lbl_nazwa.Text = "Nazwa : " + akcje.TwrNazwa;
+            lbl_nazwa.Text = "Nazwa : " + _akcja.TwrNazwa;
 
             lbl_cena = new Label();
             lbl_cena.HorizontalOptions = LayoutOptions.Center;
-            lbl_cena.Text = "Cena : " + akcje.TwrCena + " Zł";
+            lbl_cena.Text = "Cena : " + _akcja.TwrCena + " Zł";
 
             lbl_cena1 = new Label();
             lbl_cena1.HorizontalOptions = LayoutOptions.Center;
-            lbl_cena1.Text = "Cena pierwsza : " + akcje.TwrCena1 + " Zł";
+            lbl_cena1.Text = "Cena pierwsza : " + _akcja.TwrCena1 + " Zł";
 
             Button open_url = new Button();
-            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut")?"Zapisz": "Zacznij skanowanie";
+            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
             open_url.CornerRadius = 15;
+            open_url.Clicked += Open_url_Clicked;
+            open_url.VerticalOptions = LayoutOptions.EndAndExpand;
+
+
+
+            Button enterEan = new Button();
+            enterEan.Text = "Wydrukuj ręcznie";
+            enterEan.CornerRadius = 15;
+            enterEan.Clicked += EnterEan_Clicked; ;
+            enterEan.VerticalOptions = LayoutOptions.EndAndExpand;
 
             
-            open_url.Clicked += Open_url_Clicked;
-
-           
-            open_url.VerticalOptions = LayoutOptions.EndAndExpand; 
-
 
             stackLayout.Children.Add(lbl_twrkod);
             stackLayout.Children.Add(lbl_nazwa);
@@ -151,80 +193,331 @@ namespace App2.View
             stackLayout.Children.Add(lbl_symbol);
             stackLayout.Children.Add(lbl_cena);
             stackLayout.Children.Add(lbl_cena1);
-             
+
 
             stackLayout.VerticalOptions = LayoutOptions.Center;
             stackLayout.Padding = new Thickness(15, 0, 15, 0);
             stackLayout.Padding = 8;
+            //stackLayout_gl.Children.Add(layout);   //dodane
             stackLayout_gl.Children.Add(stackLayout);
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                stackLayout_gl.Children.Add(enterEan);
             stackLayout_gl.Children.Add(open_url);
             stackLayout_gl.Padding = new Thickness(15);
 
-            Content = stackLayout_gl; 
+            scrollView.Content = stackLayout_gl;
+
+            Content = scrollView;
+            
         }
 
-
-        private async void Skanuj()
+        void WidokSkaner()
         {
-            overlay = new ZXingDefaultOverlay
+
+            var scrollView = new ScrollView();
+
+            cpclConst = new CPCLConst();
+            ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            NavigationPage.SetHasNavigationBar(this, false);
+
+            var layout = new AbsoluteLayout();
+
+            StackLayout stackLayout = new StackLayout();
+            StackLayout stackLayout_gl = new StackLayout();
+            StackLayout stack_naglowek = new StackLayout();
+
+
+
+            Label lbl_naglowek = new Label();
+            lbl_naglowek.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            lbl_naglowek.VerticalOptions = LayoutOptions.Start;
+            lbl_naglowek.Text = "Szczegóły pozycji";
+            lbl_naglowek.FontSize = 20;
+            lbl_naglowek.TextColor = Color.Bisque;
+            lbl_naglowek.BackgroundColor = Color.DarkCyan;
+
+            stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
+            stack_naglowek.VerticalOptions = LayoutOptions.Start;
+            stack_naglowek.BackgroundColor = Color.DarkCyan;
+            stack_naglowek.Children.Add(lbl_naglowek);
+
+            stackLayout_gl.Children.Add(stack_naglowek);
+
+
+
+            img_foto = new Image();
+            img_foto.Source = _akcja.TwrUrl.Replace("Miniatury/", "");
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += (s, e) =>
             {
-                TopText = $"Skanowany : {_akcja.TwrKod}",
-                BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}",
-                AutomationId = "zxingDefaultOverlay",
+                Device.OpenUri(new Uri(_akcja.TwrUrl.Replace("Miniatury/", "")));
+            };
+            img_foto.GestureRecognizers.Add(tapGestureRecognizer);
+
+            //AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(.1,.1,1,1));
+            //AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
+
+            //layout.Children.Add(img_foto);
+            stackLayout.Children.Add(img_foto);
+            //_gidnumer = mmka.gi;
 
 
+            lbl_stan = new Label();
+            lbl_stan.HorizontalOptions = LayoutOptions.Center;
+            lbl_stan.Text = "Stan : " + _akcja.TwrStan + " szt";
+            lbl_stan.FontAttributes = FontAttributes.Bold;
+
+            stackLayout.Children.Add(lbl_stan);
+
+            lbl_twrkod = new Label();
+            lbl_twrkod.HorizontalOptions = LayoutOptions.Center;
+            lbl_twrkod.Text = "Kod towaru : " + _akcja.TwrKod;
+
+            lbl_ean = new Label();
+            lbl_ean.HorizontalOptions = LayoutOptions.Center;
+            lbl_ean.Text = _akcja.TwrEan;
+
+            entry_kodean = new Entry()
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                Keyboard = Keyboard.Numeric,
+                Text = _akcja.TwrSkan == 0 ? "" : _akcja.TwrSkan.ToString(),
+                WidthRequest = 60,
+
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.Black
             };
 
-            var torch = new Xamarin.Forms.Switch
+            lbl_symbol = new Label();
+            lbl_symbol.HorizontalOptions = LayoutOptions.Center;
+            lbl_symbol.Text = "Symbol : " + _akcja.TwrSymbol;
+
+            lbl_nazwa = new Label();
+            lbl_nazwa.HorizontalOptions = LayoutOptions.Center;
+            lbl_nazwa.Text = "Nazwa : " + _akcja.TwrNazwa;
+
+            lbl_cena = new Label();
+            lbl_cena.HorizontalOptions = LayoutOptions.Center;
+            lbl_cena.Text = "Cena : " + _akcja.TwrCena + " Zł";
+
+            lbl_cena1 = new Label();
+            lbl_cena1.HorizontalOptions = LayoutOptions.Center;
+            lbl_cena1.Text = "Cena pierwsza : " + _akcja.TwrCena1 + " Zł";
+
+            Button open_url = new Button();
+            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
+            open_url.CornerRadius = 15;
+            open_url.Clicked += Open_url_Clicked;
+            open_url.VerticalOptions = LayoutOptions.EndAndExpand;
+
+
+
+            Button enterEanButton = new Button();
+            enterEanButton.Text = "Wydrukuj ręcznie";
+            enterEanButton.CornerRadius = 15;
+            enterEanButton.Clicked += EnterEan_Clicked; ;
+            enterEanButton.VerticalOptions = LayoutOptions.EndAndExpand;
+
+            entry_EanSkaner = new Entry()
             {
+                HorizontalOptions = LayoutOptions.Center,
+                Keyboard = Keyboard.Numeric,
+                ReturnCommand = new Command(() => zapiszdrukuj()),
+                WidthRequest = 180,
+                Placeholder = "Wpisz/zeskanuj Ean" ,
+                TextColor = Color.Black 
             };
+             
+            stackLayout.Children.Add(lbl_twrkod);
+            stackLayout.Children.Add(lbl_nazwa);
+            stackLayout.Children.Add(lbl_ean);
+            stackLayout.Children.Add(entry_kodean);
+            stackLayout.Children.Add(entry_EanSkaner); 
+            stackLayout.Children.Add(lbl_symbol);
+            stackLayout.Children.Add(lbl_cena);
+            stackLayout.Children.Add(lbl_cena1);
 
-            torch.Toggled += delegate
+
+            stackLayout.VerticalOptions = LayoutOptions.Center;
+            stackLayout.Padding = new Thickness(15, 0, 15, 0);
+            stackLayout.Padding = 8;
+            //stackLayout_gl.Children.Add(layout);   //dodane
+            stackLayout_gl.Children.Add(stackLayout);
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                stackLayout_gl.Children.Add(enterEanButton);
+            stackLayout_gl.Children.Add(open_url);
+            stackLayout_gl.Padding = new Thickness(15);
+
+            scrollView.Content = stackLayout_gl;
+
+            Content = scrollView;
+            Appearing += (object sender, System.EventArgs e) => entry_EanSkaner.Focus();
+        }
+
+        void zapiszdrukuj()
+        {
+            if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
-                scanPage.ToggleTorch();
-            };
+                ile_zeskanowancyh += 1;
+                if (CanPrint)
+                    PrintCommand();
+                //DisplayAlert(null, "Drukuje..", "OK");
+                Zapisz();
+                entry_kodean.Text = ile_zeskanowancyh.ToString();
+                entry_EanSkaner.Text = "";
+                entry_EanSkaner.Focus();
+            }
+            else {
+                DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
+                entry_EanSkaner.Text = "";
+            }
+        }
+        
 
+        private async void EnterEan_Clicked(object sender, EventArgs e)
+        {
+            PromptResult prr = await UserDialogs.Instance.PromptAsync
+                      (
+                          new PromptConfig
+                          {
+                              InputType = InputType.Number,
+                              Placeholder = "Wprowadź Ean:  ",
+                              OkText = "Drukuj",
+                              CancelText = "Anuluj",
+                              Title ="Druk bez zliczania sztuk",
+                              Message="( awaryjny )"
+                        }
+                      );
+             
+            if (prr.Text != "")
+            {
+                if (_akcja.TwrEan == (prr.Text))
+                {
+                    string ile = prr.Text.Substring(prr.Text.IndexOf(",", 0) + 1, 1);
+                    
+                    if (CanPrint)
+                        PrintCommand();
+                }
+                else {
+                   await  DisplayAlert("Uwaga", "Podany Ean nie pasuje", "OK");
+                }
+            }
 
+        }
 
-            try
+        private async void Skanuj(sbyte typDevice)//DRUKARKA
+        {
+            if (typDevice == 1)
             {
 
+                overlay = new ZXingDefaultOverlay
+                {
+                    TopText = $"Skanowany : {_akcja.TwrKod}",
+                    BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}",
+                    AutomationId = "zxingDefaultOverlay",
 
 
-                overlay.Children.Add(torch);
-                
+                };
+
+                var torch = new Xamarin.Forms.Switch
+                {
+                };
+
+                torch.Toggled += delegate
+                {
+                    scanPage.ToggleTorch();
+                };
+
+
+
+                try
+                {
+
+                    overlay.Children.Add(torch);
+
                     scanPage = new ZXingScannerPage(
                         new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay);
                     scanPage.DefaultOverlayShowFlashButton = true;
                     scanPage.OnScanResult += (result) =>
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        skanean = result.Text;
-
-                        if (skanean == lbl_ean.Text)
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            ile_zeskanowancyh += 1;
-                            overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}";
-                            DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
-                            if(CanPrint)
-                            PrintCommand();
+                            skanean = result.Text;
 
-                            Zapisz();
-                            entry_kodean.Text = ile_zeskanowancyh.ToString();
+                            if (skanean == lbl_ean.Text)
+                            {
+                                ile_zeskanowancyh += 1;
+                                overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
+                                    //DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
+                                    if (CanPrint)
+                                    PrintCommand();
 
-                        }
-                        else
-                        {
+                                Zapisz();
+                                entry_kodean.Text = ile_zeskanowancyh.ToString();
 
-                            DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
-                        }
-                    });
-                    await Navigation.PushModalAsync(scanPage);
-                 
+                            }
+                            else
+                            {
+
+                                DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
+                            }
+                        });
+                        await Navigation.PushModalAsync(scanPage);
+
+                }
+                catch (Exception x)
+                {
+                    System.Diagnostics.Debug.WriteLine(x.Message);
+                }
             }
-            catch (Exception x)
+            else
             {
-                System.Diagnostics.Debug.WriteLine(x.Message);
+
+
+                //var layout = new AbsoluteLayout();
+
+                //var enterEAn = new Entry
+                //{
+
+                //};
+                //AbsoluteLayout.SetLayoutBounds(enterEAn, new Rectangle(0.5, .5, .5, .2));
+                //AbsoluteLayout.SetLayoutFlags(enterEAn, AbsoluteLayoutFlags.All);
+
+                //var label = new Label
+                //{
+                //    Text = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}"
+                //};
+                //AbsoluteLayout.SetLayoutBounds(enterEAn, new Rectangle(0.6, .5, .5, .2));
+                //AbsoluteLayout.SetLayoutFlags(enterEAn, AbsoluteLayoutFlags.All);
+
+                //layout.Children.Add(enterEAn);
+                //layout.Children.Add(label);
+
+                //new ContentPage
+                //{
+                //    Content = new AbsoluteLayout
+                //    {
+                //           Children = { layout }
+                //    },
+                //};
+
+
+
+                //var page = new SkanerPage(_akcja);
+                //page.ListViewSklepy.ItemSelected += (source, args) =>
+                //{
+                //    var sklep = args.SelectedItem as Model.ListaSklepow;
+
+                //    _magDcl.Text = sklep.mag_kod;
+                //    Navigation.PopModalAsync();
+                //};
+
+                //Navigation.PushModalAsync(page);
+
+
+
+
+
             }
         }
 
@@ -307,15 +600,16 @@ namespace App2.View
 
 
         int polozenie;
-        public async void PrintCommand ()
+        public async void PrintCommand (string ile =null)
         {
 
-            
+            int drukSzt;
             //_cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2); 
 
-            
-             
-             
+            if (ile != null)
+                drukSzt = Convert.ToInt16(ile);
+            else
+                drukSzt = 1;
 
 
             await printSemaphore.WaitAsync();
@@ -370,7 +664,7 @@ namespace App2.View
                  
                 string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
 
-                await SettingsPage._cpclPrinter.setForm(0, 200, 200, 370, 350, 1);
+                await SettingsPage._cpclPrinter.setForm(0, 200, 200, 370, 350, drukSzt);
                 await SettingsPage._cpclPrinter.setBarCodeText(7, 0, 0);
                 await SettingsPage._cpclPrinter.setMedia(cpclConst.LK_MEDIA_LABEL);
 
@@ -378,28 +672,30 @@ namespace App2.View
                 await SettingsPage._cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
                 //await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 111, 0, "Szachownica", 0);
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 5, _akcja.TwrKod, 0);
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 30, twr_nazwa, 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.TwrKod, 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, twr_nazwa, 0);
                 await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 1,
-    cpclConst.LK_CPCL_BCS_0RATIO, 35, 70, 55, _akcja.TwrEan, 0);
+    cpclConst.LK_CPCL_BCS_0RATIO, 40, 80, 55, _akcja.TwrEan, 0);
 
-                // await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 125, _akcja.TwrCena1, 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.TwrCena1, 0);
+                await SettingsPage._cpclPrinter.printLine(40, 160, koniecLinii, 125, 10);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 1, polozenie, 160, cenaZl, 0);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 158, 160, cenaGr, 0);
                 //190
 
-                await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, 105);
+                await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, 160);
                     await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
-                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);
+                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr);
                     await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł"); 
                 await SettingsPage._cpclPrinter.resetConcat();
 
                 //wait SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 220, 150, "pln", 0);
-                //  await SettingsPage._cpclPrinter.printLine(40, 165, koniecLinii, 135, 10);
                 if(Convert.ToInt16(procent)<-20)
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 170, $"{procent}%", 0);
-
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);
+                
                 await SettingsPage._cpclPrinter.printForm();
+               
+               
 
                 //iResult = await SettingsPage._cpclPrinter.printResults();
                 //switch (Device.RuntimePlatform)
@@ -475,19 +771,21 @@ namespace App2.View
             akcjeNagElem.TwrEan = _akcja.TwrEan;
             akcjeNagElem.TwrSymbol = _akcja.TwrSymbol;
             akcjeNagElem.TwrUrl = _akcja.TwrUrl;
-
+            akcjeNagElem.TwrGidNumer = _akcja.TwrGidNumer;
             var wynik = await _connection.QueryAsync<Model.AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", akcjeNagElem.AkN_GidNumer, akcjeNagElem.TwrKod);
 
             if (wynik.Count > 0)
             {
                 var wpis = wynik[0];
                 wpis.TwrSkan = ile_zeskanowancyh;
+               // wpis.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
                 await _connection.UpdateAsync(wpis);
             }
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
-                await _connection.InsertAsync(akcjeNagElem);
+               // akcjeNagElem.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
+                 await _connection.InsertAsync(akcjeNagElem);
             }
         }
 
@@ -525,11 +823,11 @@ namespace App2.View
                         }
                     }
                     if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
-                        Skanuj();
+                        Skanuj(SettingsPage.SelectedDeviceType);
                     else if(List_AkcjeView.TypAkcji.Contains("Przecena")&& CanPrint == false)
                         await DisplayAlert(null, "Do przeceny wymagana drukarka", "OK");
                     else 
-                        Skanuj();
+                        Skanuj(SettingsPage.SelectedDeviceType);
                 }
                 catch (Exception s){
                     await DisplayAlert(null, s.Message, "OK");

@@ -10,10 +10,10 @@
     <StackLayout Padding="10">
         <StackLayout  Orientation="Horizontal" BackgroundColor="DarkCyan" >
             <Label Text="Kod" TextColor="Beige" HorizontalOptions="StartAndExpand" FontSize="15" Margin="20,0,0,0"/>
-            <Label Text="Skanowane/Stan" TextColor="Beige" HorizontalOptions="End" FontSize="15" Margin="0,0,60,0"/>
+            <Label Text="Skanowane/Stan" TextColor="Beige" HorizontalOptions="End" FontSize="15" Margin="0,0,80,0"/>
         </StackLayout>
-         
-    
+
+
         <ListView x:Name="MyListView" HasUnevenRows="True"
                 ItemsSource="{Binding Items}"
                   BindingContext="{Binding Items}"
@@ -28,56 +28,93 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <FlexLayout    Padding="5"  > 
+                        <AbsoluteLayout     >
 
-                            <StackLayout FlexLayout.Grow="1" 
-                                         FlexLayout.Basis="55%" 
+                            <!--<StackLayout FlexLayout.Grow="0" 
+                                         FlexLayout.Basis="50%" 
                                          Orientation="Vertical" 
                                          Spacing="5" Padding="5" 
-                                         VerticalOptions="FillAndExpand"    >
-                                <Label Text="{Binding TwrKod }" TextColor="Black" FlexLayout.Shrink="0"/>
-                                <Label Text="{Binding TwrNazwa }" TextColor="Black" Margin="5,0,0,0"
-                                           FontSize="12" 
-                                           VerticalOptions="Center" 
-                                           HorizontalOptions="StartAndExpand"/>
-                                <Label Text="{Binding TwrSymbol}" FontSize="12" 
-                                           VerticalOptions="Center" TextColor="Black"
-                                           HorizontalOptions="CenterAndExpand"/>
-                            </StackLayout>
+                                         VerticalOptions="FillAndExpand"    
+                                         >-->
+                            <Label Text="{Binding TwrKod }" TextColor="Black"
+                                       AbsoluteLayout.LayoutBounds="0.02,0.01,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <Label Text="{Binding TwrNazwa }" 
+                                       TextColor="Black"  
+                                       FontSize="12"  
+                                       AbsoluteLayout.LayoutBounds="0.1,0.65,.5,.6"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                            />
+                            <Label Text="{Binding TwrSymbol}" FontSize="12" 
+                                       TextColor="Black" 
+                                       AbsoluteLayout.LayoutBounds="0.05,1,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <!--</StackLayout>-->
 
- 
-                            <StackLayout FlexLayout.AlignSelf="Center" 
-                                         FlexLayout.Grow="1" 
-                                         FlexLayout.Basis="25%" 
+
+                            <!--<StackLayout Padding="0"
+                                FlexLayout.AlignSelf="Center" 
+                                         FlexLayout.Grow="0" 
+                                         FlexLayout.Basis="30%" 
                                          Orientation="Vertical" 
                                          VerticalOptions="Center"   
-                                         Spacing="5" >
-                                <StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="Center"  >
-                                    <Label Text="{Binding TwrSkan }" FontSize="20" 
-                                               VerticalOptions="Center" TextColor="Black"
-                                               HorizontalOptions="Center"/>
-                                    <Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" 
-                                               VerticalOptions="Center" TextColor="Black"
-                                               HorizontalOptions="Center"/>
-                                </StackLayout>
-                                <Label Text="{Binding TwrCena, StringFormat='{0}zł'}" TextColor="Black" FontSize="16" VerticalOptions="End" HorizontalOptions="Center"/>
-                            </StackLayout>
+                                         Spacing="0" >-->
+                            <!--<StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="StartAndExpand" Padding="0"
+                                       AbsoluteLayout.LayoutBounds="0.7,0.1,.25,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                      >-->
+                            <Label Text="{Binding TwrSkan }" FontSize="20" 
+                                       TextColor="Black"  
+                                       HorizontalTextAlignment="End" 
+                                       VerticalTextAlignment="Start"
+                                       AbsoluteLayout.LayoutBounds="0.59,0.1,.10,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                />
+                                <Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" FontFamily="Arial"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Start" 
+                                       VerticalTextAlignment="Start" 
+                                       AbsoluteLayout.LayoutBounds="0.75,0.1,.15,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                 />
+
+                            <!--</StackLayout>-->
+                            <Label Text="{Binding TwrCena, StringFormat='{0}zł'}" TextColor="Black" FontSize="16" 
+                                       AbsoluteLayout.LayoutBounds="0.7,0.8,.25,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Center" 
+                                       VerticalTextAlignment="End"
+                                       />
+                            <!--</StackLayout>-->
 
 
-                            <StackLayout FlexLayout.Grow="1" 
+                            <!--<StackLayout FlexLayout.Grow="0" 
                                          FlexLayout.Basis="20%"    
-                                         VerticalOptions="CenterAndExpand">
-                                <Image FlexLayout.Grow="1" Source="{Binding TwrUrl}" 
-                                       VerticalOptions="CenterAndExpand" 
-                                       HorizontalOptions="EndAndExpand" 
-                                       FlexLayout.AlignSelf="Stretch"/>
-                            </StackLayout> 
+                                         VerticalOptions="CenterAndExpand">-->
+                            <Image  Source="{Binding TwrUrl}" 
+                                       AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       
+                                        />
+                            <!--</StackLayout>-->
 
-                        </FlexLayout>
+                        </AbsoluteLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
 
-        </ListView> 
+        </ListView>
+        <Frame  HasShadow="true" 
+                                Margin="5" 
+                                BorderColor="DarkCyan"   
+                                CornerRadius="10" 
+                                OutlineColor="DarkCyan" Padding="3" >
+            <SearchBar Placeholder="Szukaj model..(część kodu) " TextChanged="SearchBar_TextChanged" HeightRequest="40" /> 
+        </Frame>
     </StackLayout>
 </ContentPage>

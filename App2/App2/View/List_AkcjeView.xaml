@@ -5,17 +5,17 @@
 
 
 
-    <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20">
+    <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="10">
         <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="DarkCyan" >
             <Label Text="Lista aktualnych zadań" 
                    HorizontalOptions="Center"  
                    TextColor="Beige" 
-                   VerticalOptions="Center"/>
+                   VerticalOptions="Center" FontSize="Medium"/>
         </StackLayout>
         <ListView x:Name="MyListView" HasUnevenRows="True"
                 ItemsSource="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"
-                CachingStrategy="RecycleElement">
+                CachingStrategy="RecycleElement" SeparatorVisibility="None">
 
             <!--Built in Cells-->
             <ListView.ItemTemplate>

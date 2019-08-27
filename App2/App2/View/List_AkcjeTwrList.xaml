@@ -14,7 +14,7 @@
                   
                 IsGroupingEnabled="True" 
                 GroupDisplayBinding="{Binding Key}"
-                CachingStrategy="RecycleElement">
+                CachingStrategy="RecycleElement" SeparatorVisibility="None">
 
             <!--Built in Cells-->
             <ListView.GroupHeaderTemplate>
@@ -67,5 +67,6 @@
             </ListView.ItemTemplate>
 
         </ListView>
+        <!--<Button Text=" usun tabele" Clicked="Button_Clicked"/>-->
     </StackLayout>
 </ContentPage>

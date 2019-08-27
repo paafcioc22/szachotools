@@ -2007,6 +2007,7 @@ namespace App2.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense = global::App2.Droid.Resource.Style.Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_MaterialComponents_Toolbar = global::App2.Droid.Resource.Style.Widget_MaterialComponents_Toolbar;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_Support_CoordinatorLayout = global::App2.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
+			global::Xamarin.Forms.Platform.Android.Resource.Style.collectionViewStyle = global::App2.Droid.Resource.Style.collectionViewStyle;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar = global::App2.Droid.Resource.Styleable.ActionBar;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar_background = global::App2.Droid.Resource.Styleable.ActionBar_background;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar_backgroundSplit = global::App2.Droid.Resource.Styleable.ActionBar_backgroundSplit;
@@ -6676,6 +6677,9 @@ namespace App2.Droid
 			// aapt resource value: 0x7F0C0008
 			public const int chronometer = 2131492872;
 			
+			// aapt resource value: 0x7F020227
+			public const int collectionViewStyle = 2130838055;
+			
 			// aapt resource value: 0x7F0C001E
 			public const int container = 2131492894;
 			
@@ -6811,14 +6815,14 @@ namespace App2.Droid
 			// aapt resource value: 0x7F020221
 			public const int main.appbar = 2130838049;
 			
-			// aapt resource value: 0x7F020224
-			public const int main.scrollview = 2130838052;
-			
 			// aapt resource value: 0x7F020223
 			public const int main.tablayout = 2130838051;
 			
 			// aapt resource value: 0x7F020222
 			public const int main.toolbar = 2130838050;
+			
+			// aapt resource value: 0x7F020224
+			public const int main.viewpager = 2130838052;
 			
 			// aapt resource value: 0x7F0C0043
 			public const int masked = 2131492931;
@@ -7092,9 +7096,6 @@ namespace App2.Droid
 			
 			// aapt resource value: 0x7F020225
 			public const int shellcontent.appbar = 2130838053;
-			
-			// aapt resource value: 0x7F020227
-			public const int shellcontent.scrollview = 2130838055;
 			
 			// aapt resource value: 0x7F020226
 			public const int shellcontent.toolbar = 2130838054;
@@ -8508,6 +8509,9 @@ namespace App2.Droid
 			
 			// aapt resource value: 0x7F1600C5
 			public const int CardView_Light = 2132148421;
+			
+			// aapt resource value: 0x7F060516
+			public const int collectionViewStyle = 2131100950;
 			
 			// aapt resource value: 0x7F060002
 			public const int MainTheme = 2131099650;

@@ -13,8 +13,8 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeView : ContentPage
     {
-        public ObservableCollection<Model.AkcjeNagElem> Items { get; set; }
-        public ObservableCollection<Model.Test> Items_test { get; set; }
+        public IList<Model.AkcjeNagElem> Items { get; set; }
+ 
         public static string TypAkcji;
 
         public List_AkcjeView()
@@ -72,11 +72,6 @@ namespace App2.View
             ((ListView)sender).SelectedItem = null;
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-           
-            var nowa = Items_test.Where(n => n.twrkod == "twr2").Select(n => { n.ilosc+=1; return n; }).ToList();
-            MyListView.ItemsSource = nowa;
-        }
+        
     }
 }

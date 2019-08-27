@@ -13,15 +13,16 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeAfterFiltr : ContentPage
     {
-        public ObservableCollection<Model.AkcjeNagElem> Items { get; set; }
+        public ObservableCollection<Model.AkcjeNagElem> Items;
+        IList<Model.AkcjeNagElem> _listatwr;
 
-        public List_AkcjeAfterFiltr(IEnumerable<Model.AkcjeNagElem> nowa)
+        public List_AkcjeAfterFiltr(IList<Model.AkcjeNagElem> nowa)
         {
             Items = new ObservableCollection<Model.AkcjeNagElem>();
           
             InitializeComponent();
             BindingContext = this;
-
+            _listatwr = nowa;
             Items = Convert(nowa);
 
             MyListView.ItemsSource = Items;
@@ -31,10 +32,12 @@ namespace App2.View
         {
             base.OnAppearing();
             BindingContext = this;
-
-            MyListView.ItemsSource = Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList(); ;
+             
+            var tmp= Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
+            MyListView.ItemsSource = Convert(tmp);
         }
-        public ObservableCollection<T> Convert<T>(IEnumerable<T> original)
+
+        public ObservableCollection<T> Convert<T>(IList<T> original)
         {
             return new ObservableCollection<T>(original);
         }
@@ -58,6 +61,21 @@ namespace App2.View
             _istapped = false;
 
             ((ListView)sender).SelectedItem = null;
+        }
+
+
+        public   IEnumerable<Model.AkcjeNagElem> SzukajTowar(string searchText = null)
+        {
+
+            if (String.IsNullOrWhiteSpace(searchText))
+                return _listatwr;
+            return _listatwr.Where(c => c.TwrKod.Contains(searchText.ToUpper()));
+        
+        }
+
+        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MyListView.ItemsSource = SzukajTowar(e.NewTextValue);
         }
     }
 }

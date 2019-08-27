@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
+
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -22,6 +22,7 @@ namespace App2.View
     {
        
         public static bool IsBuforOff;
+        public static SByte SelectedDeviceType;
         public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         CPCLConst cpclConst;
@@ -35,7 +36,7 @@ namespace App2.View
 
             _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
             GetDevices();
-            
+            SelectDeviceMetod();
 
             cpclConst = new CPCLConst();
             var  app = Application.Current as App;
@@ -52,15 +53,42 @@ namespace App2.View
                     pickerlist.SelectedIndex = app.Cennik;
                 }
 
-                
-                     
             }
+  
 
-             
-        
             sprwersja();
             SwitchStatus.IsToggled = IsBuforOff;
         }
+
+        private void SelectDeviceMetod()
+        {
+             
+             
+            var lista = new List<MetodaSkanowania>()
+            {
+                new MetodaSkanowania{Id=1,TypeDevice="Skaner"},
+                new MetodaSkanowania{Id=2,TypeDevice="Aparat"}
+            };
+
+            foreach (var ss in lista)
+            {
+                SelectDevice.Items.Add(ss.TypeDevice);
+            }
+
+            try
+            {
+                //PrinterList.ItemsSource = listaDrukarek;
+
+                SelectDevice.SelectedIndex = SelectedDeviceType;
+            }
+            catch
+            {
+                SelectDevice.SelectedIndex = -1;
+            }
+
+        }
+
+      
 
         private async void sprwersja()
         {
@@ -73,7 +101,7 @@ namespace App2.View
                 //_version = bulidVer;
 
                 var AktualnaWersja = await App.TodoManager.GetBuildVer();
-                if (bulidVer != AktualnaWersja)
+                if (bulidVer < Convert.ToInt16(AktualnaWersja))
                     await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
             }
             catch (Exception )
@@ -100,7 +128,7 @@ namespace App2.View
                 if (list.Count > 0)
                 {
 
-                    for (int i = 0; i < list.Count(); i++)
+                    for (int i = 0; i <= list.Count(); i++)
                     {
                         listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
                         PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
@@ -237,9 +265,10 @@ namespace App2.View
                     //DisplayAlert("Connected", "Połączono z siecia", "OK");
                     return true;
                 }
-                catch (Exception )
+                catch (Exception x )
                 {
                     //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
+                    //string aa=x.Message;
                     return false;
                 }
             }
@@ -263,7 +292,8 @@ namespace App2.View
                     ";PWD=" + app.Password
                 };
                 connection.Open();
-                command.CommandText = "SELECT [Baz_NazwaBazy] nazwaBazy FROM " + app.BazaConf + ".[CDN].[Bazy]";
+                command.CommandText = $@"SELECT top 1 [Baz_NazwaBazy] nazwaBazy 
+                                        FROM {app.BazaConf}.[CDN].[Bazy] order by [Baz_TS_Arch] desc ";
 
 
                 SqlCommand query = new SqlCommand(command.CommandText, connection);
@@ -420,20 +450,20 @@ namespace App2.View
 
 
             var version = DependencyService.Get<Model.IWifiConnector>();
-            if (version.IsConnectedToWifi("JOART_WiFi"))
+            if (version.IsConnectedToWifi("Szachownica"))
             {
-                await DisplayAlert("Info", "Połączono już z Wifi szachownicy","OK");
+                await DisplayAlert("Info", "Połączenie zostało już nawiązane..","OK");
                 return;
             } 
 
 
-            version.ConnectToWifi("JOART_WiFi", "J0@rt11a");
+            version.ConnectToWifi("Szachownica", "J0@rt11a");
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
-            if (version.IsConnectedToWifi("JOART_WiFi"))
+            if (version.IsConnectedToWifi("Szachownica"))
             {
-                await DisplayAlert("Info", "Połączono z Wifi szachownicy", "OK");
+                await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
 
             }
             else {
@@ -444,6 +474,13 @@ namespace App2.View
 
 
 
+
+        }
+
+        private void SelectDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+             
+            SelectedDeviceType = (SByte)SelectDevice.SelectedIndex;
 
         }
     }
@@ -459,5 +496,11 @@ namespace App2.View
         public int Id { get; set; }
         public string NazwaDrukarki { get; set; }
         public string AdresDrukarki { get; set; }
+    }
+
+    class MetodaSkanowania
+    {
+        public int Id { get; set; }
+        public string TypeDevice { get; set; }
     }
 }

@@ -68,19 +68,22 @@
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
         </Grid>
-
+        <!--<ActivityIndicator x:Name="WaitIco" 
+                           IsRunning="False" 
+                           IsVisible="false" 
+                           HorizontalOptions="Center" 
+                           Color="Black"/>-->
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
             <Button Text="Logowanie" FontAttributes="Bold"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Center" 
-                    HeightRequest="65" 
-                    TextColor="White"
+                    HeightRequest="65"
                     BorderWidth="3"
                     Clicked="Btn_Login_Clicked" 
                     BorderColor="DarkCyan"
                     x:Name="btn_login" 
                     BackgroundColor="#54c4b4" 
-                    CornerRadius="15" Margin="40,0,15,0"/>
+                    CornerRadius="15" Margin="40,0,15,0" TextColor="AntiqueWhite"/>
             <!--<Button Text="drukowanie" 
                     Clicked="Button_Clicked"
                     HorizontalOptions="FillAndExpand" 
@@ -92,11 +95,14 @@
                     BackgroundColor="#54c4b4" 
                     CornerRadius="15" Margin="40,0,15,0"
                     />-->
-            <Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
+
+            <ImageButton Source="ustawienia64"  Clicked="ImageButton_Clicked" Scale="2" BackgroundColor="#F5FFFF"/>
+
+            <!--<Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Btn_settings_Tapped"  x:Name="btn_settings"/>
                 </Image.GestureRecognizers>
-            </Image>
+            </Image>-->
             
         </StackLayout>
     </StackLayout>

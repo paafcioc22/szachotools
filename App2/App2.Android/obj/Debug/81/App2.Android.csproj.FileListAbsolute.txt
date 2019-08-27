@@ -415,8 +415,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Core.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Platform.Android.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\android\assets\Xamarin.Forms.Xaml.pdb
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2\bin\Debug\netstandard2.0\App2.dll
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Debug\App2.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\linksrc\Acr.UserDialogs.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\linksrc\App2.dll.mdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\81\linksrc\Xamarin.Essentials.dll.mdb

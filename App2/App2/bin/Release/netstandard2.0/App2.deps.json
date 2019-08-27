@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "605623db69bf9d2e1d2b0dae692ef9da6d75fedc"
+    "signature": "0d0bd273f11212dd4b180676cb50571f5a5eabe2"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,7 +11,7 @@
         "dependencies": {
           "Acr.UserDialogs": "7.0.4",
           "NETStandard.Library": "2.0.3",
-          "Plugin.SewooXamarin.SDK": "1.0.0",
+          "Plugin.SewooXamarin.SDK": "1.0.1",
           "System.Data.SqlClient": "4.6.1",
           "System.ServiceModel.Duplex": "4.5.3",
           "System.ServiceModel.Http": "4.5.3",
@@ -49,7 +49,7 @@
           "Microsoft.NETCore.Platforms": "2.1.0"
         }
       },
-      "Plugin.SewooXamarin.SDK/1.0.0": {
+      "Plugin.SewooXamarin.SDK/1.0.1": {
         "runtime": {
           "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.Abstractions.dll": {},
           "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.dll": {}
@@ -281,12 +281,12 @@
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
-    "Plugin.SewooXamarin.SDK/1.0.0": {
+    "Plugin.SewooXamarin.SDK/1.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-HeX2z8nGJqlkTB557yiFjtQKck7y1oM54h8/KFLVxKa0MoYMSVcBjeWsL8ACWqMOCGbmjGOesewwMUGdsxsDuA==",
-      "path": "plugin.sewooxamarin.sdk/1.0.0",
-      "hashPath": "plugin.sewooxamarin.sdk.1.0.0.nupkg.sha512"
+      "sha512": "sha512-R68INz8JyA8cDpV7G60YIxf6abPxTy+jnv3tEQW4zLCi9L25RW3FaNEuTmK5pCqeud9IGBAM1cTO1SruM4hXEg==",
+      "path": "plugin.sewooxamarin.sdk/1.0.1",
+      "hashPath": "plugin.sewooxamarin.sdk.1.0.1.nupkg.sha512"
     },
     "runtime.native.System.Data.SqlClient.sni/4.5.0": {
       "type": "package",

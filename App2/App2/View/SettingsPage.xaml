@@ -90,13 +90,26 @@
                     <!--ItemsSource="{Binding cennikClasses}"-->
 
                 </Picker>
+
+                <Label Text="Urządzenie skanujące" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
+
+                <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
+                <!--ItemDisplayBinding="{Binding  Drukarka}"-->
+                <Picker x:Name="SelectDevice"
+                    Title="Wybierz urządzenie"
+                    SelectedIndexChanged="SelectDevice_SelectedIndexChanged" 
+               
+                    >
+                </Picker>
+                
                 <Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
                 <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
 
                 <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
                 <!--ItemDisplayBinding="{Binding  Drukarka}"-->
                 <Picker x:Name="PrinterList"
-                    Title="Select Device"
+                    Title="Wybierz drukarkę bluetooth"
                     SelectedIndexChanged="PrinterList_SelectedIndexChanged" 
                
                     >
@@ -104,8 +117,21 @@
             </StackLayout>
         </ScrollView>
         <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
-            <Button Text="Połącz się z Wi-fi " HorizontalOptions="FillAndExpand" Clicked="Btn_ConToWiFi_Clicked"/>
-            <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked"/>
+            <Button Text="Połącz się z Wi-fi " HorizontalOptions="FillAndExpand" Clicked="Btn_ConToWiFi_Clicked" 
+                    TextColor="White"
+                    BorderWidth="3" 
+                    BorderColor="DarkCyan" 
+                    BackgroundColor="#54c4b4"
+                    CornerRadius="15"
+                    Margin="20,0,20,0"
+                    />
+            <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked" 
+                    TextColor="White"
+                    BorderWidth="3" 
+                    BorderColor="DarkCyan" 
+                    BackgroundColor="#54c4b4" 
+                    CornerRadius="15"
+                    Margin="20,0,20,0"/>
 
         </StackLayout>
     </StackLayout>
