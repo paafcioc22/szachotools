@@ -129,5 +129,44 @@ namespace App2.View
                 }
             }
         }
+
+         
+        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+             
+            var aaa = sender as CheckBox;
+            
+
+
+             
+
+            ViewCell cell = (sender as CheckBox).Parent.Parent as ViewCell;
+
+            Model.DokMM model = cell.BindingContext as Model.DokMM;
+
+            //if (aaa.IsChecked == true)
+            //{
+            //    DisplayAlert(null, "Włączono", "OK");
+            //    _isExport = 1;
+            //}
+            //else 
+            //{
+            //    DisplayAlert(null, "WYłączono", "OK");
+            //    _isExport = 0;
+            //}
+
+
+
+            Model.DokMM dokMM = new Model.DokMM();
+            dokMM.gidnumer = model.gidnumer;
+            dokMM.mag_dcl = model.mag_dcl;
+            dokMM.opis = model.opis;
+            dokMM.IsExport = model.IsExport;
+            dokMM.fl_header = 1;
+            dokMM.UpdateMM(dokMM);
+
+
+
+        }
     }
 }

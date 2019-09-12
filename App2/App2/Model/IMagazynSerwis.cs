@@ -10,6 +10,7 @@ namespace App2.Model
     {
         Task<ObservableCollection<Magazynn>> GetAllCustomers(string criteria = null);
         Task <string>InsertDataNiezgodnosci (ObservableCollection<Model.ListDiffrence> polecenie);
+        Task <string>InsertDataSkan (IList<Model.AkcjeNagElem> polecenie, Int16 magNumer);
         Task<List<RaportListaMM>> PobierzTwr (string ean);
         Task<ObservableCollection<AkcjeNagElem>> GetGidAkcje (string query);
         Task <string>PobierzWersjeApki();

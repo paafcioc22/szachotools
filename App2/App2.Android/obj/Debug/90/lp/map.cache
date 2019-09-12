@@ -53,12 +53,3 @@ Xamarin.Forms.Platform
 Xamarin.Sewoo.AndroidSDK
 ZXing.Net.Mobile.Forms.Android
 ZXingNetMobile
-App2
-Plugin.SewooXamarinSDK.Abstractions
-SQLite-net
-System.Runtime
-Xamarin.Forms.Core
-Xamarin.Forms.Xaml
-ZXing.Net.Mobile.Core
-ZXing.Net.Mobile.Forms
-zxing.portable

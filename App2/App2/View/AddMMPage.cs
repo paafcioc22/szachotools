@@ -81,26 +81,34 @@ namespace App2.View
 
         private  void Button_Clicked(object sender, EventArgs e) //zapisz mm
         {
-            if (_magDcl.Text == null || _opis.Text == null)
+            try
             {
-                DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
+                if (_magDcl.Text == null || _opis.Text == null)
+                {
+                    DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
+                }
+                else
+                {
+                    Model.DokMM dokMM = new Model.DokMM();
+                    dokMM.mag_dcl = _magDcl.Text;
+                    dokMM.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
+                    dokMM.fl_header = 1;
+
+                    dokMM.SaveMM(dokMM);
+                    DisplayAlert(null, "Utworzono MM dla : " + dokMM.mag_dcl, "OK");
+
+                    Navigation.PopModalAsync();
+                    //dokMM.getMMki();
+                    dokMMs = new Model.DokMM().getMMki();
+                    Model.DokMM.dokElementy.Clear();
+                    var mm = dokMMs.OrderByDescending(x => x.gidnumer).First();
+
+                    Navigation.PushModalAsync(new View.AddElementMMList(mm));
+                }
             }
-            else { 
-            Model.DokMM dokMM = new Model.DokMM();
-            dokMM.mag_dcl = _magDcl.Text;
-            dokMM.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
-            dokMM.fl_header = 1;
-
-            dokMM.SaveMM(dokMM);
-              DisplayAlert(null, "Utworzono MM dla : " + dokMM.mag_dcl, "OK");
-
-            Navigation.PopModalAsync();
-            //dokMM.getMMki();
-            dokMMs = new Model.DokMM().getMMki();
-            Model.DokMM.dokElementy.Clear();
-            var mm = dokMMs.OrderByDescending(x => x.gidnumer).First();
-             
-            Navigation.PushModalAsync(new View.AddElementMMList(mm));
+            catch (Exception s)
+            {
+                 DisplayAlert(null, s.Message, "OK");
             }
 
         }

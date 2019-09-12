@@ -461,6 +461,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md58432a647068b097f9637064b8985a5e0\SwitchRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md58432a647068b097f9637064b8985a5e0\TabbedPageRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md58432a647068b097f9637064b8985a5e0\ViewRenderer_2.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md5423e3a95c357eb7d6aad61b4f54abbd4\RecyclerViewScrollListener.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ActionSheetRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ActivityIndicatorRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\AHorizontalScrollView.java
@@ -477,6 +478,9 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CellAdapter.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CellRenderer_RendererHolder.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CenterSnapHelper.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxDesignerRenderer.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxRenderer.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxRendererBase.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CircularProgress.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CollectionViewRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ColorChangeRevealDrawable.java
@@ -493,6 +497,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EmptyViewAdapter.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EndSingleSnapHelper.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EndSnapHelper.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EntryAccessibilityDelegate.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EntryCellEditText.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EntryCellView.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EntryEditText.java
@@ -515,6 +520,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GenericAnimatorListener.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GenericMenuClickListener.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GestureManager_TapAndPanGestureDetector.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GridLayoutSpanSizeLookup.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GroupedListViewAdapter.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ImageButtonRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ImageCache_CacheEntry.java
@@ -529,6 +535,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ListViewAdapter.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ListViewRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ListViewRenderer_Container.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ListViewRenderer_SwipeRefreshLayoutWithFixedNestedScrolling.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\LocalizedDigitsKeyListener.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\MasterDetailContainer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\MasterDetailRenderer.java
@@ -550,6 +557,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\PositionalSmoothScroller.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\PowerSaveModeBroadcastReceiver.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ProgressBarRenderer.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ScrollHelper.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ScrollViewContainer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ScrollViewRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SearchBarRenderer.java
@@ -576,9 +584,11 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ShellSectionRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ShellToolbarTracker.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ShellToolbarTracker_FlyoutIconDrawerDrawable.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SimpleViewHolder.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SingleSnapHelper.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SizedItemContentView.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SliderRenderer.java
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SpacingItemDecoration.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\StartSingleSnapHelper.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\StartSnapHelper.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\StepperRenderer.java
@@ -636,13 +646,3 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stam
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Debug\App2.dll.mdb
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md5423e3a95c357eb7d6aad61b4f54abbd4\RecyclerViewScrollListener.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxDesignerRenderer.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxRenderer.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\CheckBoxRendererBase.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\EntryAccessibilityDelegate.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GridLayoutSpanSizeLookup.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ListViewRenderer_SwipeRefreshLayoutWithFixedNestedScrolling.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ScrollHelper.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SimpleViewHolder.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SpacingItemDecoration.java

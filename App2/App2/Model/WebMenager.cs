@@ -26,6 +26,11 @@ namespace App2.Model
              return soapService.InsertDataNiezgodnosci(insert);
         }
 
+        public Task<string> InsertDataSkan(IList<Model.AkcjeNagElem> insert, Int16 magnumer)
+        {
+            return soapService.InsertDataSkan(insert, magnumer);
+        }
+
         public Task<List<RaportListaMM>> PobierzTwrAsync(string ean)
         {
             return soapService.PobierzTwr(ean);

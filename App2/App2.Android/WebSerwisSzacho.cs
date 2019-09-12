@@ -91,7 +91,7 @@ namespace App2.Droid
                     $"'{lista.DataDokumentu}'";
                     
                     var respone = client.ExecuteSQLCommand(InsertString);
-                     
+                    
                     odp = respone;
                     odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>","");
                 }
@@ -156,9 +156,15 @@ namespace App2.Droid
 
                 XmlSerializer serializer = new XmlSerializer(typeof(AppVersionList)); 
 
-                AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader); 
+                AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader);
 
-                _wersja= odczytaj.wersja[0].VersionApp;
+
+                //XmlSerializer serializer = new XmlSerializer(typeof(List<Magazyn>), new XmlRootAttribute("ROOT"));
+                //StringReader reader = new StringReader(result);
+                //List<Magazyn> magazyny = (List<Magazyn>)serializer.Deserialize(reader); 
+
+
+                _wersja = odczytaj.wersja[0].VersionApp;
                      
                 return _wersja;
                 //return ver;
@@ -214,6 +220,40 @@ namespace App2.Droid
 
                 return AkcjeGidNazwaList;
             });
+        }
+
+        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie,Int16 magnumer)
+        {
+
+            try
+            {
+                return await Task.Run(() =>
+                    {
+                        foreach (var lista in polecenie)
+                        {
+                            var InsertString = $@"cdn.PC_InsertAkcjeSkan
+                    {lista.AkN_GidNumer},
+                    {magnumer},
+                    '{lista.TwrGrupa}',
+                    '{lista.TwrDep}',
+                    {lista.TwrGidNumer},
+                    {lista.TwrStan},
+                    {lista.TwrSkan}";
+
+                            var respone = client.ExecuteSQLCommand(InsertString);
+
+                            odp = respone;
+                            odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
+                        }
+                        return odp;
+                    });
+            }
+            catch (Exception s)
+            {
+
+                odp = s.Message;
+                return odp;
+            }
         }
 
         public class Wersja

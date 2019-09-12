@@ -1,7 +1,9 @@
-﻿using System;
+﻿using App2.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace App2.View
     {
         public ObservableCollection<Model.AkcjeNagElem> Items;
         IList<Model.AkcjeNagElem> _listatwr;
-
+        SqlConnection connection;
         public List_AkcjeAfterFiltr(IList<Model.AkcjeNagElem> nowa)
         {
             Items = new ObservableCollection<Model.AkcjeNagElem>();
@@ -24,6 +26,16 @@ namespace App2.View
             BindingContext = this;
             _listatwr = nowa;
             Items = Convert(nowa);
+
+            var app = Application.Current as App;
+            connection = new SqlConnection
+            {
+                ConnectionString = "SERVER=" + app.Serwer +
+                ";DATABASE=" + app.BazaProd +
+                ";TRUSTED_CONNECTION=No;UID=" + app.User +
+                ";PWD=" + app.Password
+            };
+
 
             MyListView.ItemsSource = Items;
         }
@@ -35,7 +47,42 @@ namespace App2.View
              
             var tmp= Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
             MyListView.ItemsSource = Convert(tmp);
+
+
+            //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                SendDataSkan(tmp);
         }
+
+
+        Int16 magnumer;
+        private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
+        {
+            SqlCommand command = new SqlCommand();
+
+            connection.Open();
+            command.CommandText = $@"SELECT  [Mag_GIDNumer]
+                                  FROM  [CDN].[Magazyny]
+                                  where mag_typ=1";
+
+
+            SqlCommand query = new SqlCommand(command.CommandText, connection);
+            SqlDataReader rs;
+
+            rs = query.ExecuteReader();
+            while (rs.Read())
+            {
+                magnumer = System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+            }
+
+            rs.Close();
+            rs.Dispose();
+            connection.Close();
+
+            var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer);
+            if (odp != "OK")
+                await DisplayAlert(null, odp, "OK");
+        }
+
 
         public ObservableCollection<T> Convert<T>(IList<T> original)
         {

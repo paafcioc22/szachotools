@@ -50,8 +50,9 @@
                             <ViewCell Tapped="ViewCell_Tapped"> 
                                 <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
                                     <Label x:Name="lbl_cennik"  VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="lbl_twrcena" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
-                                           TextColor="Black" FontAttributes="Bold"/>
+                                    <Label Text="" x:Name="lbl_twrcena" HorizontalOptions="EndAndExpand" 
+                                           VerticalOptions="Center"
+                                           TextColor="Black" FontAttributes="Bold" TextDecorations="Underline"/>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
@@ -61,6 +62,11 @@
                                     <Button Text="stany innych" Clicked="BtnShowOther_Clicked" BorderRadius="15" FontSize="8"  HorizontalOptions="CenterAndExpand" VerticalOptions="Center" />
                                     <Label Text="" x:Name="lbl_stan" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
                                            TextColor="Black" FontAttributes="Bold" />
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell Tapped="ViewCell_Tapped_1"    >
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="23,0" Spacing="0">
+                                    <Label Text="aktualne akcje " VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextDecorations="Underline" TextColor="#000000"/>
                                 </StackLayout>
                             </ViewCell>
                         </TableSection>

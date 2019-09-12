@@ -45,7 +45,11 @@ namespace App2.View
                 ";TRUSTED_CONNECTION=No;UID=" + app.User +
                 ";PWD=" + app.Password
             };
-            SkanowanieEan();
+
+            if (SettingsPage.SelectedDeviceType == 1)
+                SkanowanieEan(); //aparat
+            else 
+            Appearing += (object sender, System.EventArgs e) => manualEAN.Focus();
         }
 
 
@@ -299,6 +303,30 @@ namespace App2.View
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             Device.OpenUri(new Uri(twr_url.Replace("Miniatury/", "")));
+        }
+
+        private List<string> nowy;
+        private async void ViewCell_Tapped_1(object sender, EventArgs e)
+        {
+            nowy = new List<string>();
+            string Webquery = $@"cdn.PC_WykonajSelect N' select distinct   AkN_GidNazwa ,AkN_NazwaAkcji,
+
+    AkN_DataStart,AkN_DataKoniec
+ from cdn.pc_akcjeNag
+    INNER JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
+ where Ake_FiltrSQL like ''%{twrkod}%''  and AkN_DataKoniec>= GETDATE() - 10
+ order by AkN_DataStart desc   '";
+            var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
+
+            foreach (var wpis in dane)
+            {
+                nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n", 
+                    wpis.AkN_NazwaAkcji, "\r\n", 
+                    wpis.AkN_ZakresDat, "\r\n- - - - - - - - - - - - - - - -"));
+            }
+
+            await DisplayActionSheet("Aktualne Akcje:", "OK", null, nowy.ToArray());
+            //and AkN_DataKoniec>= GETDATE() - 10
         }
     }
 }

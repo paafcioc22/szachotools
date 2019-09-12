@@ -149,7 +149,7 @@ namespace App2.View
                 Keyboard = Keyboard.Numeric,
                 Text = _akcja.TwrSkan == 0 ? "" : _akcja.TwrSkan.ToString(),
                 WidthRequest = 60,
-
+                Placeholder = "Ilość", 
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black
             };
@@ -171,7 +171,7 @@ namespace App2.View
             lbl_cena1.Text = "Cena pierwsza : " + _akcja.TwrCena1 + " Zł";
 
             Button open_url = new Button();
-            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
+            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przecena") ? "Zacznij skanowanie" : "Zapisz";
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
@@ -284,7 +284,7 @@ namespace App2.View
                 Keyboard = Keyboard.Numeric,
                 Text = _akcja.TwrSkan == 0 ? "" : _akcja.TwrSkan.ToString(),
                 WidthRequest = 60,
-
+                Placeholder = "Ilość",
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black
             };
@@ -306,7 +306,8 @@ namespace App2.View
             lbl_cena1.Text = "Cena pierwsza : " + _akcja.TwrCena1 + " Zł";
 
             Button open_url = new Button();
-            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
+            //open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
+            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przecena") ? "Zacznij skanowanie" : "Zapisz"; 
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
@@ -359,6 +360,7 @@ namespace App2.View
         {
             if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
+                if(SprIlosc())
                 ile_zeskanowancyh += 1;
                 if (CanPrint)
                     PrintCommand();
@@ -446,14 +448,23 @@ namespace App2.View
 
                             if (skanean == lbl_ean.Text)
                             {
-                                ile_zeskanowancyh += 1;
-                                overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
+                                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                                {
+                                    ile_zeskanowancyh += 1;
+                                    overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
                                     //DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
                                     if (CanPrint)
-                                    PrintCommand();
+                                        PrintCommand();
 
-                                Zapisz();
-                                entry_kodean.Text = ile_zeskanowancyh.ToString();
+                                    Zapisz();
+                                    entry_kodean.Text = ile_zeskanowancyh.ToString();
+
+                                }
+                                else {
+                                          DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+
+                                }
+
 
                             }
                             else
@@ -577,7 +588,7 @@ namespace App2.View
                         CanPrint = false;
                         //await DisplayAlert(null, "Drukarka Nie podłączone", "OK");
 
-                        ErrorStatusDisp("Printer error", IResult);
+                        ErrorStatusDisp("Błąd  drukarki", IResult);
                         View.SettingsPage.CzyDrukarkaOn = false;
 
                     }
@@ -685,7 +696,8 @@ namespace App2.View
 
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, 160);
                     await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
-                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr);
+                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);//góra grosze
+                    //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
                     await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł"); 
                 await SettingsPage._cpclPrinter.resetConcat();
 
@@ -759,6 +771,13 @@ namespace App2.View
             }
         }
 
+        private bool SprIlosc(int stan, int skan)
+        {
+            if (skan <= stan)
+                return true;
+            else return false;
+        }
+
         private  async void Zapisz()
         {
 
@@ -778,14 +797,19 @@ namespace App2.View
             {
                 var wpis = wynik[0];
                 wpis.TwrSkan = ile_zeskanowancyh;
-               // wpis.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
-                await _connection.UpdateAsync(wpis);
+                // wpis.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
+                //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                    await _connection.UpdateAsync(wpis);
+                //else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
             }
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
-               // akcjeNagElem.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
-                 await _connection.InsertAsync(akcjeNagElem);
+                // akcjeNagElem.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
+                
+                    await _connection.InsertAsync(akcjeNagElem);
+               
+
             }
         }
 
@@ -795,14 +819,21 @@ namespace App2.View
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-            if (List_AkcjeView.TypAkcji.Contains("Przerzuty"))
+            if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
             {
 
                 ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
-                Zapisz();
-                if (ile_zeskanowancyh > 0)
+                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                {
+                    Zapisz();
+                    if (ile_zeskanowancyh > 0)
                     _akcja.TwrSkan = ile_zeskanowancyh;
-                await Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
+                }
+                 
+                else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                
+                
             }
             else
             {

@@ -310,6 +310,8 @@ namespace App2.View
                      TwrUrl = lWeb.TwrUrl,
                  }).ToList();
 
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                SendDataSkan(SumaList);
 
 
 
@@ -341,7 +343,34 @@ namespace App2.View
 
         }
 
+        Int16 magnumer;
+        private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
+        {
+            SqlCommand command = new SqlCommand();
 
+            connection.Open();
+            command.CommandText = $@"SELECT  [Mag_GIDNumer]
+                                  FROM  [CDN].[Magazyny]
+                                  where mag_typ=1";
+
+
+            SqlCommand query = new SqlCommand(command.CommandText, connection);
+            SqlDataReader rs; 
+ 
+            rs = query.ExecuteReader();
+            while (rs.Read())
+            {
+                magnumer = Convert.ToInt16(rs["Mag_GIDNumer"]);
+            }
+
+            rs.Close();
+            rs.Dispose();
+            connection.Close();
+
+            var odp=await App.TodoManager.InsertDataSkan(sumaList,magnumer);
+            if (odp != "OK")
+                await DisplayAlert(null, odp, "OK");
+        }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {

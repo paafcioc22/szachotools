@@ -31,26 +31,18 @@ namespace App2.Droid
             wifiConfig.PreSharedKey = string.Format("\"{0}\"", networkPass);
 
             WifiManager wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
-
-
-            //WifiManager wifiManager = (WifiManager)this.context.getSystemService(Context.WIFI_SERVICE);
-
-
-            // Use ID
-
              
-
 
                 if (!wifiManager.IsWifiEnabled)
             wifiManager.SetWifiEnabled(true);
 
 
-            if (wifiManager.ConnectionInfo.SSID != wifiConfig.Ssid)
+            if ((wifiManager.ConnectionInfo.SSID != wifiConfig.Ssid) || wifiConfig.NetworkId<=0 )
             {
                 int netId = wifiManager.AddNetwork(wifiConfig);
-                // wifiManager.Disconnect();
+                 //   wifiManager.Disconnect();
                 wifiManager.EnableNetwork(netId, true);
-                //wifiManager.Reconnect();
+                   // wifiManager.Reconnect();
 
                 
             }
@@ -66,7 +58,8 @@ namespace App2.Droid
 
             Task.Delay(1000);
 
-            if (wifiManager.ConnectionInfo.SSID == ssid&& wifiManager.IsWifiEnabled)
+            if (wifiManager.ConnectionInfo.SSID == ssid&& wifiManager.IsWifiEnabled&&
+                wifiManager.ConnectionInfo.NetworkId>0)
                 {
                     return true;
                 }

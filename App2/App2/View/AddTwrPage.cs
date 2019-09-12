@@ -308,6 +308,7 @@ namespace App2.View
                     dokMM.gidnumer = _gidnumer;
                     dokMM.twrkod = kodean.Text;
                     dokMM.szt = Convert.ToInt32(ilosc.Text);
+                    
                     int IleIstnieje = dokMM.SaveElement(dokMM);
 
                     if (IleIstnieje > 0)

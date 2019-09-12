@@ -255,7 +255,7 @@ namespace App2.View
                 InitialCatalog = app.BazaProd, //_database,
                 UserID = app.User,//_uid,
                 Password = app.Password, //_pwd,
-                ConnectTimeout =5
+                ConnectTimeout =3
             }.ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -447,21 +447,21 @@ namespace App2.View
             }
 
 
-
+            string wifi= "Szachownica";//JOART_WiFi
 
             var version = DependencyService.Get<Model.IWifiConnector>();
-            if (version.IsConnectedToWifi("Szachownica"))
+            if (version.IsConnectedToWifi(wifi))//Szachownica
             {
                 await DisplayAlert("Info", "Połączenie zostało już nawiązane..","OK");
                 return;
             } 
 
 
-            version.ConnectToWifi("Szachownica", "J0@rt11a");
+            version.ConnectToWifi(wifi, "J0@rt11a");
 
             await Task.Delay(2000);
 
-            if (version.IsConnectedToWifi("Szachownica"))
+            if (version.IsConnectedToWifi(wifi))
             {
                 await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
 

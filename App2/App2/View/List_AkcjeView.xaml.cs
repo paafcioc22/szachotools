@@ -31,9 +31,11 @@ namespace App2.View
         {
             try
             {
-                string Webquery = @"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  ,AkN_GidNazwa +'' (''+cast( count(distinct Ake_AknNumer)as varchar)+'')'' AkN_GidNazwa  
+                string Webquery = @"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  
+                    ,AkN_GidNazwa +'' (''+cast( count(distinct Ake_AknNumer)as varchar)+'')'' AkN_GidNazwa  
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
-                    where AkN_DataKoniec>=GETDATE() -10 
+                    where (AkN_GidNazwa=''przecena'' and AkN_DataKoniec>=GETDATE() -10 ) or
+					(AkN_GidNazwa<>''przecena'' and AkN_DataKoniec>=GETDATE() -5 )
                     group by AkN_GidTyp  , AkN_GidNazwa '";
                 var twrdane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 

@@ -22,9 +22,19 @@ namespace App2.Model
         public string opis { set; get; }
         public string nrdok { set; get; }
         public string symbol { set; get; }
-
+        private bool _isExport { set; get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        public Boolean IsExport
+        {
+            get { return _isExport; }
+            set
+            {
+                _isExport = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExport)));
+            }
+        }
 
         public string Mag_Nrdok
         {
@@ -66,6 +76,7 @@ namespace App2.Model
             }
         }
 
+         
 
         //static public List<DokMM> dokMMs = new List<DokMM>();
 
@@ -117,6 +128,7 @@ namespace App2.Model
                         " [opis] [varchar] (255) NULL, " +
                         " [nrdok] [varchar] (55) NULL, " +
                         " [gid_optima] int NULL " +
+                        ",[IsExport] [bit] NULL"+
                         ") ON[PRIMARY]  end";
 
             string query = "declare @id int " +
@@ -129,7 +141,8 @@ namespace App2.Model
                     "0," +                                  //status
                     "'" + dokMM.opis + "'," +                    //opis
                     "null," +                                //nrdok         
-                    "null" +                                //gidoptima         
+                    "null," +                                //gidoptima         
+                    Convert.ToByte(dokMM.IsExport) +
                     ") ";
 
             SqlCommand command = new SqlCommand( create + " " + query,connection);
@@ -142,7 +155,8 @@ namespace App2.Model
                 mag_dcl =dokMM.mag_dcl ,
                 opis = dokMM.opis,
                 nrdok = dokMM.nrdok,
-                statuss=dokMM.statuss
+                statuss=dokMM.statuss,
+                IsExport=dokMM.IsExport
         });
 
             return true;
@@ -182,6 +196,7 @@ namespace App2.Model
                     nrdok = Convert.ToString(sqlData["nrdok"]),
                     statuss = Convert.ToInt16(sqlData["statuss"])
                     ,_theColor = (statuss==1?Color.Black:Color.Green)
+                    ,IsExport= Convert.ToBoolean(sqlData["IsExport"])
                 });
             }
             sqlData.Close();
@@ -212,7 +227,8 @@ namespace App2.Model
                     "0," +                                  //status
                     "@id," +                    //opis
                     "null," +                                //nrdok         
-                    "null" +                                //nrdok         
+                    "null," +                                //nrdok         
+                    Convert.ToByte(dokMM.IsExport)+
                     ") ";
             string SprCzyIstnieje = "select isnull(sum(ile),0) ile from dbo.mm where kod='" + dokMM.twrkod + "' and gidnumer=" + dokMM.gidnumer;
 
@@ -240,6 +256,7 @@ namespace App2.Model
                     twrkod = dokMM.twrkod,
                     szt = dokMM.szt,
                     opis=dokMM.opis   /////<<<<<<<<<<<<<<<<<<<<<<<<<<<< daodane 
+                    
                 });
 
                 return 0;
@@ -363,7 +380,11 @@ namespace App2.Model
             connection.Open();
 
 
-            string query = "Update [dbo].[MM] set mag_dcl='"+dokMM.mag_dcl+"',opis='"+ dokMM.opis+"'  where fl_header=1 and gidnumer=" + dokMM.gidnumer;
+            string query = $@"Update [dbo].[MM] 
+                    set mag_dcl='{dokMM.mag_dcl}'
+                    ,opis='{dokMM.opis}'  
+                    ,IsExport={Convert.ToByte(dokMM.IsExport)}                    
+                    where fl_header=1 and gidnumer=" + dokMM.gidnumer;
 
             SqlCommand command = new SqlCommand(query, connection);
             command.ExecuteNonQuery();
