@@ -74,8 +74,18 @@
                 </TableView>
         </StackLayout>
     </StackLayout>
-        <Entry Placeholder="Wprowadź kod ręcznie" x:Name="manualEAN" HorizontalOptions="CenterAndExpand" Unfocused="kodean_Unfocused" VerticalOptions="EndAndExpand" Keyboard="Telephone"/>
+        <Entry Placeholder="Wpisz/skanuj kod" 
+               x:Name="manualEAN" 
+               HorizontalOptions="CenterAndExpand" 
+               Unfocused="kodean_Unfocused" 
+               VerticalOptions="EndAndExpand" 
+               Keyboard="Telephone"
+               WidthRequest="200"
+               HorizontalTextAlignment="Center"/>
         <!--<Button Text="Pokaż Stany Innych" Clicked="BtnShowOther_Clicked"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"/>-->
-        <Button Text="Skanuj kod" Clicked="ScanTwr_Clicked" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"/>
+        <Button Text="Skanuj kod (aparat)" 
+                Clicked="ScanTwr_Clicked" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="EndAndExpand"/>
     </StackLayout>
 </ContentPage>

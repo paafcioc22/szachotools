@@ -20,46 +20,50 @@
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell Height="45"   >
-                        <StackLayout VerticalOptions="FillAndExpand"
-                       Padding="5"
-                       BackgroundColor="Beige" Orientation="Horizontal">
+                        <AbsoluteLayout VerticalOptions="FillAndExpand"
+                                    Padding="5"
+                                    BackgroundColor="Beige"  >
                             <Label Text="{Binding Key}" TextColor="Black" 
-                                   HorizontalOptions="StartAndExpand" 
-                                   VerticalOptions="Center" 
-                                   FontSize="18" 
+                                   AbsoluteLayout.LayoutBounds="0.02,0.01,.9,1"
+                                   AbsoluteLayout.LayoutFlags="All"
+                                   HorizontalTextAlignment="Start"
+                                   FontSize="18" VerticalTextAlignment="Center"
                                    FontAttributes="Bold,Italic">
                             </Label>
-                            <Label Text="{Binding SumaStanVsSKan}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="EndAndExpand" FontSize="18" FontAttributes="Bold" >
+                            <Label Text="{Binding SumaStanVsSKan}" 
+                                   TextColor="Black" 
+                                   AbsoluteLayout.LayoutBounds="0.95,1,0.3,1"
+                                   AbsoluteLayout.LayoutFlags="All" 
+                                   FontSize="18" VerticalTextAlignment="Center"
+                                   FontAttributes="Bold"  HorizontalTextAlignment="End"  >
                             </Label>
-                                <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer
+                            <AbsoluteLayout.GestureRecognizers>
+                                <TapGestureRecognizer
                                                 Tapped="TapGestureRecognizer_Tapped"/>
-                                    </StackLayout.GestureRecognizers>
-                        </StackLayout>
+                            </AbsoluteLayout.GestureRecognizers>
+                        </AbsoluteLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.GroupHeaderTemplate>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-
-
-                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="8" HorizontalOptions="FillAndExpand">
-                            <!--<Label Text="{Binding TwrKod }" TextColor="Black"/>
-                            <Label Text="{Binding TwrNazwa }" TextColor="Black" 
-                                   FontSize="12" 
-                                   VerticalOptions="Center" 
-                                   HorizontalOptions="CenterAndExpand"/>-->
-                            <!--<Label Text="{Binding TwrGrupa }" FontSize="12" 
-                                   VerticalOptions="Center" TextColor="Black"
-                                   HorizontalOptions="CenterAndExpand"/>-->
-                            <Label Text="{Binding TwrDep }" FontSize="18" 
-                                   VerticalOptions="Center" TextColor="Black"
-                                   HorizontalOptions="StartAndExpand" Margin="5,0,0,0"  />
-                            <Label Text="{Binding TwrStanVsSKan }" FontSize="18" 
-                                   VerticalOptions="Center" TextColor="Black"
-                                   HorizontalOptions="EndAndExpand"  />
-                        </StackLayout>
+                    <ViewCell> 
+                        <AbsoluteLayout  Padding="8" HorizontalOptions="FillAndExpand"> 
+                            <Label Text="{Binding TwrDep }" 
+                                   FontSize="18"  
+                                   TextColor="Black"
+                                   AbsoluteLayout.LayoutBounds="0.03,0.9,.6,1"
+                                   AbsoluteLayout.LayoutFlags="All"   
+                            />
+                            <Label Text="{Binding TwrStanVsSKan }" 
+                                   FontSize="18"  
+                                   TextColor="Black"
+                                   AbsoluteLayout.LayoutBounds="0.9,1,.3,1"
+                                   AbsoluteLayout.LayoutFlags="All" 
+                                  
+                                   HorizontalTextAlignment="End"
+                                     />
+                        </AbsoluteLayout>
 
                     </ViewCell>
                 </DataTemplate>

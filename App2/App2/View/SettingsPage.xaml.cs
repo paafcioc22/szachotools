@@ -63,7 +63,7 @@ namespace App2.View
         private void SelectDeviceMetod()
         {
              
-             
+            var app = Application.Current as App;
             var lista = new List<MetodaSkanowania>()
             {
                 new MetodaSkanowania{Id=1,TypeDevice="Skaner"},
@@ -79,7 +79,8 @@ namespace App2.View
             {
                 //PrinterList.ItemsSource = listaDrukarek;
 
-                SelectDevice.SelectedIndex = SelectedDeviceType;
+                //SelectDevice.SelectedIndex = SelectedDeviceType;
+                SelectDevice.SelectedIndex = app.Skanowanie;
             }
             catch
             {
@@ -188,18 +189,7 @@ namespace App2.View
         //public IList<string> DeviceList;
 
 
-        private string _selectedDevice;
-        public string SelectedDevice
-        {
-            get
-            {
-                return _selectedDevice;
-            }
-            set
-            {
-                _selectedDevice = value;
-            }
-        }
+       
 
         private void SprConn_Clicked(object sender, EventArgs e)
         {
@@ -470,17 +460,20 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
 
             }
-
-
-
-
-
+             
         }
 
         private void SelectDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
-             
-            SelectedDeviceType = (SByte)SelectDevice.SelectedIndex;
+
+            var appp = Application.Current as App; 
+
+            int selectedIndex = SelectDevice.SelectedIndex;
+            appp.Skanowanie = (SByte)selectedIndex;
+
+
+            //SelectedDeviceType = (SByte)SelectDevice.SelectedIndex;
+            SelectedDeviceType = appp.Skanowanie;
 
         }
     }

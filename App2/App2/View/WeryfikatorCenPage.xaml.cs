@@ -264,6 +264,8 @@ namespace App2.View
         }
 
         List<string> ceny;
+        private List<string> nowy;
+
         private void ViewCell_Tapped(object sender, EventArgs e)
         {
             ceny = new List<string>();
@@ -305,7 +307,7 @@ namespace App2.View
             Device.OpenUri(new Uri(twr_url.Replace("Miniatury/", "")));
         }
 
-        private List<string> nowy;
+        //private List<string> nowy;
         private async void ViewCell_Tapped_1(object sender, EventArgs e)
         {
             nowy = new List<string>();

@@ -129,7 +129,13 @@ namespace App2.Model
                         " [nrdok] [varchar] (55) NULL, " +
                         " [gid_optima] int NULL " +
                         ",[IsExport] [bit] NULL"+
-                        ") ON[PRIMARY]  end";
+                        ") ON[PRIMARY]  end " +
+                        "else "+
+      "IF COL_LENGTH('[dbo].[MM]', 'IsExport') IS NULL "+ 
+       " begin " +
+       "   alter table[dbo].[MM] " + 
+       "   add[IsExport][bit] NULL " +
+      "end";
 
             string query = "declare @id int " +
                     "set @id = (select IsNull(MAX(gidnumer), 0) from [dbo].[MM])+1 " +
@@ -145,8 +151,11 @@ namespace App2.Model
                     Convert.ToByte(dokMM.IsExport) +
                     ") ";
 
-            SqlCommand command = new SqlCommand( create + " " + query,connection);
+            //SqlCommand command = new SqlCommand( create + " " + query,connection);
+            SqlCommand command = new SqlCommand( create ,connection);
+            SqlCommand command2 = new SqlCommand( query ,connection);
             command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
             connection.Close();
 
             dokMMs.Add(new DokMM
@@ -188,6 +197,8 @@ namespace App2.Model
 
             while (sqlData.Read())
             {
+
+               
                 dokMMs.Add(new DokMM
                 {
                     gidnumer = Convert.ToInt32(sqlData["gidnumer"]),
@@ -196,13 +207,15 @@ namespace App2.Model
                     nrdok = Convert.ToString(sqlData["nrdok"]),
                     statuss = Convert.ToInt16(sqlData["statuss"])
                     ,_theColor = (statuss==1?Color.Black:Color.Green)
-                    ,IsExport= Convert.ToBoolean(sqlData["IsExport"])
+
+                    ,IsExport= sqlData["IsExport"] is DBNull ? false :Convert.ToBoolean(sqlData["IsExport"]) 
                 });
             }
             sqlData.Close();
             sqlData.Dispose();
             connection.Close();
 
+            
             //MainPage mainPage = new MainPage();
             //mainPage.ListaMMek.ItemsSource = dokMMs;
              

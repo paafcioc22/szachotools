@@ -68,7 +68,7 @@
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
         </Grid>
-        <!--<ActivityIndicator x:Name="WaitIco" 
+        <!--<ActivityIndicator x:Name="WaitIco2" 
                            IsRunning="False" 
                            IsVisible="false" 
                            HorizontalOptions="Center" 

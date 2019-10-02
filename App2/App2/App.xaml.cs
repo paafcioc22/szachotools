@@ -17,11 +17,12 @@ namespace App2
         private const string bazaProd = "bazaProd";
         private const string cennik = "cennik";
         private const string drukarka = "drukarka";
+        private const string skanowanie = "skanowanie";
 
         public App()
         {
             InitializeComponent(); 
-            MainPage = new NavigationPage( new View.StartPage());
+            MainPage = new NavigationPage( new View.SplashPage());
         }
 
 
@@ -163,6 +164,20 @@ namespace App2
 
         }
 
+        public sbyte Skanowanie
+        {
+            get
+            {
+                if (Properties.ContainsKey(skanowanie))
+                    return (sbyte)Properties[skanowanie];
+                return 1;
+            }
+            set
+            {
+                Properties[skanowanie] = value;
+            }
+
+        }
 
     }
 }

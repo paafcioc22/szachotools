@@ -212,7 +212,7 @@ namespace App2.View
             MyListView.ItemsSource = ListaLogin;
         }
 
-        bool IsPassCorrect()
+        public bool IsPassCorrect()
         {
 
             var isNumeric = int.TryParse(entry_haslo.Text, out int n);
@@ -252,8 +252,9 @@ namespace App2.View
                   
                 if (IsPassCorrect())
                 {
-                    // DisplayAlert(null, "Brawo- OK", "OK");
-                    View.StartPage.user = _user;
+                     
+
+                    View.StartPage.user = _user;  
                     
                    
                     View.StartPage startPage = new StartPage();
@@ -271,7 +272,10 @@ namespace App2.View
 
         private static readonly  byte[] salt = Encoding.ASCII.GetBytes("Xamarin.iOS Version: 7.0.6.168");
 
-         
+        protected override bool OnBackButtonPressed()
+        {
+            return base.OnBackButtonPressed();
+        }
 
 
         //public static byte[] EncryptTextToMemory(string Data, byte[] Key, byte[] IV)
@@ -329,7 +333,7 @@ namespace App2.View
 
 
                 View.StartPage.user = _user;
-                                 
+                 
                 View.StartPage startPage = new StartPage();
                 startPage.OdblokujPrzyciski();
                  

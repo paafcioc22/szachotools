@@ -22,7 +22,7 @@ namespace App2.View
             this.BindingContext = this;
             this.IsBusy = false;
             //this.IsEnabled = false;
-            user = "";
+           // user = "";
             // sprwersja();
              
         }
@@ -121,15 +121,20 @@ namespace App2.View
         {
             base.OnAppearing();
 
-            if (user != "" )
+            if (!string.IsNullOrEmpty(user) && user!= "Wylogowany" )
             {
-                lbl_user.Text = user;
+                lbl_user.Text = "Zalogowany : "+ user; //dodałem zalogowane
             }
 
-           
-                sprwersja();
+            if ( user == "Wylogowany")
+            {
+                lbl_user.Text = "Wylogowany" ; //dodałem zalogowane
+            }
 
-                if ((lbl_user.Text == "") || (lbl_user.Text == null) || (lbl_user.Text == "Wylogowany"))
+
+            sprwersja();
+              
+                if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
                 {
                     blokujPrzyciski();
                 }
@@ -216,7 +221,8 @@ namespace App2.View
                 {
                     var pracownik = args.SelectedItem as Pracownik;
                     page.SkanujIdetyfikator();
-                    lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
+                    if(page.IsPassCorrect())
+                        lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
                    // Navigation.PopModalAsync();
                 };
 
@@ -230,9 +236,7 @@ namespace App2.View
                 await DisplayAlert(null, "Brak połączenia z siecią", "OK");
             btn_login.IsEnabled = true;
 
-
-            
-
+              
         }
 
         private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
@@ -294,6 +298,7 @@ namespace App2.View
         private bool _userTapped;
         private async void Btn_settings_Tapped(object sender, EventArgs e)
         {
+             
             if (_userTapped)
                 return;
 

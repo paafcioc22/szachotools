@@ -360,15 +360,20 @@ namespace App2.View
         {
             if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
-                if(SprIlosc())
-                ile_zeskanowancyh += 1;
-                if (CanPrint)
-                    PrintCommand();
-                //DisplayAlert(null, "Drukuje..", "OK");
-                Zapisz();
-                entry_kodean.Text = ile_zeskanowancyh.ToString();
-                entry_EanSkaner.Text = "";
-                entry_EanSkaner.Focus();
+                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                {
+                    ile_zeskanowancyh += 1;
+                    if (CanPrint)
+                        PrintCommand();
+                    //DisplayAlert(null, "Drukuje..", "OK");
+                    Zapisz();
+                    entry_kodean.Text = ile_zeskanowancyh.ToString();
+                    entry_EanSkaner.Text = "";
+                    entry_EanSkaner.Focus();
+                }
+                else {
+                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                }
             }
             else {
                 DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
@@ -871,7 +876,9 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
-            if (ile_zeskanowancyh > 0)
+             
+            //if (ile_zeskanowancyh > 0)
+            if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
                 _akcja.TwrSkan = ile_zeskanowancyh;
             return base.OnBackButtonPressed();
         }

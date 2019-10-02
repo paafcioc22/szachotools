@@ -375,7 +375,7 @@ namespace App2.View
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             // var sss = sender.GetType();
-            var stack = (StackLayout)sender;
+            var stack = (AbsoluteLayout)sender;
             var label = (Label)stack.Children[0];
 
             string dep = label.Text;

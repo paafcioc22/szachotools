@@ -266,7 +266,7 @@ namespace App2.View
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
-                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt))
+                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt) && Int32.Parse(ilosc.Text) == 0)
                 {
                     DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
                 }
@@ -298,7 +298,7 @@ namespace App2.View
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
-                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt))
+                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt) && Int32.Parse(ilosc.Text) == 0)
                 {
                     await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
                 }
