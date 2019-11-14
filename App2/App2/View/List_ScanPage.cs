@@ -1,11 +1,11 @@
-﻿using Acr.UserDialogs;
+﻿ 
 using App2.Model;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using SQLite;
 using System;
 using System.Threading;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
  
@@ -36,7 +36,7 @@ namespace App2.View
         bool CanPrint;
 
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
-        private  ISewooXamarinCPCL cpclPrinter;
+       // private  ISewooXamarinCPCL cpclPrinter;
         string drukarka;
 
 
@@ -116,7 +116,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Device.OpenUri(new Uri(_akcja.TwrUrl.Replace("Miniatury/", "")));
+                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", ""));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -251,7 +251,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Device.OpenUri(new Uri(_akcja.TwrUrl.Replace("Miniatury/", "")));
+                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", ""));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -267,7 +267,6 @@ namespace App2.View
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
             lbl_stan.Text = "Stan : " + _akcja.TwrStan + " szt";
             lbl_stan.FontAttributes = FontAttributes.Bold;
-
             stackLayout.Children.Add(lbl_stan);
 
             lbl_twrkod = new Label();
@@ -277,6 +276,15 @@ namespace App2.View
             lbl_ean = new Label();
             lbl_ean.HorizontalOptions = LayoutOptions.Center;
             lbl_ean.Text = _akcja.TwrEan;
+            lbl_ean.TextDecorations = TextDecorations.Underline;
+            var tapCopyLabelEan = new TapGestureRecognizer();
+            tapCopyLabelEan.Tapped += async(s, e) =>
+              {
+                  await Clipboard.SetTextAsync(_akcja.TwrEan);
+                  await DisplayAlert(null, "skopiowano ean", "ok");
+              };
+            lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
+
 
             entry_kodean = new Entry()
             {
@@ -341,14 +349,14 @@ namespace App2.View
 
 
             stackLayout.VerticalOptions = LayoutOptions.Center;
-            stackLayout.Padding = new Thickness(15, 0, 15, 0);
-            stackLayout.Padding = 8;
+            stackLayout.Padding = new Thickness(8, 0, 8, 0);
+            //stackLayout.Padding = 8;
             //stackLayout_gl.Children.Add(layout);   //dodane
             stackLayout_gl.Children.Add(stackLayout);
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 stackLayout_gl.Children.Add(enterEanButton);
             stackLayout_gl.Children.Add(open_url);
-            stackLayout_gl.Padding = new Thickness(15);
+            stackLayout_gl.Padding = new Thickness(8,0,8,0);
 
             scrollView.Content = stackLayout_gl;
 
@@ -356,59 +364,59 @@ namespace App2.View
             Appearing += (object sender, System.EventArgs e) => entry_EanSkaner.Focus();
         }
 
-        void zapiszdrukuj()
+        async void zapiszdrukuj()
         {
             if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
-                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                ile_zeskanowancyh += 1;
+                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                 {
-                    ile_zeskanowancyh += 1;
                     if (CanPrint)
                         PrintCommand();
                     //DisplayAlert(null, "Drukuje..", "OK");
                     Zapisz();
                     entry_kodean.Text = ile_zeskanowancyh.ToString();
                     entry_EanSkaner.Text = "";
+                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh+1))
                     entry_EanSkaner.Focus();
                 }
                 else {
-                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                   await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                   ile_zeskanowancyh -= 1;
                 }
             }
             else {
-                DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
-                entry_EanSkaner.Text = "";
+               await DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
+               entry_EanSkaner.Text = "";
             }
         }
         
 
         private async void EnterEan_Clicked(object sender, EventArgs e)
         {
-            PromptResult prr = await UserDialogs.Instance.PromptAsync
-                      (
-                          new PromptConfig
-                          {
-                              InputType = InputType.Number,
-                              Placeholder = "Wprowadź Ean:  ",
-                              OkText = "Drukuj",
-                              CancelText = "Anuluj",
-                              Title ="Druk bez zliczania sztuk",
-                              Message="( awaryjny )"
-                        }
-                      );
-             
-            if (prr.Text != "")
+            try
             {
-                if (_akcja.TwrEan == (prr.Text))
+                 
+                string odpowiedz = await DisplayPromptAsync("Druk bez zliczania sztuk", "( awaryjny )", "Drukuj","Anuluj", "Wprowadź Ean:");
+
+                if (odpowiedz != "")
                 {
-                    string ile = prr.Text.Substring(prr.Text.IndexOf(",", 0) + 1, 1);
-                    
-                    if (CanPrint)
-                        PrintCommand();
+                    if (_akcja.TwrEan == (odpowiedz))
+                    {
+                        //string ile = odpowiedz.Text.Substring(odpowiedz.Text.IndexOf(",", 0) + 1, 1);
+
+                        if (CanPrint)
+                            PrintCommand();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Uwaga", "Podany Ean nie pasuje", "OK");
+                    }
                 }
-                else {
-                   await  DisplayAlert("Uwaga", "Podany Ean nie pasuje", "OK");
-                }
+            }
+            catch (Exception x)
+            {
+                await DisplayAlert(null, x.Message, "OK"); ;
             }
 
         }
@@ -453,7 +461,7 @@ namespace App2.View
 
                             if (skanean == lbl_ean.Text)
                             {
-                                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                                 {
                                     ile_zeskanowancyh += 1;
                                     overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
@@ -466,7 +474,7 @@ namespace App2.View
 
                                 }
                                 else {
-                                          DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                                     DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
 
                                 }
 
@@ -606,7 +614,7 @@ namespace App2.View
 
                 }
             }
-            catch (Exception x)
+            catch (Exception )
             {
                 await DisplayAlert(null, "Błąd", "OK");
             }
@@ -776,7 +784,7 @@ namespace App2.View
             }
         }
 
-        private bool SprIlosc(int stan, int skan)
+        private bool CzyMniejszeNStan(int stan, int skan)
         {
             if (skan <= stan)
                 return true;
@@ -824,11 +832,12 @@ namespace App2.View
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+            entry_EanSkaner.Focus();
             if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
             {
 
                 ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
-                if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                 {
                     Zapisz();
                     if (ile_zeskanowancyh > 0)
@@ -876,11 +885,19 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
-             
-            //if (ile_zeskanowancyh > 0)
-            if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
                 _akcja.TwrSkan = ile_zeskanowancyh;
             return base.OnBackButtonPressed();
+
+             
+            //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+            //    _akcja.TwrSkan = ile_zeskanowancyh;
+            //else
+            //{
+
+            //   DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+            //    return base.OnBackButtonPressed(); ;
+            //}
+            //return base.OnBackButtonPressed();
         }
 
     }

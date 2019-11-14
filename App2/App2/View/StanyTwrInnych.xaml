@@ -7,7 +7,7 @@
 
 
     <StackLayout Padding="10" VerticalOptions="FillAndExpand">
-        <ScrollView VerticalOptions="FillAndExpand">
+        
              
 
 
@@ -19,7 +19,11 @@
                     <!--Built in Cells-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextCell Text="{Binding Magazyn}" Detail="{Binding Ilosc, StringFormat= '{0} szt'}"  TextColor="DarkCyan"/>
+                            <ImageCell Text="{Binding Magazyn}" 
+                                      Detail="{Binding Ilosc, StringFormat= '{0} szt'}"  
+                                      TextColor="DarkCyan" 
+                                      ImageSource="phone"
+                                       />
                         </DataTemplate>
                     </ListView.ItemTemplate>
 
@@ -40,8 +44,10 @@
                 -->
                 </ListView>
              
-        </ScrollView>
-    <SearchBar Placeholder="Filtruj oddział.." TextChanged="szukaj_TextChanged"  HeightRequest="40" x:Name="szukaj" />
+       
+    <SearchBar Placeholder="Filtruj oddział.." 
+               TextChanged="szukaj_TextChanged"  
+               HeightRequest="40" x:Name="szukaj" />
             
     </StackLayout>
         

@@ -11,6 +11,7 @@ public class MasterDetailContainer
 	static {
 		__md_methods = 
 			"n_onLayout:(ZIIII)V:GetOnLayout_ZIIIIHandler\n" +
+			"n_onAttachedToWindow:()V:GetOnAttachedToWindowHandler\n" +
 			"";
 		mono.android.Runtime.register ("Xamarin.Forms.Platform.Android.AppCompat.MasterDetailContainer, Xamarin.Forms.Platform.Android", MasterDetailContainer.class, __md_methods);
 	}
@@ -40,20 +41,20 @@ public class MasterDetailContainer
 	}
 
 
-	public MasterDetailContainer (android.content.Context p0, android.util.AttributeSet p1, int p2, int p3)
-	{
-		super (p0, p1, p2, p3);
-		if (getClass () == MasterDetailContainer.class)
-			mono.android.TypeManager.Activate ("Xamarin.Forms.Platform.Android.AppCompat.MasterDetailContainer, Xamarin.Forms.Platform.Android", "Android.Content.Context, Mono.Android:Android.Util.IAttributeSet, Mono.Android:System.Int32, mscorlib:System.Int32, mscorlib", this, new java.lang.Object[] { p0, p1, p2, p3 });
-	}
-
-
 	public void onLayout (boolean p0, int p1, int p2, int p3, int p4)
 	{
 		n_onLayout (p0, p1, p2, p3, p4);
 	}
 
 	private native void n_onLayout (boolean p0, int p1, int p2, int p3, int p4);
+
+
+	public void onAttachedToWindow ()
+	{
+		n_onAttachedToWindow ();
+	}
+
+	private native void n_onAttachedToWindow ();
 
 	private java.util.ArrayList refList;
 	public void monodroidAddReference (java.lang.Object obj)

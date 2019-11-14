@@ -3,10 +3,12 @@ public class MonoPackageManager_Resources {
 	public static String[] Assemblies = new String[]{
 		/* We need to ensure that "App2.Android.dll" comes first in this list. */
 		"App2.Android.dll",
-		"Acr.UserDialogs.dll",
-		"AndHUD.dll",
 		"App2.dll",
 		"FastAndroidCamera.dll",
+		"FFImageLoading.dll",
+		"FFImageLoading.Forms.dll",
+		"FFImageLoading.Forms.Platform.dll",
+		"FFImageLoading.Platform.dll",
 		"FormsViewGroup.dll",
 		"Plugin.SewooXamarinSDK.Abstractions.dll",
 		"Plugin.SewooXamarinSDK.dll",

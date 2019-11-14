@@ -58,8 +58,8 @@ namespace App2.View
 
             await splashImage.FadeTo(0.8, 1000, Easing.Linear);
 
-            szachoLabel.FadeTo(0, 1000, Easing.Linear); 
-           await splashImage.FadeTo(0, 1000, Easing.Linear);
+            szachoLabel.FadeTo(0.1, 1200, Easing.Linear); 
+           await splashImage.FadeTo(0.01, 1200, Easing.Linear);
             //await splashImage.ScaleTo(0, 1500, Easing.Linear);
             Application.Current.MainPage = new NavigationPage(new StartPage());    //After loading  MainPage it gets Navigated to our new Page
         }

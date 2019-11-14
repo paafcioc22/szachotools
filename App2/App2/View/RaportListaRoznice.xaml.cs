@@ -314,61 +314,67 @@ namespace App2.View
         private async void Btn_SendRaport_Clicked(object sender, EventArgs e)
         {
 
-
-
-
-            var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
-            if (action)
+             var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
+            try
             {
-                if (lista.Count != 0)
+
+                if (action)
                 {
-                    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
-                    if (Maglista.ToString() == "OK")
+                    if (lista.Count != 0)
                     {
-                        await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
-
-                        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
-
-                        //var wpis = wynik[0];
-
-                        foreach (var wpis in wynik)
+                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                        if (Maglista.ToString() == "OK")
                         {
-                            wpis.Sended = true;
-                            await _connection.UpdateAsync(wpis);
+                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+
+                            var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
+
+                            //var wpis = wynik[0];
+
+                            foreach (var wpis in wynik)
+                            {
+                                wpis.Sended = true;
+                                await _connection.UpdateAsync(wpis);
+                            }
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                            //await Navigation.PopToRootAsync();
+
                         }
                     }
                     else
                     {
-                        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                        //await Navigation.PopToRootAsync();
+                        lista.Add(new Model.ListDiffrence
+                        {
+                            twrkod = "Lista zgodna",
+                            IleZeSkan = 0,
+                            IleZMM = 0,
+                            ilosc = 0,
+                            NrDokumentu = _nrdokumentu,
+                            GidMagazynu = _MagGidnumer,
+                            DataDokumentu = _DataDokumentu,
+                            Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
+                            XLGidMM = _XLgidnumer
+                        });
 
+                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                        if (Maglista.ToString() == "OK")
+                        {
+                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                        }
                     }
                 }
-                else
-                {
-                    lista.Add(new Model.ListDiffrence
-                    {
-                        twrkod = "Lista zgodna",
-                        IleZeSkan = 0,
-                        IleZMM = 0,
-                        ilosc = 0,
-                        NrDokumentu = _nrdokumentu,
-                        GidMagazynu = _MagGidnumer,
-                        DataDokumentu = _DataDokumentu,
-                        Operator = View.LoginLista._user +" "+View.LoginLista._nazwisko,
-                        XLGidMM = _XLgidnumer
-                    });
+            }
+            catch (Exception x)
+            {
 
-                    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
-                    if (Maglista.ToString() == "OK")
-                    {
-                        await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
-                    }
-                    else
-                    {
-                        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                    }
-                }
+                await DisplayAlert(null, x.Message, "OK");
             }
         }
     }

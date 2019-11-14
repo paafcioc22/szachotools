@@ -65,7 +65,8 @@ namespace App2.Droid
                        Id = mag.Id,
                        Magazyn = mag.Magazyn,
                        Region = mag.Region,
-                       Ilosc = mag.Ilosc
+                       Ilosc = mag.Ilosc,
+                       MagKod=mag.MagKod
                     });
                 }
                 return Items;

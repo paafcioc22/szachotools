@@ -129,7 +129,7 @@ namespace App2.View
                 if (list.Count > 0)
                 {
 
-                    for (int i = 0; i <= list.Count(); i++)
+                    for (int i = 0; i <= list.Count()-1; i++)
                     {
                         listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
                         PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
@@ -255,7 +255,7 @@ namespace App2.View
                     //DisplayAlert("Connected", "Połączono z siecia", "OK");
                     return true;
                 }
-                catch (Exception x )
+                catch (Exception  )
                 {
                     //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
                     //string aa=x.Message;

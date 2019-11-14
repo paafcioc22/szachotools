@@ -6,8 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using ZXing.Net.Mobile;
-using Acr.UserDialogs;
+using ZXing.Net.Mobile; 
 using System.Net;
 using Android.Content;
 using Android.Util;
@@ -30,7 +29,11 @@ namespace App2.Droid
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
            // UserDialogs.Init(this);
-            UserDialogs.Init(() => this);
+            //UserDialogs.Init(() => this);
+
+            //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true); 
+
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
 using static Xamarin.Forms.Button;
@@ -240,7 +241,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Device.OpenUri(new Uri(mmka.url.Replace("Miniatury/", "")));
+                Launcher.OpenAsync(mmka.url.Replace("Miniatury/", ""));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
             stackLayout.Children.Add(img_foto);
@@ -347,7 +348,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Device.OpenUri(new Uri(akcje.TwrUrl.Replace("Miniatury/", "")));
+                Launcher.OpenAsync(akcje.TwrUrl.Replace("Miniatury/", ""));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
             stackLayout.Children.Add(img_foto);

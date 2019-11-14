@@ -2,78 +2,83 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.WeryfikatorCenPage">
-    
+
     <StackLayout VerticalOptions="FillAndExpand" >
         <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
             <Label Text="Weryfikator Cen" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
         </StackLayout>
-        <StackLayout VerticalOptions="CenterAndExpand">
-            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">
+        <ScrollView>
 
-                <Image x:Name="img_foto" Aspect="AspectFill" >
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer  Tapped="TapGestureRecognizer_Tapped" />
-                    </Image.GestureRecognizers>
-                </Image>
-                 
-                <Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>
-             
-                <TableView Intent="Data" RowHeight="30"  >
-                    <TableRoot >
-                        <TableSection Title="" >
-                            <ViewCell >
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0" > 
-                                    <Label Text="Kod " VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="twr_kod" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Black" FontAttributes="Bold"/>
-                                </StackLayout> 
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
-                                    <Label Text="Nazwa " VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="lbl_twrnazwa" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">
+
+                    <Image x:Name="img_foto" Aspect="AspectFill" >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer  Tapped="TapGestureRecognizer_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>
+
+                    <TableView Intent="Data" RowHeight="30"  >
+                        <TableRoot >
+                            <TableSection Title="" >
+                                <ViewCell >
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0" >
+                                        <Label Text="Kod " VerticalOptions="Center"/>
+                                        <Label Text="" x:Name="twr_kod" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Black" FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                        <Label Text="Nazwa " VerticalOptions="Center"/>
+                                        <Label Text="" x:Name="lbl_twrnazwa" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
                                            TextColor="Black" FontAttributes="Bold"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
-                                    <Label Text="EAN " VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="lbl_twrkod" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                        <Label Text="EAN " VerticalOptions="Center"/>
+                                        <Label Text="" x:Name="lbl_twrkod" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
                                            TextColor="Black" FontAttributes="Bold"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
-                                    <Label Text="symbol " VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="lbl_twrsymbol" HorizontalOptions="EndAndExpand"  VerticalOptions="Center" TextColor="Black" FontAttributes="Bold"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell Tapped="ViewCell_Tapped"> 
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
-                                    <Label x:Name="lbl_cennik"  VerticalOptions="Center"/>
-                                    <Label Text="" x:Name="lbl_twrcena" HorizontalOptions="EndAndExpand" 
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                        <Label Text="symbol " VerticalOptions="Center"/>
+                                        <Label Text="" x:Name="lbl_twrsymbol" HorizontalOptions="EndAndExpand"  VerticalOptions="Center" TextColor="Black" FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell Tapped="ViewCell_Tapped">
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                        <Label x:Name="lbl_cennik"  VerticalOptions="Center"/>
+                                        <Label Text="" x:Name="lbl_twrcena" HorizontalOptions="EndAndExpand" 
                                            VerticalOptions="Center"
                                            TextColor="Black" FontAttributes="Bold" TextDecorations="Underline"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                            
-                                <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
-                                    <Label Text="stan " VerticalOptions="Center"/>
-                                    <Button Text="stany innych" Clicked="BtnShowOther_Clicked" BorderRadius="15" FontSize="8"  HorizontalOptions="CenterAndExpand" VerticalOptions="Center" />
-                                    <Label Text="" x:Name="lbl_stan" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+
+                                    <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
+                                        <Label Text="stan " VerticalOptions="Center"/>
+                                        <Button Text="stany innych" Clicked="BtnShowOther_Clicked" BorderRadius="15" FontSize="8"  HorizontalOptions="CenterAndExpand" VerticalOptions="Center" />
+                                        <Label Text="" x:Name="lbl_stan" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
                                            TextColor="Black" FontAttributes="Bold" />
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell Tapped="ViewCell_Tapped_1"    >
-                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="23,0" Spacing="0">
-                                    <Label Text="aktualne akcje " VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextDecorations="Underline" TextColor="#000000"/>
-                                </StackLayout>
-                            </ViewCell>
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
-        </StackLayout>
-    </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell Tapped="ViewCell_Tapped_1"    >
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="23,0" Spacing="0">
+                                        <Label Text="aktualne akcje " VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextDecorations="Underline" TextColor="#000000"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </TableSection>
+                        </TableRoot>
+                    </TableView>
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
         <Entry Placeholder="Wpisz/skanuj kod" 
                x:Name="manualEAN" 
                HorizontalOptions="CenterAndExpand" 
@@ -87,5 +92,7 @@
                 Clicked="ScanTwr_Clicked" 
                 HorizontalOptions="FillAndExpand" 
                 VerticalOptions="EndAndExpand"/>
+
     </StackLayout>
+
 </ContentPage>

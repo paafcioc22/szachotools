@@ -1,4 +1,4 @@
-﻿using Acr.UserDialogs;
+﻿
 using SQLite;
 using System;
 using System.Linq;
@@ -51,24 +51,12 @@ namespace App2.View
                     return;
                 var mmka = e.Item as Model.RaportListaMM;
 
+                string odpowiedz = await DisplayPromptAsync("Podaj Nową Wartość:", null, "Zatwierdź", "Anuluj", "Ilość",-1, Keyboard.Numeric);
 
-                PromptResult prr = await UserDialogs.Instance.PromptAsync
-                    (
-                        new PromptConfig
-                        {
-                            InputType = InputType.Number,
-                            Message = "Podaj Ilośc:  ",
-                            OkText = "Zatwierdź",
-                            CancelText = "Anuluj",
-                            
-                           // Title = "Pytanie..",
-                           // IsCancellable = true,
-                        }
-                    );
-                //await DisplayAlert("info", prr.Text, "ok");
-                if (prr.Text != "")
+                  
+                if (!String.IsNullOrEmpty(odpowiedz))
                 {
-                    mmka.ilosc_OK = Convert.ToInt16(prr.Text);
+                    mmka.ilosc_OK = Convert.ToInt16(odpowiedz);
                     await _connection.UpdateAsync(mmka);
                 }
 

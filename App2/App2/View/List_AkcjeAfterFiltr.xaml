@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App2.View.List_AkcjeAfterFiltr">
+             x:Class="App2.View.List_AkcjeAfterFiltr"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             >
 
 
 
@@ -14,7 +16,7 @@
         </StackLayout>
 
 
-        <ListView x:Name="MyListView" HasUnevenRows="True"
+        <ListView x:Name="MyListView" RowHeight="80" 
                 ItemsSource="{Binding Items}"
                   BindingContext="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"
@@ -99,8 +101,21 @@
                             <Image  Source="{Binding TwrUrl}" 
                                        AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
                                        AbsoluteLayout.LayoutFlags="All"
-                                       
+                                       Aspect="AspectFill"
                                         />
+                            <!--<ffimageloading:CachedImage 
+                            Source="{Binding TwrUrl}"
+                            LoadingPlaceholder= "LoaderImage"
+                            ErrorPlaceholder= "ErrorImage"
+                            CacheDuration= "50"
+                            RetryCount= "3"
+                            RetryDelay= "600"
+                            DownsampleToViewSize = "true"
+                                AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       Aspect="AspectFill"
+                            />-->
+                            
                             <!--</StackLayout>-->
 
                         </AbsoluteLayout>

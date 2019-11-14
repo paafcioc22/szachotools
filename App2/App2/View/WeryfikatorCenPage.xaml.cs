@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -171,50 +171,54 @@ namespace App2.View
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand();
 
-                    connection.Open();
-                    command.CommandText = "Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                        ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
-                        "from cdn.towary " +
-                        "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwCNumer =  " + NrCennika +
-                        " join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
-                        "where twr_ean='" + _ean + "'" +
-                        "group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
-
-
-                    SqlCommand query = new SqlCommand(command.CommandText, connection);
-                    SqlDataReader rs;
-                    rs = query.ExecuteReader();
-                    if (rs.Read())
+                    if (!string.IsNullOrEmpty(_ean))
                     {
-                        twrkod = Convert.ToString(rs["twr_kod"]);
-                        twrgidnumer = Convert.ToString(rs["twr_gidnumer"]);
-                        stan_szt = Convert.ToString(rs["ilosc"]);
-                        twr_url = Convert.ToString(rs["twr_url"]);
-                        twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
-                        twr_symbol = Convert.ToString(rs["twr_symbol"]);
-                        twr_ean = Convert.ToString(rs["twr_ean"]);
-                        twr_cena = Convert.ToString(rs["cena"]);
+                        SqlCommand command = new SqlCommand();
 
-                        // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
-                    }
-                    else
-                    {
-                        string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                        var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                        twrgidnumer = dane[0].TwrGidnumer.ToString();
-                        twrkod = dane[0].twrkod;
-                        twr_url = dane[0].url;
-                        twr_nazwa = dane[0].nazwa;
-                        twr_ean = dane[0].ean;
-                        twr_cena = dane[0].cena;
+                        connection.Open();
+                        command.CommandText = "Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
+                            ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
+                            "from cdn.towary " +
+                            "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwCNumer =  " + NrCennika +
+                            " join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
+                            "where twr_ean='" + _ean + "'" +
+                            "group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
-                        await DisplayAlert("Uwaga", "Brak stanów lub nie istnieje!", "OK");
+
+                        SqlCommand query = new SqlCommand(command.CommandText, connection);
+                        SqlDataReader rs;
+                        rs = query.ExecuteReader();
+                        if (rs.Read())
+                        {
+                            twrkod = Convert.ToString(rs["twr_kod"]);
+                            twrgidnumer = Convert.ToString(rs["twr_gidnumer"]);
+                            stan_szt = Convert.ToString(rs["ilosc"]);
+                            twr_url = Convert.ToString(rs["twr_url"]);
+                            twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
+                            twr_symbol = Convert.ToString(rs["twr_symbol"]);
+                            twr_ean = Convert.ToString(rs["twr_ean"]);
+                            twr_cena = Convert.ToString(rs["cena"]);
+
+                            // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
+                        }
+                        else
+                        {
+                            string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                            var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                            twrgidnumer = dane[0].TwrGidnumer.ToString();
+                            twrkod = dane[0].twrkod;
+                            twr_url = dane[0].url;
+                            twr_nazwa = dane[0].nazwa;
+                            twr_ean = dane[0].ean;
+                            twr_cena = dane[0].cena;
+
+                            await DisplayAlert("Uwaga", "Brak stanów lub nie istnieje!", "OK");
+                        }
+                        rs.Close();
+                        rs.Dispose();
+                        connection.Close(); 
                     }
-                    rs.Close();
-                    rs.Dispose();
-                    connection.Close();
 
                 }
                 catch (Exception exception)
@@ -304,7 +308,7 @@ namespace App2.View
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri(twr_url.Replace("Miniatury/", "")));
+            Launcher.OpenAsync(twr_url.Replace("Miniatury/", "")) ;
         }
 
         //private List<string> nowy;
