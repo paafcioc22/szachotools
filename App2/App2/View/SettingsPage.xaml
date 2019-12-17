@@ -27,19 +27,19 @@
                 x:Name="Ipserwer" Text="{Binding Serwer}"
                 Placeholder="IP serwer.." 
                 VerticalOptions="FillAndExpand" 
-                Keyboard="Text" 
+                Keyboard="Text" HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
                 />
                 <Label Text="Baza Konfiguracyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
                 <Entry 
                 x:Name="Instancja" Text="{Binding BazaConf}"
-                Placeholder="Instancja.."  
+                Placeholder="Instancja.." HorizontalOptions="Center" 
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
                 <!--Text="CDN_KNF_Konfiguracja"-->
                 <Label Text="Baza Produkcyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
                 <Entry 
-                x:Name="BazaProd" Text="{Binding BazaProd}"
+                x:Name="BazaProd" Text="{Binding BazaProd}" HorizontalOptions="Center"
                 Placeholder="Baza firmowa..(wypełniane automatycznie)"  IsEnabled="False"
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
@@ -57,7 +57,7 @@
 
                 <Entry 
                 x:Name="Haslo" Text="{Binding Password}"
-                Placeholder="Hasło.." 
+                Placeholder="Hasło.."  HorizontalOptions="Center"
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
                 IsPassword="True" Margin="0,0,25,0">
@@ -99,7 +99,7 @@
                 <Picker x:Name="SelectDevice"
                     Title="Wybierz urządzenie"
                     SelectedIndexChanged="SelectDevice_SelectedIndexChanged" 
-               
+               HorizontalOptions="Center"
                     >
                 </Picker>
                 

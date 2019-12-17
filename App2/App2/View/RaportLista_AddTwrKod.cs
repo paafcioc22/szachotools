@@ -34,35 +34,224 @@ namespace App2.View
         ZXingDefaultOverlay overlay;
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
-       
-
-        //public event EventHandler DoPush;
-        ////call this on putton click or whenever you want
-        //private void OnDoPush()
-        //{
-        //    if (DoPush != null)
-        //    {
-        //        DoPush(this, EventArgs.Empty);
-        //    }
-        //}
 
 
-        //protected override void OnAppearing()
-        //{
-        //    base.OnAppearing();
-        //    SkanowanieEan();
-        //}
+        string twrkod;
+        string stan_szt;
+        string twr_url;
+        string twr_nazwa;
+        string twr_symbol;
+        string twr_ean;
+        string twr_cena;
+
 
         public RaportLista_AddTwrKod(int gidnumer) : base() //dodawamoe pozycji
         {
-            this.Title = "Dodaj MM";
+          
+            if (SettingsPage.SelectedDeviceType == 1)
+            {
+                WidokAparat(gidnumer);
+            }
+            else
+            {
+                WidokSkaner(gidnumer);
+            }
+
+            
+
+        }
+
+        private void WidokSkaner(int gidnumer)
+        {
+            StackLayout stackLayout_gl = new StackLayout();
+            StackLayout stackLayout = new StackLayout();
+            StackLayout stack_naglowek = new StackLayout();
+
+
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+
+            var scrollView = new ScrollView();
+           
+
+            NavigationPage.SetHasNavigationBar(this, false);
+
+
+            var relativeLayout = new RelativeLayout();
+            var centerLabel = new Label
+            {
+                Text = "Dodawanie Pozycji"
+               ,
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+
+                BackgroundColor = Color.YellowGreen
+            };
+
+            //RelativeLayout.SetLayoutBounds(centerLabel, new Rectangle(0, 0, 1, 10));
+            //absoluteLayout.Children.Add(centerLabel);
+
+            //relativeLayout.Children.Add(centerLabel,
+            //    widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
+            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Height*0.05)
+            //    );
+
+
+            Label lbl_naglowek = new Label();
+            lbl_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
+            lbl_naglowek.VerticalOptions = LayoutOptions.Start;
+            lbl_naglowek.HorizontalTextAlignment = TextAlignment.Center;
+            lbl_naglowek.Text = "Dodawanie pozycji";
+            lbl_naglowek.FontSize = 20;
+            lbl_naglowek.TextColor = Color.Bisque;
+            lbl_naglowek.BackgroundColor = Color.DarkCyan;
+
+
+            relativeLayout.Children.Add(lbl_naglowek,
+                yConstraint: Constraint.RelativeToParent(parent => parent.Y),
+                xConstraint: Constraint.RelativeToParent(parent => parent.X * 0.05),
+                widthConstraint: Constraint.RelativeToParent(parent => parent.Width)
+                );
+
+            //stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //stack_naglowek.VerticalOptions = LayoutOptions.Start;
+            //stack_naglowek.BackgroundColor = Color.DarkCyan;
+            //stack_naglowek.Children.Add(lbl_naglowek);
+
+            //stackLayout_gl.Children.Add(stack_naglowek);
+
+            img_foto = new Image();
+            img_foto.Aspect = Aspect.AspectFill;
+            TapGestureRecognizer tapGesture= new TapGestureRecognizer();
+            tapGesture.Tapped += (s, e) =>
+            {
+                 Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+            };
+            img_foto.GestureRecognizers.Add(tapGesture);
+             
+
+            //stackLayout.Children.Add(img_foto);
+
+            relativeLayout.Children.Add(img_foto,
+                widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
+                heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.4),
+                xConstraint: Constraint.RelativeToParent(parent => parent.X * 0.1),
+                yConstraint: Constraint.RelativeToParent(parent => parent.Y * 0.3+30)
+                );
+
+            //var box = new BoxView() { Color = Color.Red };
+            //relativeLayout.Children.Add(box,
+            //    widthConstraint: Constraint.RelativeToParent(parent => parent.Width ),
+            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.5),
+            //    xConstraint: Constraint.RelativeToParent(parent => parent.X),
+            //    yConstraint: Constraint.RelativeToParent(parent => parent.Y * 1 + 250)
+            //    );
+
+            //AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.05, 1, .4)); 
+            //AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
+            // absoluteLayout.Children.Add(img_foto);
+
+
+
+            _gidnumer = gidnumer;
+
+            lbl_stan = new Label();
+            lbl_stan.HorizontalOptions = LayoutOptions.Center;
+
+            lbl_nazwa = new Label();
+            lbl_nazwa.HorizontalOptions = LayoutOptions.Center;
+            
+            lbl_ean = new Label();
+            lbl_ean.HorizontalOptions = LayoutOptions.Center;
+
+            lbl_symbol = new Label();
+            lbl_symbol.HorizontalOptions = LayoutOptions.Center;
+
+            lbl_cena = new Label();
+            lbl_cena.HorizontalOptions = LayoutOptions.Center;
+
+            
+           
+
+            entry_kodean = new Entry();
+            entry_kodean.Keyboard = Keyboard.Text;
+            entry_kodean.Placeholder = "Wpisz EAN/kod ręcznie lub skanuj";
+            entry_kodean.Keyboard = Keyboard.Plain; 
+            entry_kodean.Unfocused += Kodean_Unfocused;
+            entry_kodean.ReturnCommand = new Command(() => entry_ilosc.Focus()); 
+
+
+            entry_ilosc = new Entry();
+            entry_ilosc.Keyboard = Keyboard.Text;
+            entry_ilosc.Placeholder = "Wpisz Ilość";
+            entry_ilosc.Keyboard = Keyboard.Telephone;
+            entry_ilosc.HorizontalOptions = LayoutOptions.Center;
+            entry_ilosc.ReturnType = ReturnType.Go; 
+            entry_ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                Zapisz(); 
+
+            };
+             
+
+            btn_Zapisz = new Button();
+            btn_Zapisz.Text = "Zapisz pozycję";
+            btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
+            btn_Zapisz.ImageSource = "save48x2.png";
+            btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
+
+            
+
+            btn_AddEanPrefix = new Button();
+            btn_AddEanPrefix.Text = "Ean 2010000..";
+            btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked; ;
+            //btn_AddEanPrefix.Image = "scan48x2.png";
+            //btn_AddEanPrefix.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
+
+
+
+            stackLayout.Children.Add(lbl_nazwa);
+            stackLayout.Children.Add(lbl_ean);
+            stackLayout.Children.Add(lbl_cena);
+            stackLayout.Children.Add(lbl_symbol);
+            stackLayout.Children.Add(entry_kodean);
+            stackLayout.Children.Add(entry_ilosc);
+            stackLayout.Children.Add(btn_Zapisz);
+            stackLayout.Children.Add(btn_AddEanPrefix);
+
+            stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
+            stackLayout.Padding = new Thickness(15, 0, 15, 0);
+
+            //stackLayout_gl.Children.Add(absoluteLayout);
+            //stackLayout_gl.Children.Add(stackLayout);
+
+
+            relativeLayout.Children.Add(stackLayout, 
+                    widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
+                    heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.5),
+                    xConstraint: Constraint.RelativeToParent(parent => parent.X),
+                    yConstraint: Constraint.RelativeToParent(parent => parent.Y * 1 + 260)
+                    );
+
+            scrollView.Content = relativeLayout;//dodane scrollview
+
+            //Content = stackLayout_gl;
+            Content = scrollView;
+
+            Appearing += (object sender, System.EventArgs e) => entry_kodean.Focus();
+        }
+
+        private void WidokAparat(int gidnumer)
+        {
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stackLayout = new StackLayout();
             StackLayout stack_naglowek = new StackLayout();
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            var scrollView = new ScrollView();
+         
             SkanowanieEan();
 
             NavigationPage.SetHasNavigationBar(this, false);
+
 
             var absoluteLayout = new AbsoluteLayout();
             var centerLabel = new Label
@@ -143,13 +332,9 @@ namespace App2.View
 
             entry_ilosc.Completed += (object sender, EventArgs e) =>
             {
-            Zapisz();
+                Zapisz();
 
-            // await ZapiszISkanujDalej();
-            //await Task.Delay(4000);
-            //await DisplayAlert(null, "Test", "ok");
 
-            //Navigation.PushModalAsync(new RaportLista_AddTwrKod(_gidnumer));
             };
 
             stackLayout.Children.Add(entry_ilosc);
@@ -181,8 +366,13 @@ namespace App2.View
             stackLayout_gl.Children.Add(stackLayout);
             absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(0, 0.5, 1, 1), AbsoluteLayoutFlags.HeightProportional);
 
-            Content = stackLayout_gl;
 
+            scrollView.Content = stackLayout_gl;//dodane scrollview
+
+            //Content = stackLayout_gl;
+            Content = scrollView;
+
+            //Content = stackLayout_gl;
         }
 
         private void Btn_AddEanPrefix_Clicked(object sender, EventArgs e)
@@ -477,11 +667,13 @@ namespace App2.View
         {
             if(ile>0)
             _akcja.TwrSkan = ile;
+
             return base.OnBackButtonPressed();
         }
 
         private void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
+            if(!string.IsNullOrEmpty(entry_kodean.Text))
             pobierztwrkod(entry_kodean.Text);
         }
 
@@ -620,7 +812,12 @@ namespace App2.View
             Zapisz();
             Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
             {
-                SkanowanieEan();
+                if (SettingsPage.SelectedDeviceType == 1)
+                {
+                    SkanowanieEan();
+                }
+                 
+                
                 return false;
             });
         }
@@ -782,13 +979,7 @@ namespace App2.View
 
 
 
-        string twrkod;
-        string stan_szt;
-        string twr_url;
-        string twr_nazwa;
-        string twr_symbol;
-        string twr_ean;
-        string twr_cena;
+        
 
         public async void pobierztwrkod(string _ean)
         {
@@ -807,7 +998,9 @@ namespace App2.View
                     };
                     connection.Open();
                     command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                        ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
+                        ",cast(sum(TwZ_Ilosc) as int)ilosc, case when len(twr_kod) > 5 and len(twr_url)> 5 then "+
+                            "replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4), "+
+                        " substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as twr_url,twr_ean " +
                         "from cdn.towary " +
                         "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
                         "left join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +

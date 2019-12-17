@@ -221,9 +221,9 @@ namespace App2.View
                     }
 
                 }
-                catch (Exception exception)
+                catch (Exception )
                 {
-                    await DisplayAlert("Uwaga", exception.Message, "OK");
+                    await DisplayAlert("Uwaga","Nie znaleziono towaru..", "OK");
                 }
             }
             else

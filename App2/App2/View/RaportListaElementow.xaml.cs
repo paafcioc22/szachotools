@@ -29,6 +29,8 @@ namespace App2.View
             var listaraport = await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == _gidnumer).ToListAsync();
             MyListView.ItemsSource = listaraport;// Model.RaportListaMM.RaportListaMMs;
 
+              
+
             base.OnAppearing();
         }
 

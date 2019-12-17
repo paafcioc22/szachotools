@@ -11,10 +11,13 @@ using System.Net;
 using Android.Content;
 using Android.Util;
 using Xamarin.Forms;
+//using Microsoft.AppCenter.Push;
+//using Microsoft.AppCenter;
+ 
 
 namespace App2.Droid
 {//, WindowSoftInputMode = Android.Views.SoftInput.AdjustResize
-    [Activity(Label = "SzachoTools", Icon = "@drawable/NewSzacho", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "SzachoTools", Icon = "@drawable/NewSzacho", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation|ConfigChanges.KeyboardHidden|ConfigChanges.Keyboard)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -28,12 +31,13 @@ namespace App2.Droid
 
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-           // UserDialogs.Init(this);
+            // UserDialogs.Init(this);
             //UserDialogs.Init(() => this);
 
             //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true); 
-
+            //Push.SetSenderId("466514621461");
+            
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());

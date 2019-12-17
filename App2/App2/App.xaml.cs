@@ -2,7 +2,9 @@
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+//using Microsoft.AppCenter;
+//using Microsoft.AppCenter.Push;
+ 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
 {
@@ -21,7 +23,9 @@ namespace App2
 
         public App()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            //AppCenter.Start("e5e8c9f5-7520-4f24-937e-3c0d00a929b0", typeof(Push));
+            //AppCenter.Start("e5e8c9f5-7520-4f24-937e-3c0d00a929b0", typeof(Push));
             MainPage = new NavigationPage( new View.SplashPage());
         }
 

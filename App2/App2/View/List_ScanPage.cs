@@ -832,7 +832,9 @@ namespace App2.View
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-            entry_EanSkaner.Focus();
+            if (SettingsPage.SelectedDeviceType != 1)
+                entry_EanSkaner.Focus();
+
             if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
             {
 

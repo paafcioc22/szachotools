@@ -170,7 +170,7 @@ namespace App2.View
                 }
                 else
                 {
-                    await DisplayAlert("Connection", "Connection failed", "OK");
+                    await DisplayAlert("Connection", "Błąd połączenia z drukarką", "OK");
                 }
             }
             catch (Exception e)
@@ -255,7 +255,7 @@ namespace App2.View
                     //DisplayAlert("Connected", "Połączono z siecia", "OK");
                     return true;
                 }
-                catch (Exception  )
+                catch (Exception x )
                 {
                     //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
                     //string aa=x.Message;
@@ -420,7 +420,7 @@ namespace App2.View
 
         }
 
-        private async  void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private  void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
 
             var profiles = Connectivity.ConnectionProfiles;
@@ -442,22 +442,24 @@ namespace App2.View
             var version = DependencyService.Get<Model.IWifiConnector>();
             if (version.IsConnectedToWifi(wifi))//Szachownica
             {
-                await DisplayAlert("Info", "Połączenie zostało już nawiązane..","OK");
+                 DisplayAlert("Info", "Połączenie zostało już nawiązane..","OK");
                 return;
             } 
 
 
             version.ConnectToWifi(wifi, "J0@rt11a");
 
-            await Task.Delay(2000);
+             Task.Delay(2000);
 
             if (version.IsConnectedToWifi(wifi))
             {
-                await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
+                 DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
 
             }
-            else {
-                await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
+            else 
+            {
+
+                 DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
 
             }
              

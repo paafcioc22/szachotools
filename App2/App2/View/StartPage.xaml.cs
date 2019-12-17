@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -39,7 +39,7 @@ namespace App2.View
             {
                 HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
 
-                iNetRequest.Timeout = 3000;
+                iNetRequest.Timeout = 4000;
 
                 WebResponse iNetResponse = iNetRequest.GetResponse();
 
@@ -104,6 +104,7 @@ namespace App2.View
          
             btn_CreateMM.IsEnabled = false;
             btn_przyjmijMM.IsEnabled = false;
+            btn_ListaAkcji.IsEnabled = false;
         }
 
         public void OdblokujPrzyciski()
@@ -111,11 +112,13 @@ namespace App2.View
 
             btn_CreateMM.IsEnabled = true;
             btn_przyjmijMM.IsEnabled = true;
+            btn_ListaAkcji.IsEnabled = true;
+
         }
 
 
-       
-         
+
+
 
         protected   override void OnAppearing()
         {
@@ -220,7 +223,15 @@ namespace App2.View
                 page.ListViewLogin.ItemSelected += (source, args) =>
                 {
                     var pracownik = args.SelectedItem as Pracownik;
-                    page.SkanujIdetyfikator();
+                    if (SettingsPage.SelectedDeviceType == 1)
+                    {
+                        page.SkanujIdetyfikator();
+                    }
+                    else {
+                        page.enthaslo.Focus();
+                    }
+
+                    
                     if(page.IsPassCorrect())
                         lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
                    // Navigation.PopModalAsync();
@@ -305,6 +316,18 @@ namespace App2.View
             _userTapped = true;
 
             await Navigation.PushModalAsync(new View.SettingsPage());
+
+            _userTapped = false;
+        }
+
+        private async void Help_Clicked(object sender, EventArgs e)
+        {
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
 
             _userTapped = false;
         }

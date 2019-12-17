@@ -9,7 +9,6 @@
     ".NETStandard,Version=v2.0/": {
       "App2/1.0.0": {
         "dependencies": {
-          "Acr.UserDialogs": "7.0.35",
           "NETStandard.Library": "2.0.3",
           "Plugin.SewooXamarin.SDK": "1.0.1",
           "System.Data.SqlClient": "4.7.0",
@@ -18,6 +17,7 @@
           "System.ServiceModel.NetTcp": "4.5.3",
           "System.ServiceModel.Security": "4.5.3",
           "Xamarin.Essentials": "1.3.1",
+          "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.3.0.947036",
           "ZXing.Net.Mobile": "2.4.1",
           "ZXing.Net.Mobile.Forms": "2.4.1",
@@ -25,14 +25,6 @@
         },
         "runtime": {
           "App2.dll": {}
-        }
-      },
-      "Acr.UserDialogs/7.0.35": {
-        "runtime": {
-          "lib/netstandard2.0/Acr.UserDialogs.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
         }
       },
       "Microsoft.NETCore.Platforms/2.1.0": {},
@@ -300,6 +292,30 @@
           }
         }
       },
+      "Xamarin.FFImageLoading/2.4.11.982": {
+        "runtime": {
+          "lib/netstandard1.0/FFImageLoading.Platform.dll": {
+            "assemblyVersion": "2.4.11.982",
+            "fileVersion": "2.4.11.982"
+          },
+          "lib/netstandard1.0/FFImageLoading.dll": {
+            "assemblyVersion": "2.4.11.982",
+            "fileVersion": "2.4.11.982"
+          }
+        }
+      },
+      "Xamarin.FFImageLoading.Forms/2.4.11.982": {
+        "dependencies": {
+          "Xamarin.FFImageLoading": "2.4.11.982",
+          "Xamarin.Forms": "4.3.0.947036"
+        },
+        "runtime": {
+          "lib/netstandard1.0/FFImageLoading.Forms.dll": {
+            "assemblyVersion": "2.4.11.982",
+            "fileVersion": "2.4.11.982"
+          }
+        }
+      },
       "Xamarin.Forms/4.3.0.947036": {
         "runtime": {
           "lib/netstandard2.0/Xamarin.Forms.Core.dll": {
@@ -351,13 +367,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Acr.UserDialogs/7.0.35": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-z/b/LYtRW6logITXFhbN65MHzuiUyDsQ4gJmui178FmEgpB2TgOwUnXE1rGw/zrU3IE5zjMcUt07oRHILarDtA==",
-      "path": "acr.userdialogs/7.0.35",
-      "hashPath": "acr.userdialogs.7.0.35.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/2.1.0": {
       "type": "package",
@@ -554,6 +563,20 @@
       "sha512": "sha512-+51728AdZ/qtABGvcIaNXgEoL2jAtxAXLHS8PvGCP0pb6n7twBqYpfgkmwHYVgu+U99szgtL+Jot8L+OXorPcA==",
       "path": "xamarin.essentials/1.3.1",
       "hashPath": "xamarin.essentials.1.3.1.nupkg.sha512"
+    },
+    "Xamarin.FFImageLoading/2.4.11.982": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-M0sNIQgUPs+le6C2TS4RmZQAURnzaRVizRtnZIZ6/1//qGcEAtEXAGt/tBJz6I1zlP6XlMxq8io6b4sjFP5N9Q==",
+      "path": "xamarin.ffimageloading/2.4.11.982",
+      "hashPath": "xamarin.ffimageloading.2.4.11.982.nupkg.sha512"
+    },
+    "Xamarin.FFImageLoading.Forms/2.4.11.982": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7X4t3J1wJj0/0o8+vd91hzSYlrqEeMFC7Mj+0T8O+fcbRSHo/c+QbWscEQiT4AaKCwyO709xq+7aY2XXbK/H7g==",
+      "path": "xamarin.ffimageloading.forms/2.4.11.982",
+      "hashPath": "xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512"
     },
     "Xamarin.Forms/4.3.0.947036": {
       "type": "package",

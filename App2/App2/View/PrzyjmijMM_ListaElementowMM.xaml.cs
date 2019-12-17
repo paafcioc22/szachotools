@@ -97,7 +97,7 @@ namespace App2.View
             try
             {
                 await Navigation.PushModalAsync(new RaportListaElementow(_gidnumer));  //!!
-                // var ile = Model.RaportListaMM.RaportListaMMs.Count;
+
                 var ile = await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == _gidnumer).ToListAsync();
 
                 if (ile.Count == 0)

@@ -30,6 +30,7 @@ namespace App2.View
          
 
         public ListView ListViewLogin { get { return MyListView; } }
+        public Entry enthaslo { get { return entry_haslo; } }
 
         public LoginLista()
         {
@@ -53,6 +54,8 @@ namespace App2.View
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
+
+
 
         public async void SkanujIdetyfikator()
         {

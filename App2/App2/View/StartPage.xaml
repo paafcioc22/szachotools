@@ -74,6 +74,10 @@
                            HorizontalOptions="Center" 
                            Color="Black"/>-->
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
+            <ImageButton Source="help100.9"  
+                         Clicked="Help_Clicked"  
+                         BackgroundColor="#F5FFFF"/>
+
             <Button Text="Logowanie" FontAttributes="Bold"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="Center" 
@@ -83,26 +87,13 @@
                     BorderColor="DarkCyan"
                     x:Name="btn_login" 
                     BackgroundColor="#54c4b4" 
-                    CornerRadius="15" Margin="40,0,15,0" TextColor="AntiqueWhite"/>
-            <!--<Button Text="drukowanie" 
-                    Clicked="Button_Clicked"
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="Center" 
-                    HeightRequest="65" 
-                    TextColor="White"
-                    BorderWidth="3" 
-                    BorderColor="DarkCyan" 
-                    BackgroundColor="#54c4b4" 
-                    CornerRadius="15" Margin="40,0,15,0"
-                    />-->
+                    CornerRadius="15" Margin="15,0,15,0" TextColor="AntiqueWhite"/> 
 
-            <ImageButton Source="ustawienia64"  Clicked="ImageButton_Clicked" Scale="2" BackgroundColor="#F5FFFF"/>
+            <ImageButton Source="ustawienia64"  
+                         Clicked="ImageButton_Clicked" 
+                         Scale="2" 
+                         BackgroundColor="#F5FFFF"/>
 
-            <!--<Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="Btn_settings_Tapped"  x:Name="btn_settings"/>
-                </Image.GestureRecognizers>
-            </Image>-->
             
         </StackLayout>
     </StackLayout>

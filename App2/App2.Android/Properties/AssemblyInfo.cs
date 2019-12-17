@@ -36,3 +36,8 @@ using Xamarin.Forms.Xaml;
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.Flashlight)]
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+
+//[assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
+//[assembly: UsesPermission(Name = "android.permission.WAKE_LOCK")]
+//[assembly: UsesPermission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
+//[assembly: UsesPermission(Name = "com.google.android.c2dm.permission.RECEIVE")]
