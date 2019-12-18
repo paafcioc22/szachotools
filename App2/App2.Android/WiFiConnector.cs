@@ -19,8 +19,7 @@ namespace App2.Droid
 {
     class WiFiConnector : IWifiConnector
     {
-
-
+        [Obsolete]
         public void ConnectToWifi(string ssid, string password)
         {
             string networkSSID = ssid;
@@ -31,9 +30,10 @@ namespace App2.Droid
             wifiConfig.PreSharedKey = string.Format("\"{0}\"", networkPass);
 
             WifiManager wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
-             
 
-                if (!wifiManager.IsWifiEnabled)
+            Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
+
+            if (!wifiManager.IsWifiEnabled)
             wifiManager.SetWifiEnabled(true);
 
 
@@ -42,7 +42,7 @@ namespace App2.Droid
                 int netId = wifiManager.AddNetwork(wifiConfig);
                  //   wifiManager.Disconnect();
                 wifiManager.EnableNetwork(netId, true);
-                   // wifiManager.Reconnect();
+                    wifiManager.Reconnect();
 
                 
             }

@@ -1,123 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ef1="clr-namespace:ShowHidePassEx.Effects" 
-             x:Class="App2.View.SettingsPage">
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:ef1="clr-namespace:ShowHidePassEx.Effects" 
+            NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" 
+            x:Class="App2.View.SettingsPage" 
+            BarBackgroundColor="#54c4b4" >
     <!--xmlns:ViewModel="clr-namespace:App2.ViewModel"-->
 
     <!--<ContentPage.BindingContext>-->
     <!--<ViewModel:PrintPageViewModel />
     </ContentPage.BindingContext>-->
+    <ContentPage Title="Ustawienia"   >
 
-    <StackLayout Padding="10">
-        <!--<Label Text="Ustawienia"  HorizontalOptions="Center"/>-->
-        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+
+        <StackLayout Padding="10">
+            <!--<Label Text="Ustawienia"  HorizontalOptions="Center"/>-->
+            <!--<StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
             <Label Text="Ustawienia" HorizontalOptions="Center" FontSize="18" TextColor="Bisque"/>
-        </StackLayout>
-        <ScrollView >
+        </StackLayout>-->
+            <ScrollView >
 
 
-            <StackLayout Orientation="Vertical" BackgroundColor="AliceBlue"
+                <StackLayout Orientation="Vertical" BackgroundColor="AliceBlue"
                      HorizontalOptions="Fill" 
                      Spacing="0" VerticalOptions="Center"   Padding="8,15,8,8"
                      >
-                <Label x:Name="lbl_appVersion" HorizontalOptions="Center"  />
-                <Label Text="Ip serwer" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <Entry 
+                    <Label x:Name="lbl_appVersion" HorizontalOptions="Center"  />
+                    <Label Text="Ip serwer" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <Entry 
                 x:Name="Ipserwer" Text="{Binding Serwer}"
                 Placeholder="IP serwer.." 
                 VerticalOptions="FillAndExpand" 
                 Keyboard="Text" HorizontalOptions="Center"
-                HorizontalTextAlignment="Center"
+                HorizontalTextAlignment="Center" WidthRequest="200"
                 />
-                <Label Text="Baza Konfiguracyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <Entry 
+                    <Label Text="Baza Konfiguracyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <Entry 
                 x:Name="Instancja" Text="{Binding BazaConf}"
                 Placeholder="Instancja.." HorizontalOptions="Center" 
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
-                <!--Text="CDN_KNF_Konfiguracja"-->
-                <Label Text="Baza Produkcyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <Entry 
+                    <!--Text="CDN_KNF_Konfiguracja"-->
+                    <Label Text="Baza Produkcyjna" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <Entry 
                 x:Name="BazaProd" Text="{Binding BazaProd}" HorizontalOptions="Center"
-                Placeholder="Baza firmowa..(wypełniane automatycznie)"  IsEnabled="False"
+                Placeholder="Baza firmowa..(wypełniane automatycznie)"  IsEnabled="True" IsReadOnly="True"
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>
 
-                <!--<Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <!--<Label Text="Login" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
             <Entry 
                 x:Name="Login" Text="{Binding User}"
                 Placeholder="Login.." 
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
                 />-->
-                <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
+                    <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
 
 
 
-                <Entry 
+                    <Entry 
                 x:Name="Haslo" Text="{Binding Password}"
                 Placeholder="Hasło.."  HorizontalOptions="Center"
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"
                 IsPassword="True" Margin="0,0,25,0">
-                    <!--<Entry.Effects  >
+                        <!--<Entry.Effects  >
                     <ef1:ShowHidePassEffect  />
                 </Entry.Effects>-->
 
-                </Entry>
-                <Label Text="Pokaż na liście również zatwierdzone MM (10 dni)" 
+                    </Entry>
+                    <Label Text="Pokaż na liście również zatwierdzone MM (10 dni)" 
                    HorizontalOptions="FillAndExpand" 
                    BackgroundColor="Silver" 
                    HorizontalTextAlignment="Center"/>
-                <Switch HorizontalOptions="CenterAndExpand"   
+                    <Switch HorizontalOptions="CenterAndExpand"   
                     IsToggled="False" 
                     Toggled="Switch_Toggled"
                     x:Name="SwitchStatus" 
                     />
-                <Label Text="Cennik" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <!--<Entry 
+                    <Label Text="Cennik" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <!--<Entry 
                 x:Name="Cennik" Text="{Binding Cennik}"
                 Placeholder="Baza firmowa.."  IsEnabled="False"
                 VerticalOptions="FillAndExpand" 
                 HorizontalTextAlignment="Center"/>-->
-                <Picker Title="cennik" x:Name="pickerlist" 
+                    <Picker Title="cennik" x:Name="pickerlist" 
                     SelectedIndexChanged="pickerlist_OnChanged" 
                     HorizontalOptions="Center"  
                     ItemDisplayBinding="{Binding RodzajCeny}" 
                     WidthRequest="150" Focused="pickerlist_Focused"
                     >
-                    <!--ItemsSource="{Binding cennikClasses}"-->
+                        <!--ItemsSource="{Binding cennikClasses}"-->
 
-                </Picker>
+                    </Picker>
 
-                <Label Text="Urządzenie skanujące" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
+                    <Label Text="Urządzenie skanujące" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
 
-                <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
-                <!--ItemDisplayBinding="{Binding  Drukarka}"-->
-                <Picker x:Name="SelectDevice"
+                    <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
+                    <!--ItemDisplayBinding="{Binding  Drukarka}"-->
+                    <Picker x:Name="SelectDevice"
                     Title="Wybierz urządzenie"
                     SelectedIndexChanged="SelectDevice_SelectedIndexChanged" 
-               HorizontalOptions="Center"
+               HorizontalOptions="Center" 
                     >
-                </Picker>
-                
-                <Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
+                    </Picker>
 
-                <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
-                <!--ItemDisplayBinding="{Binding  Drukarka}"-->
-                <Picker x:Name="PrinterList"
+                    <Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
+
+                    <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
+                    <!--ItemDisplayBinding="{Binding  Drukarka}"-->
+                    <Picker x:Name="PrinterList"
                     Title="Wybierz drukarkę bluetooth"
                     SelectedIndexChanged="PrinterList_SelectedIndexChanged" 
                
                     >
-                </Picker>
-            </StackLayout>
-        </ScrollView>
-        <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
-            <Button Text="Połącz się z Wi-fi " HorizontalOptions="FillAndExpand" Clicked="Btn_ConToWiFi_Clicked" 
+                    </Picker>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
+                <Button Text="Połącz się z Wi-fi " HorizontalOptions="FillAndExpand" Clicked="Btn_ConToWiFi_Clicked" 
                     TextColor="White"
                     BorderWidth="3" 
                     BorderColor="DarkCyan" 
@@ -125,7 +129,7 @@
                     CornerRadius="15"
                     Margin="20,0,20,0"
                     />
-            <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked" 
+                <Button Text="Zapisz i sprawdź połączenie" Clicked="SprConn_Clicked" 
                     TextColor="White"
                     BorderWidth="3" 
                     BorderColor="DarkCyan" 
@@ -133,7 +137,65 @@
                     CornerRadius="15"
                     Margin="20,0,20,0"/>
 
+            </StackLayout>
         </StackLayout>
-    </StackLayout>
+    </ContentPage>
 
-</ContentPage>
+    <ContentPage Title="Drukarka"   >
+
+        <Grid Padding="20" ColumnSpacing="10" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="lblMaker" Grid.Row="0" Grid.ColumnSpan="2" Text="SEWOO Settings"/>
+
+            <!-- Input Bluetooth address to connect -->
+            <Label x:Name="textBlock_address" Grid.Row="1" Grid.ColumnSpan="1" Grid.Column="0" Text="BT address : "/>
+            <Editor x:Name="txtAddress" Grid.Row="1" Grid.ColumnSpan="1" Grid.Column="1" Text="00:00:00:00:00:00" FontSize="Small"/>
+
+            <!-- Select interface to connect -->
+            <!--<Label x:Name="textMediaType" Grid.Row="2" Grid.ColumnSpan="1" Grid.Column="0" Text="Media Type : "/>
+            <Picker x:Name="cboMediaType" Grid.Row="2" Grid.ColumnSpan="1" Grid.Column="1">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Gap</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>-->
+
+            <!-- Connect and disconnect button -->
+            <Button x:Name="btnConnect" Grid.Row="2" Grid.Column="0" Text="Połącz" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnConnectClicked"/>
+            <Button x:Name="btnDisconnect" Grid.Row="2" Grid.Column="1" Text="Rozłącz" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnDisconnectClicked"/>
+
+            <!-- Button for printing -->
+            <Button x:Name="btnPrintText" Grid.Row="3" Grid.ColumnSpan="1" Grid.Column="0" Text="Test druk" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnPrintTextClicked"/>
+            <!-- <Button x:Name="btnPrint1dBarcode" Grid.Row="4" Grid.ColumnSpan="1" Grid.Column="1" Text="1D BarCode" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnPrint1dBarcodeClicked"/>
+            <Button x:Name="btnPrint2dBarcode" Grid.Row="5" Grid.ColumnSpan="1" Grid.Column="0" Text="Image" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnPrintImageClicked"/>
+            <Button x:Name="btnPrintImage" Grid.Row="5" Grid.ColumnSpan="1" Grid.Column="1" Text="2D BarCode" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnPrint2dBarcodeClicked"/>-->
+
+            <!-- Display the paired bluetooth printers -->
+            <Label x:Name="connectableListBlock" Grid.Row="4" Grid.ColumnSpan="2" Text="Lista urządzeń bluetooth"/>
+            <ListView x:Name ="connectableDeviceView" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" ItemSelected="OnConnectableDeviceSelection">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" Detail = "{Binding Address}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+    </ContentPage>
+</TabbedPage>

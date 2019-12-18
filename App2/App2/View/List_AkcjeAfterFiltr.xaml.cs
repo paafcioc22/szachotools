@@ -77,8 +77,8 @@ namespace App2.View
             rs.Close();
             rs.Dispose();
             connection.Close();
-
-            var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer);
+            string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+            var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer, ase_operator);
             if (odp != "OK")
                 await DisplayAlert(null, odp, "OK");
         }

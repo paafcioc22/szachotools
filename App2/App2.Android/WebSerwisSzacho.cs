@@ -223,7 +223,7 @@ namespace App2.Droid
             });
         }
 
-        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie,Int16 magnumer)
+        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie,Int16 magnumer,string ase_operator)
         {
 
             try
@@ -239,7 +239,8 @@ namespace App2.Droid
                     '{lista.TwrDep}',
                     {lista.TwrGidNumer},
                     {lista.TwrStan},
-                    {lista.TwrSkan}";
+                    {lista.TwrSkan},
+                    '{ase_operator}'";
 
                             var respone = client.ExecuteSQLCommand(InsertString);
 

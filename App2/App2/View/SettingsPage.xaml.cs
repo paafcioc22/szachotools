@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
-
+ 
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -18,43 +19,45 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
 
 
-    public partial class SettingsPage : ContentPage
+    public partial class SettingsPage : TabbedPage
     {
-       
+
         public static bool IsBuforOff;
         public static SByte SelectedDeviceType;
         public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
-        CPCLConst cpclConst;
+        public static CPCLConst cpclConst;
 
 
         //private string _version;
         public SettingsPage()
         {
             InitializeComponent();
-            // ZaladujUstawienia();
+            InitializeSampleUI();
 
-            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
-            GetDevices();
+            //  _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+            //GetDevices();
             SelectDeviceMetod();
 
-            cpclConst = new CPCLConst();
-            var  app = Application.Current as App;
+            //  cpclConst = new CPCLConst();
+            var app = Application.Current as App;
             BindingContext = Application.Current;
+
+
             if (SprConn())
             {
                 GetBaseName();
-                 
+
 
                 cennikClasses = GetCenniki();
-                if (cennikClasses.Count > 0)
+                if (cennikClasses!=null)//cennikClasses.Count > 0 || 
                 {
                     pickerlist.ItemsSource = GetCenniki().ToList();
                     pickerlist.SelectedIndex = app.Cennik;
                 }
 
             }
-  
+
 
             sprwersja();
             SwitchStatus.IsToggled = IsBuforOff;
@@ -62,7 +65,7 @@ namespace App2.View
 
         private void SelectDeviceMetod()
         {
-             
+
             var app = Application.Current as App;
             var lista = new List<MetodaSkanowania>()
             {
@@ -89,7 +92,7 @@ namespace App2.View
 
         }
 
-      
+
 
         private async void sprwersja()
         {
@@ -105,99 +108,100 @@ namespace App2.View
                 if (bulidVer < Convert.ToInt16(AktualnaWersja))
                     await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
             }
-            catch (Exception )
+            catch (Exception)
             {
                 await DisplayAlert(null, "Nie można sprawdzić aktualnej wersji", "OK");
             }
         }
 
- 
+
 
         public static ObservableCollection<DrukarkaClass> listaDrukarek;
-        async void GetDevices()
-        {
+        //async void GetDevices()
+        //{
 
-            var app = Application.Current as App;
-            BindingContext = Application.Current;
-            try
-            {
+        //    var app = Application.Current as App;
+        //    BindingContext = Application.Current;
+        //    try
+        //    {
 
-                listaDrukarek = new ObservableCollection<DrukarkaClass>();
-                listaDrukarek.Clear();
-                var list = await _cpclPrinter.connectableDevice();
+        //        listaDrukarek = new ObservableCollection<DrukarkaClass>();
+        //        listaDrukarek.Clear();
+        //       // var list = await _cpclPrinter.connectableDevice();
 
-                if (list.Count > 0)
-                {
+        //        if (list.Count > 0)
+        //        {
 
-                    for (int i = 0; i <= list.Count()-1; i++)
-                    {
-                        listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
-                        PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
-                    }
+        //            for (int i = 0; i <= list.Count()-1; i++)
+        //            {
+        //                listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
+        //                PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
+        //            }
 
-                    try
-                    {
-                        //PrinterList.ItemsSource = listaDrukarek;
+        //            try
+        //            {
+        //                //PrinterList.ItemsSource = listaDrukarek;
 
-                        PrinterList.SelectedIndex = app.Drukarka;
-                    }
-                    catch
-                    {
-                        PrinterList.SelectedIndex = -1;
-                    }
-                }
-            }
-            catch (Exception ss)
-            {
+        //                PrinterList.SelectedIndex = app.Drukarka;
+        //            }
+        //            catch
+        //            {
+        //                PrinterList.SelectedIndex = -1;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ss)
+        //    {
 
-                System.Diagnostics.Debug.WriteLine(ss.Message);
-            }
-        }
-        public static bool CzyDrukarkaOn= false;
-        async void btnConnectClicked(DrukarkaClass drukarkaClass)
-        {
-            int iResult;
-            await printSemaphore.WaitAsync();
-            try
-            {
-                iResult = await _cpclPrinter.connect(drukarkaClass.AdresDrukarki);
-                 
-                if (iResult == cpclConst.LK_SUCCESS)
-                {
-                    await DisplayAlert("Connection", "Połaczono z drukarką", "OK");
-                    CzyDrukarkaOn = true;
+        //        System.Diagnostics.Debug.WriteLine(ss.Message);
+        //    }
+        //}
+        public static bool CzyDrukarkaOn = false;
 
-                }
-                else
-                {
-                    await DisplayAlert("Connection", "Błąd połączenia z drukarką", "OK");
-                }
-            }
-            catch (Exception e)
-            {
-                e.StackTrace.ToString();
-                await DisplayAlert("Exception", e.Message.ToString(), "OK");
-            }
-            finally
-            {
-                printSemaphore.Release();
-            }
+        //async void btnConnectClicked(DrukarkaClass drukarkaClass)
+        //{
+        //    int iResult;
+        //    await printSemaphore.WaitAsync();
+        //    try
+        //    {
+        //        iResult = await _cpclPrinter.connect(drukarkaClass.AdresDrukarki);
 
-        }
+        //        if (iResult == cpclConst.LK_SUCCESS)
+        //        {
+        //            await DisplayAlert("Connection", "Połaczono z drukarką", "OK");
+        //            CzyDrukarkaOn = true;
+
+        //        }
+        //        else
+        //        {
+        //            await DisplayAlert("Connection", "Błąd połączenia z drukarką", "OK");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.StackTrace.ToString();
+        //        await DisplayAlert("Exception", e.Message.ToString(), "OK");
+        //    }
+        //    finally
+        //    {
+        //        printSemaphore.Release();
+        //    }
+
+        //}
 
         //private IList<string> _deviceList;
         //public IList<string> DeviceList;
 
 
-       
+
 
         private void SprConn_Clicked(object sender, EventArgs e)
         {
-               
-         
+
+
             try
             {
-                 var app = Application.Current as App;
+                var app = Application.Current as App;
                 var connStr = new SqlConnectionStringBuilder
                 {
                     DataSource = app.Serwer,//_serwer,
@@ -213,14 +217,14 @@ namespace App2.View
                         conn.Open();
                         if (GetBaseName())
                         {
-                            DisplayAlert("Connected", "Połączono z siecia", "OK");
-                            Navigation.PopModalAsync(); 
-                        } 
+                            DisplayAlert("Connected", "Połączono z bazą "+app.BazaProd, "OK");
+                            Navigation.PopAsync();
+                        }
 
                     }
                     catch (Exception ex)
                     {
-                        DisplayAlert("Uwaga", "NIE Połączono z siecia : "+ex.Message, "OK");
+                        DisplayAlert("Uwaga", "NIE Połączono z bazą : " + ex.Message, "OK");
                     }
                 }
             }
@@ -228,16 +232,16 @@ namespace App2.View
             {
                 DisplayAlert("Uwaga", ex.Message, "OK");
             }
-           // ZapiszUstawienia();
+            // ZapiszUstawienia();
         }
 
 
-        
+
         public static bool SprConn() //Third way, slightly slower than Method 1
         {
             // NadajWartosci();
 
-            
+
             var app = Application.Current as App;
             var connStr = new SqlConnectionStringBuilder
             {
@@ -245,7 +249,7 @@ namespace App2.View
                 InitialCatalog = app.BazaProd, //_database,
                 UserID = app.User,//_uid,
                 Password = app.Password, //_pwd,
-                ConnectTimeout =3
+                ConnectTimeout = 1
             }.ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -255,7 +259,7 @@ namespace App2.View
                     //DisplayAlert("Connected", "Połączono z siecia", "OK");
                     return true;
                 }
-                catch (Exception x )
+                catch (Exception x)
                 {
                     //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
                     //string aa=x.Message;
@@ -263,14 +267,14 @@ namespace App2.View
                 }
             }
 
-            
+
         }
 
         public bool GetBaseName()
         {
-           
+
             var app = Application.Current as App;
-             
+
             try
             {
                 SqlCommand command = new SqlCommand();
@@ -299,22 +303,22 @@ namespace App2.View
                 rs.Close();
                 rs.Dispose();
                 connection.Close();
-            return true;
+                return true;
             }
             catch (Exception s)
             {
-                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane"+s.Message, "OK");
+                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane" + s.Message, "OK");
                 return false;
             }
-        
+
         }
 
-            List<CennikClass> lista;
+        List<CennikClass> lista;
         private IList<CennikClass> GetCenniki()
         {
             try
             {
-               var app = Application.Current as App;
+                var app = Application.Current as App;
                 string nazwaCennika;
                 int IdCennik;
                 SqlCommand command = new SqlCommand();
@@ -349,42 +353,42 @@ namespace App2.View
             {
                 DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane", "OK");
             }
-                return lista;
-            
+            return lista;
+
         }
 
         public IList<CennikClass> cennikClasses;
 
-        private  void pickerlist_OnChanged(object sender, EventArgs e)
+        private void pickerlist_OnChanged(object sender, EventArgs e)
         {
             //pickerlist.ItemsSource = GetCenniki().ToList();
             var app = Application.Current as App;
-            
-            
-                var cennik = pickerlist.Items[pickerlist.SelectedIndex];
-                var idceny = GetCenniki().Single(cc => cc.RodzajCeny == cennik);
-            
-           
-                int selectedIndex = pickerlist.SelectedIndex;
-                if (selectedIndex != -1)
-                {
-                    //var app = Application.Current as App;
-                   // app.Cennik = idceny.Id;
-                }
 
-                var picker = (Picker)sender;
-                //int selectedIndex = picker.SelectedIndex;
 
-                if (selectedIndex != -1)
-                {
-                    app.Cennik = selectedIndex; //idceny.Id;
-                }
-            
+            var cennik = pickerlist.Items[pickerlist.SelectedIndex];
+            var idceny = GetCenniki().Single(cc => cc.RodzajCeny == cennik);
+
+
+            int selectedIndex = pickerlist.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                //var app = Application.Current as App;
+                // app.Cennik = idceny.Id;
+            }
+
+            var picker = (Picker)sender;
+            //int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+                app.Cennik = selectedIndex; //idceny.Id;
+            }
+
 
         }
 
 
-        public  Picker PickerDrukarki { get { return pickerlist; } }
+        public Picker PickerDrukarki { get { return pickerlist; } }
         private void pickerlist_Focused(object sender, FocusEventArgs e)
         {
             if (!SprConn())
@@ -403,24 +407,24 @@ namespace App2.View
         {
             IsBuforOff = e.Value;
         }
-        
+
         private void PrinterList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var appp = Application.Current as App;
             //var nazwa = PrinterList.Items[PrinterList.SelectedIndex];
             //var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki == nazwa);
-             
-             int selectedIndex = PrinterList.SelectedIndex;
-            appp.Drukarka = selectedIndex;
+
+            int selectedIndex = PrinterList.SelectedIndex;
+            //appp.Drukarka = selectedIndex; <<<<<<<<<<<<<<<<<<<<<<<<<<<smiana aaaaa
 
             var printer = PrinterList.Items[PrinterList.SelectedIndex];
-            var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki+ "\r\n"+c.AdresDrukarki == printer);
+            var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki + "\r\n" + c.AdresDrukarki == printer);
 
             //btnConnectClicked(wybrana);
 
         }
 
-        private  void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
 
             var profiles = Connectivity.ConnectionProfiles;
@@ -437,38 +441,38 @@ namespace App2.View
             }
 
 
-            string wifi= "Szachownica";//JOART_WiFi
+            string wifi = "Szachownica";//JOART_WiFi
 
             var version = DependencyService.Get<Model.IWifiConnector>();
             if (version.IsConnectedToWifi(wifi))//Szachownica
             {
-                 DisplayAlert("Info", "Połączenie zostało już nawiązane..","OK");
+                DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
                 return;
-            } 
+            }
 
 
             version.ConnectToWifi(wifi, "J0@rt11a");
 
-             Task.Delay(2000);
+            Task.Delay(2000);
 
             if (version.IsConnectedToWifi(wifi))
             {
-                 DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
+                DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
 
             }
-            else 
+            else
             {
 
-                 DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
+                DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
 
             }
-             
+
         }
 
         private void SelectDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            var appp = Application.Current as App; 
+            var appp = Application.Current as App;
 
             int selectedIndex = SelectDevice.SelectedIndex;
             appp.Skanowanie = (SByte)selectedIndex;
@@ -478,6 +482,291 @@ namespace App2.View
             SelectedDeviceType = appp.Skanowanie;
 
         }
+
+
+
+        // private ISewooXamarinCPCL _cpclPrinter;
+        // CPCLConst cpclConst;
+        private Picker mediaTypePicker;
+
+        public static Editor editAddress;
+        private Button connectButton;
+        private Button disconnectButton;
+        private Button printText;
+
+
+        //private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
+
+    
+            
+
+        private async void InitializeSampleUI()
+        {
+            //            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+
+            var appp = Application.Current as App;
+
+            printText = this.FindByName<Button>("btnPrintText");
+            connectButton = this.FindByName<Button>("btnConnect");
+            disconnectButton = this.FindByName<Button>("btnDisconnect");
+            editAddress = this.FindByName<Editor>("txtAddress");
+            //mediaTypePicker = this.FindByName<Picker>("cboMediaType");
+            //mediaTypePicker.SelectedIndex = 0; // Gap label default.
+
+            if (!CzyDrukarkaOn)
+            {
+                connectButton.IsEnabled = true;
+                printText.IsEnabled = false;
+                disconnectButton.IsEnabled = false;
+            }
+            else
+            {
+                connectButton.IsEnabled = false;
+                printText.IsEnabled = true;
+                disconnectButton.IsEnabled = true;
+
+
+            }
+
+
+            var deviceList = await _cpclPrinter.connectableDevice();
+
+            connectableDeviceView.ItemsSource = deviceList.Where(c => c.Name.StartsWith("SW"));
+            if (deviceList.Count == 0)
+            {
+                editAddress.IsEnabled = true;
+                editAddress.Text = "00:00:00:00:00:00";
+            }
+            else
+            {
+                editAddress.IsEnabled = false;
+               // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+               // editAddress.Text = deviceList.ElementAt(0).Address;
+               if(appp.Drukarka=="00:00:00:00:00:00")
+                 
+                editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+
+                else
+                    editAddress.Text = appp.Drukarka;
+
+
+            }
+
+            cpclConst = new CPCLConst();
+
+
+            
+
+        }
+
+
+        async void btnConnectClicked(object sender, EventArgs args)
+        {
+            int iResult;
+            await printSemaphore.WaitAsync();
+            try
+            {
+                iResult = await _cpclPrinter.connect(editAddress.Text);
+                Debug.WriteLine("connect = " + iResult);
+                if (iResult == cpclConst.LK_SUCCESS)
+                {
+                    connectableDeviceView.IsEnabled = false;
+                    connectButton.IsEnabled = false;
+                    disconnectButton.IsEnabled = true;
+                    printText.IsEnabled = true;
+                    CzyDrukarkaOn = true;
+                }
+                else
+                {
+                    await DisplayAlert("Connection", "Połączenie nieudane", "OK");
+                }
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                await DisplayAlert("Exception", e.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+
+        }
+
+        async void btnDisconnectClicked(object sender, EventArgs args)
+        {
+            await printSemaphore.WaitAsync();
+            try
+            {
+                await _cpclPrinter.disconnect();
+
+                connectableDeviceView.IsEnabled = true;
+                connectButton.IsEnabled = true;
+                disconnectButton.IsEnabled = false;
+                printText.IsEnabled = false;
+                CzyDrukarkaOn = false;
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                await DisplayAlert("Exception", e.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+        }
+
+        async void btnPrintTextClicked(object sender, EventArgs args)
+        {
+            await printSemaphore.WaitAsync();
+            try
+            {
+                int iResult;
+
+                iResult = await _cpclPrinter.printerCheck();
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        iResult = await _cpclPrinter.printStatus();
+                        Debug.WriteLine("PrinterStatus = " + iResult);
+                        break;
+                    default:
+                        Debug.WriteLine("printerCheck = " + iResult);
+                        break;
+                }
+
+                if (iResult != cpclConst.LK_SUCCESS)
+                {
+                    ErrorStatusDisp("Printer error", iResult);
+                    return;
+                }
+
+                // Korean
+                // await _cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_KOREAN);
+                // Japanese
+                // await _cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_KOREAN);
+
+                await _cpclPrinter.setForm(0, 200, 200, 406, 1);
+                await _cpclPrinter.setMedia(0);
+
+                // Set the code page of font number(7) 
+                await _cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+
+                await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 1, 1, "FONT-0-0", 0);
+                await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 100, 50, "ŁÓŻKO or ŻÓŁĆ", 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 1, 1, 50, "FONT-0-1", 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 200, 50, "FONT-7-1", 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 1, 100, "FONT-4-0", 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 1, 1, 150, "FONT-4-1", 0);
+                //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 2, 1, 260, "4-2", 0);
+
+                await _cpclPrinter.printForm();
+
+                iResult = await _cpclPrinter.printResults();
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        iResult = await _cpclPrinter.printStatus();
+                        Debug.WriteLine("PrinterStatus = " + iResult);
+                        break;
+                    default:
+                        Debug.WriteLine("PrinterResults = " + iResult);
+                        break;
+                }
+                if (iResult != cpclConst.LK_SUCCESS)
+                {
+                    ErrorStatusDisp("Printing error", iResult);
+                }
+                else
+                {
+                    await DisplayAlert("Drukowanie..", "zakończono sukcesem", "OK");
+                }
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();
+                await DisplayAlert("Exception", e.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+        }
+
+        async void ErrorStatusDisp(string strStatus, int errCode)
+        {
+            string errMsg = string.Empty;
+
+            if (errCode > 0)
+            {
+                if ((errCode & cpclConst.LK_STS_CPCL_BATTERY_LOW) > 0)
+                    errMsg += "Battery Low\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_COVER_OPEN) > 0)
+                    errMsg += "Cover Open\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_PAPER_EMPTY) > 0)
+                    errMsg += "Paper Empty\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_POWEROFF) > 0)
+                    errMsg += "Power OFF\n";
+                if ((errCode & cpclConst.LK_STS_CPCL_TIMEOUT) > 0)
+                    errMsg += "Timeout\n";
+                await DisplayAlert(strStatus, errMsg, "OK");
+            }
+            else
+            {
+                await DisplayAlert(strStatus, "Return value = " + errCode, "OK");
+            }
+        }
+
+
+        async void OnConnectableDeviceSelection(object sender, SelectedItemChangedEventArgs e)
+        {
+            int iResult;
+            var appp = Application.Current as App;
+            if (e.SelectedItem == null)
+                return;
+
+            await printSemaphore.WaitAsync();
+            try
+            {
+                var info = e.SelectedItem as connectableDeviceInfo;
+
+                if (info != null)
+                {
+                    Debug.WriteLine("Selected device address = " + info.Address.ToString());
+                    iResult = await _cpclPrinter.connect(info.Address.ToString());
+                    editAddress.Text = info.Address.ToString();
+                    if (iResult == cpclConst.LK_SUCCESS)
+                    {
+                        connectButton.IsEnabled = false;
+                        disconnectButton.IsEnabled = true;
+
+                        connectableDeviceView.IsEnabled = false;
+                        appp.Drukarka = editAddress.Text;
+                        printText.IsEnabled = true;
+                        CzyDrukarkaOn = true;
+                    }
+                    else
+                    {
+                        await DisplayAlert("Connection", "Connection failed", "OK");
+                        View.SettingsPage.CzyDrukarkaOn = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.StackTrace.ToString();
+                await DisplayAlert("Exception", ex.Message.ToString(), "OK");
+            }
+            finally
+            {
+                printSemaphore.Release();
+            }
+        }
+
+
+
     }
 
     public class CennikClass

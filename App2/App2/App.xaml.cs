@@ -153,13 +153,13 @@ namespace App2
 
         }
 
-        public int Drukarka
+        public string Drukarka
         {
             get
             {
                 if (Properties.ContainsKey(drukarka))
-                    return (Int32)Properties[drukarka];
-                return -1;
+                    return (string)Properties[drukarka];
+                return "00:00:00:00:00:00";
             }
             set
             {
@@ -174,7 +174,7 @@ namespace App2
             {
                 if (Properties.ContainsKey(skanowanie))
                     return (sbyte)Properties[skanowanie];
-                return 1;
+                return 0;
             }
             set
             {

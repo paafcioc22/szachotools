@@ -36,6 +36,7 @@ namespace App2.Model
         public string TwrCena { get; set; }
         public string TwrCena1 { get; set; }
         public string TwrEan { get; set; }
+        public string Operator { get; set; }
 
         public string AkN_ZakresDat
         {

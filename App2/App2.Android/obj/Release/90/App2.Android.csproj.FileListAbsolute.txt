@@ -529,7 +529,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\fl
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\5A29FA8877CE182F.flata
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\7655C2ED92EC5840.flata
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\66447FC8C5EC2CA0.flata
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\android\support\drawerlayout\R.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\bin\classes.dex
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_BuildAdditionalResourcesCache.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_CleanIntermediateIfNuGetsChange.stamp

@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using App2.Model;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
@@ -8,7 +8,7 @@ using System.Threading;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
- 
+
 namespace App2.View
 {
     public class List_ScanPage : ContentPage
@@ -23,7 +23,7 @@ namespace App2.View
         private Entry entry_kodean;
         private Entry entry_EanSkaner;
         private Image img_foto;
-       
+
         private SQLiteAsyncConnection _connection;
         private string skanean;
         private Model.AkcjeNagElem _akcja;
@@ -36,28 +36,33 @@ namespace App2.View
         bool CanPrint;
 
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
-       // private  ISewooXamarinCPCL cpclPrinter;
+        // private  ISewooXamarinCPCL cpclPrinter;
         string drukarka;
 
 
-        
+
 
         public List_ScanPage(Model.AkcjeNagElem akcje) //edycja
         {
             this.Title = "Dodaj MM";
             //_blueToothService = DependencyService.Get<IBlueToothService>();
 
-            
+
             // CrossSewooXamarinCPCL.Current.createCpclService(int iCodePage);
             _akcja = akcje;
 
-                        
-                if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                    deviceListe();
 
-            
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+            {
+                cpclConst = View.SettingsPage.cpclConst;
+                deviceListe();
+                CanPrint = View.SettingsPage.CzyDrukarkaOn;
+            }
 
-            cpclConst = new CPCLConst();
+
+
+
+            //cpclConst = new CPCLConst();
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -65,7 +70,8 @@ namespace App2.View
             if (SettingsPage.SelectedDeviceType == 1)
             {
                 WidokAparat();
-            } else
+            }
+            else
             {
                 WidokSkaner();
             }
@@ -149,7 +155,7 @@ namespace App2.View
                 Keyboard = Keyboard.Numeric,
                 Text = _akcja.TwrSkan == 0 ? "" : _akcja.TwrSkan.ToString(),
                 WidthRequest = 60,
-                Placeholder = "Ilość", 
+                Placeholder = "Ilość",
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black
             };
@@ -184,7 +190,7 @@ namespace App2.View
             enterEan.Clicked += EnterEan_Clicked; ;
             enterEan.VerticalOptions = LayoutOptions.EndAndExpand;
 
-            
+
 
             stackLayout.Children.Add(lbl_twrkod);
             stackLayout.Children.Add(lbl_nazwa);
@@ -208,10 +214,10 @@ namespace App2.View
             scrollView.Content = stackLayout_gl;
 
             Content = scrollView;
-            
+
         }
 
-        void WidokSkaner()
+        async void WidokSkaner()
         {
 
             var scrollView = new ScrollView();
@@ -278,11 +284,11 @@ namespace App2.View
             lbl_ean.Text = _akcja.TwrEan;
             lbl_ean.TextDecorations = TextDecorations.Underline;
             var tapCopyLabelEan = new TapGestureRecognizer();
-            tapCopyLabelEan.Tapped += async(s, e) =>
-              {
-                  await Clipboard.SetTextAsync(_akcja.TwrEan);
-                  await DisplayAlert(null, "skopiowano ean", "ok");
-              };
+            tapCopyLabelEan.Tapped += async (s, e) =>
+            {
+                await Clipboard.SetTextAsync(_akcja.TwrEan);
+                await DisplayAlert(null, "skopiowano ean", "ok");
+            };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
 
 
@@ -315,7 +321,7 @@ namespace App2.View
 
             Button open_url = new Button();
             //open_url.Text = List_AkcjeView.TypAkcji.Contains("Przerzut") ? "Zapisz" : "Zacznij skanowanie";
-            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przecena") ? "Zacznij skanowanie" : "Zapisz"; 
+            open_url.Text = List_AkcjeView.TypAkcji.Contains("Przecena") ? "Zacznij skanowanie" : "Zapisz";
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
@@ -332,17 +338,18 @@ namespace App2.View
             {
                 HorizontalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
+                IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true,
                 ReturnCommand = new Command(() => zapiszdrukuj()),
                 WidthRequest = 180,
-                Placeholder = "Wpisz/zeskanuj Ean" ,
-                TextColor = Color.Black 
+                Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
+                TextColor = Color.Black
             };
-             
+
             stackLayout.Children.Add(lbl_twrkod);
             stackLayout.Children.Add(lbl_nazwa);
             stackLayout.Children.Add(lbl_ean);
             stackLayout.Children.Add(entry_kodean);
-            stackLayout.Children.Add(entry_EanSkaner); 
+            stackLayout.Children.Add(entry_EanSkaner);
             stackLayout.Children.Add(lbl_symbol);
             stackLayout.Children.Add(lbl_cena);
             stackLayout.Children.Add(lbl_cena1);
@@ -356,7 +363,7 @@ namespace App2.View
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 stackLayout_gl.Children.Add(enterEanButton);
             stackLayout_gl.Children.Add(open_url);
-            stackLayout_gl.Padding = new Thickness(8,0,8,0);
+            stackLayout_gl.Padding = new Thickness(8, 0, 8, 0);
 
             scrollView.Content = stackLayout_gl;
 
@@ -368,6 +375,7 @@ namespace App2.View
         {
             if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
+                if(View.SettingsPage.CzyDrukarkaOn)
                 ile_zeskanowancyh += 1;
                 if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                 {
@@ -377,27 +385,29 @@ namespace App2.View
                     Zapisz();
                     entry_kodean.Text = ile_zeskanowancyh.ToString();
                     entry_EanSkaner.Text = "";
-                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh+1))
-                    entry_EanSkaner.Focus();
+                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh + 1))
+                        entry_EanSkaner.Focus();
                 }
-                else {
-                   await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-                   ile_zeskanowancyh -= 1;
+                else
+                {
+                    await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                    ile_zeskanowancyh -= 1;
                 }
             }
-            else {
-               await DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
-               entry_EanSkaner.Text = "";
+            else
+            {
+                await DisplayAlert("Uwaga", "Skanujesz model inny niż otwarty!", "OK");
+                entry_EanSkaner.Text = "";
             }
         }
-        
+
 
         private async void EnterEan_Clicked(object sender, EventArgs e)
         {
             try
             {
-                 
-                string odpowiedz = await DisplayPromptAsync("Druk bez zliczania sztuk", "( awaryjny )", "Drukuj","Anuluj", "Wprowadź Ean:");
+
+                string odpowiedz = await DisplayPromptAsync("Druk bez zliczania sztuk", "( awaryjny )", "Drukuj", "Anuluj", "Wprowadź Ean:");
 
                 if (odpowiedz != "")
                 {
@@ -473,8 +483,9 @@ namespace App2.View
                                     entry_kodean.Text = ile_zeskanowancyh.ToString();
 
                                 }
-                                else {
-                                     DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                                else
+                                {
+                                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
 
                                 }
 
@@ -486,7 +497,7 @@ namespace App2.View
                                 DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
                             }
                         });
-                        await Navigation.PushModalAsync(scanPage);
+                    await Navigation.PushModalAsync(scanPage);
 
                 }
                 catch (Exception x)
@@ -546,55 +557,55 @@ namespace App2.View
         }
 
 
-         
-        private  async void deviceListe()
+
+        private async void deviceListe()
         {
-            try
-            {
-            var app = Application.Current as App;
+            //try
+            //{
+            //var app = Application.Current as App;
             SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-             
-            await printSemaphore.WaitAsync();
-            
-                var list = await SettingsPage._cpclPrinter.connectableDevice();
+
+            //await printSemaphore.WaitAsync();
+
+            //    var list = await SettingsPage._cpclPrinter.connectableDevice();
 
 
-                if (list.Count > 0 && app.Drukarka > 0)
-                {
-                    drukarka = list[app.Drukarka].Address;
-                    System.Diagnostics.Debug.WriteLine("lista pełna");
+            //    if (list.Count > 0 && app.Drukarka > 0)
+            //    {
+            //        drukarka = list[app.Drukarka].Address;
+            //        System.Diagnostics.Debug.WriteLine("lista pełna");
 
-                }
-                else
-                {
-                    drukarka = "00:00:00:00:00:00";
-                    System.Diagnostics.Debug.WriteLine("lista zerowa");
-                }
+            //    }
+            //    else
+            //    {
+            //        drukarka = "00:00:00:00:00:00";
+            //        System.Diagnostics.Debug.WriteLine("lista zerowa");
+            //    }
 
-            }
-            catch (Exception ss)
-            {
-                System.Diagnostics.Debug.WriteLine(ss.Message);
-                System.Diagnostics.Debug.WriteLine("coś nie pykło");
+            //}
+            //catch (Exception ss)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(ss.Message);
+            //    System.Diagnostics.Debug.WriteLine("coś nie pykło");
 
-            }
-            finally
-            {
-                printSemaphore.Release();
+            //}
+            //finally
+            //{
+            //    printSemaphore.Release();
 
-            }
-
+            //}
+            /////////////////////////////////////////////////////////////////////////////
             try
             {
                 if (!View.SettingsPage.CzyDrukarkaOn)
                 {
 
-                    IResult = await SettingsPage._cpclPrinter.connect(drukarka);
+                    IResult = await SettingsPage._cpclPrinter.connect(View.SettingsPage.editAddress.Text);
                     if (IResult == cpclConst.LK_SUCCESS)
                     {
-                        CanPrint = true;
-                        await DisplayAlert(null, "Drukarka OK", "OK");
                         View.SettingsPage.CzyDrukarkaOn = true;
+                        CanPrint = true;
+                        await DisplayAlert(null, "Połączono z drukarką", "OK");
                     }
                     else
                     {
@@ -609,12 +620,12 @@ namespace App2.View
                 }
                 else
                 {
-                    CanPrint = true;
-                    View.SettingsPage.CzyDrukarkaOn = true;
+                    //CanPrint = true;
+                    //View.SettingsPage.CzyDrukarkaOn = true;
 
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 await DisplayAlert(null, "Błąd", "OK");
             }
@@ -624,7 +635,7 @@ namespace App2.View
 
 
         int polozenie;
-        public async void PrintCommand (string ile =null)
+        public async void PrintCommand(string ile = null)
         {
 
             int drukSzt;
@@ -682,10 +693,10 @@ namespace App2.View
                 }
 
                 int koniecLinii = (_akcja.TwrCena1.Length <= 5) ? 155 : 175;
-                 
+
 
                 string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
-                 
+
                 string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
 
                 await SettingsPage._cpclPrinter.setForm(0, 200, 200, 370, 350, drukSzt);
@@ -708,19 +719,19 @@ namespace App2.View
                 //190
 
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, 160);
-                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
-                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);//góra grosze
-                    //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
-                    await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł"); 
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);//góra grosze
+                                                                                                   //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł");
                 await SettingsPage._cpclPrinter.resetConcat();
 
                 //wait SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 220, 150, "pln", 0);
-                if(Convert.ToInt16(procent)<-20)
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);
-                
+                if (Convert.ToInt16(procent) < -20)
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);
+
                 await SettingsPage._cpclPrinter.printForm();
-               
-               
+
+
 
                 //iResult = await SettingsPage._cpclPrinter.printResults();
                 //switch (Device.RuntimePlatform)
@@ -773,8 +784,8 @@ namespace App2.View
                     errMsg += "Power OFF\n";
                 if ((errCode & cpclConst.LK_STS_CPCL_TIMEOUT) > 0)
                     errMsg += "Timeout\n";
-                 
-                    
+
+
                 await DisplayAlert(strStatus, errMsg, "OK");
             }
             else
@@ -791,7 +802,7 @@ namespace App2.View
             else return false;
         }
 
-        private  async void Zapisz()
+        private async void Zapisz()
         {
 
             Model.AkcjeNagElem akcjeNagElem = new Model.AkcjeNagElem();
@@ -812,23 +823,23 @@ namespace App2.View
                 wpis.TwrSkan = ile_zeskanowancyh;
                 // wpis.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
                 //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
-                    await _connection.UpdateAsync(wpis);
+                await _connection.UpdateAsync(wpis);
                 //else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
             }
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
                 // akcjeNagElem.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
-                
-                    await _connection.InsertAsync(akcjeNagElem);
-               
+
+                await _connection.InsertAsync(akcjeNagElem);
+
 
             }
         }
 
 
-        
-                  int iResult;
+
+        int iResult;
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
@@ -843,13 +854,13 @@ namespace App2.View
                 {
                     Zapisz();
                     if (ile_zeskanowancyh > 0)
-                    _akcja.TwrSkan = ile_zeskanowancyh;
+                        _akcja.TwrSkan = ile_zeskanowancyh;
                     await Navigation.PopModalAsync();
                 }
-                 
+
                 else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-                
-                
+
+
             }
             else
             {
@@ -871,15 +882,16 @@ namespace App2.View
                     }
                     if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
                         Skanuj(SettingsPage.SelectedDeviceType);
-                    else if(List_AkcjeView.TypAkcji.Contains("Przecena")&& CanPrint == false)
+                    else if (List_AkcjeView.TypAkcji.Contains("Przecena") && CanPrint == false)
                         await DisplayAlert(null, "Do przeceny wymagana drukarka", "OK");
-                    else 
+                    else
                         Skanuj(SettingsPage.SelectedDeviceType);
                 }
-                catch (Exception s){
+                catch (Exception s)
+                {
                     await DisplayAlert(null, s.Message, "OK");
                 }
-               // Navigation.PushModalAsync(new Drukowanie(_akcja));
+                // Navigation.PushModalAsync(new Drukowanie(_akcja));
             }
             //_akcja.TwrSkan = Convert.ToInt32(entry_kodean.Text);
             //Navigation.PopModalAsync();
@@ -887,10 +899,10 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
-                _akcja.TwrSkan = ile_zeskanowancyh;
+            _akcja.TwrSkan = ile_zeskanowancyh;
             return base.OnBackButtonPressed();
 
-             
+
             //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
             //    _akcja.TwrSkan = ile_zeskanowancyh;
             //else

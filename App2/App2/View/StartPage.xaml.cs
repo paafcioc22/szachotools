@@ -33,26 +33,41 @@ namespace App2.View
       
         public bool CheckInternetConnection()
         {
-            string CheckUrl = "http://google.com";
 
-            try
+            var current = Connectivity.NetworkAccess;
+
+            if (current == NetworkAccess.Internet)
             {
-                HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
-                iNetRequest.Timeout = 4000;
 
-                WebResponse iNetResponse = iNetRequest.GetResponse();
 
-                iNetResponse.Close();
+
+            //string CheckUrl = "http://google.com";
+
+            //try
+            //{
+            //    HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
+
+            //    iNetRequest.Timeout = 4000;
+
+            //    WebResponse iNetResponse = iNetRequest.GetResponse();
+
+            //    iNetResponse.Close();
 
                 
-                return true;
+            //    return true;
 
-            }
-            catch (WebException )
-            {
-                  return false;
-            }
+            //}
+            //catch (WebException )
+            //{
+            //      return false;
+            //}
         }
 
         private async void sprwersja()
@@ -283,7 +298,7 @@ namespace App2.View
             _userTapped = true;
 
             //await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM));
-            await Navigation.PushModalAsync(new View.SettingsPage());
+            await Navigation.PushAsync(new View.SettingsPage());
 
             _userTapped = false;
 
@@ -315,7 +330,7 @@ namespace App2.View
 
             _userTapped = true;
 
-            await Navigation.PushModalAsync(new View.SettingsPage());
+            await Navigation.PushAsync(new View.SettingsPage());
 
             _userTapped = false;
         }
