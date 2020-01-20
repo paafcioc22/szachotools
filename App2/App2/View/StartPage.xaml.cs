@@ -31,7 +31,7 @@ namespace App2.View
 
 
       
-        public bool CheckInternetConnection()
+        public static bool CheckInternetConnection()
         {
 
             var current = Connectivity.NetworkAccess;
@@ -342,8 +342,8 @@ namespace App2.View
 
             _userTapped = true;
 
-            await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
-
+            //await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
+            await Navigation.PushAsync(new View.widoktestowy());
             _userTapped = false;
         }
 

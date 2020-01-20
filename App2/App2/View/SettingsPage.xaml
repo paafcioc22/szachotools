@@ -4,7 +4,9 @@
             xmlns:ef1="clr-namespace:ShowHidePassEx.Effects" 
             NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" 
             x:Class="App2.View.SettingsPage" 
-            BarBackgroundColor="#54c4b4" >
+            BarBackgroundColor="#54c4b4" 
+        
+            >
     <!--xmlns:ViewModel="clr-namespace:App2.ViewModel"-->
 
     <!--<ContentPage.BindingContext>-->
@@ -107,19 +109,20 @@
                     >
                     </Picker>
 
-                    <Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                    <!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
+                    <!--<Label Text="Drukarka" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
+                    --><!--ItemsSource="{Binding View.SettingsPage.DrukarkaClass}"-->
 
                     <!--ItemDisplayBinding="{Binding NazwaDrukarki}"-->
-                    <!--ItemDisplayBinding="{Binding  Drukarka}"-->
+                    <!--ItemDisplayBinding="{Binding  Drukarka}"--><!--
                     <Picker x:Name="PrinterList"
                     Title="Wybierz drukarkę bluetooth"
                     SelectedIndexChanged="PrinterList_SelectedIndexChanged" 
                
                     >
-                    </Picker>
+                    </Picker>-->
                 </StackLayout>
             </ScrollView>
+           <!--<ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" d:IsRunning="True" />-->
             <StackLayout  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
                 <Button Text="Połącz się z Wi-fi " HorizontalOptions="FillAndExpand" Clicked="Btn_ConToWiFi_Clicked" 
                     TextColor="White"
@@ -197,5 +200,8 @@
             </ListView>
 
         </Grid>
+       
     </ContentPage>
+     
+ 
 </TabbedPage>

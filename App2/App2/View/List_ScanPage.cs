@@ -4,11 +4,14 @@ using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using SQLite;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
-
+ 
 namespace App2.View
 {
     public class List_ScanPage : ContentPage
@@ -20,7 +23,7 @@ namespace App2.View
         private Label lbl_nazwa;
         private Label lbl_cena;
         private Label lbl_cena1;
-        private Entry entry_kodean;
+        private Entry entry_skanowanaIlosc;
         private Entry entry_EanSkaner;
         private Image img_foto;
 
@@ -38,7 +41,7 @@ namespace App2.View
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         // private  ISewooXamarinCPCL cpclPrinter;
         string drukarka;
-
+        Array Controls;
 
 
 
@@ -50,6 +53,11 @@ namespace App2.View
 
             // CrossSewooXamarinCPCL.Current.createCpclService(int iCodePage);
             _akcja = akcje;
+
+
+            Controls = new[] { "Dodaj mm", "Przegladaj", "Tworz" };
+
+
 
 
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
@@ -148,8 +156,16 @@ namespace App2.View
             lbl_ean = new Label();
             lbl_ean.HorizontalOptions = LayoutOptions.Center;
             lbl_ean.Text = _akcja.TwrEan;
+            lbl_ean.TextDecorations = TextDecorations.Underline;
+            var tapCopyLabelEan = new TapGestureRecognizer();
+            tapCopyLabelEan.Tapped += async (s, e) =>
+            {
+                await Clipboard.SetTextAsync(_akcja.TwrEan);
+                await DisplayAlert(null, "skopiowano ean", "ok");
+            };
+            lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
 
-            entry_kodean = new Entry()
+            entry_skanowanaIlosc = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
@@ -195,7 +211,7 @@ namespace App2.View
             stackLayout.Children.Add(lbl_twrkod);
             stackLayout.Children.Add(lbl_nazwa);
             stackLayout.Children.Add(lbl_ean);
-            stackLayout.Children.Add(entry_kodean);
+            stackLayout.Children.Add(entry_skanowanaIlosc);
             stackLayout.Children.Add(lbl_symbol);
             stackLayout.Children.Add(lbl_cena);
             stackLayout.Children.Add(lbl_cena1);
@@ -217,7 +233,7 @@ namespace App2.View
 
         }
 
-        async void WidokSkaner()
+        void WidokSkaner()
         {
 
             var scrollView = new ScrollView();
@@ -227,29 +243,23 @@ namespace App2.View
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            var layout = new AbsoluteLayout();
 
-            StackLayout stackLayout = new StackLayout();
-            StackLayout stackLayout_gl = new StackLayout();
-            StackLayout stack_naglowek = new StackLayout();
-
-
+            StackLayout stack_dane = new StackLayout();
+            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            AbsoluteLayout layout2 = new AbsoluteLayout();
+            AbsoluteLayout.SetLayoutBounds(layout2, new Rectangle(0, 0, 1, 1));
+            AbsoluteLayout.SetLayoutFlags(layout2, AbsoluteLayoutFlags.All);
 
             Label lbl_naglowek = new Label();
-            lbl_naglowek.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            lbl_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
             lbl_naglowek.VerticalOptions = LayoutOptions.Start;
+            lbl_naglowek.HorizontalTextAlignment = TextAlignment.Center;
             lbl_naglowek.Text = "Szczegóły pozycji";
             lbl_naglowek.FontSize = 20;
             lbl_naglowek.TextColor = Color.Bisque;
             lbl_naglowek.BackgroundColor = Color.DarkCyan;
-
-            stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
-            stack_naglowek.VerticalOptions = LayoutOptions.Start;
-            stack_naglowek.BackgroundColor = Color.DarkCyan;
-            stack_naglowek.Children.Add(lbl_naglowek);
-
-            stackLayout_gl.Children.Add(stack_naglowek);
-
+            AbsoluteLayout.SetLayoutBounds(lbl_naglowek, new Rectangle(0, 0, 1, .1));
+            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All);
 
 
             img_foto = new Image();
@@ -261,11 +271,10 @@ namespace App2.View
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
-            //AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(.1,.1,1,1));
-            //AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
 
-            //layout.Children.Add(img_foto);
-            stackLayout.Children.Add(img_foto);
+            AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.09, 1, .4));
+            AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
+
             //_gidnumer = mmka.gi;
 
 
@@ -273,7 +282,7 @@ namespace App2.View
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
             lbl_stan.Text = "Stan : " + _akcja.TwrStan + " szt";
             lbl_stan.FontAttributes = FontAttributes.Bold;
-            stackLayout.Children.Add(lbl_stan);
+
 
             lbl_twrkod = new Label();
             lbl_twrkod.HorizontalOptions = LayoutOptions.Center;
@@ -292,7 +301,7 @@ namespace App2.View
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
 
 
-            entry_kodean = new Entry()
+            entry_skanowanaIlosc = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
@@ -325,50 +334,366 @@ namespace App2.View
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
+            AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.5, 1, .9, 50));
+            AbsoluteLayout.SetLayoutFlags(open_url, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
+            Grid grid = new Grid()
+            {
+                Margin = new Thickness(0, 0, 10, 120),
+                RowSpacing = 10
+            };
+            grid.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+            grid.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+
+
+            var stack1 = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                IsVisible = false,
+                HorizontalOptions = LayoutOptions.End
+            };
+            var label1 = new Label()
+            {
+                Text = "Przeglądaj MMki",
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.End,
+                FontAttributes = FontAttributes.Bold
+
+            };
+            var frame1 = new Button()
+            {
+                BackgroundColor = Color.FromRgb(32, 178, 170),
+                CornerRadius = 25,
+                WidthRequest = 50,
+                HeightRequest = 50,
+                HorizontalOptions = LayoutOptions.End
+            };
+            frame1.Clicked += BtnBrowseMM_Clicked;
+            stack1.Children.Add(label1);
+            stack1.Children.Add(frame1);
+            grid.Children.Add(stack1);
+            Grid.SetRow(stack1, 0);
+
+            var stack2 = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                IsVisible = false,
+                HorizontalOptions = LayoutOptions.End
+            };
+            var label2 = new Label()
+            {
+                Text = "Dodaj do MM",
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.End,
+                FontAttributes = FontAttributes.Bold
+            };
+            var frame2 = new Button()
+            {
+                BackgroundColor = Color.FromRgb(32, 178, 170),
+                CornerRadius = 25,
+                WidthRequest = 50,
+                HeightRequest = 50,
+                HorizontalOptions = LayoutOptions.End
+            };
+            frame2.Clicked += BtnAddToMM_Clicked;
+            stack2.Children.Add(label2);
+            stack2.Children.Add(frame2);
+            grid.Children.Add(stack2);
+
+            Grid.SetRow(stack2, 1);
+
+            AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(1, 1, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
+
+
+            Button frame_btn = new Button()
+            {
+                BackgroundColor = Color.DarkCyan,
+                CornerRadius = 30,
+                WidthRequest = 60,
+                HeightRequest = 60,
+                Margin = new Thickness(0, 0, 10, 50),
+                Text = "+",
+                FontSize = 35,
+                TextColor = Color.White,
+                FontAttributes = FontAttributes.Bold,
+
+            };
+            //AbsoluteLayout.SetLayoutBounds(frame_btn, new Rectangle(1, .70, .20, 50));
+            AbsoluteLayout.SetLayoutBounds(frame_btn, new Rectangle(1, 1, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(frame_btn, AbsoluteLayoutFlags.PositionProportional);
+            //AbsoluteLayout.SetLayoutFlags(frame_btn, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+            var tapp = new TapGestureRecognizer();
+            frame_btn.Clicked += async (sender, e) =>
+            {
+                //await((Frame)sender).ScaleTo(.5, 50, Easing.Linear);
+                //await Task.Delay(100);
+                //await((Frame)sender).ScaleTo(1, 50, Easing.Linear);
+
+                if (!stack1.IsVisible)
+                {
+                    frame_btn.Text = "-";
+                    stack_dane.Opacity = .2;
+                    stack1.IsVisible = true;
+                    await stack1.TranslateTo(0, 0, 100);
+                    await stack1.TranslateTo(0, -10, 100);
+                    await stack1.TranslateTo(0, 0, 100);
+
+                    stack2.IsVisible = true;
+                    await stack2.TranslateTo(0, 0, 100);
+                    await stack2.TranslateTo(0, -10, 100);
+                    await stack2.TranslateTo(0, 0, 100);
+                }
+                else {
+                    await (frame1).ScaleTo(0, 50, Easing.Linear);
+                    await (frame2).ScaleTo(0, 50, Easing.Linear);
+                    stack1.IsVisible = false;
+                    stack2.IsVisible = false;
+                    stack_dane.Opacity = 1;
+                    frame_btn.Text = "+";
+                    await (frame1).ScaleTo(1, 50, Easing.Linear);
+                    await (frame2).ScaleTo(1, 50, Easing.Linear);
+                }
 
 
 
-            Button enterEanButton = new Button();
-            enterEanButton.Text = "Wydrukuj ręcznie";
-            enterEanButton.CornerRadius = 15;
-            enterEanButton.Clicked += EnterEan_Clicked; ;
-            enterEanButton.VerticalOptions = LayoutOptions.EndAndExpand;
+            };
+
+
+            Button enterEanButton = new Button()
+            {
+                Text = "Druk AWARYJNY",
+                CornerRadius = 15,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                FontSize = 12
+            };
+            enterEanButton.Clicked += EnterEan_Clicked;
+
+            AbsoluteLayout.SetLayoutBounds(enterEanButton, new Rectangle(1, .82, .25, 50));
+            AbsoluteLayout.SetLayoutFlags(enterEanButton, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
 
             entry_EanSkaner = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
-                IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true,
-                ReturnCommand = new Command(() => zapiszdrukuj()),
                 WidthRequest = 180,
-                Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
-                TextColor = Color.Black
+                //Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
+                Placeholder = "Wpisz/zeskanuj Ean",
+                TextColor = Color.Black,
+
             };
 
-            stackLayout.Children.Add(lbl_twrkod);
-            stackLayout.Children.Add(lbl_nazwa);
-            stackLayout.Children.Add(lbl_ean);
-            stackLayout.Children.Add(entry_kodean);
-            stackLayout.Children.Add(entry_EanSkaner);
-            stackLayout.Children.Add(lbl_symbol);
-            stackLayout.Children.Add(lbl_cena);
-            stackLayout.Children.Add(lbl_cena1);
+            if (List_AkcjeView.TypAkcji.Contains("Przerzuty") || List_AkcjeView.TypAkcji.Contains("Zwrot"))
+            {
+                entry_EanSkaner.ReturnCommand = new Command(() => setFocusEntryIlosc(entry_EanSkaner.Text));
+            }
+            else { 
+                entry_EanSkaner.IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true;
+                entry_EanSkaner.ReturnCommand = new Command(() => zapiszdrukuj()); 
+            }
+
+            Button addToMM = new Button()
+            {
+                Text="Dodaj do MMki",
+                CornerRadius =60,
+                WidthRequest=120,
+                FontSize=10,
+                BackgroundColor= Color.DarkCyan,
+                TextColor = Color.AntiqueWhite
+            };
+            AbsoluteLayout.SetLayoutBounds(addToMM, new Rectangle(1, .70, .20, 50));
+            AbsoluteLayout.SetLayoutFlags(addToMM, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
 
-            stackLayout.VerticalOptions = LayoutOptions.Center;
-            stackLayout.Padding = new Thickness(8, 0, 8, 0);
-            //stackLayout.Padding = 8;
-            //stackLayout_gl.Children.Add(layout);   //dodane
-            stackLayout_gl.Children.Add(stackLayout);
+            stack_dane.Children.Add(lbl_twrkod);
+            stack_dane.Children.Add(lbl_nazwa);
+            stack_dane.Children.Add(lbl_ean);
+            stack_dane.Children.Add(lbl_stan);
+            stack_dane.Children.Add(entry_skanowanaIlosc);
+            stack_dane.Children.Add(entry_EanSkaner);
+            stack_dane.Children.Add(lbl_symbol);
+            stack_dane.Children.Add(lbl_cena);
+            //stack_dane.Children.Add(lbl_cena1);
+            AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .55));
+            AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
+
+
+             
+
+            absoluteLayout.Children.Add(img_foto);
+            absoluteLayout.Children.Add(lbl_naglowek);
+            absoluteLayout.Children.Add(stack_dane);
+            absoluteLayout.Children.Add(open_url);
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                stackLayout_gl.Children.Add(enterEanButton);
-            stackLayout_gl.Children.Add(open_url);
-            stackLayout_gl.Padding = new Thickness(8, 0, 8, 0);
+                absoluteLayout.Children.Add(enterEanButton);
+            //absoluteLayout.Children.Add(addToMM);
+            if (List_AkcjeView.TypAkcji.Contains("Przerzuty")|| List_AkcjeView.TypAkcji.Contains("Zwrot"))
+            {
+                absoluteLayout.Children.Add(frame_btn);
+                absoluteLayout.Children.Add(grid);
+            }
+            
 
-            scrollView.Content = stackLayout_gl;
 
-            Content = scrollView;
+
+
+
+            //scrollView.Content = stackLayout_gl;
+
+            Content = absoluteLayout;
             Appearing += (object sender, System.EventArgs e) => entry_EanSkaner.Focus();
+        }
+
+        private void setFocusEntryIlosc(string entryEan)
+        {
+            if (entryEan == _akcja.TwrEan)
+                entry_skanowanaIlosc.Focus();
+            else
+                DisplayAlert(null, "Błędny ean", "OK");
+        }
+
+        
+
+        private async void BtnBrowseMM_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new View.StartCreateMmPage());
+        }
+
+        private async void BtnAddToMM_Clicked(object sender, EventArgs e)
+        {
+            var ListaMMWBuforze = new List<string>();
+            var dokmm = new DokMM();
+            var listaMM = dokmm.getMMki().Where(c => c.statuss == 0);
+            int gidnumerMM;
+            //var listaMM = Model.DokMM.dokMMs.Where(c =>c.statuss ==0);
+            int ilosc;
+
+            
+             
+
+                var czyPoprawnaIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ilosc);
+                if (czyPoprawnaIlosc && ilosc > 0)
+                {
+                    DokMM dokMM = new DokMM();
+                    var listaIstniejacych = dokMM.ListaIstniejacych(_akcja.TwrKod);
+                    List<string> naJakichMM = new List<string>();
+
+                    int sumaGlobalna = listaIstniejacych.Count > 0 ? listaIstniejacych.Sum(c => c.szt) : 0;
+
+
+                    foreach (var mm in listaIstniejacych)
+                    {
+                        naJakichMM.Add(string.Format($"{mm.mag_dcl} - {mm.opis.Replace("Pakował(a):", "")} : {mm.szt} szt"));
+                    }
+
+                if ((ilosc) > (_akcja.TwrStan - sumaGlobalna))
+                {
+
+                    if (listaIstniejacych.Count > 0)
+                        await DisplayActionSheet("Ilość przekracza stan- występuje już :", "OK", null, naJakichMM.ToArray());
+                    else
+                        await DisplayAlert("Uwaga", "Wpisana Ilość przekracza stan", "OK");
+
+                } 
+                else
+                {
+                    if (ilosc <= (_akcja.TwrStan - sumaGlobalna) && listaIstniejacych.Count > 0)
+                        await DisplayActionSheet("Model występuje już na mmkach:", "OK", null, naJakichMM.ToArray()); 
+                    foreach (var mm in listaMM)
+                    {
+                        ListaMMWBuforze.Add(mm.gidnumer + ")" + mm.mag_dcl + " " + mm.opis.Replace("Pakował(a):", ""));
+                    }
+                    var odp = await DisplayActionSheet("Wybierz MM:", "Wyjdź", null, ListaMMWBuforze.ToArray());
+
+                    if (odp != "Wyjdź")
+                    {
+                        var gdzieCut = odp.IndexOf(')');
+                        var cutNrmmki = odp.Substring(0, gdzieCut);
+                        Int32.TryParse(cutNrmmki, out gidnumerMM);
+
+                        ZapiszPozycje(gidnumerMM, _akcja.TwrKod, ilosc, _akcja.TwrStan, odp);
+                    }
+
+                }
+
+                }
+                else
+                    await DisplayAlert(null, "Błędna ilosc", "OK"); 
+            
+            
+        }
+
+        public async void ZapiszPozycje(int mmGidnumer, string twrKod, int ilosc, int stan_szt,string opis)
+        {
+            Model.DokMM dokMM = new Model.DokMM();
+            dokMM.gidnumer = mmGidnumer;
+            dokMM.twrkod = twrKod;
+            dokMM.szt = (ilosc);
+
+             
+            //var listaIstniejacych= dokMM.ListaIstniejacych(dokMM.twrkod);
+            //List<string> naJakichMM = new List<string>();
+
+            //int sumaGlobalna = listaIstniejacych.Count > 0 ? listaIstniejacych.Sum(c => c.szt) : 0;
+            //if ((ilosc) > (stan_szt-sumaGlobalna) )
+            //{
+            //    foreach (var mm in listaIstniejacych)
+            //    {
+            //        naJakichMM.Add(string.Format($"{mm.mag_dcl} - {mm.opis.Replace("Pakował(a):", "")} : {mm.szt} szt"));
+            //    }
+            //    await DisplayActionSheet("Ilość przekracza stan- występuje już :","OK",null,naJakichMM.ToArray());
+            //}
+            //else
+            //{
+                 
+
+            int IleIstnieje = dokMM.SaveElement(dokMM);
+
+
+            if (IleIstnieje > 0)
+            {
+                var odp = await DisplayAlert("UWAGA!", "Dodawany kod już znajduje się na liście. Chcesz zsumować ilości?", "TAK", "NIE");
+                if (odp)
+                {
+                    int suma = (ilosc) + IleIstnieje;
+                    if (suma > (stan_szt))
+                    {
+                        await DisplayAlert(null, "Łączna ilość przekracza stan ", "OK");
+                        return;
+                    }
+                    else
+                    {
+                        //Model.DokMM dokMM = new Model.DokMM();
+                        dokMM.gidnumer = mmGidnumer;
+                        dokMM.twrkod = twrKod;
+                        dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
+                        dokMM.UpdateElement(dokMM);
+                        dokMM.getElementy(mmGidnumer);
+                        var opis2 = opis.Substring(opis.IndexOf(')') + 1);
+                        //var oooo = opis.Substring(opis.IndexOf(')') + 1, opis.Length - opis.IndexOf(')') + 2);
+                        await DisplayAlert("Dodano..", $"..{ilosc} szt do {opis2}", "OK");
+                    }
+                }
+                else
+                {
+                    await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
+                }
+
+                // await Navigation.PopModalAsync(); 
+            }
+            else 
+            {
+                var opis2 = opis.Substring(opis.IndexOf(')') + 1);
+                await DisplayAlert("Dodano..", $"..{dokMM.szt} szt do {opis2}", "OK");
+            }
+
         }
 
         async void zapiszdrukuj()
@@ -377,22 +702,28 @@ namespace App2.View
             {
                 if(View.SettingsPage.CzyDrukarkaOn)
                 ile_zeskanowancyh += 1;
-                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
-                {
-                    if (CanPrint)
-                        PrintCommand();
-                    //DisplayAlert(null, "Drukuje..", "OK");
-                    Zapisz();
-                    entry_kodean.Text = ile_zeskanowancyh.ToString();
-                    entry_EanSkaner.Text = "";
-                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh + 1))
-                        entry_EanSkaner.Focus();
-                }
-                else
-                {
-                    await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-                    ile_zeskanowancyh -= 1;
-                }
+
+                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
+                    {
+                            if (CanPrint)
+                                if (await PrintCommand())
+                                {
+                                    //ile_zeskanowancyh += 1;
+                                    Zapisz();
+                                    entry_skanowanaIlosc.Text = ile_zeskanowancyh.ToString();
+                                    entry_EanSkaner.Text = "";
+                                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh + 1))
+                                        entry_EanSkaner.Focus(); 
+                                }else
+                                ile_zeskanowancyh -= 1;
+                        //DisplayAlert(null, "Drukuje..", "OK");
+
+                    }
+                    else
+                    {
+                        await DisplayAlert("Uwaga", "Zeskanowano więcej niż jest na stanie", "OK");
+                        ile_zeskanowancyh -= 1;
+                    }
             }
             else
             {
@@ -465,36 +796,43 @@ namespace App2.View
                         new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay);
                     scanPage.DefaultOverlayShowFlashButton = true;
                     scanPage.OnScanResult += (result) =>
-                        Device.BeginInvokeOnMainThread(() =>
+                        Device.BeginInvokeOnMainThread(async () =>
                         {
                             skanean = result.Text;
 
                             if (skanean == lbl_ean.Text)
                             {
+                                ile_zeskanowancyh += 1;
                                 if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                                 {
-                                    ile_zeskanowancyh += 1;
-                                    overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
                                     //DisplayAlert(null, $"Zeskanowanych szt : {ile_zeskanowancyh}", "OK");
                                     if (CanPrint)
-                                        PrintCommand();
-
-                                    Zapisz();
-                                    entry_kodean.Text = ile_zeskanowancyh.ToString();
+                                      
+                                    if (await PrintCommand())
+                                    {
+                                        //ile_zeskanowancyh += 1;
+                                        Zapisz();
+                                        entry_skanowanaIlosc.Text = ile_zeskanowancyh.ToString();
+                                        
+                                        
+                                    }
+                                    else
+                                        ile_zeskanowancyh -= 1;
 
                                 }
                                 else
                                 {
-                                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-
+                                    await DisplayAlert("Uwaga", "Zeskanowano więcej niż jest na stanie", "OK");
+                                    ile_zeskanowancyh -= 1;
                                 }
 
+                                overlay.BottomText = $"Zeskanowanych szt : {ile_zeskanowancyh}/{_akcja.TwrStan}";
 
                             }
                             else
                             {
 
-                                DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
+                                await DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
                             }
                         });
                     await Navigation.PushModalAsync(scanPage);
@@ -627,7 +965,7 @@ namespace App2.View
             }
             catch (Exception)
             {
-                await DisplayAlert(null, "Błąd", "OK");
+                await DisplayAlert(null, "Błąd połączenia z drukarką", "OK");
             }
 
 
@@ -635,9 +973,9 @@ namespace App2.View
 
 
         int polozenie;
-        public async void PrintCommand(string ile = null)
+            bool printSukces;
+        public async Task<bool> PrintCommand(string ile = null)
         {
-
             int drukSzt;
             //_cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2); 
 
@@ -733,25 +1071,29 @@ namespace App2.View
 
 
 
-                //iResult = await SettingsPage._cpclPrinter.printResults();
-                //switch (Device.RuntimePlatform)
-                //{
-                //    case Device.iOS:
-                //        iResult = await SettingsPage._cpclPrinter.printStatus();
-                //        Debug.WriteLine("PrinterStatus = " + iResult);
-                //        break;
-                //    default:
-                //        Debug.WriteLine("PrinterResults = " + iResult);
-                //        break;
-                //}
-                //if (iResult != cpclConst.LK_SUCCESS)
-                //{
-                //    ErrorStatusDisp("Printing error", iResult);
-                //}
-                //else
-                //{
-                //    await DisplayAlert("Printing Result", "Printing success", "OK");
-                //}
+                iResult = await SettingsPage._cpclPrinter.printResults();
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        iResult = await SettingsPage._cpclPrinter.printStatus();
+                        //Debug.WriteLine("PrinterStatus = " + iResult);
+                        break;
+                    default:
+                        //Debug.WriteLine("PrinterResults = " + iResult);
+                        break;
+                }
+                if (iResult != cpclConst.LK_SUCCESS)
+                {
+                    ErrorStatusDisp("Wydruk nieudany", iResult);
+                    printSukces= false;
+                }
+                else
+                {
+                    //await DisplayAlert("Printing Result", "Printing success", "OK");
+                    
+                    printSukces= true;
+                     
+                }
             }
             catch (Exception e)
             {
@@ -763,6 +1105,7 @@ namespace App2.View
                 printSemaphore.Release();
             }
 
+            return printSukces;
 
 
         }
@@ -802,7 +1145,7 @@ namespace App2.View
             else return false;
         }
 
-        private async void Zapisz()
+        public async void Zapisz()
         {
 
             Model.AkcjeNagElem akcjeNagElem = new Model.AkcjeNagElem();
@@ -849,16 +1192,20 @@ namespace App2.View
             if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
             {
 
-                ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
-                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
-                {
-                    Zapisz();
-                    if (ile_zeskanowancyh > 0)
-                        _akcja.TwrSkan = ile_zeskanowancyh;
-                    await Navigation.PopModalAsync();
-                }
+                bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
 
-                else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
+                
+                 if(CzyWpisanoIlosc)
+                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
+                    {
+                        Zapisz();
+                        if (ile_zeskanowancyh > 0)
+                            _akcja.TwrSkan = ile_zeskanowancyh;
+                        await Navigation.PopModalAsync();
+                    }
+                    else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                 else await DisplayAlert("Uwaga", "Błędna wartość", "OK");
 
 
             }
@@ -899,7 +1246,21 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
-            _akcja.TwrSkan = ile_zeskanowancyh;
+            bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
+
+            //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
+
+            if (CzyWpisanoIlosc)
+                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
+                    _akcja.TwrSkan = ile_zeskanowancyh;
+                else
+                {
+                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                    
+                    return true;
+                }
+
+            
             return base.OnBackButtonPressed();
 
 

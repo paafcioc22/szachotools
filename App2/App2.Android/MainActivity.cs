@@ -11,9 +11,11 @@ using System.Net;
 using Android.Content;
 using Android.Util;
 using Xamarin.Forms;
+using FFImageLoading.Forms.Platform;
+
 //using Microsoft.AppCenter.Push;
 //using Microsoft.AppCenter;
- 
+
 
 namespace App2.Droid
 {//, WindowSoftInputMode = Android.Views.SoftInput.AdjustResize
@@ -33,11 +35,16 @@ namespace App2.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             // UserDialogs.Init(this);
             //UserDialogs.Init(() => this);
-
+        
             //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true); 
+            //CachedImageRenderer.Init(true); 
+
+            CachedImageRenderer.Init(true);
+            CachedImageRenderer.InitImageViewHandler();
+
+
             //Push.SetSenderId("466514621461");
-            
+
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());

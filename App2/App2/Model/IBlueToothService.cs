@@ -6,9 +6,11 @@ namespace App2.Model
     /// <summary>
     /// We need to create an interface for DependencyService (Android-iOS-UWP)
     /// </summary>
-    //public interface IBlueToothService
-    //{
-    //    IList<string> GetDeviceList();
-    //    Task Print(string deviceName, string text);
-    //}
+    public interface IBlueToothService
+    {
+
+        bool isBluetoothEnabled();
+        //IList<string> GetDeviceList();
+        //Task Print(string deviceName, string text);
+    }
 }

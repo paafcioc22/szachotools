@@ -16,7 +16,15 @@ namespace App2.View
     {
         public IList<Model.AkcjeNagElem> Items2 { get; set; }
         public ObservableCollection<Model.AkcjeNagElem> ListaZFiltrem { get; set; }
-         
+
+        private BindableProperty IsSearchingProperty =
+           BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
+        }
+
         public List_AkcjeElemView( int gidtyp)
         {
             InitializeComponent();
@@ -28,6 +36,8 @@ namespace App2.View
 
         private async void GetAkcje(int _gidtyp)
         {
+            IsSearching = true;
+
             try
             {
                 string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
@@ -46,6 +56,8 @@ namespace App2.View
 
                 await DisplayAlert(null, x.Message, "OK");
             }
+
+            IsSearching = false;
         }
 
         bool _istapped;

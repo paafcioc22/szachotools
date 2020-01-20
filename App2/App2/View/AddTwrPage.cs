@@ -347,6 +347,53 @@ namespace App2.View
             }
         }
 
+        public async void ZapiszPozycje(int mmGidnumer, string twrKod, int ilosc, int stan_szt)
+        {
+            if ((ilosc) > (stan_szt) && (ilosc) == 0)
+            {
+                await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
+            }
+            else
+            {
+                Model.DokMM dokMM = new Model.DokMM();
+                dokMM.gidnumer = mmGidnumer;
+                dokMM.twrkod = twrKod;
+                dokMM.szt = (ilosc);
+
+                int IleIstnieje = dokMM.SaveElement(dokMM);
+
+                if (IleIstnieje > 0)
+                {
+                    var odp = await DisplayAlert("UWAGA!", "Dodawany kod już znajduje się na liście. Chcesz zsumować ilości?", "TAK", "NIE");
+                    if (odp)
+                    {
+                        int suma = (ilosc) + IleIstnieje;
+                        if (suma > (stan_szt))
+                        {
+                            await DisplayAlert(null, "Łączna ilość przekracza stan ", "OK");
+                            return;
+                        }
+                        else
+                        {
+                            //Model.DokMM dokMM = new Model.DokMM();
+                            dokMM.gidnumer = mmGidnumer;
+                            dokMM.twrkod = twrKod;
+                            dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
+                            dokMM.UpdateElement(dokMM);
+                            dokMM.getElementy(_gidnumer);
+                        }
+                    }
+                    else
+                    {
+
+                        await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
+                    }
+                }
+                await Navigation.PopModalAsync();
+            }
+
+        }
+
         private   void Btn_Zapisz_Clicked(object sender, EventArgs e)
         {
              ZapiszPozycje();

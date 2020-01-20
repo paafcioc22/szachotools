@@ -4,6 +4,11 @@
              x:Class="App2.View.List_AkcjeElemView">
 
     <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20 ">
+        <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="DarkCyan"
+                             />
         <ListView x:Name="MyListView2" HasUnevenRows="True"
                 ItemsSource="{Binding Items2}" SeparatorVisibility="None"
                 ItemTapped="Handle_ItemTapped"

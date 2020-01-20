@@ -8,6 +8,10 @@
             <Label Text="Grupa" FontSize="16"  TextColor="Beige" HorizontalOptions="Start" Margin="10,0,0,0"/>
             <Label Text="Zeskanowane/Stan" FontSize="16"  TextColor="Beige" HorizontalOptions="EndAndExpand" Margin="0,0,10,0"/>
         </StackLayout>
+        <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" Color="DarkCyan"
+                           />
         <ListView x:Name="MyListView3" HasUnevenRows="True"
                 ItemsSource="{Binding TwrList}"
                 ItemTapped="Handle_ItemTapped"

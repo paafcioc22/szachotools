@@ -172,9 +172,9 @@ namespace App2.Model
         }
 
 
-        public static   ObservableCollection<DokMM> dokMMs = new ObservableCollection<DokMM>(); 
-        public static   ObservableCollection<DokMM> dokElementy = new ObservableCollection<DokMM>();
-
+        public static ObservableCollection<DokMM> dokMMs = new ObservableCollection<DokMM>(); 
+        public static ObservableCollection<DokMM> dokElementy = new ObservableCollection<DokMM>();
+        //public static List<DokMM> listaIstniecjacych = new List<DokMM>();
 
         public ObservableCollection<DokMM> getMMki()
         {
@@ -223,6 +223,41 @@ namespace App2.Model
         }
 
 
+        public List<DokMM> ListaIstniejacych(string  twrkod)
+        {
+            List<DokMM> dokMMs = new List<DokMM>();
+            connection.Open();
+            string query =$@" select gidnumer, mag_dcl, opis, 
+                      (select ile from dbo.[MM] where gidnumer=nad.gidnumer and kod = '{twrkod}')ile
+                      from dbo.mm nad where 
+                      gidnumer in (
+			                    select gidnumer from  dbo.mm pod
+			                    where kod='{twrkod}' and statuss=0  
+			                    )
+                      and [fl_header]=1 and statuss=0  
+                            ";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            SqlDataReader sqlData = command.ExecuteReader();
+
+            while (sqlData.Read())
+            {
+
+                dokMMs.Add(new DokMM
+                {
+                    gidnumer = Convert.ToInt32(sqlData["gidnumer"]),
+                    mag_dcl = Convert.ToString(sqlData["mag_dcl"]),
+                    opis = Convert.ToString(sqlData["opis"]), 
+                    szt = Convert.ToInt16(sqlData["ile"]) 
+                });
+            }
+            sqlData.Close();
+            sqlData.Dispose();
+            connection.Close();
+             
+            return dokMMs;
+        }
+
         int ile;
 
         public int SaveElement(DokMM dokMM)
@@ -243,7 +278,7 @@ namespace App2.Model
                     "null," +                                //nrdok         
                     Convert.ToByte(dokMM.IsExport)+
                     ") ";
-            string SprCzyIstnieje = "select isnull(sum(ile),0) ile from dbo.mm where kod='" + dokMM.twrkod + "' and gidnumer=" + dokMM.gidnumer;
+            string SprCzyIstnieje = $"select isnull(sum(ile),0) ile from dbo.mm where kod='{dokMM.twrkod}' and gidnumer={dokMM.gidnumer}";
 
             SqlCommand command2 = new SqlCommand(SprCzyIstnieje, connection);
             SqlDataReader sqlData = command2.ExecuteReader();

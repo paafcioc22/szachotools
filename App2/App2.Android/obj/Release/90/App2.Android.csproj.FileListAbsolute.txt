@@ -539,3 +539,13 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\st
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_GenerateJavaStubs.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-mdpi\ic_shortcut_add.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xhdpi\ic_shortcut_add.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\ic_shortcut_add.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\ic_shortcut_add.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\ic_shortcut_add.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-mdpi\ic_shortcut_remove.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xhdpi\ic_shortcut_remove.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\ic_shortcut_remove.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\ic_shortcut_remove.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\ic_shortcut_remove.png

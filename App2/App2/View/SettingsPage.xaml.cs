@@ -28,6 +28,15 @@ namespace App2.View
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         public static CPCLConst cpclConst;
 
+        private BindableProperty IsSearchingProperty =
+            BindableProperty.Create("IsSearching", typeof(bool), typeof(SettingsPage), false);
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
+        }
+
+
 
         //private string _version;
         public SettingsPage()
@@ -249,7 +258,7 @@ namespace App2.View
                 InitialCatalog = app.BazaProd, //_database,
                 UserID = app.User,//_uid,
                 Password = app.Password, //_pwd,
-                ConnectTimeout = 1
+                ConnectTimeout = 3
             }.ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -410,23 +419,23 @@ namespace App2.View
 
         private void PrinterList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var appp = Application.Current as App;
+         //   var appp = Application.Current as App;
             //var nazwa = PrinterList.Items[PrinterList.SelectedIndex];
             //var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki == nazwa);
 
-            int selectedIndex = PrinterList.SelectedIndex;
+         //   int selectedIndex = PrinterList.SelectedIndex;
             //appp.Drukarka = selectedIndex; <<<<<<<<<<<<<<<<<<<<<<<<<<<smiana aaaaa
 
-            var printer = PrinterList.Items[PrinterList.SelectedIndex];
-            var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki + "\r\n" + c.AdresDrukarki == printer);
+         //   var printer = PrinterList.Items[PrinterList.SelectedIndex];
+         //   var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki + "\r\n" + c.AdresDrukarki == printer);
 
             //btnConnectClicked(wybrana);
 
         }
 
-        private void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
-
+            IsSearching = true;
             var profiles = Connectivity.ConnectionProfiles;
             if (profiles.Contains(ConnectionProfile.WiFi))
             {
@@ -446,26 +455,34 @@ namespace App2.View
             var version = DependencyService.Get<Model.IWifiConnector>();
             if (version.IsConnectedToWifi(wifi))//Szachownica
             {
-                DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
+                await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
                 return;
             }
 
 
-            version.ConnectToWifi(wifi, "J0@rt11a");
-
-            Task.Delay(2000);
-
-            if (version.IsConnectedToWifi(wifi))
+            if (version.ConnectToWifi(wifi, "J0@rt11a"))
             {
-                DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
-
+                await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
             }
             else
             {
-
-                DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
-
+                await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
             }
+
+            
+
+            //if (version.IsConnectedToWifi(wifi))
+            //{
+            //    DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
+
+            //}
+            //else
+            //{
+
+            //    DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
+
+            //}
+            IsSearching = false;
 
         }
 
@@ -528,24 +545,41 @@ namespace App2.View
 
 
             }
+             
+            List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
+            //ObservableCollection<connectableDeviceInfo> deviceList = new ObservableCollection<connectableDeviceInfo>();
 
 
+            var blueToothService = DependencyService.Get<Model.IBlueToothService>();
+
+            //if(blueToothService.isBluetoothEnabled())
             var deviceList = await _cpclPrinter.connectableDevice();
+            //List<string> deviceList = new List<string>();
 
-            connectableDeviceView.ItemsSource = deviceList.Where(c => c.Name.StartsWith("SW"));
-            if (deviceList.Count == 0)
+            if(deviceList !=null)
+            {
+
+                listdevice = deviceList.Where(c => c.Name.StartsWith("SW")).ToList();
+                connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
+
+            }
+            //if (deviceList.Count == 0)
+            if (listdevice == null|| listdevice.Count==0)
             {
                 editAddress.IsEnabled = true;
                 editAddress.Text = "00:00:00:00:00:00";
+                btnConnect.IsEnabled = false;
             }
             else
             {
                 editAddress.IsEnabled = false;
-               // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
-               // editAddress.Text = deviceList.ElementAt(0).Address;
-               if(appp.Drukarka=="00:00:00:00:00:00")
-                 
-                editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+                // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+                // editAddress.Text = deviceList.ElementAt(0).Address;
+                if (appp.Drukarka == "00:00:00:00:00:00")
+                { 
+                    editAddress.Text = "";//deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+                    btnConnect.IsEnabled = false;
+                }
 
                 else
                     editAddress.Text = appp.Drukarka;
@@ -553,10 +587,22 @@ namespace App2.View
 
             }
 
-            cpclConst = new CPCLConst();
+            //try
+            //{
+
+            //    int iResult;
+            //    iResult = await _cpclPrinter.printStatus();
+            //    if (iResult == cpclConst.LK_SUCCESS)
+            //        btnConnect.IsEnabled = false;
+            //}
+            //catch (Exception)
+            //{
+            //    btnConnect.IsEnabled = true;
+            //}
+
+           cpclConst = new CPCLConst();
 
 
-            
 
         }
 
@@ -576,6 +622,8 @@ namespace App2.View
                     disconnectButton.IsEnabled = true;
                     printText.IsEnabled = true;
                     CzyDrukarkaOn = true;
+                    await DisplayAlert("Connection", "Połączenie udane", "OK");
+
                 }
                 else
                 {
@@ -746,10 +794,12 @@ namespace App2.View
                         appp.Drukarka = editAddress.Text;
                         printText.IsEnabled = true;
                         CzyDrukarkaOn = true;
+                        await DisplayAlert("Info", "Połączenie udane", "OK");
+
                     }
                     else
                     {
-                        await DisplayAlert("Connection", "Connection failed", "OK");
+                        await DisplayAlert("Info", "Połączenie nieudane", "OK");
                         View.SettingsPage.CzyDrukarkaOn = false;
                     }
                 }

@@ -23,6 +23,15 @@ namespace App2.View
 
         private List<Model.AkcjeNagElem> _nagElem;
 
+
+        private BindableProperty IsSearchingProperty =
+           BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
+        }
+
         public List_AkcjeTwrList(List<Model.AkcjeNagElem> nagElem)
         {
             InitializeComponent();
@@ -39,10 +48,89 @@ namespace App2.View
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             //_connection.DropTableAsync<Model.AkcjeNagElem>();
             _nagElem = nagElem;
+            LoadList();
             //GetListFromLocal( nagElem);
             //GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
         }
 
+        private async void LoadList()
+        {
+            IsSearching = true;
+
+            try
+            {
+                TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
+                GetListFromLocal(_nagElem);
+
+                await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+
+                var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
+                
+                    SumaList = (
+                     from lWeb in TwrListWeb
+                     join local in TwrListLocal on lWeb.TwrGidNumer equals local.TwrGidNumer
+                     join skan in SavedList on
+                               new { lWeb.TwrGidNumer, lWeb.AkN_GidNumer } equals new { skan.TwrGidNumer, skan.AkN_GidNumer } into a
+                     from alles in a.DefaultIfEmpty(new AkcjeNagElem { TwrSkan = 0 })
+                     select new AkcjeNagElem
+                     {
+                         AkN_GidNumer = lWeb.AkN_GidNumer,
+                         TwrGidNumer = lWeb.TwrGidNumer,
+                         TwrKod = lWeb.TwrKod,
+                         TwrGrupa = lWeb.TwrGrupa,
+                         TwrDep = lWeb.TwrDep,
+                         TwrStan = local.TwrStan,
+                         TwrSkan = alles.TwrSkan,
+                         TwrCena = lWeb.TwrCena,
+                         TwrCena1 = lWeb.TwrCena1,
+                         TwrEan = lWeb.TwrEan,
+                         TwrNazwa = lWeb.TwrNazwa,
+                         TwrSymbol = lWeb.TwrSymbol,
+                         TwrUrl = lWeb.TwrUrl,
+                     }).ToList();
+
+                
+                    
+
+                if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                    if (StartPage.CheckInternetConnection())
+                        SendDataSkan(SumaList);
+
+
+
+                var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                {
+                    TwrGrupa = cs.TwrGrupa,
+                    TwrSkan = s.Sum(cc => cc.TwrSkan),
+                    TwrStan = s.Sum(cc => cc.TwrStan),
+                    TwrStanVsSKan = cs.TwrStanVsSKan,
+                    TwrDep = cs.TwrDep
+                })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
+
+
+                if (nowa != null)
+                {
+                    var sorted = from towar in nowa
+                                 orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
+                                 group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
+                                 select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup); 
+
+                    MyListView3.ItemsSource = sorted;
+                }
+                
+
+
+
+
+            }
+            catch (Exception s)
+            {
+               await DisplayAlert(null, s.Message, "OK");
+            }
+
+            IsSearching = false;
+
+        }
 
         bool _istapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -75,7 +163,7 @@ namespace App2.View
         private async void GetListFromLocal(List<Model.AkcjeNagElem> lista)
         {
             TwrListLocal = new ObservableCollection<Model.AkcjeNagElem>();
-            SumaList = new ObservableCollection<Model.AkcjeNagElem>();
+            //SumaList = new ObservableCollection<Model.AkcjeNagElem>();
             SqlCommand command = new SqlCommand();
 
             connection.Open();
@@ -272,74 +360,85 @@ namespace App2.View
             });
         }
 
-
+        public static bool TableExists<T>(SQLiteConnection connection) 
+        { 
+            const string cmdText = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"; 
+            var cmd = connection.CreateCommand(cmdText, typeof(T).Name); 
+            return cmd.ExecuteScalar<string>() != null; 
+        }
 
         protected override async void OnAppearing()
         {
 
-
-
-            TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
-            GetListFromLocal(_nagElem);
+            //TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
+            //GetListFromLocal(_nagElem);
 
             await _connection.CreateTableAsync<Model.AkcjeNagElem>();
 
             var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
 
-
-            SumaList = (
-                 from lWeb in TwrListWeb
-                 join local in TwrListLocal on lWeb.TwrGidNumer equals local.TwrGidNumer
-                 join skan in SavedList on
-                           new { lWeb.TwrGidNumer, lWeb.AkN_GidNumer } equals new { skan.TwrGidNumer, skan.AkN_GidNumer } into a
-                 from alles in a.DefaultIfEmpty(new AkcjeNagElem { TwrSkan = 0 })
-                 select new AkcjeNagElem
-                 {
-                     AkN_GidNumer = lWeb.AkN_GidNumer,
-                     TwrGidNumer = lWeb.TwrGidNumer,
-                     TwrKod = lWeb.TwrKod,
-                     TwrGrupa = lWeb.TwrGrupa,
-                     TwrDep = lWeb.TwrDep,
-                     TwrStan = local.TwrStan,
-                     TwrSkan = alles.TwrSkan,
-                     TwrCena = lWeb.TwrCena,
-                     TwrCena1 = lWeb.TwrCena1,
-                     TwrEan = lWeb.TwrEan,
-                     TwrNazwa = lWeb.TwrNazwa,
-                     TwrSymbol = lWeb.TwrSymbol,
-                     TwrUrl = lWeb.TwrUrl,
-                 }).ToList();
-
-            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                SendDataSkan(SumaList);
-
-
-
-            var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+            if (TwrListWeb.Count > 0)
             {
-                TwrGrupa = cs.TwrGrupa,
-                TwrSkan = s.Sum(cc => cc.TwrSkan),
-                TwrStan = s.Sum(cc => cc.TwrStan),
-                TwrStanVsSKan = cs.TwrStanVsSKan,
-                TwrDep = cs.TwrDep
-            })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
+
+
+                SumaList = (
+                     from lWeb in TwrListWeb
+                     join local in TwrListLocal on lWeb.TwrGidNumer equals local.TwrGidNumer
+                     join skan in SavedList on
+                               new { lWeb.TwrGidNumer, lWeb.AkN_GidNumer } equals new { skan.TwrGidNumer, skan.AkN_GidNumer } into a
+                     from alles in a.DefaultIfEmpty(new AkcjeNagElem { TwrSkan = 0 })
+                     select new AkcjeNagElem
+                     {
+                         AkN_GidNumer = lWeb.AkN_GidNumer,
+                         TwrGidNumer = lWeb.TwrGidNumer,
+                         TwrKod = lWeb.TwrKod,
+                         TwrGrupa = lWeb.TwrGrupa,
+                         TwrDep = lWeb.TwrDep,
+                         TwrStan = local.TwrStan,
+                         TwrSkan = alles.TwrSkan,
+                         TwrCena = lWeb.TwrCena,
+                         TwrCena1 = lWeb.TwrCena1,
+                         TwrEan = lWeb.TwrEan,
+                         TwrNazwa = lWeb.TwrNazwa,
+                         TwrSymbol = lWeb.TwrSymbol,
+                         TwrUrl = lWeb.TwrUrl,
+                     }).ToList();
+
+                if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                    if (StartPage.CheckInternetConnection())
+                        SendDataSkan(SumaList);
 
 
 
-            var sorted = from towar in nowa
-                         orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
-                         group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
-                         select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
+                var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                {
+                    TwrGrupa = cs.TwrGrupa,
+                    TwrSkan = s.Sum(cc => cc.TwrSkan),
+                    TwrStan = s.Sum(cc => cc.TwrStan),
+                    TwrStanVsSKan = cs.TwrStanVsSKan,
+                    TwrDep = cs.TwrDep
+                })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
+
+
+                if (nowa != null)
+                {
+
+                    var sorted = from towar in nowa
+                                 orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
+                                 group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
+                                 select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
 
 
 
+                    MyListView3.ItemsSource = sorted;
 
-            MyListView3.ItemsSource = sorted;
+                }
+
+            };
+
 
 
             base.OnAppearing();
-
-
 
         }
 
@@ -351,7 +450,9 @@ namespace App2.View
             connection.Open();
             command.CommandText = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
-                                  where mag_typ=1";
+                                  where mag_typ=1 
+								  and [Mag_GIDNumer] is not null
+								  and mag_nieaktywny=0";
 
 
             SqlCommand query = new SqlCommand(command.CommandText, connection);

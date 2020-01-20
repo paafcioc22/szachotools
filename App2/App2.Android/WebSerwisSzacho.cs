@@ -233,14 +233,14 @@ namespace App2.Droid
                         foreach (var lista in polecenie)
                         {
                             var InsertString = $@"cdn.PC_InsertAkcjeSkan
-                    {lista.AkN_GidNumer},
-                    {magnumer},
-                    '{lista.TwrGrupa}',
-                    '{lista.TwrDep}',
-                    {lista.TwrGidNumer},
-                    {lista.TwrStan},
-                    {lista.TwrSkan},
-                    '{ase_operator}'";
+                                {lista.AkN_GidNumer},
+                                {magnumer},
+                                '{lista.TwrGrupa}',
+                                '{lista.TwrDep}',
+                                {lista.TwrGidNumer},
+                                {lista.TwrStan},
+                                {lista.TwrSkan},
+                                '{ase_operator}'";
 
                             var respone = client.ExecuteSQLCommand(InsertString);
 

@@ -50,7 +50,14 @@ namespace App2.View
 
 
             //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+
+            if (StartPage.CheckInternetConnection())
+            {
                 SendDataSkan(tmp);
+            }else 
+            {
+                DisplayAlert(null, "Brak połączenia z internetem", "OK");
+            }
         }
 
 
@@ -62,7 +69,9 @@ namespace App2.View
             connection.Open();
             command.CommandText = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
-                                  where mag_typ=1";
+                                  where mag_typ=1 
+								  and [Mag_GIDNumer] is not null
+								  and mag_nieaktywny=0";
 
 
             SqlCommand query = new SqlCommand(command.CommandText, connection);
@@ -116,7 +125,7 @@ namespace App2.View
 
             if (String.IsNullOrWhiteSpace(searchText))
                 return _listatwr;
-            return _listatwr.Where(c => c.TwrKod.Contains(searchText.ToUpper()));
+            return _listatwr.Where(c => c.TwrEan.Contains(searchText.ToUpper()));
         
         }
 

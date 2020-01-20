@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+ 
 using Android.Net.Wifi;
 using Android.OS;
 using Android.Runtime;
@@ -20,37 +22,56 @@ namespace App2.Droid
     class WiFiConnector : IWifiConnector
     {
         [Obsolete]
-        public void ConnectToWifi(string ssid, string password)
+        public bool ConnectToWifi(string ssid, string password)
         {
             string networkSSID = ssid;
             string networkPass = password;
 
+
+            var formattedSsid = $"\"{ssid}\"";
+            var formattedPassword = $"\"{password}\"";
+
             WifiConfiguration wifiConfig = new WifiConfiguration();
-            wifiConfig.Ssid = string.Format("\"{0}\"", networkSSID);
-            wifiConfig.PreSharedKey = string.Format("\"{0}\"", networkPass);
+            wifiConfig.Ssid = formattedSsid;// string.Format("{0}", networkSSID);
+            wifiConfig.PreSharedKey = formattedPassword;// string.Format("{0}", networkPass);
+            //wifiConfig.AllowedKeyManagement.Set((int)KeyManagementType.None);
 
             WifiManager wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
 
-            Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
 
+           // Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
             if (!wifiManager.IsWifiEnabled)
             wifiManager.SetWifiEnabled(true);
 
+            int netId = wifiManager.AddNetwork(wifiConfig);
 
-            if ((wifiManager.ConnectionInfo.SSID != wifiConfig.Ssid) || wifiConfig.NetworkId<=0 )
+            if ((wifiManager.ConnectionInfo.SSID != wifiConfig.Ssid) || wifiConfig.NetworkId <= 0)
             {
-                int netId = wifiManager.AddNetwork(wifiConfig);
-                 //   wifiManager.Disconnect();
+                wifiManager.Disconnect();
+                Thread.Sleep(1000);
                 wifiManager.EnableNetwork(netId, true);
-                    wifiManager.Reconnect();
+                Thread.Sleep(2000);
+                //wifiManager.Reconnect();
 
-                
             }
-            
+
+            if (wifiManager.Reconnect())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+             Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
+
         }
 
         public bool IsConnectedToWifi(string ssid2)
         {
+            
+            
             WifiManager wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
 
             string ssid = string.Format("\"{0}\"", ssid2);
@@ -64,6 +85,10 @@ namespace App2.Droid
                     return true;
                 }
                 else return false; 
+
+
+
+
         }
 
          

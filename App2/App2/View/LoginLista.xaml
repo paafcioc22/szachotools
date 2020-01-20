@@ -33,5 +33,6 @@
         
         <Entry Placeholder="hasło" x:Name="entry_haslo"  IsPassword="True" Margin="50,0,50,0" Completed="entry_haslo_Completed" ReturnType="Go" />
         <Button Text="Zaloguj" Clicked="Button_Clicked" HorizontalOptions="FillAndExpand" />
+        <Button Text="Użyj Aparatu" Clicked="UseAparatToScan_Clicked_1" x:Name="UseAparatButton"   HorizontalOptions="FillAndExpand" />
     </StackLayout>
 </ContentPage>

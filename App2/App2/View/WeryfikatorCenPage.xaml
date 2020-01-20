@@ -59,7 +59,6 @@
                                     </StackLayout>
                                 </ViewCell>
                                 <ViewCell>
-
                                     <StackLayout Orientation="Horizontal" Padding="23,0" Spacing="0">
                                         <Label Text="stan " VerticalOptions="Center"/>
                                         <Button Text="stany innych" Clicked="BtnShowOther_Clicked" BorderRadius="15" FontSize="8"  HorizontalOptions="CenterAndExpand" VerticalOptions="Center" />

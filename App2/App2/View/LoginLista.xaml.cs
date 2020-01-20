@@ -47,8 +47,9 @@ namespace App2.View
             };
             konfiguracyjna = app.BazaConf;
             GetLogins();
-             
-             
+
+            if (SettingsPage.SelectedDeviceType == 1)
+                UseAparatButton.IsVisible = false;
         }
  
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
@@ -185,10 +186,16 @@ namespace App2.View
             SqlCommand command = new SqlCommand();
          
             connection.Open();
-            command.CommandText = "select ope_gidnumer, ope_kod, Ope_Nazwisko,Ope_Haslo, Ope_HasloChk " +
-                                  "from "+ konfiguracyjna+".cdn.operatorzy  "+
-                                   " where Ope_Nieaktywny=0 and ope_administrator=0";
-
+            command.CommandText = $@"select ope_gidnumer, ope_kod, Ope_Nazwisko,Ope_Haslo, Ope_HasloChk 
+                                  from  {konfiguracyjna}.cdn.operatorzy  
+                                  where Ope_Nieaktywny=0
+                                  order by  case left(ope_kod,1)
+								   when 'k' then 1 
+								   when 'z' then 2 
+								   when 'd' then 3
+								   when 's' then 4
+								   when 'r' then 5 else 6 end";
+            //and ope_administrator=0
 
             SqlCommand query = new SqlCommand(command.CommandText, connection);
             //query.Parameters.AddWithValue("@konf", konfiguracyjna);
@@ -220,7 +227,7 @@ namespace App2.View
 
             var isNumeric = int.TryParse(entry_haslo.Text, out int n);
 
-            if (isNumeric)
+            if (isNumeric&& entry_haslo.Text.Length>=6)
             {
                 int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
                 int znak24 = Convert.ToInt32(entry_haslo.Text.Substring(1, 3));
@@ -250,8 +257,7 @@ namespace App2.View
         {
             if (entry_haslo.Text != null) //entry_haslo.Text!=""
             {
-
-
+                 
                   
                 if (IsPassCorrect())
                 {
@@ -273,7 +279,7 @@ namespace App2.View
             }
         }
 
-        private static readonly  byte[] salt = Encoding.ASCII.GetBytes("Xamarin.iOS Version: 7.0.6.168");
+       
 
         protected override bool OnBackButtonPressed()
         {
@@ -281,51 +287,7 @@ namespace App2.View
         }
 
 
-        //public static byte[] EncryptTextToMemory(string Data, byte[] Key, byte[] IV)
-        //{
-        //    try
-        //    {
-        //        // Create a MemoryStream.
-        //        MemoryStream mStream = new MemoryStream();
-
-        //        // Create a new DES object.
-        //        DES DESalg = DES.Create();
-
-        //        // Create a CryptoStream using the MemoryStream 
-        //        // and the passed key and initialization vector (IV).
-        //        CryptoStream cStream = new CryptoStream(mStream,
-        //            DESalg.CreateEncryptor(Key, IV),
-        //            CryptoStreamMode.Write);
-
-        //        // Convert the passed string to a byte array.
-        //        byte[] toEncrypt = new ASCIIEncoding().GetBytes(Data);
-
-        //        // Write the byte array to the crypto stream and flush it.
-        //        cStream.Write(toEncrypt, 0, toEncrypt.Length);
-        //        cStream.FlushFinalBlock();
-
-        //        // Get an array of bytes from the 
-        //        // MemoryStream that holds the 
-        //        // encrypted data.
-        //        byte[] ret = mStream.ToArray();
-
-        //        // Close the streams.
-        //        cStream.Close();
-        //        mStream.Close();
-
-        //        // Return the encrypted buffer.
-        //        return ret;
-        //    }
-        //    catch (CryptographicException e)
-        //    {
-        //        Console.WriteLine("A Cryptographic error occurred: {0}", e.Message);
-        //        return null;
-        //    }
-
-        //}
-
-
-
+        
         private void entry_haslo_Completed(object sender, EventArgs e)
         {
 
@@ -349,7 +311,21 @@ namespace App2.View
 
             }
         }
-         
+
+        private void UseAparatToScan_Clicked_1(object sender, EventArgs e)
+        {
+
+            DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
+            ListViewLogin.ItemSelected += (source, args) =>
+            {
+                var pracownik = args.SelectedItem as Pracownik;
+
+                SkanujIdetyfikator();
+
+            };
+        }
+
+        
     }
 
     public  class Pracownik

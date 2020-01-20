@@ -18,7 +18,7 @@
 
         <ListView x:Name="MyListView" RowHeight="80" 
                 ItemsSource="{Binding Items}"
-                  BindingContext="{Binding Items}"
+                BindingContext="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"
                 CachingStrategy="RecycleElement">
 
@@ -53,6 +53,12 @@
                             <Label Text="{Binding TwrSymbol}" FontSize="12" 
                                        TextColor="Black" 
                                        AbsoluteLayout.LayoutBounds="0.05,1,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <Label Text="{Binding TwrEan}" FontSize="12" 
+                                       TextColor="Black" 
+                                       AbsoluteLayout.LayoutBounds="0.05,.8,.5,.3"
                                        AbsoluteLayout.LayoutFlags="All"
                                        HorizontalTextAlignment="Start"
                                        />
@@ -95,28 +101,26 @@
                             <!--</StackLayout>-->
 
 
-                            <!--<StackLayout FlexLayout.Grow="0" 
-                                         FlexLayout.Basis="20%"    
-                                         VerticalOptions="CenterAndExpand">-->
+                          
                             <Image  Source="{Binding TwrUrl}" 
                                        AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
                                        AbsoluteLayout.LayoutFlags="All"
                                        Aspect="AspectFill"
                                         />
                             <!--<ffimageloading:CachedImage 
-                            Source="{Binding TwrUrl}"
-                            LoadingPlaceholder= "LoaderImage"
-                            ErrorPlaceholder= "ErrorImage"
-                            CacheDuration= "50"
-                            RetryCount= "3"
-                            RetryDelay= "600"
-                            DownsampleToViewSize = "true"
+                                Source="{Binding TwrUrl}"
+                                  
+                                 
                                 AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
-                                       AbsoluteLayout.LayoutFlags="All"
-                                       Aspect="AspectFill"
+                                AbsoluteLayout.LayoutFlags="All"
+                            Aspect="AspectFill"
                             />-->
-                            
-                            <!--</StackLayout>-->
+
+                            <!--</DownsampleToViewSize = "true"
+                            CacheDuration= "50"
+                            LoadingPlaceholder= "LoaderImage"
+                                ErrorPlaceholder= "ErrorImage"
+                            >-->
 
                         </AbsoluteLayout>
                     </ViewCell>

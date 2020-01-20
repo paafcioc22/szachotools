@@ -28,6 +28,7 @@ namespace App2.Model
         public AkcjeGrupy(K key, IEnumerable<AkcjeNagElem> items)
         {
             Key = key;
+            //if(items !=null)
             foreach (var item in items)
             {
                 this.Items.Add(item);

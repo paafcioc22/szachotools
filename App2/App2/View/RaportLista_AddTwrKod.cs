@@ -56,68 +56,40 @@ namespace App2.View
             {
                 WidokSkaner(gidnumer);
             }
-
-            
+             
 
         }
 
         private void WidokSkaner(int gidnumer)
         {
-            StackLayout stackLayout_gl = new StackLayout();
-            StackLayout stackLayout = new StackLayout();
-            StackLayout stack_naglowek = new StackLayout();
-
-
-            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
+            
+            StackLayout stack_dane = new StackLayout();
+            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
             var scrollView = new ScrollView();
-           
+
+            _gidnumer = gidnumer;
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
 
             NavigationPage.SetHasNavigationBar(this, false);
 
 
-            var relativeLayout = new RelativeLayout();
-            var centerLabel = new Label
+     
+            Label lbl_naglowek = new Label()
             {
-                Text = "Dodawanie Pozycji"
-               ,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                VerticalOptions = LayoutOptions.EndAndExpand,
-
-                BackgroundColor = Color.YellowGreen
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Dodawanie pozycji (raport przyjęć)",
+                FontSize = 20,
+                TextColor = Color.Bisque,
+                BackgroundColor = Color.DarkCyan
             };
-
-            //RelativeLayout.SetLayoutBounds(centerLabel, new Rectangle(0, 0, 1, 10));
-            //absoluteLayout.Children.Add(centerLabel);
-
-            //relativeLayout.Children.Add(centerLabel,
-            //    widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
-            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Height*0.05)
-            //    );
+            AbsoluteLayout.SetLayoutBounds(lbl_naglowek, new Rectangle(0, 0, 1, .1));
+            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All);
 
 
-            Label lbl_naglowek = new Label();
-            lbl_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
-            lbl_naglowek.VerticalOptions = LayoutOptions.Start;
-            lbl_naglowek.HorizontalTextAlignment = TextAlignment.Center;
-            lbl_naglowek.Text = "Dodawanie pozycji";
-            lbl_naglowek.FontSize = 20;
-            lbl_naglowek.TextColor = Color.Bisque;
-            lbl_naglowek.BackgroundColor = Color.DarkCyan;
-
-
-            relativeLayout.Children.Add(lbl_naglowek,
-                yConstraint: Constraint.RelativeToParent(parent => parent.Y),
-                xConstraint: Constraint.RelativeToParent(parent => parent.X * 0.05),
-                widthConstraint: Constraint.RelativeToParent(parent => parent.Width)
-                );
-
-            //stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
-            //stack_naglowek.VerticalOptions = LayoutOptions.Start;
-            //stack_naglowek.BackgroundColor = Color.DarkCyan;
-            //stack_naglowek.Children.Add(lbl_naglowek);
-
-            //stackLayout_gl.Children.Add(stack_naglowek);
+              
 
             img_foto = new Image();
             img_foto.Aspect = Aspect.AspectFill;
@@ -125,34 +97,13 @@ namespace App2.View
             tapGesture.Tapped += (s, e) =>
             {
                  Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                 //Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
             };
             img_foto.GestureRecognizers.Add(tapGesture);
+            AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.1, 1, .5));
+            AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
+
              
-
-            //stackLayout.Children.Add(img_foto);
-
-            relativeLayout.Children.Add(img_foto,
-                widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
-                heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.4),
-                xConstraint: Constraint.RelativeToParent(parent => parent.X * 0.1),
-                yConstraint: Constraint.RelativeToParent(parent => parent.Y * 0.3+30)
-                );
-
-            //var box = new BoxView() { Color = Color.Red };
-            //relativeLayout.Children.Add(box,
-            //    widthConstraint: Constraint.RelativeToParent(parent => parent.Width ),
-            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.5),
-            //    xConstraint: Constraint.RelativeToParent(parent => parent.X),
-            //    yConstraint: Constraint.RelativeToParent(parent => parent.Y * 1 + 250)
-            //    );
-
-            //AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.05, 1, .4)); 
-            //AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
-            // absoluteLayout.Children.Add(img_foto);
-
-
-
-            _gidnumer = gidnumer;
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
@@ -169,130 +120,146 @@ namespace App2.View
             lbl_cena = new Label();
             lbl_cena.HorizontalOptions = LayoutOptions.Center;
 
-            
-           
 
-            entry_kodean = new Entry();
-            entry_kodean.Keyboard = Keyboard.Text;
-            entry_kodean.Placeholder = "Wpisz EAN/kod ręcznie lub skanuj";
-            entry_kodean.Keyboard = Keyboard.Plain; 
-            entry_kodean.Unfocused += Kodean_Unfocused;
-            entry_kodean.ReturnCommand = new Command(() => entry_ilosc.Focus()); 
-
-
-            entry_ilosc = new Entry();
-            entry_ilosc.Keyboard = Keyboard.Text;
-            entry_ilosc.Placeholder = "Wpisz Ilość";
-            entry_ilosc.Keyboard = Keyboard.Telephone;
-            entry_ilosc.HorizontalOptions = LayoutOptions.Center;
-            entry_ilosc.ReturnType = ReturnType.Go; 
-            entry_ilosc.Completed += (object sender, EventArgs e) =>
+            entry_kodean = new Entry()
             {
-                Zapisz(); 
+                //Keyboard = Keyboard.Text,
+                Placeholder = "Wpisz EAN/kod ręcznie lub skanuj",
+                Keyboard = Keyboard.Plain,
+                ReturnCommand = new Command(() => entry_ilosc.Focus()) 
+            };
+            entry_kodean.Unfocused += Kodean_Unfocused;
+             
+            entry_ilosc = new Entry()
+            {
+                Placeholder = "Wpisz Ilość",
+                Keyboard = Keyboard.Telephone,
+                HorizontalOptions = LayoutOptions.Center,
+                ReturnType = ReturnType.Go,
+                HorizontalTextAlignment=TextAlignment.Center,
 
             };
+            entry_ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                Zapisz();
+            };
+            //entry_ilosc.Keyboard = Keyboard.Text;
+
+
+
+            btn_Zapisz = new Button()
+            {
+                Text = "Zapisz pozycję",
+                ImageSource = "save48x2.png",
+                ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10) ,
+                BorderColor = Color.DarkCyan,
+                BorderWidth = 2,
+                CornerRadius = 10,
+            };
+            btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
+            AbsoluteLayout.SetLayoutBounds(btn_Zapisz, new Rectangle(0.5, 1, .9, 50));
+            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
+
+
+            btn_AddEanPrefix = new Button()
+            {
+                Text = "+2010000",
+                BorderColor = Color.DarkCyan,
+                BorderWidth = 2,
+                CornerRadius = 20,
+            };
+            btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked;
+            AbsoluteLayout.SetLayoutBounds(btn_AddEanPrefix, new Rectangle(1, .82, .25, 50));
+            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
              
 
-            btn_Zapisz = new Button();
-            btn_Zapisz.Text = "Zapisz pozycję";
-            btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
-            btn_Zapisz.ImageSource = "save48x2.png";
-            btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
-
-            
-
-            btn_AddEanPrefix = new Button();
-            btn_AddEanPrefix.Text = "Ean 2010000..";
-            btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked; ;
-            //btn_AddEanPrefix.Image = "scan48x2.png";
-            //btn_AddEanPrefix.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
+            stack_dane.Children.Add(lbl_nazwa);
+            stack_dane.Children.Add(lbl_ean);
+            stack_dane.Children.Add(lbl_cena);
+            stack_dane.Children.Add(lbl_symbol);
+            stack_dane.Children.Add(entry_ilosc);
+            stack_dane.Children.Add(entry_kodean);
+            AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .45));
+            AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
 
 
+           
 
-            stackLayout.Children.Add(lbl_nazwa);
-            stackLayout.Children.Add(lbl_ean);
-            stackLayout.Children.Add(lbl_cena);
-            stackLayout.Children.Add(lbl_symbol);
-            stackLayout.Children.Add(entry_kodean);
-            stackLayout.Children.Add(entry_ilosc);
-            stackLayout.Children.Add(btn_Zapisz);
-            stackLayout.Children.Add(btn_AddEanPrefix);
+            //stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
+            //stackLayout.Padding = new Thickness(15, 0, 15, 0);
 
-            stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
-            stackLayout.Padding = new Thickness(15, 0, 15, 0);
+            absoluteLayout.Children.Add(img_foto);
+            absoluteLayout.Children.Add(lbl_naglowek); 
+            absoluteLayout.Children.Add(stack_dane);
+            absoluteLayout.Children.Add(btn_Zapisz);
+            absoluteLayout.Children.Add(btn_AddEanPrefix);
 
-            //stackLayout_gl.Children.Add(absoluteLayout);
-            //stackLayout_gl.Children.Add(stackLayout);
+            Content = absoluteLayout;
 
 
-            relativeLayout.Children.Add(stackLayout, 
-                    widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
-                    heightConstraint: Constraint.RelativeToParent(parent => parent.Height * 0.5),
-                    xConstraint: Constraint.RelativeToParent(parent => parent.X),
-                    yConstraint: Constraint.RelativeToParent(parent => parent.Y * 1 + 260)
-                    );
-
-            scrollView.Content = relativeLayout;//dodane scrollview
+            // scrollView.Content = relativeLayout;//dodane scrollview
 
             //Content = stackLayout_gl;
-            Content = scrollView;
+            //Content = scrollView;
 
             Appearing += (object sender, System.EventArgs e) => entry_kodean.Focus();
         }
 
         private void WidokAparat(int gidnumer)
         {
-            StackLayout stackLayout_gl = new StackLayout();
-            StackLayout stackLayout = new StackLayout();
-            StackLayout stack_naglowek = new StackLayout();
-            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-            var scrollView = new ScrollView();
-         
+             
             SkanowanieEan();
+
+            StackLayout stack_dane = new StackLayout();
+            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+
+            var scrollView = new ScrollView();
+
+            _gidnumer = gidnumer;
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
 
             NavigationPage.SetHasNavigationBar(this, false);
 
 
-            var absoluteLayout = new AbsoluteLayout();
-            var centerLabel = new Label
+
+            Label lbl_naglowek = new Label()
             {
-                Text = "Dodawanie Pozycji"
-               ,
-                HorizontalOptions = LayoutOptions.StartAndExpand,
-                VerticalOptions = LayoutOptions.EndAndExpand,
-
-                BackgroundColor = Color.YellowGreen
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Dodawanie pozycji (raport przyjęć)",
+                FontSize = 20,
+                TextColor = Color.Bisque,
+                BackgroundColor = Color.DarkCyan
             };
+            AbsoluteLayout.SetLayoutBounds(lbl_naglowek, new Rectangle(0, 0, 1, .1));
+            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All);
 
-            AbsoluteLayout.SetLayoutBounds(centerLabel, new Rectangle(0, 0, 1, 10));
-            absoluteLayout.Children.Add(centerLabel);
 
-            Label lbl_naglowek = new Label();
-            lbl_naglowek.HorizontalOptions = LayoutOptions.CenterAndExpand;
-            lbl_naglowek.VerticalOptions = LayoutOptions.Start;
-            lbl_naglowek.Text = "Dodawanie pozycji";
-            lbl_naglowek.FontSize = 20;
-            lbl_naglowek.TextColor = Color.Bisque;
-            lbl_naglowek.BackgroundColor = Color.DarkCyan;
 
-            stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
-            stack_naglowek.VerticalOptions = LayoutOptions.Start;
-            stack_naglowek.BackgroundColor = Color.DarkCyan;
-            stack_naglowek.Children.Add(lbl_naglowek);
-
-            stackLayout_gl.Children.Add(stack_naglowek);
 
             img_foto = new Image();
-            stackLayout.Children.Add(img_foto);
+            img_foto.Aspect = Aspect.AspectFill;
+            TapGestureRecognizer tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += (s, e) =>
+            {
+                Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                //Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+            };
+            img_foto.GestureRecognizers.Add(tapGesture);
+            AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.1, 1, .5));
+            AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
 
-            _gidnumer = gidnumer;
+
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
 
             lbl_nazwa = new Label();
             lbl_nazwa.HorizontalOptions = LayoutOptions.Center;
-            //stan.Text = "Stan";
+
             lbl_ean = new Label();
             lbl_ean.HorizontalOptions = LayoutOptions.Center;
 
@@ -302,77 +269,85 @@ namespace App2.View
             lbl_cena = new Label();
             lbl_cena.HorizontalOptions = LayoutOptions.Center;
 
-            //   stackLayout.Children.Add(lbl_stan);
-            stackLayout.Children.Add(lbl_nazwa);
-            stackLayout.Children.Add(lbl_ean);
-            stackLayout.Children.Add(lbl_cena);
-            stackLayout.Children.Add(lbl_symbol);
 
-            entry_kodean = new Entry();
-            entry_kodean.Keyboard = Keyboard.Text;
-            entry_kodean.Placeholder = "Wpisz ręcznie EAN/kod towaru lub skanuj";
-            entry_kodean.Keyboard = Keyboard.Plain;
+            entry_kodean = new Entry()
+            {
+                //Keyboard = Keyboard.Text,
+                Placeholder = "Wpisz EAN/kod ręcznie lub skanuj",
+                Keyboard = Keyboard.Plain,
+                ReturnCommand = new Command(() => entry_ilosc.Focus())
+            };
             entry_kodean.Unfocused += Kodean_Unfocused;
-            entry_kodean.ReturnCommand = new Command(() => entry_ilosc.Focus());
-            stackLayout.Children.Add(entry_kodean);
 
-            entry_ilosc = new Entry();
-            entry_ilosc.Keyboard = Keyboard.Text;
-            entry_ilosc.Placeholder = "Wpisz Ilość";
-            entry_ilosc.Keyboard = Keyboard.Telephone;
-            entry_ilosc.HorizontalOptions = LayoutOptions.Center;
-            entry_ilosc.ReturnType = ReturnType.Go;
-            //entry_ilosc.ReturnCommand = new Command(
-            //    execute:() =>
-            //    {
-            //        btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
-            //        //await Btn_Zapisz_Clicked
-            //    });
+            entry_ilosc = new Entry()
+            {
+                Placeholder = "Wpisz Ilość",
+                Keyboard = Keyboard.Telephone,
+                HorizontalOptions = LayoutOptions.Center,
+                ReturnType = ReturnType.Go,
+                HorizontalTextAlignment = TextAlignment.Center,
 
-
+            };
             entry_ilosc.Completed += (object sender, EventArgs e) =>
             {
                 Zapisz();
-
-
             };
+            //entry_ilosc.Keyboard = Keyboard.Text;
 
-            stackLayout.Children.Add(entry_ilosc);
 
-            btn_Skanuj = new Button();
-            btn_Skanuj.Text = "Skanuj EAN";
-            btn_Skanuj.Clicked += Btn_Skanuj_Clicked;
-            btn_Skanuj.ImageSource = "scan48x2.png";
-            btn_Skanuj.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
-            stackLayout.Children.Add(btn_Skanuj);
 
-            btn_Zapisz = new Button();
-            btn_Zapisz.Text = "Zapisz pozycję";
+            btn_Zapisz = new Button()
+            {
+                Text = "Zapisz pozycję",
+                ImageSource = "save48x2.png",
+                ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10),
+                BorderColor = Color.DarkCyan,
+                BorderWidth = 2,
+                CornerRadius = 10,
+            };
             btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
-            btn_Zapisz.ImageSource = "save48x2.png";
-            btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
-            stackLayout.Children.Add(btn_Zapisz);
-
-            btn_AddEanPrefix = new Button();
-            btn_AddEanPrefix.Text = "Ean 2010000..";
-            btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked; ;
-            //btn_AddEanPrefix.Image = "scan48x2.png";
-            //btn_AddEanPrefix.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
-            stackLayout.Children.Add(btn_AddEanPrefix);
-
-            stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
-            stackLayout.Padding = new Thickness(30, 0, 30, 0);
-
-            stackLayout_gl.Children.Add(stackLayout);
-            absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(0, 0.5, 1, 1), AbsoluteLayoutFlags.HeightProportional);
+            AbsoluteLayout.SetLayoutBounds(btn_Zapisz, new Rectangle(0.5, 1, .9, 50));
+            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
 
-            scrollView.Content = stackLayout_gl;//dodane scrollview
 
-            //Content = stackLayout_gl;
-            Content = scrollView;
+            btn_AddEanPrefix = new Button()
+            {
+                Text = "+2010000",
+                BorderColor = Color.DarkCyan,
+                BorderWidth = 2,
+                CornerRadius = 20,
+            };
+            btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked;
+            AbsoluteLayout.SetLayoutBounds(btn_AddEanPrefix, new Rectangle(1, .8, .25, 50));
+            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
-            //Content = stackLayout_gl;
+
+
+            stack_dane.Children.Add(lbl_nazwa);
+            stack_dane.Children.Add(lbl_ean);
+            stack_dane.Children.Add(lbl_cena);
+            stack_dane.Children.Add(lbl_symbol);
+            stack_dane.Children.Add(entry_ilosc);
+            stack_dane.Children.Add(entry_kodean);
+            AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .45));
+            AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
+
+
+
+
+            //stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
+            //stackLayout.Padding = new Thickness(15, 0, 15, 0);
+
+            absoluteLayout.Children.Add(img_foto);
+            absoluteLayout.Children.Add(lbl_naglowek);
+            absoluteLayout.Children.Add(stack_dane);
+            absoluteLayout.Children.Add(btn_Zapisz);
+            absoluteLayout.Children.Add(btn_AddEanPrefix);
+
+            Content = absoluteLayout;
+
+             
         }
 
         private void Btn_AddEanPrefix_Clicked(object sender, EventArgs e)
@@ -986,15 +961,16 @@ namespace App2.View
             var app = Application.Current as App;
             if (SettingsPage.SprConn())
             {
+                if(!string.IsNullOrEmpty(_ean)||_ean!= "2010000")
                 try
                 {
                     SqlCommand command = new SqlCommand();
                     SqlConnection connection = new SqlConnection
                     {
                         ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
+                        ";DATABASE=" + app.BazaProd +
+                        ";TRUSTED_CONNECTION=No;UID=" + app.User +
+                        ";PWD=" + app.Password
                     };
                     connection.Open();
                     command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
@@ -1040,9 +1016,9 @@ namespace App2.View
                     connection.Close();
 
                 }
-                catch (Exception exception)
+                catch (Exception )
                 {
-                    await DisplayAlert("Uwaga", exception.Message, "OK");
+                    await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
                 }
             }
             else
@@ -1056,13 +1032,13 @@ namespace App2.View
             lbl_nazwa.Text = twr_nazwa;
             lbl_cena.Text = twr_cena;
             lbl_stan.Text = "Stan : " + stan_szt;
-            img_foto.Source = twr_url;
+            img_foto.Source =  twr_url.Replace("Miniatury/", ""); //twr_url;
         }
 
         public void GetDataFromTwrKod(string _twrkod)
         {
             var app = Application.Current as App;
-            if (SettingsPage.SprConn())
+            if (SettingsPage.SprConn()&&!string.IsNullOrEmpty(_twrkod))
             {
                 try
                 {
