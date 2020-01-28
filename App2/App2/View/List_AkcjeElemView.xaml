@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App2.View.List_AkcjeElemView">
+             x:Class="App2.View.List_AkcjeElemView"
+              NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" >
 
     <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20 ">
         <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}"

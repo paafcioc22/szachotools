@@ -161,7 +161,9 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                await DisplayAlert(null, "skopiowano ean", "ok");
+                DependencyService.Get<Model.IAppVersionProvider>().Show("Skopiowano Ean");
+
+                //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
 
@@ -296,7 +298,8 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                await DisplayAlert(null, "skopiowano ean", "ok");
+                DependencyService.Get<Model.IAppVersionProvider>().Show("Skopiowano Ean");
+                //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
 
@@ -311,6 +314,8 @@ namespace App2.View
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Black
             };
+            if(List_AkcjeView.TypAkcji.Contains("Przecena"))
+            entry_skanowanaIlosc.IsReadOnly = true;
 
             lbl_symbol = new Label();
             lbl_symbol.HorizontalOptions = LayoutOptions.Center;
@@ -496,7 +501,8 @@ namespace App2.View
             }
             else { 
                 entry_EanSkaner.IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true;
-                entry_EanSkaner.ReturnCommand = new Command(() => zapiszdrukuj()); 
+                entry_EanSkaner.ReturnCommand = new Command(() => zapiszdrukuj());
+                
             }
 
             Button addToMM = new Button()
@@ -1164,6 +1170,7 @@ namespace App2.View
             {
                 var wpis = wynik[0];
                 wpis.TwrSkan = ile_zeskanowancyh;
+                _akcja.TwrSkan = ile_zeskanowancyh;
                 // wpis.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
                 //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
                 await _connection.UpdateAsync(wpis);
@@ -1173,7 +1180,7 @@ namespace App2.View
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
                 // akcjeNagElem.TwrStanVsSKan = $"{_akcja.TwrSkan}/{_akcja.TwrStan}"; //dodane
-
+                _akcja.TwrSkan = ile_zeskanowancyh;
                 await _connection.InsertAsync(akcjeNagElem);
 
 
@@ -1181,7 +1188,7 @@ namespace App2.View
         }
 
 
-
+        //TODO popraw focus - po zapisaniu podnosi si e okno do entry
         int iResult;
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
@@ -1244,36 +1251,36 @@ namespace App2.View
             //Navigation.PopModalAsync();
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
 
-            //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
+        //    //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
 
-            if (CzyWpisanoIlosc)
-                if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
-                    _akcja.TwrSkan = ile_zeskanowancyh;
-                else
-                {
-                    DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+        //    if (CzyWpisanoIlosc)
+        //        if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
+        //           // _akcja.TwrSkan = ile_zeskanowancyh;
+        //        else
+        //        {
+        //            DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
                     
-                    return true;
-                }
+        //            return true;
+        //        }
 
             
-            return base.OnBackButtonPressed();
+        //    return base.OnBackButtonPressed();
 
 
-            //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
-            //    _akcja.TwrSkan = ile_zeskanowancyh;
-            //else
-            //{
+        //    //if (SprIlosc(_akcja.TwrStan, ile_zeskanowancyh))
+        //    //    _akcja.TwrSkan = ile_zeskanowancyh;
+        //    //else
+        //    //{
 
-            //   DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-            //    return base.OnBackButtonPressed(); ;
-            //}
-            //return base.OnBackButtonPressed();
-        }
+        //    //   DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+        //    //    return base.OnBackButtonPressed(); ;
+        //    //}
+        //    //return base.OnBackButtonPressed();
+        //}
 
     }
 }

@@ -272,7 +272,8 @@ namespace App2.View
             if (connected)
             { 
                    
-                await Navigation.PushModalAsync(new List_AkcjeView());
+                //await Navigation.PushModalAsync(new List_AkcjeView());
+                await Navigation.PushAsync(new List_AkcjeView());
 
                 btn_ListaAkcji.IsEnabled = true; 
             }
@@ -342,12 +343,31 @@ namespace App2.View
 
             _userTapped = true;
 
-            //await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
-            await Navigation.PushAsync(new View.widoktestowy());
+            await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
+            //await Navigation.PushAsync(new View.widoktestowy());
             _userTapped = false;
         }
 
+        private bool maybe_exit = false;
+        protected override bool OnBackButtonPressed()
+        //-------------------------------------------------------------------
+        {
+            //some more custom checks here
+            //..
 
+            if (maybe_exit) return false; //QUIT
+
+            DependencyService.Get<Model.IAppVersionProvider>().Show ("Wciśnij jeszcze raz by wyjść z aplikacji");
+            maybe_exit = true;
+
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                maybe_exit = false; //reset those 2 seconds
+                                    // false - Don't repeat the timer 
+                return false;
+            });
+            return true; //true - don't process BACK by system
+        }
 
 
 

@@ -33,21 +33,34 @@ namespace App2.View
             int dodajDni = user == "ADM" ? 50 : 0;
             try
             {
-                string Webquery = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  
+                if (StartPage.CheckInternetConnection())
+                {
+                    string Webquery = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  
                     ,AkN_GidNazwa +'' (''+cast( count(distinct Ake_AknNumer)as varchar)+'')'' AkN_GidNazwa  
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
                     where (AkN_GidNazwa=''przecena'' and AkN_DataKoniec>=GETDATE() -10-{dodajDni} ) or
 					(AkN_GidNazwa<>''przecena'' and AkN_DataKoniec>=GETDATE() -5-{dodajDni} )
                     group by AkN_GidTyp  , AkN_GidNazwa '";
-                var twrdane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
+                    var twrdane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
+                    if (twrdane != null) 
+                    { 
+                    
+                        Items = twrdane;
+                        MyListView.ItemsSource = twrdane;
+                    }
+                    
+                }
+                else {
+                    MyListView.IsVisible = false;
+                    notFoundFrame.IsVisible = !MyListView.IsVisible;
+                }
 
-                Items = twrdane;
-                MyListView.ItemsSource = twrdane;
             }
             catch (Exception x)
             {
-
-                await DisplayAlert(null, x.Message, "OK");
+                MyListView.IsVisible =false;
+                notFoundFrame.IsVisible = !MyListView.IsVisible;
+                //await DisplayAlert(null, x.Message, "OK");
             }
         }
 
@@ -66,7 +79,7 @@ namespace App2.View
 
             var pozycja = e.Item as Model.AkcjeNagElem;
        
-                await Navigation.PushModalAsync(new View.List_AkcjeElemView(pozycja.AkN_GidTyp));
+                await Navigation.PushAsync(new View.List_AkcjeElemView(pozycja.AkN_GidTyp));
 
                 TypAkcji = pozycja.AkN_GidNazwa;
 

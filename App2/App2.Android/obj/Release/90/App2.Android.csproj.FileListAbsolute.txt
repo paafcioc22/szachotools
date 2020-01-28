@@ -549,3 +549,13 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\re
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\ic_shortcut_remove.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\ic_shortcut_remove.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\ic_shortcut_remove.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-mdpi\icons8_settings_100.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xhdpi\icons8_settings_100.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\icons8_settings_100.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\icons8_settings_100.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\icons8_settings_100.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-mdpi\settings_3.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xhdpi\settings_3.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\settings_3.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\settings_3.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\settings_3.9.png

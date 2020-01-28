@@ -87,11 +87,11 @@
                     BorderColor="DarkCyan"
                     x:Name="btn_login" 
                     BackgroundColor="#54c4b4" 
-                    CornerRadius="15" Margin="15,0,15,0" TextColor="AntiqueWhite"/> 
+                    CornerRadius="15" Margin="15,0,15,0" TextColor="AntiqueWhite"/>
 
-            <ImageButton Source="ustawienia64"  
+            <ImageButton Source="settings_3.9"  
                          Clicked="ImageButton_Clicked" 
-                         Scale="2" 
+                          
                          BackgroundColor="#F5FFFF"/>
 
             

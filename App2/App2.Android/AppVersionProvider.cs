@@ -70,5 +70,9 @@ namespace App2.Droid
             return Task.FromResult(true);
         }
 
+        public void Show(string message)
+        {
+            Android.Widget.Toast.MakeText(Android.App.Application.Context, message, ToastLength.Long).Show();
+        }
     }      
 }

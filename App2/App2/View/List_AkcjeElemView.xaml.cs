@@ -40,16 +40,22 @@ namespace App2.View
 
             try
             {
-                string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
+                if (StartPage.CheckInternetConnection())
+                {
+                    string user = LoginLista._user;
+                    int dodajDni = user == "ADM" ? 50 : 0;
+
+                    string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
                     from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
-                     where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10
+                     where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10 -{dodajDni}
                      order by AkN_DataStart desc
                      '";
-                var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
-                ListaZFiltrem = AkcjeElemLista;
+                    var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
+                    ListaZFiltrem = AkcjeElemLista;
 
-                Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.First()).ToList();
-                MyListView2.ItemsSource = Items2;
+                    Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.First()).ToList();
+                    MyListView2.ItemsSource = Items2; 
+                }
             }
             catch (Exception x)
             {
@@ -76,7 +82,7 @@ namespace App2.View
 
                 var nowa =ListaZFiltrem.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
 
-            await    Navigation.PushModalAsync(new View.List_AkcjeTwrList(nowa));
+            await    Navigation.PushAsync(new View.List_AkcjeTwrList(nowa));
 
             _istapped = false;
 

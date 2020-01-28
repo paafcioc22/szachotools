@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App2.View.List_AkcjeView">
+             x:Class="App2.View.List_AkcjeView"
+              NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" 
+             >
 
 
 
@@ -12,6 +14,11 @@
                    TextColor="Beige" 
                    VerticalOptions="Center" FontSize="Medium"/>
         </StackLayout>
+        <Frame x:Name="notFoundFrame" Padding="20" HasShadow="false" IsVisible="false"
+               AbsoluteLayout.LayoutBounds="0,.4,1,.1"
+               AbsoluteLayout.LayoutFlags="All">
+            <Label Text="Nie udało się pobrać danych.." TextColor="Gray" />
+        </Frame>
         <ListView x:Name="MyListView" HasUnevenRows="True"
                 ItemsSource="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"

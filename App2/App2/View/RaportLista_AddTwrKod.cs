@@ -126,7 +126,7 @@ namespace App2.View
                 //Keyboard = Keyboard.Text,
                 Placeholder = "Wpisz EAN/kod ręcznie lub skanuj",
                 Keyboard = Keyboard.Plain,
-                ReturnCommand = new Command(() => entry_ilosc.Focus()) 
+                //ReturnCommand = new Command(() => entry_ilosc.Focus()) 
             };
             entry_kodean.Unfocused += Kodean_Unfocused;
              
@@ -275,7 +275,7 @@ namespace App2.View
                 //Keyboard = Keyboard.Text,
                 Placeholder = "Wpisz EAN/kod ręcznie lub skanuj",
                 Keyboard = Keyboard.Plain,
-                ReturnCommand = new Command(() => entry_ilosc.Focus())
+                //ReturnCommand = new Command(() => entry_ilosc.Focus())
             };
             entry_kodean.Unfocused += Kodean_Unfocused;
 
@@ -650,6 +650,8 @@ namespace App2.View
         {
             if(!string.IsNullOrEmpty(entry_kodean.Text))
             pobierztwrkod(entry_kodean.Text);
+            if(!string.IsNullOrEmpty(twrkod))
+                entry_ilosc.Focus();
         }
 
         private void Btn_Update_Clicked(object sender, EventArgs e)
@@ -1003,19 +1005,32 @@ namespace App2.View
                     {
                         string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
                         var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                            if (dane.Count > 0)
+                            {
+                                twrkod = dane[0].twrkod;
+                                twr_url = dane[0].url;
+                                twr_nazwa = dane[0].nazwa;
+                                twr_ean = dane[0].ean;
+                                twr_cena = dane[0].cena;
 
-                        twrkod = dane[0].twrkod;
-                        twr_url = dane[0].url;
-                        twr_nazwa = dane[0].nazwa;
-                        twr_ean = dane[0].ean;
-                        twr_cena = dane[0].cena;
-                        // await  DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+                            }else
+                        
+                         await  DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
                     }
                     rs.Close();
                     rs.Dispose();
                     connection.Close();
 
-                }
+                        entry_kodean.Text = twrkod;
+                        lbl_ean.Text = twr_ean;
+                        lbl_symbol.Text = twr_symbol;
+                        lbl_nazwa.Text = twr_nazwa;
+                        lbl_cena.Text = twr_cena;
+                        lbl_stan.Text = "Stan : " + stan_szt;
+                        if (!string.IsNullOrEmpty(twr_url))
+                        img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+
+                    }
                 catch (Exception )
                 {
                     await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
@@ -1026,13 +1041,7 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
             }
             //return twrkod;
-            entry_kodean.Text = twrkod;
-            lbl_ean.Text = twr_ean;
-            lbl_symbol.Text = twr_symbol;
-            lbl_nazwa.Text = twr_nazwa;
-            lbl_cena.Text = twr_cena;
-            lbl_stan.Text = "Stan : " + stan_szt;
-            img_foto.Source =  twr_url.Replace("Miniatury/", ""); //twr_url;
+            
         }
 
         public void GetDataFromTwrKod(string _twrkod)

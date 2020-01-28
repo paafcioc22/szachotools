@@ -3,6 +3,7 @@ FFImageLoading.Forms.Platform
 FFImageLoading.Platform
 FormsViewGroup
 Plugin.SewooXamarinSDK
+Plugin.Toast
 SQLitePCLRaw.batteries_green
 SQLitePCLRaw.batteries_v2
 SQLitePCLRaw.core

@@ -64,32 +64,35 @@ namespace App2.View
         Int16 magnumer;
         private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
-            SqlCommand command = new SqlCommand();
+            if (SettingsPage.SprConn())
+            {
+                SqlCommand command = new SqlCommand();
 
-            connection.Open();
-            command.CommandText = $@"SELECT  [Mag_GIDNumer]
+                connection.Open();
+                command.CommandText = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
                                   where mag_typ=1 
 								  and [Mag_GIDNumer] is not null
 								  and mag_nieaktywny=0";
 
 
-            SqlCommand query = new SqlCommand(command.CommandText, connection);
-            SqlDataReader rs;
+                SqlCommand query = new SqlCommand(command.CommandText, connection);
+                SqlDataReader rs;
 
-            rs = query.ExecuteReader();
-            while (rs.Read())
-            {
-                magnumer = System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+                rs = query.ExecuteReader();
+                while (rs.Read())
+                {
+                    magnumer = System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+                }
+
+                rs.Close();
+                rs.Dispose();
+                connection.Close();
+                string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+                var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer, ase_operator);
+                if (odp != "OK")
+                    await DisplayAlert(null, odp, "OK"); 
             }
-
-            rs.Close();
-            rs.Dispose();
-            connection.Close();
-            string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-            var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer, ase_operator);
-            if (odp != "OK")
-                await DisplayAlert(null, odp, "OK");
         }
 
 
