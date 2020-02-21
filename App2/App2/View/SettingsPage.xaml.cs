@@ -49,17 +49,25 @@ namespace App2.View
             SelectDeviceMetod();
 
             //  cpclConst = new CPCLConst();
+            
+
+
+            
+            SwitchStatus.IsToggled = IsBuforOff;
+        }
+
+        protected override void OnAppearing()
+        {
             var app = Application.Current as App;
             BindingContext = Application.Current;
-
 
             if (SprConn())
             {
                 GetBaseName();
-
+                GetGidnumer();
 
                 cennikClasses = GetCenniki();
-                if (cennikClasses!=null)//cennikClasses.Count > 0 || 
+                if (cennikClasses != null)//cennikClasses.Count > 0 || 
                 {
                     pickerlist.ItemsSource = GetCenniki().ToList();
                     pickerlist.SelectedIndex = app.Cennik;
@@ -69,8 +77,10 @@ namespace App2.View
 
 
             sprwersja();
-            SwitchStatus.IsToggled = IsBuforOff;
+
+            base.OnAppearing();
         }
+
 
         private void SelectDeviceMetod()
         {
@@ -224,16 +234,16 @@ namespace App2.View
                     try
                     {
                         conn.Open();
-                        if (GetBaseName())
+                        if ( GetBaseName().Result)
                         {
-                            DisplayAlert("Connected", "Połączono z bazą "+app.BazaProd, "OK");
+                            DisplayAlert("Sukces..", "Połączono z bazą "+app.BazaProd, "OK");
                             Navigation.PopAsync();
                         }
 
                     }
                     catch (Exception ex)
                     {
-                        DisplayAlert("Uwaga", "NIE Połączono z bazą : " + ex.Message, "OK");
+                        DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
                     }
                 }
             }
@@ -268,7 +278,7 @@ namespace App2.View
                     //DisplayAlert("Connected", "Połączono z siecia", "OK");
                     return true;
                 }
-                catch (Exception x)
+                catch  
                 {
                     //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
                     //string aa=x.Message;
@@ -279,44 +289,81 @@ namespace App2.View
 
         }
 
-        public bool GetBaseName()
+
+        void GetGidnumer()
+        {
+
+            var app = Application.Current as App;
+
+            var ConnectionString = "SERVER=" + app.Serwer +
+                    ";DATABASE=" + app.BazaProd +
+                    ";TRUSTED_CONNECTION=No;UID=" + app.User +
+                    ";PWD=" + app.Password;
+
+
+
+
+            var stringquery2 = $@"SELECT  [Mag_GIDNumer]
+                                  FROM  [CDN].[Magazyny]
+                                  where mag_typ=1 
+								  and [Mag_GIDNumer] is not null
+								  and mag_nieaktywny=0";
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
+                using (SqlDataReader reader = command2.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        app.MagGidNumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
+                    }
+                }
+            }
+
+        }
+
+        public async Task<bool> GetBaseName()
         {
 
             var app = Application.Current as App;
 
             try
             {
-                SqlCommand command = new SqlCommand();
-                SqlConnection connection = new SqlConnection
-                {
-                    ConnectionString = "SERVER=" + app.Serwer +
+                 
+
+                string ConnectionString = "SERVER=" + app.Serwer +
                     ";DATABASE=" + app.BazaConf +
                     ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                    ";PWD=" + app.Password
-                };
-                connection.Open();
-                command.CommandText = $@"SELECT top 1 [Baz_NazwaBazy] nazwaBazy 
+                    ";PWD=" + app.Password;
+                 
+
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                { 
+                    connection.Open();
+
+                    string stringquery = $@"SELECT top 1 [Baz_NazwaBazy] nazwaBazy 
                                         FROM {app.BazaConf}.[CDN].[Bazy] order by [Baz_TS_Arch] desc ";
 
-
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                    string bazaProd = Convert.ToString(rs["nazwaBazy"]);
-                    app.BazaProd = bazaProd;
-                    BazaProd.Text = bazaProd;
-                }
-
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
+                    using (SqlCommand command = new SqlCommand(stringquery, connection))
+                    using (SqlDataReader rs = command.ExecuteReader())
+                    {
+                        while (rs.Read())
+                        {
+                            string bazaProd = Convert.ToString(rs["nazwaBazy"]);
+                            app.BazaProd = bazaProd;
+                            BazaProd.Text = bazaProd;
+                        }
+                    }  
+                } 
+                 
+                 
                 return true;
             }
             catch (Exception s)
             {
-                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane" + s.Message, "OK");
+                await DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane i/lub spróbuj ponownie" , "OK");
                 return false;
             }
 
@@ -622,12 +669,12 @@ namespace App2.View
                     disconnectButton.IsEnabled = true;
                     printText.IsEnabled = true;
                     CzyDrukarkaOn = true;
-                    await DisplayAlert("Connection", "Połączenie udane", "OK");
+                    await DisplayAlert("Sukces..", "Połączenie udane", "OK");
 
                 }
                 else
                 {
-                    await DisplayAlert("Connection", "Połączenie nieudane", "OK");
+                    await DisplayAlert("Niestety..", "Nie nawiązano połączenia", "OK");
                 }
             }
             catch (Exception e)
@@ -703,7 +750,7 @@ namespace App2.View
                 await _cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
                 await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 1, 1, "FONT-0-0", 0);
-                await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 100, 50, "ŁÓŻKO or ŻÓŁĆ", 0);
+                await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 100, 50, "Test drukarki ąćżół", 0);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 1, 1, 50, "FONT-0-1", 0);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 1, 200, 50, "FONT-7-1", 0);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 1, 100, "FONT-4-0", 0);
@@ -794,12 +841,12 @@ namespace App2.View
                         appp.Drukarka = editAddress.Text;
                         printText.IsEnabled = true;
                         CzyDrukarkaOn = true;
-                        await DisplayAlert("Info", "Połączenie udane", "OK");
+                        await DisplayAlert("Sukces..", "Połączenie udane", "OK");
 
                     }
                     else
                     {
-                        await DisplayAlert("Info", "Połączenie nieudane", "OK");
+                        await DisplayAlert("Niestety..", "Nie nawiązano połączenia", "OK");
                         View.SettingsPage.CzyDrukarkaOn = false;
                     }
                 }

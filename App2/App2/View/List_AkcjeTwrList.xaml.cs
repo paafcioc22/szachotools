@@ -14,14 +14,12 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeTwrList : ContentPage
     {
-        public IList<Model.AkcjeNagElem> TwrListWeb { get; set; }
-        public ObservableCollection<Model.AkcjeNagElem> TwrListLocal { get; set; }
-        //public ObservableCollection<Model.AkcjeGrupy> GroupLista { get; set; }
-        public IList<Model.AkcjeNagElem> SumaList { get; set; }
-        SqlConnection connection;
-        private SQLiteAsyncConnection _connection;
-
-        private List<Model.AkcjeNagElem> _nagElem;
+        public IList<AkcjeNagElem> TwrListWeb { get; set; }
+        public ObservableCollection<AkcjeNagElem> TwrListLocal { get; set; } 
+        public IList<AkcjeNagElem> SumaList { get; set; }
+        private SqlConnection connection;
+        private SQLiteAsyncConnection _connection; 
+        private List<AkcjeNagElem> _nagElem;
 
 
         private BindableProperty IsSearchingProperty =
@@ -34,7 +32,7 @@ namespace App2.View
 
          
 
-        public List_AkcjeTwrList(List<Model.AkcjeNagElem> nagElem)
+        public List_AkcjeTwrList(List<AkcjeNagElem> nagElem)
         {
             InitializeComponent();
             BindingContext = this;
@@ -66,9 +64,11 @@ namespace App2.View
                     TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
                     GetListFromLocal(_nagElem);
 
-                    await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+                    await _connection.CreateTableAsync<AkcjeNagElem>();
 
-                    var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
+                    var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
+                    
+
 
                     SumaList = (
                      from lWeb in TwrListWeb
@@ -91,14 +91,15 @@ namespace App2.View
                          TwrNazwa = lWeb.TwrNazwa,
                          TwrSymbol = lWeb.TwrSymbol,
                          TwrUrl = lWeb.TwrUrl,
+                         IsSendData = lWeb.IsSendData
                      }).ToList();
 
 
+                    var isSendData = TwrListWeb[0].IsSendData;
 
-
-                    if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                        //                    if (StartPage.CheckInternetConnection())
-                        SendDataSkan(SumaList);
+                    if (isSendData && View.LoginLista._user != "ADM")
+                        //  if (StartPage.CheckInternetConnection())
+                        SendDataSkan(SumaList);///wysyłka z listy z grupowania
 
 
 
@@ -108,7 +109,8 @@ namespace App2.View
                         TwrSkan = s.Sum(cc => cc.TwrSkan),
                         TwrStan = s.Sum(cc => cc.TwrStan),
                         TwrStanVsSKan = cs.TwrStanVsSKan,
-                        TwrDep = cs.TwrDep
+                        TwrDep = cs.TwrDep,
+                        IsSendData=cs.IsSendData
                     })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
 
 
@@ -237,29 +239,30 @@ namespace App2.View
                     TwrListWeb = new ObservableCollection<Model.AkcjeNagElem>();
 
                     string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
-                set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
-                where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
+                    set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
+                    where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
 
-                set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,case when len(twr_kod) > 5 and len(twr_url)> 5 then
-                                         replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
-                                        substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + ''''Miniatury/'''') else twr_kod end as  TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
-                when 2 then ''''Meski_''''  
-                when 3 then ''''Dzieciak_''''
-                when 4 then ''''Dzieciak_''''
-                when 5 then ''''Akcesoria_'''' 
-                when 6 then ''''Bielizna_''''
-                when 7 then ''''Buty_''''
-                end +Twg_kod as TwrDep, twg_kod TwrGrupa
-                ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
-                ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
-                from cdn.TwrKarty
-                 INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
-                INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
-                join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp = 2  
-                left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
-                where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
+                    set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,case when len(twr_kod) > 5 and len(twr_url)> 5 then
+                                             replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
+                                            substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + ''''Miniatury/'''') else twr_kod end as  TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
+                    when 2 then ''''Meski_''''  
+                    when 3 then ''''Dzieciak_''''
+                    when 4 then ''''Dzieciak_''''
+                    when 5 then ''''Akcesoria_'''' 
+                    when 6 then ''''Bielizna_''''
+                    when 7 then ''''Buty_''''
+                    end +Twg_kod as TwrDep, twg_kod TwrGrupa
+                    ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
+                    ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
+                    ,(select top 1 [IsSendData]  from [CDN].[PC_AkcjeTyp] where GidTypAkcji={_nagElem[0].AkN_GidTyp} )IsSendData 
+                    from cdn.TwrKarty
+                    INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
+                    INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
+                    join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp = 2  
+                    left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
+                    where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
 
-                    _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
+                        _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
 
                 }
                 return _fromWeb; 
@@ -382,9 +385,12 @@ namespace App2.View
             //TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
             //GetListFromLocal(_nagElem);
 
-            await _connection.CreateTableAsync<Model.AkcjeNagElem>();
+            await _connection.CreateTableAsync<AkcjeNagElem>();
 
-            var SavedList = await _connection.Table<Model.AkcjeNagElem>().ToListAsync();
+            var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
+
+            var wynik = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+
 
             //if (TwrListWeb.Count > 0)
             if (TwrListWeb != null )
@@ -413,21 +419,27 @@ namespace App2.View
                                      TwrNazwa = lWeb.TwrNazwa,
                                      TwrSymbol = lWeb.TwrSymbol,
                                      TwrUrl = lWeb.TwrUrl,
+                                     IsSendData = lWeb.IsSendData,
+                                     IsUpdatedData = alles.IsUpdatedData
                                  }).ToList();
 
-                    if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                        if (StartPage.CheckInternetConnection())
-                            SendDataSkan(SumaList);
+                    var isSendData = TwrListWeb[0].IsSendData;
+
+                    var sendOnlyToUpdate = SumaList.Where(c => c.IsUpdatedData == false&& c.TwrSkan>0).ToList();
+                    //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                        if (isSendData && LoginLista._user!="ADM")
+                            SendDataSkan(sendOnlyToUpdate);
 
 
 
-                    var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                    var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new AkcjeNagElem
                     {
                         TwrGrupa = cs.TwrGrupa,
                         TwrSkan = s.Sum(cc => cc.TwrSkan),
                         TwrStan = s.Sum(cc => cc.TwrStan),
                         TwrStanVsSKan = cs.TwrStanVsSKan,
-                        TwrDep = cs.TwrDep
+                        TwrDep = cs.TwrDep,
+                        IsSendData = cs.IsSendData
                     })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
 
 
@@ -437,7 +449,7 @@ namespace App2.View
                         var sorted = from towar in nowa
                                      orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
                                      group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
-                                     select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
+                                     select new AkcjeGrupy<string, AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
 
 
 
@@ -463,30 +475,33 @@ namespace App2.View
 
             if (SettingsPage.SprConn())
             {
-                SqlCommand command = new SqlCommand();
-
-                connection.Open();
-                command.CommandText = $@"SELECT  [Mag_GIDNumer]
+                var magGidnumer = (Application.Current as App).MagGidNumer;
+                 
+                if (magGidnumer == 0)
+                {
+                    var stringquery2 = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
                                   where mag_typ=1 
 								  and [Mag_GIDNumer] is not null
 								  and mag_nieaktywny=0";
 
 
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                    magnumer = Convert.ToInt16(rs["Mag_GIDNumer"]);
+                    connection.Open();
+                    using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
+                    using (SqlDataReader reader = command2.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            magnumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
+                        }
+                    }
+                    magGidnumer = magnumer;
+                    connection.Close();
                 }
 
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
+
                 string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer, ase_operator);
+                var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
                 if (odp != "OK")
                     await DisplayAlert(null, odp, "OK"); 
             }

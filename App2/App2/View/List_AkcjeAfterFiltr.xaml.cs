@@ -1,4 +1,7 @@
 ﻿using App2.Model;
+using FFImageLoading;
+using FFImageLoading.Cache;
+using FFImageLoading.Forms;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,7 +9,7 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,9 +39,24 @@ namespace App2.View
                 ";PWD=" + app.Password
             };
 
-
+            //czyscPamiec();
             MyListView.ItemsSource = Items;
+            ToggleScreenLock();
         }
+
+
+        public void ToggleScreenLock()
+        {
+            DeviceDisplay.KeepScreenOn = !DeviceDisplay.KeepScreenOn;
+        }
+
+
+        async void czyscPamiec()
+        {
+            await ImageService.Instance.InvalidateCacheAsync(CacheType.All);
+          //  CachedImage.InvalidateCache(string key, Cache.CacheType cacheType, bool removeSimilar = false)
+        }
+
 
         protected override void OnAppearing()
         {
@@ -51,13 +69,13 @@ namespace App2.View
 
             //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
 
-            if (StartPage.CheckInternetConnection())
-            {
-                SendDataSkan(tmp);
-            }else 
-            {
-                DisplayAlert(null, "Brak połączenia z internetem", "OK");
-            }
+            //if (StartPage.CheckInternetConnection())
+            //{
+            //    SendDataSkan(tmp);
+            //}else 
+            //{
+            //    DisplayAlert(null, "Brak połączenia z internetem", "OK");
+            //}
         }
 
 
@@ -113,7 +131,7 @@ namespace App2.View
 
             _istapped = true;
 
-            var pozycja = e.Item as Model.AkcjeNagElem;
+            var pozycja = e.Item as AkcjeNagElem;
 
             await Navigation.PushModalAsync(new List_ScanPage(pozycja));
 
@@ -123,7 +141,7 @@ namespace App2.View
         }
 
 
-        public   IEnumerable<Model.AkcjeNagElem> SzukajTowar(string searchText = null)
+        public   IEnumerable<AkcjeNagElem> SzukajTowar(string searchText = null)
         {
 
             if (String.IsNullOrWhiteSpace(searchText))
@@ -135,6 +153,14 @@ namespace App2.View
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             MyListView.ItemsSource = SzukajTowar(e.NewTextValue);
+        }
+
+
+        protected override bool OnBackButtonPressed()
+        {
+            ToggleScreenLock();
+
+            return base.OnBackButtonPressed();
         }
     }
 }

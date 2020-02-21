@@ -121,19 +121,21 @@
 
 
 
-                            <Image  Source="{Binding TwrUrl}" 
+                            <!--<Image  Source="{Binding TwrUrl}" 
                                        AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
                                        AbsoluteLayout.LayoutFlags="All"
                                        Aspect="AspectFill"
-                                        />
-                            <!--<ffimageloading:CachedImage 
+                                        />-->
+                            <ffimageloading:CachedImage 
                                 Source="{Binding TwrUrl}"
-                                  
-                                 
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended" 
                                 AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
                                 AbsoluteLayout.LayoutFlags="All"
                             Aspect="AspectFill"
-                            />-->
+                            />
 
                             <!--</DownsampleToViewSize = "true"
                             CacheDuration= "50"
@@ -154,5 +156,6 @@
                                 OutlineColor="DarkCyan" Padding="3" >
             <SearchBar Placeholder="Szukaj model..(część kodu) " TextChanged="SearchBar_TextChanged" HeightRequest="40" />
         </Frame>
+         
     </StackLayout>
 </ContentPage>

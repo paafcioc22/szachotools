@@ -320,7 +320,7 @@ namespace App2.View
     AkN_DataStart,AkN_DataKoniec
  from cdn.pc_akcjeNag
     INNER JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
- where Ake_FiltrSQL like ''%{twrkod}%''  and AkN_DataKoniec>= GETDATE() - 10
+ where Ake_FiltrSQL like ''%{twrkod}%''  and AkN_DataKoniec>= GETDATE() - 30
  order by AkN_DataStart desc   '";
             var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 

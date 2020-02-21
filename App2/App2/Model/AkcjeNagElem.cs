@@ -37,6 +37,8 @@ namespace App2.Model
         public string TwrCena1 { get; set; }
         public string TwrEan { get; set; }
         public string Operator { get; set; }
+        public bool IsSendData { get; set; }
+        public bool IsUpdatedData{ get; set; }
 
         public string AkN_ZakresDat
         {

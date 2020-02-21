@@ -187,12 +187,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\hide_pwd.png" />
     <AndroidResource Include="Resources\drawable-hdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\show_pwd.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\add48x2.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\save48x2.png" />
     <AndroidResource Include="Resources\drawable\add48x2.png" />
@@ -229,17 +223,14 @@
     <AndroidResource Include="Resources\drawable-hdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\znizka100.png" />
@@ -249,14 +240,10 @@
     <AndroidResource Include="Resources\drawable\skaner100.png" />
     <AndroidResource Include="Resources\drawable\znizka100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ustawienia64.png" />
     <AndroidResource Include="Resources\drawable\ustawienia64.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\metka128.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\skaner64.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\Sended.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\NotSended.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Sended.png" />
@@ -319,43 +306,16 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_shortcut_add.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_add.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_shortcut_add.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_shortcut_remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_remove.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_shortcut_remove.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\icons8_settings_100.9.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\icons8_settings_100.9.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_settings_100.9.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_settings_100.9.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\icons8_settings_100.9.png" />
@@ -374,6 +334,54 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_analyze_48.9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

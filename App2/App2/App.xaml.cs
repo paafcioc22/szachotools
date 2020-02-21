@@ -1,5 +1,7 @@
 ﻿using App2.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 //using Microsoft.AppCenter;
@@ -20,6 +22,7 @@ namespace App2
         private const string cennik = "cennik";
         private const string drukarka = "drukarka";
         private const string skanowanie = "skanowanie";
+        private const string magGidnumer = "magGidnumer";
 
         public App()
         {
@@ -44,8 +47,18 @@ namespace App2
             if (pages.Count > 0)
             {
                 var nazwa = pages[pages.Count - 1].GetType().Name;
+                List<string> listaOkienNoLogOff = new List<string>()
+                {
+                    "RaportLista_AddTwrKod",
+                    "WeryfikatorCenPage",
+                    "AddTwrPage",
+                    "List_ScanPage",
 
-                if (nazwa == "RaportLista_AddTwrKod" || nazwa == "WeryfikatorCenPage")
+                };
+                
+
+                if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())
+                //if (nazwa == "RaportLista_AddTwrKod" || nazwa == "WeryfikatorCenPage")
                     return;
 
                    View.StartPage.user = "Wylogowany";
@@ -149,6 +162,21 @@ namespace App2
             set
             {
                 Properties[cennik] = value;
+            }
+
+        }
+
+        public Int16 MagGidNumer
+        {
+            get
+            {
+                if (Properties.ContainsKey(magGidnumer))
+                    return (Int16)Properties[magGidnumer];
+                return 0;
+            }
+            set
+            {
+                Properties[magGidnumer] = value;
             }
 
         }

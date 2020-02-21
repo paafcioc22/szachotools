@@ -12,8 +12,6 @@ public class MonoPackageManager_Resources {
 		"FormsViewGroup.dll",
 		"Plugin.SewooXamarinSDK.Abstractions.dll",
 		"Plugin.SewooXamarinSDK.dll",
-		"Plugin.Toast.Abstractions.dll",
-		"Plugin.Toast.dll",
 		"SQLite-net.dll",
 		"SQLitePCLRaw.batteries_green.dll",
 		"SQLitePCLRaw.batteries_v2.dll",

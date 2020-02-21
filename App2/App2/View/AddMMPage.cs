@@ -32,7 +32,7 @@ namespace App2.View
 
             _opis = new Entry();
             _opis.Keyboard = Keyboard.Text;
-            _opis.Placeholder = "Opis (bez kto pakował - dodane z loginu)";
+            _opis.Placeholder = "Opis ( Nie wpisuj tu danych osobowych!)";
             stackLayout.Children.Add(_opis);
 
             //_btnListSklep = new Button();
@@ -103,7 +103,9 @@ namespace App2.View
                     Model.DokMM.dokElementy.Clear();
                     var mm = dokMMs.OrderByDescending(x => x.gidnumer).First();
 
-                    Navigation.PushModalAsync(new View.AddElementMMList(mm));
+
+                    if (!List_AkcjeView.TypAkcji.Contains("Zwrot"))
+                        Navigation.PushModalAsync(new View.AddElementMMList(mm));
                 }
             }
             catch (Exception s)

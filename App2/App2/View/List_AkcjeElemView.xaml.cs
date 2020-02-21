@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App2.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,8 +15,8 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeElemView : ContentPage
     {
-        public IList<Model.AkcjeNagElem> Items2 { get; set; }
-        public ObservableCollection<Model.AkcjeNagElem> ListaZFiltrem { get; set; }
+        public IList<AkcjeNagElem> Items2 { get; set; }
+        public ObservableCollection<AkcjeNagElem> ListaZFiltrem { get; set; }
 
         private BindableProperty IsSearchingProperty =
            BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
@@ -45,8 +46,11 @@ namespace App2.View
                     string user = LoginLista._user;
                     int dodajDni = user == "ADM" ? 50 : 0;
 
-                    string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL
-                    from cdn.pc_akcjeNag INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
+                    string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidNumer, AkN_GidTyp  
+                    , AkN_GidNazwa ,AkN_NazwaAkcji, AkN_DataStart,AkN_DataKoniec,Ake_FiltrSQL,IsSendData
+                    from cdn.pc_akcjeNag 
+                    INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
+                    join [CDN].[PC_AkcjeTyp] on akn_gidtyp = GidTypAkcji
                      where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10 -{dodajDni}
                      order by AkN_DataStart desc
                      '";
@@ -82,7 +86,7 @@ namespace App2.View
 
                 var nowa =ListaZFiltrem.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
 
-            await    Navigation.PushAsync(new View.List_AkcjeTwrList(nowa));
+            await    Navigation.PushAsync(new List_AkcjeTwrList(nowa));
 
             _istapped = false;
 
