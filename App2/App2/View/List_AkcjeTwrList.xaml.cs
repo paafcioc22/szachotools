@@ -233,12 +233,14 @@ namespace App2.View
 
             return await Task.Run(async () =>
             {
-
-                if (StartPage.CheckInternetConnection())
+                try
                 {
-                    TwrListWeb = new ObservableCollection<Model.AkcjeNagElem>();
 
-                    string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
+                    if (StartPage.CheckInternetConnection())
+                    {
+                        TwrListWeb = new ObservableCollection<Model.AkcjeNagElem>();
+
+                        string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
                     set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
                     where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
 
@@ -264,8 +266,14 @@ namespace App2.View
 
                         _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
 
+                    }
+                    return _fromWeb;
                 }
-                return _fromWeb; 
+                catch (Exception)
+                {
+
+                    throw;
+                }
                     #region MyRegion
                 //var listFromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
 
@@ -473,37 +481,45 @@ namespace App2.View
         private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
 
-            if (SettingsPage.SprConn())
+            try
             {
-                var magGidnumer = (Application.Current as App).MagGidNumer;
-                 
-                if (magGidnumer == 0)
+                if (SettingsPage.SprConn())
                 {
-                    var stringquery2 = $@"SELECT  [Mag_GIDNumer]
+                    var magGidnumer = (Application.Current as App).MagGidNumer;
+
+                    if (magGidnumer == 0)
+                    {
+                        var stringquery2 = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
                                   where mag_typ=1 
 								  and [Mag_GIDNumer] is not null
 								  and mag_nieaktywny=0";
 
 
-                    connection.Open();
-                    using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
-                    using (SqlDataReader reader = command2.ExecuteReader())
-                    {
-                        while (reader.Read())
+                        connection.Open();
+                        using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
+                        using (SqlDataReader reader = command2.ExecuteReader())
                         {
-                            magnumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
+                            while (reader.Read())
+                            {
+                                magnumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
+                            }
                         }
+                        magGidnumer = magnumer;
+                        connection.Close();
                     }
-                    magGidnumer = magnumer;
-                    connection.Close();
+
+
+                    string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+                    var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
+                    if (odp != "OK")
+                        await DisplayAlert(null, odp, "OK");
                 }
+            }
+            catch 
+            {
 
-
-                string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
-                if (odp != "OK")
-                    await DisplayAlert(null, odp, "OK"); 
+                 ;
             }
 
         }

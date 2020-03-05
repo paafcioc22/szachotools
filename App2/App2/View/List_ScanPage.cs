@@ -93,7 +93,7 @@ namespace App2.View
                 WidokSkaner();
             }
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-            DependencyService.Get<Model.IAppVersionProvider>().Show("Sprawdź status drukarki i kolor etykiet");
+            DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
 
         }
 
@@ -178,7 +178,7 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                DependencyService.Get<Model.IAppVersionProvider>().Show("Skopiowano Ean");
+                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Skopiowano Ean");
                 //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
@@ -531,7 +531,7 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                DependencyService.Get<Model.IAppVersionProvider>().Show("Skopiowano Ean");
+                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Skopiowano Ean");
                 //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
@@ -817,6 +817,7 @@ namespace App2.View
             {
                 entry_skanowanaIlosc.IsReadOnly = false;
                 entry_skanowanaIlosc.Focus();
+                entry_skanowanaIlosc.CursorPosition = entry_skanowanaIlosc.Text.Length+1;
             }
             else
                 DisplayAlert(null, "Błędny ean", "OK");
@@ -831,74 +832,82 @@ namespace App2.View
 
         private async void BtnAddToMM_Clicked(object sender, EventArgs e)
         {
-            var ListaMMWBuforze = new List<string>();
-            var dokmm = new DokMM();
-            var listaMM = dokmm.getMMki().Where(c => c.statuss == 0);
-            int gidnumerMM;
-            //var listaMM = Model.DokMM.dokMMs.Where(c =>c.statuss ==0);
-            int ilosc;
-
-
-
-
-            var czyPoprawnaIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ilosc);
-            if (czyPoprawnaIlosc && ilosc > 0)
+            try
             {
-                DokMM dokMM = new DokMM();
-                var listaIstniejacych = dokMM.ListaIstniejacych(_akcja.TwrKod);
-                List<string> naJakichMM = new List<string>();
+                var ListaMMWBuforze = new List<string>();
+                var dokmm = new DokMM();
+                var listaMM = dokmm.getMMki().Where(c => c.statuss == 0);
+                int gidnumerMM;
+                //var listaMM = Model.DokMM.dokMMs.Where(c =>c.statuss ==0);
+                int ilosc;
 
-                int sumaGlobalna = listaIstniejacych.Count > 0 ? listaIstniejacych.Sum(c => c.szt) : 0;
 
 
-                foreach (var mm in listaIstniejacych)
+
+                var czyPoprawnaIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ilosc);
+                if (czyPoprawnaIlosc && ilosc > 0)
                 {
-                    naJakichMM.Add(string.Format($"{mm.mag_dcl} - {mm.opis.Replace("Pakował(a):", "")} : {mm.szt} szt"));
-                }
+                    DokMM dokMM = new DokMM();
+                    var listaIstniejacych = dokMM.ListaIstniejacych(_akcja.TwrKod);
+                    List<string> naJakichMM = new List<string>();
+
+                    int sumaGlobalna = listaIstniejacych.Count > 0 ? listaIstniejacych.Sum(c => c.szt) : 0;
 
 
-                if ((ilosc) > (_akcja.TwrStan - sumaGlobalna))
-                {
-
-                    if (listaIstniejacych.Count > 0)
-                        await DisplayActionSheet("Ilość przekracza stan- występuje już :", "OK", null, naJakichMM.ToArray());
-                    else
-                        await DisplayAlert("Uwaga", "Wpisana Ilość przekracza stan", "OK");
-
-                }
-                else
-                {
-                    if (ilosc <= (_akcja.TwrStan - sumaGlobalna) && listaIstniejacych.Count > 0)
-                        await DisplayActionSheet("Model występuje już na mmkach:", "OK", null, naJakichMM.ToArray());
-
-                    foreach (var mm in listaMM)
+                    foreach (var mm in listaIstniejacych)
                     {
-                        ListaMMWBuforze.Add(mm.gidnumer + ")" + mm.mag_dcl + " " + mm.opis.Replace("Pakował(a):", ""));
+                        naJakichMM.Add(string.Format($"{mm.mag_dcl} - {mm.opis.Replace("Pakował(a):", "")} : {mm.szt} szt"));
                     }
 
-                    if (ListaMMWBuforze.Count > 0)
-                    {
-                        var odp = await DisplayActionSheet("Wybierz MM:", "Wyjdź", null, ListaMMWBuforze.ToArray());
-                        if (odp != "Wyjdź")
-                        {
-                            var gdzieCut = odp.IndexOf(')');
-                            var cutNrmmki = odp.Substring(0, gdzieCut);
-                            Int32.TryParse(cutNrmmki, out gidnumerMM);
 
-                            ZapiszPozycje(gidnumerMM, _akcja.TwrKod, ilosc, _akcja.TwrStan, odp);
+                    if ((ilosc) > (_akcja.TwrStan - sumaGlobalna))
+                    {
+
+                        if (listaIstniejacych.Count > 0)
+                            await DisplayActionSheet("Ilość przekracza stan- występuje już :", "OK", null, naJakichMM.ToArray());
+                        else
+                            await DisplayAlert("Uwaga", "Wpisana Ilość przekracza stan", "OK");
+
+                    }
+                    else
+                    {
+                        if (ilosc <= (_akcja.TwrStan - sumaGlobalna) && listaIstniejacych.Count > 0)
+                            await DisplayActionSheet("Model występuje już na mmkach:", "OK", null, naJakichMM.ToArray());
+
+                        foreach (var mm in listaMM)
+                        {
+                            ListaMMWBuforze.Add(mm.gidnumer + ")" + mm.mag_dcl + " " + mm.opis.Replace("Pakował(a):", ""));
+                        }
+
+                        if (ListaMMWBuforze.Count > 0)
+                        {
+                            var odp = await DisplayActionSheet("Wybierz MM:", "Wyjdź", null, ListaMMWBuforze.ToArray());
+                            if (odp != "Wyjdź")
+                            {
+                                var gdzieCut = odp.IndexOf(')');
+                                var cutNrmmki = odp.Substring(0, gdzieCut);
+                                Int32.TryParse(cutNrmmki, out gidnumerMM);
+
+                                ZapiszPozycje(gidnumerMM, _akcja.TwrKod, ilosc, _akcja.TwrStan, odp);
+                                entry_skanowanaIlosc.Text = (sumaGlobalna + ilosc).ToString();  
+                            }
+
+                        }
+                        else
+                        {
+                            await DisplayAlert(null, "Brak MM w buforze - utwórz nową", "OK");
                         }
 
                     }
-                    else
-                    {
-                        await DisplayAlert(null, "Brak MM w buforze - utwórz nową", "OK");
-                    }
 
                 }
-
+                else
+                    await DisplayAlert(null, "Błędna ilosc", "OK");
             }
-            else
-                await DisplayAlert(null, "Błędna ilosc", "OK");
+            catch (Exception)
+            {
+                await DisplayAlert(null, "Coś poszło nie tak..Spróbuj ponownie", "OK");
+            }
 
 
         }
@@ -952,6 +961,7 @@ namespace App2.View
                         var opis2 = opis.Substring(opis.IndexOf(')') + 1);
                         //var oooo = opis.Substring(opis.IndexOf(')') + 1, opis.Length - opis.IndexOf(')') + 2);
                         await DisplayAlert("Dodano..", $"..{ilosc} szt do {opis2}", "OK");
+                        
                     }
                 }
                 else

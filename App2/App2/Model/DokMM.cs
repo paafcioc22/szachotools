@@ -198,7 +198,7 @@ namespace App2.Model
             while (sqlData.Read())
             {
 
-               
+               //SqlDependency
                 dokMMs.Add(new DokMM
                 {
                     gidnumer = Convert.ToInt32(sqlData["gidnumer"]),

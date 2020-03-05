@@ -357,7 +357,7 @@ namespace App2.View
 
             if (maybe_exit) return false; //QUIT
 
-            DependencyService.Get<Model.IAppVersionProvider>().Show ("Wciśnij jeszcze raz by wyjść z aplikacji");
+            DependencyService.Get<Model.IAppVersionProvider>().ShowLong ("Wciśnij jeszcze raz by wyjść z aplikacji");
             maybe_exit = true;
 
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>

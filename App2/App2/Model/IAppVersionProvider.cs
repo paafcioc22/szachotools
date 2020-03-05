@@ -10,6 +10,7 @@ namespace App2.Model
         string AppVersion { get; }
         int BuildVersion { get; }
         Task OpenAppInStore();
-        void Show(string message);
+        void ShowLong(string message);
+        void ShowShort(string message);
     }
 }

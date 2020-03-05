@@ -206,14 +206,17 @@ namespace App2.View
                         {
                             string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                            twrgidnumer = dane[0].TwrGidnumer.ToString();
-                            twrkod = dane[0].twrkod;
-                            twr_url = dane[0].url;
-                            twr_nazwa = dane[0].nazwa;
-                            twr_ean = dane[0].ean;
-                            twr_cena = dane[0].cena;
-
-                            await DisplayAlert("Uwaga", "Brak stanów lub nie istnieje!", "OK");
+                            if (dane.Count > 0)
+                            {
+                                twrgidnumer = dane[0].TwrGidnumer.ToString();
+                                twrkod = dane[0].twrkod;
+                                twr_url = dane[0].url;
+                                twr_nazwa = dane[0].nazwa;
+                                twr_ean = dane[0].ean;
+                                twr_cena = dane[0].cena;
+                            } 
+                             
+                            DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak stanów lub nie istnieje!");
                         }
                         rs.Close();
                         rs.Dispose();

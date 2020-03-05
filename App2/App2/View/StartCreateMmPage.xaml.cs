@@ -23,7 +23,7 @@ namespace App2.View
               
               //  if (SprConn())
               //  {
-                    DokMMViewModel = new ViewModel.DokMMViewModel();
+                    DokMMViewModel = new DokMMViewModel();
                     DokMM = new Model.DokMM();
                     BindingContext = Model.DokMM.dokMMs; //DokMMViewModel.dokMMs; 
                     ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;

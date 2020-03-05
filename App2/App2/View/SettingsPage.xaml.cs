@@ -48,18 +48,11 @@ namespace App2.View
             //GetDevices();
             SelectDeviceMetod();
 
-            //  cpclConst = new CPCLConst();
-            
-
-
-            
-            SwitchStatus.IsToggled = IsBuforOff;
-        }
-
-        protected override void OnAppearing()
-        {
+            //  cpclConst = new CPCLConst(); 
+ 
             var app = Application.Current as App;
             BindingContext = Application.Current;
+
 
             if (SprConn())
             {
@@ -77,9 +70,10 @@ namespace App2.View
 
 
             sprwersja();
-
-            base.OnAppearing();
+            SwitchStatus.IsToggled = IsBuforOff;
         }
+
+         
 
 
         private void SelectDeviceMetod()
@@ -136,82 +130,8 @@ namespace App2.View
 
 
         public static ObservableCollection<DrukarkaClass> listaDrukarek;
-        //async void GetDevices()
-        //{
-
-        //    var app = Application.Current as App;
-        //    BindingContext = Application.Current;
-        //    try
-        //    {
-
-        //        listaDrukarek = new ObservableCollection<DrukarkaClass>();
-        //        listaDrukarek.Clear();
-        //       // var list = await _cpclPrinter.connectableDevice();
-
-        //        if (list.Count > 0)
-        //        {
-
-        //            for (int i = 0; i <= list.Count()-1; i++)
-        //            {
-        //                listaDrukarek.Add(new DrukarkaClass { Id = i, NazwaDrukarki = list[i].Name, AdresDrukarki = list[i].Address });
-        //                PrinterList.Items.Add($"{list[i].Name}\r\n{list[i].Address}");
-        //            }
-
-        //            try
-        //            {
-        //                //PrinterList.ItemsSource = listaDrukarek;
-
-        //                PrinterList.SelectedIndex = app.Drukarka;
-        //            }
-        //            catch
-        //            {
-        //                PrinterList.SelectedIndex = -1;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ss)
-        //    {
-
-        //        System.Diagnostics.Debug.WriteLine(ss.Message);
-        //    }
-        //}
-        public static bool CzyDrukarkaOn = false;
-
-        //async void btnConnectClicked(DrukarkaClass drukarkaClass)
-        //{
-        //    int iResult;
-        //    await printSemaphore.WaitAsync();
-        //    try
-        //    {
-        //        iResult = await _cpclPrinter.connect(drukarkaClass.AdresDrukarki);
-
-        //        if (iResult == cpclConst.LK_SUCCESS)
-        //        {
-        //            await DisplayAlert("Connection", "Połaczono z drukarką", "OK");
-        //            CzyDrukarkaOn = true;
-
-        //        }
-        //        else
-        //        {
-        //            await DisplayAlert("Connection", "Błąd połączenia z drukarką", "OK");
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.StackTrace.ToString();
-        //        await DisplayAlert("Exception", e.Message.ToString(), "OK");
-        //    }
-        //    finally
-        //    {
-        //        printSemaphore.Release();
-        //    }
-
-        //}
-
-        //private IList<string> _deviceList;
-        //public IList<string> DeviceList;
-
-
+    
+        public static bool CzyDrukarkaOn = false; 
 
 
         private void SprConn_Clicked(object sender, EventArgs e)
@@ -557,12 +477,13 @@ namespace App2.View
         private Button connectButton;
         private Button disconnectButton;
         private Button printText;
+        private IEnumerable<object> deviceList;
 
 
         //private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
 
-    
-            
+
+
 
         private async void InitializeSampleUI()
         {
