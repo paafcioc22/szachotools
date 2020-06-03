@@ -23,7 +23,9 @@ namespace App2
         private const string drukarka = "drukarka";
         private const string skanowanie = "skanowanie";
         private const string magGidnumer = "magGidnumer";
+        private const string czycena1 = "czycena1";
 
+        
         public App()
         {
             InitializeComponent();
@@ -210,6 +212,23 @@ namespace App2
             }
 
         }
+
+         
+
+        public bool CzyCena1 
+        {
+            get
+            {
+                if (Properties.ContainsKey(czycena1))
+                    return (bool)Properties[czycena1];
+                return false;
+            }
+            set
+            {
+                Properties[czycena1] = value;
+            }
+        }
+
 
     }
 }

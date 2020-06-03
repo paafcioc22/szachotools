@@ -23,6 +23,7 @@ namespace App2.View
     {
 
         public static bool IsBuforOff;
+        public static bool CzyCenaPierwsza;
         public static SByte SelectedDeviceType;
         public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
@@ -783,8 +784,14 @@ namespace App2.View
             }
         }
 
+        private void rodzajCeny_Toggled(object sender, ToggledEventArgs e)
+        {
+            CzyCenaPierwsza = rodzajCeny.IsToggled;
 
+            var aaa = Application.Current as App;
 
+            aaa.CzyCena1 = rodzajCeny.IsToggled;
+        }
     }
 
     public class CennikClass

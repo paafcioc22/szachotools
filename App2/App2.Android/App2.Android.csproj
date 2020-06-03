@@ -170,9 +170,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\show_pwd.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\App2\App2.csproj">
       <Project>{65D16361-4D6F-49CE-ACEE-4D0C631951AB}</Project>
       <Name>App2</Name>
@@ -182,11 +179,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\hide_pwd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\show_pwd.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\add48x2.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\save48x2.png" />
     <AndroidResource Include="Resources\drawable\add48x2.png" />
@@ -218,7 +210,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\NewSzacho.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\NewSzacho.png" />
     <AndroidResource Include="Resources\drawable-hdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-hdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-hdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\znizka100.png" />
@@ -235,12 +226,10 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable\kod96.png" />
     <AndroidResource Include="Resources\drawable\skaner.png" />
     <AndroidResource Include="Resources\drawable\skaner100.png" />
     <AndroidResource Include="Resources\drawable\znizka100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable\ustawienia64.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\metka128.png" />

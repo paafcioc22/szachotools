@@ -94,7 +94,7 @@ namespace App2.View
             }
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
             DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
-
+            
         }
 
         void WidokAparat()
@@ -419,7 +419,7 @@ namespace App2.View
             //stack_dane.Children.Add(entry_EanSkaner);
             stack_dane.Children.Add(lbl_symbol);
             stack_dane.Children.Add(lbl_cena);
-            //stack_dane.Children.Add(lbl_cena1);
+            stack_dane.Children.Add(lbl_cena1);
             AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .55));
             AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
 
@@ -545,7 +545,7 @@ namespace App2.View
                 WidthRequest = 60,
                 Placeholder = "Ilość",
                 FontAttributes = FontAttributes.Bold,
-                TextColor = Color.Black
+                TextColor = Color.Black, HorizontalTextAlignment=TextAlignment.Center
             };
             if (List_AkcjeView.TypAkcji.Contains("Przecena")|| List_AkcjeView.TypAkcji.Contains("Zwrot"))
                 entry_skanowanaIlosc.IsReadOnly = true;
@@ -765,10 +765,10 @@ namespace App2.View
             stack_dane.Children.Add(lbl_ean);
             stack_dane.Children.Add(lbl_stan);
             stack_dane.Children.Add(entry_skanowanaIlosc);
-            stack_dane.Children.Add(entry_EanSkaner);
             stack_dane.Children.Add(lbl_symbol);
             stack_dane.Children.Add(lbl_cena);
-            //stack_dane.Children.Add(lbl_cena1);
+            stack_dane.Children.Add(lbl_cena1);
+            stack_dane.Children.Add(entry_EanSkaner);
             AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .55));
             AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
 
@@ -1300,9 +1300,10 @@ namespace App2.View
             await printSemaphore.WaitAsync();
             try
             {
-                 
+                if (SettingsPage.CzyCenaPierwsza)
+                    _akcja.TwrCena = _akcja.TwrCena1;
 
-                var cenaZl = _akcja.TwrCena.Substring(0, _akcja.TwrCena.IndexOf(".", 0));
+            var cenaZl = _akcja.TwrCena.Substring(0, _akcja.TwrCena.IndexOf(".", 0));
                 var cenaGr = _akcja.TwrCena.Substring(_akcja.TwrCena.IndexOf(".", 0) + 1, 2);
                
 
@@ -1356,6 +1357,7 @@ namespace App2.View
                 string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
 
                 string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
+               
                 if (List_AkcjeView.TypAkcji.Contains("Zmiana"))
                     await SettingsPage._cpclPrinter.setForm(0, 200, 200, 270, 350, drukSzt);
                 else
