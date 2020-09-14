@@ -11,7 +11,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\ad
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\App2.Android.csprojAssemblyReference.cache
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\_VerifyXamarinAndroidSupportVersions.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_BuildLibraryImportsCache.stamp
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\resourcepaths.cache
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res.flag
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\compiled.flata
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\R.txt
@@ -37,10 +36,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\re
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\mipmap-xxhdpi\launcher_foreground.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\mipmap-xxxhdpi\icon.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\mipmap-xxxhdpi\launcher_foreground.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\show_pwd.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\hide_pwd.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\hide_pwd.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\show_pwd.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\add48x2.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\save48x2.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\add48x2.png
@@ -72,7 +67,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\re
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\newszacho.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\newszacho.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\dodaj100.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\kod96.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\skaner.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\skaner100.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\znizka100.png
@@ -89,12 +83,10 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\re
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\skaner100.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\znizka100.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\dodaj100.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\kod96.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\skaner.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\skaner100.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\znizka100.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\ustawienia64.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable\ustawienia64.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\barcode150.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\barcode150.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\metka128.png
@@ -215,10 +207,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\an
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\assets\ZXing.Net.Mobile.Forms.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\assets\zxing.portable.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\assets\ZXingNetMobile.dll
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.jm.armeabi-v7a.s
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.jm.arm64-v8a.s
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.mj.armeabi-v7a.s
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.mj.arm64-v8a.s
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\mono\MonoRuntimeProvider.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\assets\machine.config
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\bin\mono.android.jar
@@ -259,7 +247,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\an
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\bin\packaged_resources
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\com\szachotools\R.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\com.SzachoTools-Signed.aab
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\resourcecache.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\9203119D8600708C.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\A19B1607DC04E8D0.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\1E6D954162CE0517.stamp
@@ -492,10 +479,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\an
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\crc6414fa209700c2b9f3\CachedImageRenderer.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\crc6414fa209700c2b9f3\CachedImageView.java
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\src\crc6414252951f3f66c67\RecyclerViewScrollListener_2.java
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.jm.armeabi-v7a.o
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.mj.armeabi-v7a.o
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.jm.arm64-v8a.o
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemap.mj.arm64-v8a.o
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\environment.armeabi-v7a.o
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\environment.arm64-v8a.o
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\app_shared_libraries\armeabi-v7a\libxamarin-app.so
@@ -517,8 +500,6 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\fl
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\7655C2ED92EC5840.flata
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\flata\66447FC8C5EC2CA0.flata
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\bin\classes.dex
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_BuildAdditionalResourcesCache.stamp
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_CleanIntermediateIfNuGetsChange.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_CompileToDalvik.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_ConvertCustomView.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_ConvertLibraryResourcesCases.stamp
@@ -553,3 +534,15 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\re
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxhdpi\icons8_analyze_48.9.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-xxxhdpi\icons8_analyze_48.9.png
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\res\drawable-hdpi\icons8_analyze_48.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Release\com.SzachoTools.aab
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\App2.Android.csproj.CoreCompileInputs.cache
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.armeabi-v7a.s
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.arm64-v8a.s
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.armeabi-v7a-managed.inc
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.arm64-v8a-managed.inc
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.armeabi-v7a-shared.inc
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.shared.inc
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\AndroidManifest.xml
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.armeabi-v7a.o
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\android\typemaps.arm64-v8a.o
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Release\90\stamp\_CleanIntermediateIfNeeded.stamp

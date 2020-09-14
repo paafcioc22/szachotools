@@ -55,3 +55,4 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.csprojAssemblyReference.cache
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Release\netstandard2.0\App2.csproj.CoreCompileInputs.cache

@@ -714,11 +714,11 @@ namespace App2.View
                     if (wynik.Count > 0)
                     {
                         var wpis = wynik[0];
-                        await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana", dokMM.twrkod, wpis.ilosc_OK), "OK");
 
                         int suma = wynik[0].ilosc_OK + Convert.ToInt16(entry_ilosc.Text);
-                        wpis.ilosc_OK = suma;
 
+                        await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana, razem : {2}", dokMM.twrkod, wpis.ilosc_OK,suma), "OK");
+                        wpis.ilosc_OK = suma;
                         await _connection.UpdateAsync(wpis);
                     }
                     else
@@ -1038,7 +1038,29 @@ namespace App2.View
             }
             else
             {
-                await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                if (dane.Count > 0)
+                {
+                    twrkod = dane[0].twrkod;
+                    twr_url = dane[0].url;
+                    twr_nazwa = dane[0].nazwa;
+                    twr_ean = dane[0].ean;
+                    twr_cena = dane[0].cena;
+
+                    entry_kodean.Text = twrkod;
+                    lbl_ean.Text = twr_ean;
+                    lbl_symbol.Text = twr_symbol;
+                    lbl_nazwa.Text = twr_nazwa;
+                    lbl_cena.Text = twr_cena;
+                    lbl_stan.Text = "Stan : " + stan_szt;
+                    if (!string.IsNullOrEmpty(twr_url))
+                        img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+
+                }
+                else
+
+                    await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
             }
             //return twrkod;
             

@@ -53,9 +53,9 @@
                                 <Label Text="{Binding ilosc}"  
                                            FontSize="16"  
                                            HorizontalOptions="End" 
-                                           VerticalOptions="Center" Margin="0,0,15,0"/>
+                                           VerticalOptions="Center" Margin="0,0,25,0"/>
                             </StackLayout>
-                            <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>
+                            <!--<Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>-->
                         </StackLayout>
                         </StackLayout>
 
