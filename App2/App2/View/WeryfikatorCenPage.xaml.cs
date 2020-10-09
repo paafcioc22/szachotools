@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -21,13 +22,15 @@ namespace App2.View
         string NazwaCennika;
         int NrCennika;
         SqlConnection connection;
-         
+        public TwrKarty  twrkarty  { get; set; }
+
+
         public WeryfikatorCenPage()
         {
             InitializeComponent();
             var app = Application.Current as App;
 
-             
+            BindingContext = this;
 
             SettingsPage settingsPage = new SettingsPage();
             var idceny = settingsPage.cennikClasses;
@@ -151,14 +154,7 @@ namespace App2.View
             }
         }
 
-        string twrkod;
-        string twrgidnumer;
-        string stan_szt;
-        string twr_url;
-        string twr_nazwa;
-        string twr_symbol;
-        string twr_ean;
-        string twr_cena;
+     
 
         public async void pobierztwrkod(string _ean)
         {
@@ -185,21 +181,24 @@ namespace App2.View
                             "where twr_ean='" + _ean + "'" +
                             "group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
-
+                        
                         SqlCommand query = new SqlCommand(command.CommandText, connection);
                         SqlDataReader rs;
                         rs = query.ExecuteReader();
                         if (rs.Read())
                         {
-                            twrkod = Convert.ToString(rs["twr_kod"]);
-                            twrgidnumer = Convert.ToString(rs["twr_gidnumer"]);
-                            stan_szt = Convert.ToString(rs["ilosc"]);
-                            twr_url = Convert.ToString(rs["twr_url"]);
-                            twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
-                            twr_symbol = Convert.ToString(rs["twr_symbol"]);
-                            twr_ean = Convert.ToString(rs["twr_ean"]);
-                            twr_cena = Convert.ToString(rs["cena"]);
-
+                            twrkarty = new TwrKarty
+                            {
+                                 
+                                twr_kod = Convert.ToString(rs["twr_kod"]),
+                                twr_gidnumer = Convert.ToString(rs["twr_gidnumer"]),
+                                stan_szt = Convert.ToString(rs["ilosc"]),
+                                twr_url = Convert.ToString(rs["twr_url"]),
+                                twr_nazwa = Convert.ToString(rs["twr_nazwa"]),
+                                twr_symbol = Convert.ToString(rs["twr_symbol"]),
+                                twr_ean = Convert.ToString(rs["twr_ean"]),
+                                twr_cena = Convert.ToString(rs["cena"]),
+                            };
                             // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
                         }
                         else
@@ -208,12 +207,18 @@ namespace App2.View
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
                             if (dane.Count > 0)
                             {
-                                twrgidnumer = dane[0].TwrGidnumer.ToString();
-                                twrkod = dane[0].twrkod;
-                                twr_url = dane[0].url;
-                                twr_nazwa = dane[0].nazwa;
-                                twr_ean = dane[0].ean;
-                                twr_cena = dane[0].cena;
+                               
+                                twrkarty = new TwrKarty
+                                {
+                                    twr_gidnumer = dane[0].TwrGidnumer.ToString(),
+                                    twr_kod = dane[0].twrkod,
+                                    twr_url = dane[0].url,
+                                    twr_nazwa = dane[0].nazwa,
+                                    twr_ean = dane[0].ean,
+                                    twr_cena = dane[0].cena,
+                                    twr_symbol = dane[0].symbol, 
+                                };
+
                             } 
                              
                             DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak stanów lub nie istnieje!");
@@ -232,24 +237,25 @@ namespace App2.View
             else
             {
                 await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-            }
-            //return twrkod; lbl_twrkod.Text = "Kod : " + twrkod;
+            } 
 
 
-            twr_kod.Text = twrkod;
-            lbl_twrkod.Text = twr_ean;
-            lbl_twrsymbol.Text = twr_symbol;
-            lbl_twrnazwa.Text = twr_nazwa;
-            lbl_stan.Text = stan_szt + " szt";
-            lbl_twrcena.Text = twr_cena + " zł";
-            img_foto.Source = twr_url;
+            //twr_kod.Text = twrkod;
+            //lbl_twrkod.Text = twr_ean;
+            //lbl_twrsymbol.Text = twr_symbol;
+            //lbl_twrnazwa.Text = twr_nazwa;
+            //lbl_stan.Text = stan_szt + " szt";
+            //lbl_twrcena.Text = twr_cena + " zł";
+            //img_foto.Source = twr_url;
 
-            
-         //   img_foto.GestureRecognizers.Add(tapGestureRecognizer);
+             
 
             connection.Close();
 
         }
+
+
+        
 
         private void ScanTwr_Clicked(object sender, EventArgs e)
         {
@@ -266,8 +272,8 @@ namespace App2.View
 
         private async void BtnShowOther_Clicked(object sender, EventArgs e)
         {
-            if (twrgidnumer != null)
-                await Navigation.PushModalAsync(new StanyTwrInnych(twrgidnumer));
+            if (twrkarty.twr_gidnumer != null)
+                await Navigation.PushModalAsync(new StanyTwrInnych(twrkarty.twr_gidnumer));
         }
 
         List<string> ceny;
@@ -285,7 +291,7 @@ namespace App2.View
                 join cdn.TwrCeny on Twr_twrid = TwC_Twrid  
                 join  CDN.DefCeny on TwC_TwCNumer=DfC_lp
                 where DfC_Nieaktywna = 0
-                 and Twr_GIDNumer={twrgidnumer}";
+                 and Twr_GIDNumer={twrkarty.twr_gidnumer}";
 
                 SqlCommand query = new SqlCommand(command.CommandText, connection);
                 SqlDataReader rs;
@@ -311,7 +317,7 @@ namespace App2.View
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Launcher.OpenAsync(twr_url.Replace("Miniatury/", "")) ;
+            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", "")) ;
         }
 
         //private List<string> nowy;
@@ -323,7 +329,7 @@ namespace App2.View
     AkN_DataStart,AkN_DataKoniec
  from cdn.pc_akcjeNag
     INNER JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
- where Ake_FiltrSQL like ''%{twrkod}%''  and AkN_DataKoniec>= GETDATE() - 30
+ where Ake_FiltrSQL like ''%{twrkarty.twr_kod}%''  and AkN_DataKoniec>= GETDATE() - 30
  order by AkN_DataStart desc   '";
             var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 
