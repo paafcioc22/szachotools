@@ -26,6 +26,7 @@ namespace App2.Model
         public string nazwa { set; get; }
         public string ean { set; get; }
         public string cena { set; get; }
+        public string cena1 { set; get; }
         public string nrdokumentuMM { set; get; }
         public string DatadokumentuMM { set; get; }
         public string OpisdokumentuMM { set; get; }

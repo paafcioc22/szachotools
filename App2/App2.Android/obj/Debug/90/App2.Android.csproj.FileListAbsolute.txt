@@ -608,3 +608,8 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\andr
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\compressed_assemblies.armeabi-v7a.o
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\compressed_assemblies.x86.o
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\android\compressed_assemblies.arm64-v8a.o
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxxhdpi\ic_print.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-hdpi\ic_print.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-mdpi\ic_print.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xhdpi\ic_print.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxhdpi\ic_print.png

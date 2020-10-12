@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App2.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -51,8 +52,8 @@ namespace App2.View
 
             if (SettingsPage.SelectedDeviceType == 1)
                 SkanowanieEan(); //aparat
-            else 
-            Appearing += (object sender, System.EventArgs e) => manualEAN.Focus();
+             
+            //Appearing += (object sender, System.EventArgs e) => manualEAN.Focus();
         }
 
 
@@ -162,7 +163,7 @@ namespace App2.View
             //SettingsPage settingsPage = new SettingsPage();
             //var idceny = settingsPage.cennikClasses;
             //var nrcenika = idceny[app.Cennik];
-
+            twrkarty = null;
             if (SettingsPage.SprConn())
             {
                 try
@@ -173,13 +174,13 @@ namespace App2.View
                         SqlCommand command = new SqlCommand();
 
                         connection.Open();
-                        command.CommandText = "Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                            ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
-                            "from cdn.towary " +
-                            "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwCNumer =  " + NrCennika +
-                            " join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
-                            "where twr_ean='" + _ean + "'" +
-                            "group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
+                        command.CommandText = $@"Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena  
+                            ,cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean 
+                            from cdn.towary 
+                            join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwCNumer =   {NrCennika }
+                             join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId  
+                            where twr_ean='{_ean}'
+                            group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
                         
                         SqlCommand query = new SqlCommand(command.CommandText, connection);
@@ -197,7 +198,7 @@ namespace App2.View
                                 twr_nazwa = Convert.ToString(rs["twr_nazwa"]),
                                 twr_symbol = Convert.ToString(rs["twr_symbol"]),
                                 twr_ean = Convert.ToString(rs["twr_ean"]),
-                                twr_cena = Convert.ToString(rs["cena"]),
+                                twr_cena = Convert.ToString(rs["cena"]).Replace(",","."),
                             };
                             // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
                         }
@@ -216,7 +217,8 @@ namespace App2.View
                                     twr_nazwa = dane[0].nazwa,
                                     twr_ean = dane[0].ean,
                                     twr_cena = dane[0].cena,
-                                    twr_symbol = dane[0].symbol, 
+                                    twr_symbol = dane[0].symbol,    
+                                    twr_cena1=dane[0].cena1
                                 };
 
                             } 
@@ -237,18 +239,31 @@ namespace App2.View
             else
             {
                 await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-            } 
+            }
+
+            if (twrkarty != null)
+            {
+                twr_kod.Text = twrkarty.twr_kod;
+                lbl_twrkod.Text = twrkarty.twr_ean;
+                lbl_twrsymbol.Text = twrkarty.twr_symbol;
+                lbl_twrnazwa.Text = twrkarty.twr_nazwa;
+                lbl_stan.Text = twrkarty.stan_szt + " szt";
+                lbl_twrcena.Text = twrkarty.twr_cena + " zł";
+                img_foto.Source = twrkarty.twr_url;
+            }
+            else
+            {
+                twr_kod.Text = "";
+                lbl_twrkod.Text = "";
+                lbl_twrsymbol.Text = "";
+                lbl_twrnazwa.Text = "";
+                lbl_stan.Text = "";
+                lbl_twrcena.Text = "";
+                img_foto.Source = "";
+            }
+           
 
 
-            //twr_kod.Text = twrkod;
-            //lbl_twrkod.Text = twr_ean;
-            //lbl_twrsymbol.Text = twr_symbol;
-            //lbl_twrnazwa.Text = twr_nazwa;
-            //lbl_stan.Text = stan_szt + " szt";
-            //lbl_twrcena.Text = twr_cena + " zł";
-            //img_foto.Source = twr_url;
-
-             
 
             connection.Close();
 
@@ -342,6 +357,33 @@ namespace App2.View
 
             await DisplayActionSheet("Aktualne Akcje:", "OK", null, nowy.ToArray());
             //and AkN_DataKoniec>= GETDATE() - 10
+        }
+
+        private async void btn_print_Clicked(object sender, EventArgs e)
+        {
+            PrintSerwis printSerwis = new PrintSerwis();
+            if(twrkarty!=null)
+            if(await printSerwis.ConnToPrinter())
+            {
+                List<string> kolory = new List<string> { 
+                    "biały", "pomarańczowy" 
+                };
+                //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
+                var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
+                    if(kolor!= "Anuluj")
+                    {
+                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "","OK","Anuluj",null,1,Keyboard.Numeric);
+                        if(result!= null)
+                        await printSerwis.PrintCommand(twrkarty, kolor, result);
+                    }
+               
+            }
+            else
+            {
+                await DisplayAlert(null, "Błąd drukarki", "OK");
+            }
+
+
         }
     }
 }

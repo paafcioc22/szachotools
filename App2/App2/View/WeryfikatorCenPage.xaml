@@ -3,25 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.WeryfikatorCenPage">
 
-    <StackLayout VerticalOptions="FillAndExpand" >
-        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand">
+    <!--<StackLayout VerticalOptions="FillAndExpand" >
+        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand" Padding="0">
             <Label Text="Weryfikator Cen" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
-        </StackLayout>
-        <ScrollView>
+        </StackLayout>-->
+        <!--<ScrollView>-->
 
 
-            <StackLayout VerticalOptions="CenterAndExpand">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">
+            <AbsoluteLayout VerticalOptions="CenterAndExpand">
+                <!--<StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">-->
 
-                    <Image x:Name="img_foto" Aspect="AspectFill" >
+                    <Image x:Name="img_foto" Aspect="AspectFill" 
+                               AbsoluteLayout.LayoutBounds="0.0,0,1,.45"
+                                   AbsoluteLayout.LayoutFlags="All" >
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer  Tapped="TapGestureRecognizer_Tapped" />
                         </Image.GestureRecognizers>
                     </Image>
 
-                    <Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>
+                    <!--<Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>-->
 
-                    <TableView Intent="Data" RowHeight="30"  >
+                    <TableView Intent="Data" RowHeight="30"  
+                               AbsoluteLayout.LayoutBounds="0.0,1,1,.55"
+                               AbsoluteLayout.LayoutFlags="All">
                         <TableRoot >
                             <TableSection Title="" >
                                 <ViewCell >
@@ -74,10 +78,18 @@
                             </TableSection>
                         </TableRoot>
                     </TableView>
-                </StackLayout>
+                <!--</StackLayout>-->
 
-            </StackLayout>
-        </ScrollView>
+            <Button BorderColor="DarkGray"  BorderWidth="3" ImageSource="ic_print.png" BackgroundColor="DarkCyan"
+                    Margin="6" x:Name="btn_print" 
+                    HorizontalOptions="EndAndExpand"  
+                    CornerRadius="50"  
+                    Clicked="btn_print_Clicked"
+                    AbsoluteLayout.LayoutBounds="1,.9,70,70"  
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    />
+        
+        <!--</ScrollView>-->
         <Entry Placeholder="Wpisz/skanuj kod" 
                x:Name="manualEAN" 
                HorizontalOptions="CenterAndExpand" 
@@ -85,13 +97,19 @@
                VerticalOptions="EndAndExpand" 
                Keyboard="Telephone"
                WidthRequest="200"
-               HorizontalTextAlignment="Center"/>
+               HorizontalTextAlignment="Center"
+                AbsoluteLayout.LayoutBounds="1,.93,1,.1"
+                               AbsoluteLayout.LayoutFlags="All"
+               />
         <!--<Button Text="Pokaż Stany Innych" Clicked="BtnShowOther_Clicked"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"/>-->
         <Button Text="Skanuj kod (aparat)" 
                 Clicked="ScanTwr_Clicked" 
                 HorizontalOptions="FillAndExpand" 
-                VerticalOptions="EndAndExpand"/>
-
-    </StackLayout>
+                VerticalOptions="EndAndExpand"
+                       AbsoluteLayout.LayoutBounds=".5,1,.9,.09"
+                               AbsoluteLayout.LayoutFlags="All"
+                />
+    </AbsoluteLayout>
+    <!--</StackLayout>-->
 
 </ContentPage>

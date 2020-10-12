@@ -515,15 +515,11 @@ namespace App2.View
 
             }
              
-            List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
-            //ObservableCollection<connectableDeviceInfo> deviceList = new ObservableCollection<connectableDeviceInfo>();
-
+            List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>(); 
 
             var blueToothService = DependencyService.Get<Model.IBlueToothService>();
-
-            //if(blueToothService.isBluetoothEnabled())
-            var deviceList = await _cpclPrinter.connectableDevice();
-            //List<string> deviceList = new List<string>();
+             
+            var deviceList = await _cpclPrinter.connectableDevice(); 
 
             if(deviceList !=null)
             {
@@ -532,7 +528,7 @@ namespace App2.View
                 connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
 
             }
-            //if (deviceList.Count == 0)
+          
             if (listdevice == null|| listdevice.Count==0)
             {
                 editAddress.IsEnabled = true;

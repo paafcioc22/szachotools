@@ -128,7 +128,9 @@ namespace App2.Droid
                         url = mag.url,
                         nazwa = mag.nazwa,
                         cena = mag.cena,
-                        symbol = mag.symbol
+                        symbol = mag.symbol,
+                        cena1 = mag.cena1
+                        
                     });
                 }
 

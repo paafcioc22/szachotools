@@ -10,5 +10,6 @@
         public string twr_symbol { get; set; }
         public string twr_ean { get; set; }
         public string twr_cena { get; set; }
+        public string twr_cena1 { get; set; }
     }
 }

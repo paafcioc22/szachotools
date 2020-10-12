@@ -203,9 +203,10 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-                <StackLayout Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" 
+            <Label  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"  Text="Wybierz cenę pierwszą jeśli chcesz drukować na białej metce cenę, która była pierwszą ceną produktu. Domyślnie ustawienie to cena standard."/>
+                <StackLayout Orientation="Horizontal" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
                              HorizontalOptions="FillAndExpand" >
-                    <Label Text="Drukuj cenę standard" HorizontalOptions="Start"/>
+                <Label Text="Drukuj cenę standard" HorizontalOptions="Start"/>
                     <Switch  HorizontalOptions="Center" VerticalOptions="Start" x:Name="rodzajCeny" 
                              Toggled="rodzajCeny_Toggled" IsToggled="{Binding CzyCena1}"/>
                     <Label Text="cenę pierwszą" HorizontalOptions="CenterAndExpand"/>
