@@ -46,5 +46,10 @@ namespace App2.Model
             return soapService.PobierzWersjeApki();
         }
 
+
+        public Task<ObservableCollection<T>> PobierzDaneZWeb<T>(string query)
+        {
+            return soapService.PobierzDaneZWeb<T>(query);
+        }
     }
 }

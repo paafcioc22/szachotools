@@ -19,7 +19,7 @@ namespace App2.View
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
-
+        SettingsPage settingsPage;
         string NazwaCennika;
         int NrCennika;
         SqlConnection connection;
@@ -33,7 +33,7 @@ namespace App2.View
 
             BindingContext = this;
 
-            SettingsPage settingsPage = new SettingsPage();
+            settingsPage = new SettingsPage();
             var idceny = settingsPage.cennikClasses;
             if (idceny != null)
             {
@@ -138,7 +138,8 @@ namespace App2.View
 
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
                         {
-                            if (scanPage.IsScanning) scanPage.AutoFocus(); return true;
+                            if (scanPage.IsScanning) scanPage.AutoFocus();
+                            return true;
                         });
                         Navigation.PopModalAsync();
                         pobierztwrkod(result.Text);
@@ -204,7 +205,12 @@ namespace App2.View
                         }
                         else
                         {
-                            string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                            var idceny = settingsPage.cennikClasses;
+                            var nrcenika = idceny[app.Cennik];
+                            if (nrcenika.RodzajCeny == "OUTLET")
+                                NrCennika = 4;
+                            else NrCennika = 2;
+                            string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
                             if (dane.Count > 0)
                             {
@@ -361,27 +367,37 @@ namespace App2.View
 
         private async void btn_print_Clicked(object sender, EventArgs e)
         {
+           
+            
+            
             PrintSerwis printSerwis = new PrintSerwis();
-            if(twrkarty!=null)
-            if(await printSerwis.ConnToPrinter())
+            if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
             {
-                List<string> kolory = new List<string> { 
-                    "biały", "pomarańczowy" 
+                if (await printSerwis.ConnToPrinter())
+                {
+                    List<string> kolory = new List<string> {
+                    "biały", "pomarańczowy"
                 };
-                //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
-                var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
-                    if(kolor!= "Anuluj")
+                    //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
+                    var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
+                    if (kolor != "Anuluj")
                     {
-                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "","OK","Anuluj",null,1,Keyboard.Numeric);
-                        if(result!= null)
-                        await printSerwis.PrintCommand(twrkarty, kolor, result);
+                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", null, 1, Keyboard.Numeric);
+                        if (result != null)
+                            await printSerwis.PrintCommand(twrkarty, kolor, result);
                     }
-               
+
+                }
+                else
+                {
+                    await DisplayAlert(null, "Błąd drukarki", "OK");
+                }
             }
             else
             {
-                await DisplayAlert(null, "Błąd drukarki", "OK");
+                await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
             }
+           
 
 
         }

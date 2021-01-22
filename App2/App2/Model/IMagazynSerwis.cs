@@ -14,5 +14,7 @@ namespace App2.Model
         Task<List<RaportListaMM>> PobierzTwr (string ean);
         Task<ObservableCollection<AkcjeNagElem>> GetGidAkcje (string query);
         Task <string>PobierzWersjeApki();
+        Task<ObservableCollection<T>> PobierzDaneZWeb<T> (string query);
+
     }
 }

@@ -37,7 +37,7 @@
 
 	/* 1: App2.dll */
 	/* uncompressed_file_size */
-	.long	349184
+	.long	357888
 	/* loaded */
 	.byte	0
 	/* data */

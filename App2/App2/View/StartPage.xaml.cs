@@ -369,6 +369,11 @@ namespace App2.View
             return true; //true - don't process BACK by system
         }
 
+        private async void BtnCreatePaczka_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
+        }
+
 
 
 

@@ -1,0 +1,5 @@
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\100\MonoAndroid,Version=v10.0.AssemblyAttributes.cs
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\100\build.props
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\100\adb.props
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\100\App2.Android.csprojAssemblyReference.cache
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\100\_VerifyXamarinAndroidSupportVersions.stamp

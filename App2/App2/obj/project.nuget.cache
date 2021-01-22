@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6kCGWPoEbxna0euy9ETGvjChET6QYwmE3ZXAow/NXG2DUoiQTSWKJPQtUtGj7AyJQiMjNF4vl7jTgtWOSItH/g==",
+  "dgSpecHash": "qiUSFe8n8//MTPPzcWIY2vlJdtE6cK+FT5FmXxN9cy5BY2SC8SskZpIXbZhdMOWJec/56zMDShCplX4sZkRGsw==",
   "success": true,
   "projectFilePath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
@@ -31,10 +31,10 @@
     "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.primitives\\4.5.3\\system.servicemodel.primitives.4.5.3.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.security\\4.5.3\\system.servicemodel.security.4.5.3.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.text.encoding.codepages\\4.6.0\\system.text.encoding.codepages.4.6.0.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.essentials\\1.3.1\\xamarin.essentials.1.3.1.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.essentials\\1.6.0\\xamarin.essentials.1.6.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.forms\\4.3.0.947036\\xamarin.forms.4.3.0.947036.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.forms\\4.3.0.991250\\xamarin.forms.4.3.0.991250.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile\\2.4.1\\zxing.net.mobile.2.4.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
   ],

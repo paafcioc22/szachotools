@@ -261,6 +261,30 @@ namespace App2.Droid
             }
         }
 
+        public async Task<ObservableCollection<T>> PobierzDaneZWeb<T>(string query)
+        {
+            ObservableCollection<T> res = new ObservableCollection<T>();
+            return await Task.Run(() =>
+            {
+                  
+                var respone = client.ExecuteSQLCommand(query);
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(respone);
+
+                TextReader reader = new StringReader(respone);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
+                ObservableCollection<T> gidNazwa = (ObservableCollection<T>) serializer.Deserialize(reader);
+
+                res = gidNazwa;
+
+                return res;
+            });
+        }
+
+
+
         public class Wersja
         {
             public string VersionApp { get; set; }

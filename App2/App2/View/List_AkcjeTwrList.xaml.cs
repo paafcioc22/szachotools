@@ -20,7 +20,9 @@ namespace App2.View
         private SqlConnection connection;
         private SQLiteAsyncConnection _connection; 
         private List<AkcjeNagElem> _nagElem;
-
+        App app;
+        string NazwaCennika;
+        int NrCennika;
 
         private BindableProperty IsSearchingProperty =
            BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
@@ -37,7 +39,7 @@ namespace App2.View
             InitializeComponent();
             BindingContext = this;
 
-            var app = Application.Current as App;
+            app = Application.Current as App;
             connection = new SqlConnection
             {
                 ConnectionString = "SERVER=" + app.Serwer +
@@ -230,6 +232,24 @@ namespace App2.View
         private ObservableCollection<Model.AkcjeNagElem> _fromWeb;
         private async Task<ObservableCollection<Model.AkcjeNagElem>> GetTwrListFromWeb(int _gidNumer)
         {
+            SettingsPage settingsPage = new SettingsPage();
+            var idceny = settingsPage.cennikClasses;
+            if (idceny != null)
+            {
+                var nrcenika = idceny[app.Cennik];
+                //NazwaCennika = "cena [" + nrcenika.RodzajCeny + "]";
+                //lbl_cennik.Text = NazwaCennika;
+
+                if (nrcenika.RodzajCeny == "OUTLET")
+                    NrCennika = 4;
+                else NrCennika = 2;
+
+               
+            }
+
+            
+       
+            
 
             return await Task.Run(async () =>
             {
@@ -260,7 +280,7 @@ namespace App2.View
                     from cdn.TwrKarty
                     INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
                     INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
-                    join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp = 2  
+                    join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   {NrCennika } -- 2  
                     left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
                     where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
 
