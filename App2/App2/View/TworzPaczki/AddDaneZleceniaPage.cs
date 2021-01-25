@@ -82,14 +82,14 @@ namespace App2.View
 
         public static ObservableCollection<Model.DokMM> dokMMs = new ObservableCollection<Model.DokMM>();
 
-        private  void Button_Clicked(object sender, EventArgs e) //zapisz mm
+        private async void Button_Clicked(object sender, EventArgs e) //zapisz mm
         {
             var app = Application.Current as App;
             try
             {
                 if (_magDcl.Text == null || _opis.Text == null)
                 {
-                    DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
+                    await DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
                 }
                 else
                 {
@@ -101,10 +101,10 @@ namespace App2.View
                     //reposytorySQL.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
                     var id = Task.Run(()=>reposytorySQL.GetLastGidNUmer()).Result;
 
-                    reposytorySQL.SaveZlecenieToBase(fedex,id,0);
-                    DisplayAlert(null, "Dodano zlenie dla : " + _magDcl.Text, "OK");
+                    await reposytorySQL.SaveZlecenieToBase(fedex,id,0);
+                    await DisplayAlert(null, "Dodano zlenie dla : " + _magDcl.Text, "OK");
 
-                    Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
                     //dokMM.getMMki();
                     
                    
@@ -112,7 +112,7 @@ namespace App2.View
             }
             catch (Exception s)
             {
-                 DisplayAlert(null, s.Message, "OK");
+                 await DisplayAlert(null, s.Message, "OK");
             }
 
         }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace App2.Model
 {
+	[XmlType("Table")]
     public class FedexPaczka
     {
 		public int Fmm_GidNumer { get; set; }
@@ -19,3 +21,4 @@ namespace App2.Model
 
 	}
 }
+//Fmm_GidNumer Fmm_EleNumer	Fmm_NrListu	Fmm_NrPaczki	Fmm_Elmenty	Fmm_DataZlecenia	Fmm_MagDcl

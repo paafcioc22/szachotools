@@ -158,6 +158,7 @@ namespace App2.View
                         if ( GetBaseName().Result)
                         {
                             DisplayAlert("Sukces..", "Połączono z bazą "+app.BazaProd, "OK");
+                            Application.Current.SavePropertiesAsync();
                             Navigation.PopAsync();
                         }
 
@@ -516,18 +517,18 @@ namespace App2.View
             }
              
             List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>(); 
-
-            var blueToothService = DependencyService.Get<Model.IBlueToothService>();
+            //todo : odremuj
+            //var blueToothService = DependencyService.Get<Model.IBlueToothService>();
              
-            var deviceList = await _cpclPrinter.connectableDevice(); 
+            //var deviceList = await _cpclPrinter.connectableDevice(); 
 
-            if(deviceList !=null)
-            {
+            //if(deviceList !=null)
+            //{
 
-                listdevice = deviceList.Where(c => c.Name.StartsWith("SW")).ToList();
-                connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
+            //    listdevice = deviceList.Where(c => c.Name.StartsWith("SW")).ToList();
+            //    connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
 
-            }
+            //}
           
             if (listdevice == null|| listdevice.Count==0)
             {

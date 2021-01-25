@@ -269,21 +269,41 @@ namespace App2.Droid
                   
                 var respone = client.ExecuteSQLCommand(query);
 
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(respone);
 
-                TextReader reader = new StringReader(respone);
+                return  DeserializeFromXml<T>(respone);
 
-                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
-                ObservableCollection<T> gidNazwa = (ObservableCollection<T>) serializer.Deserialize(reader);
 
-                res = gidNazwa;
 
-                return res;
+
+
+                //XmlDocument xmlDoc = new XmlDocument();
+                //xmlDoc.LoadXml(respone);
+
+                //TextReader reader = new StringReader(respone);
+
+                //XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
+                //ObservableCollection<T> gidNazwa = (ObservableCollection<T>) serializer.Deserialize(reader);
+
+                //res = gidNazwa;
+
+
+                //return res;
             });
         }
 
 
+        public static ObservableCollection<T> DeserializeFromXml<T>(string xml)
+        {
+            ObservableCollection<T> result;
+            //Type type = result.GetType();
+
+            XmlSerializer ser = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
+            using (TextReader tr = new StringReader(xml))
+            {
+                result = (ObservableCollection<T>)ser.Deserialize(tr);
+            }
+            return result;
+        }
 
         public class Wersja
         {

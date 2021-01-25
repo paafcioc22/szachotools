@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.TworzPaczki.CreatePaczkaListaPaczek" Title="Lista kartonów">
+
+
+
+    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" Padding="10">
+        
+    
+        <ListView x:Name="MyListView"
+            ItemsSource="{Binding Items}" BindingContext="{Binding Items}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement"  HasUnevenRows="True">
+            
+    
+                <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+
+                                <Frame  HasShadow="true" 
+                                            Margin="5" 
+                                            BorderColor="DarkCyan"   
+                                            CornerRadius="10" 
+                                            OutlineColor="Cyan" Padding="3" 
+                                            >
+                                    <!--<Frame.Content> Orientation="Vertical"-->
+
+                                    <AbsoluteLayout >
+
+                                        <!--HorizontalOptions="CenterAndExpand"-->
+                                        <Label Text="{Binding Fmm_EleNumer}" TextColor="Black"  BackgroundColor="Yellow"
+                                                    AbsoluteLayout.LayoutBounds=".01,1,.1,1"
+                                                    AbsoluteLayout.LayoutFlags="All"  
+                                                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                                />
+                                        <Label Text="{Binding Fmm_NrListu}" TextColor="Black"  
+                                                    AbsoluteLayout.LayoutBounds=".5,0,1,.3"
+                                                    AbsoluteLayout.LayoutFlags="All"  
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                        <Label Text="{Binding Fmm_NrPaczki}" TextColor="Black" 
+                                                    FontSize="16" 
+                                                    FontAttributes="Bold"   
+                                                    AbsoluteLayout.LayoutBounds=".5,0.5,1,.3"
+                                                    AbsoluteLayout.LayoutFlags="All"  
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                        <Label Text="{Binding Fmm_Elmenty }" FontSize="12" 
+                                                     TextColor="Black" 
+                                                     AbsoluteLayout.LayoutBounds=".5,1,1,.3"
+                                                     AbsoluteLayout.LayoutFlags="All"  
+                                                     HorizontalTextAlignment="Center"
+                                                 />
+                                    </AbsoluteLayout>
+
+                                    <!--</Frame.Content>-->
+                                </Frame>
+
+
+
+
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+    
+              </ListView>
+        <Button Text="Dodaj paczkę" Clicked="Button_Clicked" />
+    </StackLayout>
+</ContentPage>

@@ -44,7 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="View\TworzPaczki\CreatePaczkaDodajZlecenie.xaml">
+    <EmbeddedResource Update="View\TworzPaczki\CreatePaczkaListaMM.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\TworzPaczki\CreatePaczkaListaPaczek.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\TworzPaczki\CreatePaczkaListaZlecen.xaml">

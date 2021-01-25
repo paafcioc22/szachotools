@@ -1,4 +1,5 @@
 ﻿using App2.Model;
+using App2.View.TworzPaczki;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,10 +43,13 @@ namespace App2.View
 
             var tmp = zlecenia;
 
+            Zlecenia.Clear();
+
+
             foreach (var item in tmp)
             {
                 data = Convert.ToDateTime(item.datautwrz);
-                item.datautwrz = data.ToString("yyyy-MM-dd HH:mm:ss");
+                item.datautwrz = data.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 Zlecenia.Add(item);
                 
             }
@@ -62,7 +66,9 @@ namespace App2.View
 
             var pozycja = e.Item as ListaZlecenView;
 
-            await DisplayAlert("Item Tapped", $"Kliknalem {pozycja.Fmm_gidnumer} blba bla", "OK");
+            //await DisplayAlert("Item Tapped", $"Kliknalem {pozycja.Fmm_gidnumer} blba bla", "OK");
+            await Navigation.PushAsync(new CreatePaczkaListaPaczek(pozycja.Fmm_gidnumer));
+
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;

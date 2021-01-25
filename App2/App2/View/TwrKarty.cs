@@ -1,6 +1,6 @@
 ﻿namespace App2.View
 {
-    public class TwrKarty
+    public class TwrKarty6
     {
         public string twr_kod { get; set; }
         public string twr_gidnumer { get; set; }

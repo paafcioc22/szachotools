@@ -88,3 +88,7 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.pdb
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\TworzPaczki\CreatePaczkaDodajZlecenie.xaml.g.cs
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2\obj\Debug\netstandard2.0\View\TworzPaczki\CreatePaczkaListaZlecen.xaml.g.cs
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\View\Drukowanie.xaml.g.cs
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\View\TworzPaczki\CreatePaczkaListaZlecen.xaml.g.cs
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\View\TworzPaczki\CreatePaczkaListaPaczek.xaml.g.cs
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\View\TworzPaczki\CreatePaczkaListaMM.xaml.g.cs
