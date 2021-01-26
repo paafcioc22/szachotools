@@ -62,7 +62,7 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <Button Text="Utworz nowe zlecenie" Clicked="BtnCreateNewZlecenie_Clicked"  />
+        <Button Text="Utworz nowe zlecenie" Clicked="BtnCreateNewZlecenie_Clicked" HeightRequest="70"  />
     </StackLayout>
     
     

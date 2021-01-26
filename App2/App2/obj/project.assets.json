@@ -1965,11 +1965,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
       "projectName": "Inwentary",
-      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
       "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -1985,6 +1985,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\pawel\\Documents\\NugetPaczki": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2068,7 +2069,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },

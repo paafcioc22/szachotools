@@ -34,10 +34,10 @@ namespace App2.View
             DateTime data;
 
             var querystring = $@"  cdn.PC_WykonajSelect '
-                    select  Fmm_gidnumer, count(distinct fmm_elenumer)liczbapaczek, Fmm_nrlistu, max(fmm_datazlecenia) datautwrz, max(Fmm_NrDokWydania)Fmm_NrDokWydania
+                    select  Fmm_gidnumer, count(distinct fmm_elenumer)liczbapaczek, Fmm_nrlistu, max(fmm_datazlecenia) datautwrz, max(Fmm_NrDokWydania)Fmm_NrDokWydania,Fmm_MagDcl
                     from cdn.pc_fedexmm 
                     where fmm_magzrd={app.MagGidNumer}
-                    group by fmm_gidnumer,fmm_nrlistu '";//and trn_Stan = 1
+                    group by fmm_gidnumer,fmm_nrlistu,Fmm_MagDcl order by Fmm_GidNumer desc, Fmm_NrListu '";//and trn_Stan = 1
 
             var zlecenia= await App.TodoManager.PobierzDaneZWeb<ListaZlecenView>(querystring);
 
@@ -67,7 +67,7 @@ namespace App2.View
             var pozycja = e.Item as ListaZlecenView;
 
             //await DisplayAlert("Item Tapped", $"Kliknalem {pozycja.Fmm_gidnumer} blba bla", "OK");
-            await Navigation.PushAsync(new CreatePaczkaListaPaczek(pozycja.Fmm_gidnumer));
+            await Navigation.PushAsync(new CreatePaczkaListaPaczek(pozycja));
 
 
             //Deselect Item

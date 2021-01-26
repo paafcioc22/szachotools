@@ -14,6 +14,7 @@ namespace App2.Model
         public string datautwrz { get; set; }
         public string Fmm_NrDokWydania { get; set; }
         public bool IsSelected { get; set; }
+        public string Fmm_MagDcl { get; set; }
 
 
     }

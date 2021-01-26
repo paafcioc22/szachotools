@@ -17,8 +17,10 @@
                 <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-
-                                <Frame  HasShadow="true" 
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Usuń karton" Clicked="MenuItem_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>
+                            </ViewCell.ContextActions  >
+                        <Frame  HasShadow="true" 
                                             Margin="5" 
                                             BorderColor="DarkCyan"   
                                             CornerRadius="10" 
@@ -65,6 +67,6 @@
                     </ListView.ItemTemplate>
     
               </ListView>
-        <Button Text="Dodaj paczkę" Clicked="Button_Clicked" />
+        <Button Text="Dodaj paczkę" Clicked="Button_Clicked" HeightRequest="70" x:Name="btn_dodajpaczke"/>
     </StackLayout>
 </ContentPage>

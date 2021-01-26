@@ -158,6 +158,7 @@ namespace App2.View
                         if ( GetBaseName().Result)
                         {
                             DisplayAlert("Sukces..", "Połączono z bazą "+app.BazaProd, "OK");
+                            GetGidnumer();
                             Application.Current.SavePropertiesAsync();
                             Navigation.PopAsync();
                         }

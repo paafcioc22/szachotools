@@ -15,7 +15,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Usuń MMke" Clicked="MenuItem_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>
+                        </ViewCell.ContextActions  >
                         <Frame  HasShadow="true" 
                                             Margin="5" 
                                             BorderColor="DarkCyan"   
@@ -63,6 +65,6 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <Button Text="Dodaj MM"  Clicked="BtnAddMM_Clicked" />
+        <Button Text="Dodaj MM" x:Name="btn_dodajMM" Clicked="BtnAddMM_Clicked" HeightRequest="70"/>
     </StackLayout>
 </ContentPage>

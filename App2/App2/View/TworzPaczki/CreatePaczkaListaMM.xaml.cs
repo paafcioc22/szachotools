@@ -22,16 +22,19 @@ namespace App2.View.TworzPaczki
         private MobileBarcodeScanningOptions opts;
         private ZXingScannerPage scanPage;
         private ZXingScannerView zxing;
-
-        public CreatePaczkaListaMM(int fmm_GidNumer, int fmm_EleNumer)
+        FedexPaczka fedexPaczka;
+        CreatePaczkaReposytorySQL reposytorySQL;
+        public CreatePaczkaListaMM(FedexPaczka fedex)
         {
             InitializeComponent();
-            this.Title = $"Lista MM w kartonie nr. {fmm_EleNumer}";
+            this.Title = $"Lista MM w kartonie nr. {fedex.Fmm_EleNumer}";
+            fedexPaczka = new FedexPaczka();
+            this.fmm_gidnumer = fedex.Fmm_GidNumer;
+            this.fmm_eleNumer = fedex.Fmm_EleNumer;
+            fedexPaczka = fedex;
 
-            this.fmm_gidnumer = fmm_GidNumer;
-            this.fmm_eleNumer = fmm_EleNumer;
-             
-            
+            if (!string.IsNullOrEmpty(fedex.Fmm_NrListu))
+                btn_dodajMM.IsEnabled = false;
         }
 
 
@@ -53,13 +56,27 @@ namespace App2.View.TworzPaczki
 
         private async void DodajMMDoKartonu(string text)
         {
-            CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
-            FedexPaczka fedexPaczka = new FedexPaczka();
+            reposytorySQL = new CreatePaczkaReposytorySQL();
+            
             fedexPaczka.Fmm_NazwaPaczki = text;
 
-
-            await reposytorySQL.SaveMMToBase(fedexPaczka, this.fmm_gidnumer, this.fmm_eleNumer);
+            if (reposytorySQL.IsMMOKToSave(text, fedexPaczka.Fmm_MagDcl))
+            {
+                if (await reposytorySQL.IsNotReadyAdded(text))
+                {
+                    await reposytorySQL.SaveMMToBase(fedexPaczka);
+                }
+                else
+                {
+                    await DisplayAlert("Uwaga", "Skanowana MM została już wcześniej dodana", "OK");
+                }
+            } 
+            else
+                await DisplayAlert("Uwaga", "Skanowana MM nie jest zatwierdzona lub nie pasuje do magazynu docelowego", "OK");
         }
+
+
+        
 
 
         protected override void OnAppearing()
@@ -168,6 +185,16 @@ namespace App2.View.TworzPaczki
             await Navigation.PushModalAsync(scanPage);
         }
 
-        
+        private async void MenuItem_Clicked(object sender, EventArgs e)
+        {
+            var action = await DisplayAlert(null, "Czy chcesz usunąć MM z listy?", "Tak", "Nie");
+            if (action)
+            {
+                var usunKarton = (sender as MenuItem).CommandParameter as Model.FedexPaczka;
+
+                await reposytorySQL.RemovePaczka(usunKarton,"MM");
+                //GetListaMM(fmm_gidnumer, fmm_eleNumer);
+            }
+        }
     }
 }

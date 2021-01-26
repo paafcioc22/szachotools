@@ -14,14 +14,38 @@ namespace App2.View.TworzPaczki
     public partial class CreatePaczkaListaPaczek : ContentPage
     {
         public ObservableCollection<FedexPaczka> Items { get; set; }
+        public ListaZlecenView Pozycja { get; }
+
         private int fmm_gidnumer;
-        public CreatePaczkaListaPaczek(int fmm_gidnumer)
+        CreatePaczkaReposytorySQL reposytorySQL;
+
+        //private string fmm_MagDcl;
+        //public CreatePaczkaListaPaczek(int fmm_gidnumer, string fmm_MagDcl)
+        //{
+        //    InitializeComponent();
+        //    BindingContext = this;
+        //    this.fmm_gidnumer = fmm_gidnumer;
+        //    this.fmm_MagDcl = fmm_MagDcl;
+
+
+        //    btn_dodajpaczke.IsEnabled = true;
+
+
+        //}
+
+        public CreatePaczkaListaPaczek(ListaZlecenView pozycja)
         {
             InitializeComponent();
             BindingContext = this;
-            this.fmm_gidnumer = fmm_gidnumer;
+            reposytorySQL = new CreatePaczkaReposytorySQL();
 
-            
+            this.fmm_gidnumer = pozycja.Fmm_gidnumer;
+            //this.fmm_MagDcl = pozycja.Fmm_MagDcl;
+            Pozycja = pozycja;
+
+            if(!string.IsNullOrEmpty(pozycja.Fmm_nrlistu))
+            btn_dodajpaczke.IsEnabled = false;
+
         }
 
         private async void GetListaPaczek(int fmm_gidnumer)
@@ -45,7 +69,7 @@ namespace App2.View.TworzPaczki
             var pozycja = e.Item as FedexPaczka;
 
            // await DisplayAlert("Item Tapped", $"nr zl {pozycja.Fmm_GidNumer}, nr karon{pozycja.Fmm_EleNumer}", "OK");
-            await Navigation.PushAsync(new CreatePaczkaListaMM(pozycja.Fmm_GidNumer, pozycja.Fmm_EleNumer));
+            await Navigation.PushAsync(new CreatePaczkaListaMM(pozycja));
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
@@ -64,13 +88,25 @@ namespace App2.View.TworzPaczki
         {
             i++;
 
-            CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
+            //CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
 
             await reposytorySQL.SavePaczkaToBase(new FedexPaczka(), this.fmm_gidnumer, 0);
 
             GetListaPaczek(this.fmm_gidnumer);
              
 
+        }
+
+        private  async void MenuItem_Clicked(object sender, EventArgs e)
+        {
+            var action = await DisplayAlert(null, "Czy chcesz usunąć karton z listy?", "Tak", "Nie");
+            if (action)
+            {
+                var usunKarton = (sender as MenuItem).CommandParameter as Model.FedexPaczka;
+
+                await reposytorySQL.RemovePaczka(usunKarton);
+                GetListaPaczek(this.fmm_gidnumer);
+            }
         }
     }
 }
