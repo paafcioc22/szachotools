@@ -32,6 +32,8 @@ namespace App2.View.TworzPaczki
             this.fmm_gidnumer = fedex.Fmm_GidNumer;
             this.fmm_eleNumer = fedex.Fmm_EleNumer;
             fedexPaczka = fedex;
+            BindingContext = this;
+            reposytorySQL = new CreatePaczkaReposytorySQL();
 
             if (!string.IsNullOrEmpty(fedex.Fmm_NrListu))
                 btn_dodajMM.IsEnabled = false;
@@ -56,7 +58,7 @@ namespace App2.View.TworzPaczki
 
         private async void DodajMMDoKartonu(string text)
         {
-            reposytorySQL = new CreatePaczkaReposytorySQL();
+            
             
             fedexPaczka.Fmm_NazwaPaczki = text;
 
@@ -185,6 +187,29 @@ namespace App2.View.TworzPaczki
             await Navigation.PushModalAsync(scanPage);
         }
 
+        private void OnBindingContextChanged(object sender, EventArgs e)
+        {
+            base.OnBindingContextChanged();
+
+            if (BindingContext == null)
+                return;
+
+            ViewCell theViewCell = ((ViewCell)sender);
+            var item = theViewCell.BindingContext as FedexPaczka;
+            theViewCell.ContextActions.Clear();
+
+            if (item != null)
+            {
+                if (string.IsNullOrEmpty(item.Fmm_NrListu))
+                {
+                    var moreAction = new MenuItem { Text = "Usuń MM" };
+                    moreAction.SetBinding(MenuItem.CommandParameterProperty, new Binding("."));
+                    moreAction.Clicked += MenuItem_Clicked;
+                    theViewCell.ContextActions.Add(moreAction);
+                }
+            }
+        }
+
         private async void MenuItem_Clicked(object sender, EventArgs e)
         {
             var action = await DisplayAlert(null, "Czy chcesz usunąć MM z listy?", "Tak", "Nie");
@@ -193,7 +218,7 @@ namespace App2.View.TworzPaczki
                 var usunKarton = (sender as MenuItem).CommandParameter as Model.FedexPaczka;
 
                 await reposytorySQL.RemovePaczka(usunKarton,"MM");
-                //GetListaMM(fmm_gidnumer, fmm_eleNumer);
+                GetListaMM(fmm_gidnumer, fmm_eleNumer);
             }
         }
     }

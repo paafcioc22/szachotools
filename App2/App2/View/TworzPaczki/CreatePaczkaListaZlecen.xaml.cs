@@ -34,10 +34,12 @@ namespace App2.View
             DateTime data;
 
             var querystring = $@"  cdn.PC_WykonajSelect '
-                    select  Fmm_gidnumer, count(distinct fmm_elenumer)liczbapaczek, Fmm_nrlistu, max(fmm_datazlecenia) datautwrz, max(Fmm_NrDokWydania)Fmm_NrDokWydania,Fmm_MagDcl
+                    select  Mag_kod, Fmm_gidnumer, count(distinct fmm_elenumer)liczbapaczek, max(Fmm_nrlistu)Fmm_nrlistu, max(fmm_datazlecenia) datautwrz, max(Fmm_NrDokWydania)Fmm_NrDokWydania,Fmm_MagDcl,max(Fmm_Opis) Fmm_Opis
                     from cdn.pc_fedexmm 
+                    join cdn.Magazyny on MAG_GIDNumer=Fmm_MagDcl
                     where fmm_magzrd={app.MagGidNumer}
-                    group by fmm_gidnumer,fmm_nrlistu,Fmm_MagDcl order by Fmm_GidNumer desc, Fmm_NrListu '";//and trn_Stan = 1
+                    group by fmm_gidnumer,Fmm_MagDcl ,mag_kod
+                    order by Fmm_GidNumer desc, Fmm_NrListu '";//and trn_Stan = 1
 
             var zlecenia= await App.TodoManager.PobierzDaneZWeb<ListaZlecenView>(querystring);
 

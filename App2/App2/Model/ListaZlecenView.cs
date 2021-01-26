@@ -15,6 +15,8 @@ namespace App2.Model
         public string Fmm_NrDokWydania { get; set; }
         public bool IsSelected { get; set; }
         public string Fmm_MagDcl { get; set; }
+        public string Fmm_Opis { get; set; }
+        public string Mag_kod { get; set; }
 
 
     }

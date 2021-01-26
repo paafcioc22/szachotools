@@ -16,10 +16,10 @@
     
                 <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Text="Usuń karton" Clicked="MenuItem_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>
-                            </ViewCell.ContextActions  >
+                    <ViewCell BindingContextChanged="OnBindingContextChanged">
+                        <!--<ViewCell.ContextActions >
+                                <MenuItem Text="Usuń karton" Clicked="MenuItem_Clicked"  IsDestructive="True" CommandParameter="{Binding .} "/>
+                            </ViewCell.ContextActions  >-->
                         <Frame  HasShadow="true" 
                                             Margin="5" 
                                             BorderColor="DarkCyan"   

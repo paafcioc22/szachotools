@@ -371,7 +371,18 @@ namespace App2.View
 
         private async void BtnCreatePaczka_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
+
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+            connected = SettingsPage.SprConn();
+            if (connected)
+            {
+                await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
+
+            }
+            _userTapped = false;
         }
 
 

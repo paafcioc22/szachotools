@@ -14,10 +14,10 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.ContextActions>
+                    <ViewCell  BindingContextChanged="OnBindingContextChanged">
+                        <!--<ViewCell.ContextActions>
                             <MenuItem Text="Usuń MMke" Clicked="MenuItem_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>
-                        </ViewCell.ContextActions  >
+                        </ViewCell.ContextActions  >-->
                         <Frame  HasShadow="true" 
                                             Margin="5" 
                                             BorderColor="DarkCyan"   

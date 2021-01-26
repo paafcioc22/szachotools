@@ -97,6 +97,29 @@ namespace App2.View.TworzPaczki
 
         }
 
+        private void OnBindingContextChanged(object sender, EventArgs e)
+        {
+            base.OnBindingContextChanged();
+
+            if (BindingContext == null)
+                return;
+
+            ViewCell theViewCell = ((ViewCell)sender);
+            var item = theViewCell.BindingContext as FedexPaczka;
+            theViewCell.ContextActions.Clear();
+
+            if (item != null)
+            {
+                if (string.IsNullOrEmpty(item.Fmm_NrListu ))
+                {
+                    var moreAction = new MenuItem { Text = "Usuń karton" };
+                    moreAction.SetBinding(MenuItem.CommandParameterProperty, new Binding("."));
+                    moreAction.Clicked += MenuItem_Clicked;
+                    theViewCell.ContextActions.Add(moreAction);
+                }
+            }
+        }
+
         private  async void MenuItem_Clicked(object sender, EventArgs e)
         {
             var action = await DisplayAlert(null, "Czy chcesz usunąć karton z listy?", "Tak", "Nie");

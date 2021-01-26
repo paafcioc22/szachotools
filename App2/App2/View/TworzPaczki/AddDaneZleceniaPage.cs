@@ -93,19 +93,26 @@ namespace App2.View
                 }
                 else
                 {
-                    CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
-                    FedexPaczka fedex = new FedexPaczka();
-                    fedex.Fmm_MagDcl = MagDcl;
-                    fedex.Fmm_MagZrd= app.MagGidNumer.ToString();
+                    if (_magDcl.Text.IndexOf("MS")>=0)
+                    {
+                        CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
+                        FedexPaczka fedex = new FedexPaczka();
+                        fedex.Fmm_MagDcl = MagDcl;
+                        fedex.Fmm_MagZrd = app.MagGidNumer.ToString();
+                        fedex.Fmm_Opis = _opis.Text;
+                        //reposytorySQL.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
+                        var id = Task.Run(() => reposytorySQL.GetLastGidNUmer()).Result;
 
-                    //reposytorySQL.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
-                    var id = Task.Run(()=>reposytorySQL.GetLastGidNUmer()).Result;
+                        await reposytorySQL.SaveZlecenieToBase(fedex, id, 0);
+                        await DisplayAlert(null, "Dodano zlenie dla : " + _magDcl.Text, "OK");
 
-                    await reposytorySQL.SaveZlecenieToBase(fedex,id,0);
-                    await DisplayAlert(null, "Dodano zlenie dla : " + _magDcl.Text, "OK");
-
-                    await Navigation.PopModalAsync();
-                    //dokMM.getMMki();
+                        await Navigation.PopModalAsync();
+                        //dokMM.getMMki(); 
+                    }
+                    else
+                    {
+                        await DisplayAlert(null, "Nie obsługiwany magazyn", "OK");
+                    }
                     
                    
                 }

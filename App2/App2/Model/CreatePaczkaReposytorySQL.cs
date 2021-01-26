@@ -53,7 +53,7 @@ namespace App2.Model
 
             //}
 
-            query += $"({gidnr},@id,'''','''','''','''',getdate(),{fedex.Fmm_MagDcl},{fedex.Fmm_MagZrd},'''')'";//+ Environment.NewLine;
+            query += $"({gidnr},@id,'''','''','''','''',getdate(),{fedex.Fmm_MagDcl},{fedex.Fmm_MagZrd},'''',''{fedex.Fmm_Opis}'')'";//+ Environment.NewLine;
                                                                                         //}
             var odp =await  App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query);
          
@@ -111,26 +111,34 @@ namespace App2.Model
             string NryMMek = "Numery MM(ek):";
             string nn = "karton";
           
-            query += $"({gidnr},@id,'''',''karton'','''','''',getdate(),@magdcl,@magzrd,'''')'";//+ Environment.NewLine;
+            query += $"({gidnr},@id,'''',''karton'','''','''',getdate(),@magdcl,@magzrd,'''','''')'";//+ Environment.NewLine;
                                                                                                                 //}
             var odp = await App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query);
 
             return wykonano;
         }
 
-        internal async Task<bool> RemovePaczka(FedexPaczka usunKarton, string mm="")
+        internal async Task<bool> RemovePaczka(FedexPaczka fp, string mm="")
         {
             string mmUsun = "";
 
             if (!string.IsNullOrEmpty(mm))
             {
 
-                  mmUsun = $"and Fmm_NazwaPaczki={usunKarton.Fmm_NazwaPaczki}";
+                  mmUsun = $"and Fmm_NazwaPaczki=''{fp.Fmm_NazwaPaczki}''";
             }
             
-            var query = $@" cdn.PC_WykonajSelect 'delete from cdn.PC_FedexMM where Fmm_gidnumer={usunKarton.Fmm_GidNumer} and Fmm_EleNumer={usunKarton.Fmm_EleNumer} {mmUsun}'";
-           
-            var odp = await App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query);
+            var query = $@" cdn.PC_WykonajSelect 'declare @numery varchar(55) delete from cdn.PC_FedexMM where Fmm_gidnumer={fp.Fmm_GidNumer} and Fmm_EleNumer={fp.Fmm_EleNumer} {mmUsun}";
+
+            var update = Environment.NewLine + $@"set @numery=(select +cast(Cast(PARSENAME(REPLACE(fmm_nazwapaczki,''/'',''.''), 3)  as int)as varchar(66)) +'','' from 
+                                                cdn.PC_FedexMM where Fmm_GidNumer={fp.Fmm_GidNumer} and Fmm_EleNumer={fp.Fmm_EleNumer} order by fmm_nazwapaczki For XML PATH ('''')) 
+                                        
+                                                update cdn.PC_FedexMM 
+                                                set Fmm_Elmenty= ''Numery MM(ek):''+  substring(@numery,0,len(@numery) )        
+                                                where Fmm_GidNumer={fp.Fmm_GidNumer} and Fmm_EleNumer={fp.Fmm_EleNumer}
+                                                    '";
+
+            var odp = await App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query+update);
             return true;
         }
 
@@ -153,7 +161,7 @@ namespace App2.Model
             string NryMMek = "Numery MM(ek):";
             string nn = "karton";
 
-            query += $"({fp.Fmm_GidNumer},{fp.Fmm_EleNumer},'''',''karton'',''{fp.Fmm_NazwaPaczki}'','''',getdate(),@magdcl,@magzrd,'''')";//+ Environment.NewLine;
+            query += $"({fp.Fmm_GidNumer},{fp.Fmm_EleNumer},'''',''karton'',''{fp.Fmm_NazwaPaczki}'','''',getdate(),@magdcl,@magzrd,'''','''')";//+ Environment.NewLine;
 
             var update = Environment.NewLine + $@"set @numery=(select +cast(Cast(PARSENAME(REPLACE(fmm_nazwapaczki,''/'',''.''), 3)  as int)as varchar(66)) +'','' from 
                                                 cdn.PC_FedexMM where Fmm_GidNumer={fp.Fmm_GidNumer} and Fmm_EleNumer={fp.Fmm_EleNumer} order by fmm_nazwapaczki For XML PATH ('''')) 

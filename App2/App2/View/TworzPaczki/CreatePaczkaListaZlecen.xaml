@@ -26,12 +26,12 @@
                             <AbsoluteLayout >
 
                                 <!--HorizontalOptions="CenterAndExpand"-->
-                                <Label Text="{Binding Fmm_gidnumer}" TextColor="Black"  BackgroundColor="Yellow"
+                                <Label Text="{Binding Mag_kod}" TextColor="Black"   
                                         AbsoluteLayout.LayoutBounds=".01,1,.1,1"
                                         AbsoluteLayout.LayoutFlags="All"  
                                         HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                     />
-                                <Label Text="{Binding Fmm_NrDokWydania}" TextColor="Black"  
+                                <Label Text="{Binding Fmm_Opis}" TextColor="Black"  
                                         AbsoluteLayout.LayoutBounds=".5,0,1,.3"
                                         AbsoluteLayout.LayoutFlags="All"  
                                         HorizontalTextAlignment="Center"
