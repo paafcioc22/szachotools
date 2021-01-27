@@ -56,7 +56,7 @@ namespace App2.View.TworzPaczki
         }
 
 
-        private async void DodajMMDoKartonu(string text)
+        private async Task<bool> DodajMMDoKartonu(string text)
         {
             
             
@@ -74,7 +74,10 @@ namespace App2.View.TworzPaczki
                 }
             } 
             else
-                await DisplayAlert("Uwaga", "Skanowana MM nie jest zatwierdzona lub nie pasuje do magazynu docelowego", "OK");
+                await DisplayAlert("Uwaga", $"{text} nie jest zatwierdzona lub nie pasuje do magazynu docelowego", "OK");
+
+
+            return true;
         }
 
 
@@ -92,7 +95,7 @@ namespace App2.View.TworzPaczki
             if (e.Item == null)
                 return;
 
-            await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
+            //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
@@ -100,10 +103,15 @@ namespace App2.View.TworzPaczki
 
         private async void BtnAddMM_Clicked(object sender, EventArgs e)
         {
-            opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+
+            
+
+            if (SettingsPage.SelectedDeviceType == 1)
             {
-                AutoRotate = false,
-                PossibleFormats = new List<ZXing.BarcodeFormat>() {
+                opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+                {
+                    AutoRotate = false,
+                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
                 ZXing.BarcodeFormat.CODE_128,
                 ZXing.BarcodeFormat.CODABAR,
@@ -111,80 +119,92 @@ namespace App2.View.TworzPaczki
 
                 }
 
-            };
+                };
 
-            opts.TryHarder = true;
+                opts.TryHarder = true;
 
-            zxing = new ZXingScannerView
-            {
-
-                IsScanning = false,
-                IsTorchOn = false,
-                IsAnalyzing = false,
-                AutomationId = "zxingDefaultOverlay",//zxingScannerView
-                Opacity = 22,
-                Options = opts
-            };
-
-            var torch = new Switch
-            {
-            };
-
-            torch.Toggled += delegate
-            {
-                scanPage.ToggleTorch();
-            };
-
-            var grid = new Grid
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-            };
-
-            var Overlay = new ZXingDefaultOverlay
-            {
-                TopText = "Włącz latarkę",
-                BottomText = "Skanowanie rozpocznie się automatycznie",
-                ShowFlashButton = true,
-                AutomationId = "zxingDefaultOverlay",
-
-            };
-
-            var customOverlay = new StackLayout
-            {
-                HorizontalOptions = LayoutOptions.EndAndExpand,
-                VerticalOptions = LayoutOptions.EndAndExpand
-            };
-
-            grid.Children.Add(Overlay);
-            Overlay.Children.Add(torch);
-            Overlay.BindingContext = Overlay;
-
-            scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
-            {
-                DefaultOverlayTopText = "Zeskanuj MM ",
-                //DefaultOverlayBottomText = " Skanuj kod ";
-                DefaultOverlayShowFlashButton = true
-
-            };
-            scanPage.OnScanResult += (result) =>
-            {
-                scanPage.IsScanning = false;
-                scanPage.AutoFocus();
-                Device.BeginInvokeOnMainThread(() =>
+                zxing = new ZXingScannerView
                 {
 
-                    Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
-                    {
-                        if (scanPage.IsScanning) scanPage.AutoFocus();
-                        return true;
-                    });
-                    Navigation.PopModalAsync();
-                    DodajMMDoKartonu(result.Text);
+                    IsScanning = false,
+                    IsTorchOn = false,
+                    IsAnalyzing = false,
+                    AutomationId = "zxingDefaultOverlay",//zxingScannerView
+                    Opacity = 22,
+                    Options = opts
+                };
 
-                });
-            };
-            await Navigation.PushModalAsync(scanPage);
+                var torch = new Switch
+                {
+                };
+
+                torch.Toggled += delegate
+                {
+                    scanPage.ToggleTorch();
+                };
+
+                var grid = new Grid
+                {
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                };
+
+                var Overlay = new ZXingDefaultOverlay
+                {
+                    TopText = "Włącz latarkę",
+                    BottomText = "Skanowanie rozpocznie się automatycznie",
+                    ShowFlashButton = true,
+                    AutomationId = "zxingDefaultOverlay",
+
+                };
+
+                var customOverlay = new StackLayout
+                {
+                    HorizontalOptions = LayoutOptions.EndAndExpand,
+                    VerticalOptions = LayoutOptions.EndAndExpand
+                };
+
+                grid.Children.Add(Overlay);
+                Overlay.Children.Add(torch);
+                Overlay.BindingContext = Overlay;
+
+                scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
+                {
+                    DefaultOverlayTopText = "Zeskanuj MM ",
+                    //DefaultOverlayBottomText = " Skanuj kod ";
+                    DefaultOverlayShowFlashButton = true
+
+                };
+                scanPage.OnScanResult += (result) =>
+                {
+                    scanPage.IsScanning = false;
+                    scanPage.AutoFocus();
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+
+                        Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                        {
+                            if (scanPage.IsScanning) scanPage.AutoFocus();
+                            return true;
+                        });
+                        Navigation.PopModalAsync();
+                        DodajMMDoKartonu(result.Text);
+
+                    });
+                };
+                await Navigation.PushModalAsync(scanPage);
+            }else
+            {
+                string odpowiedz = await DisplayPromptAsync("Dodawanie mmki", "", "OK", "Anuluj", "Wprowadź/skanuj nr MM:");
+                if (!string.IsNullOrEmpty(odpowiedz))
+                {
+                    await DodajMMDoKartonu(odpowiedz.ToUpper());
+                    GetListaMM(fmm_gidnumer, fmm_eleNumer);
+                }
+               
+            }
+
+                
         }
 
         private void OnBindingContextChanged(object sender, EventArgs e)

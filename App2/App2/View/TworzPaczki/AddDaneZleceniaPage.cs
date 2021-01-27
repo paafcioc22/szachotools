@@ -1,4 +1,5 @@
 ﻿using App2.Model;
+using App2.View.TworzPaczki;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -100,12 +101,21 @@ namespace App2.View
                         fedex.Fmm_MagDcl = MagDcl;
                         fedex.Fmm_MagZrd = app.MagGidNumer.ToString();
                         fedex.Fmm_Opis = _opis.Text;
+
+
+                        //ListaZlecenView listaZlecen = new ListaZlecenView();
+                        //listaZlecen.Fmm_MagDcl = MagDcl;
+                        //listaZlecen.Fmm_Opis = _opis.Text;
+                        //listaZlecen.Fmm_MagZrd = app.MagGidNumer.ToString();
+
+
+
                         //reposytorySQL.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
                         var id = Task.Run(() => reposytorySQL.GetLastGidNUmer()).Result;
 
                         await reposytorySQL.SaveZlecenieToBase(fedex, id, 0);
-                        await DisplayAlert(null, "Dodano zlenie dla : " + _magDcl.Text, "OK");
-
+                        await DisplayAlert(null, "Dodano zlecenie dla : " + _magDcl.Text, "OK");
+                     //   await NavigationPage.PushAsync(new CreatePaczkaListaPaczek(listaZlecen));
                         await Navigation.PopModalAsync();
                         //dokMM.getMMki(); 
                     }

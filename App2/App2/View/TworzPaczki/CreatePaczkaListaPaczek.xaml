@@ -31,7 +31,7 @@
                                     <AbsoluteLayout >
 
                                         <!--HorizontalOptions="CenterAndExpand"-->
-                                        <Label Text="{Binding Fmm_EleNumer}" TextColor="Black"  BackgroundColor="Yellow"
+                                        <Label Text="{Binding Fmm_EleNumer}" TextColor="Black"   
                                                     AbsoluteLayout.LayoutBounds=".01,1,.1,1"
                                                     AbsoluteLayout.LayoutFlags="All"  
                                                     HorizontalTextAlignment="Center" VerticalTextAlignment="Center"

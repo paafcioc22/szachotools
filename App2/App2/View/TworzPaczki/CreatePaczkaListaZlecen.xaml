@@ -26,7 +26,7 @@
                             <AbsoluteLayout >
 
                                 <!--HorizontalOptions="CenterAndExpand"-->
-                                <Label Text="{Binding Mag_kod}" TextColor="Black"   
+                                <Label Text="{Binding Fmm_gidnumer}" TextColor="Black"   
                                         AbsoluteLayout.LayoutBounds=".01,1,.1,1"
                                         AbsoluteLayout.LayoutFlags="All"  
                                         HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
@@ -49,6 +49,11 @@
                                          AbsoluteLayout.LayoutFlags="All"  
                                          HorizontalTextAlignment="Center"
                                      />
+                                <Label Text="{Binding Mag_kod}" TextColor="Black"   
+                                        AbsoluteLayout.LayoutBounds="1,1,.1,1"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                    />
                             </AbsoluteLayout>
 
                             <!--</Frame.Content>-->

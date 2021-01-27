@@ -17,6 +17,7 @@ namespace App2.Model
         public string Fmm_MagDcl { get; set; }
         public string Fmm_Opis { get; set; }
         public string Mag_kod { get; set; }
+        public string Fmm_MagZrd { get; set; }
 
 
     }

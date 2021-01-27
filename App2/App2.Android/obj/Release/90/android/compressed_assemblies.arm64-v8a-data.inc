@@ -1,10 +1,10 @@
 	.type	compressed_assembly_data_0, @object
 	.local	compressed_assembly_data_0
-	.comm	compressed_assembly_data_0,212992,16
+	.comm	compressed_assembly_data_0,199680,16
 
 	.type	compressed_assembly_data_1, @object
 	.local	compressed_assembly_data_1
-	.comm	compressed_assembly_data_1,357888,16
+	.comm	compressed_assembly_data_1,411136,16
 
 	.type	compressed_assembly_data_2, @object
 	.local	compressed_assembly_data_2
@@ -40,7 +40,7 @@
 
 	.type	compressed_assembly_data_10, @object
 	.local	compressed_assembly_data_10
-	.comm	compressed_assembly_data_10,48504,16
+	.comm	compressed_assembly_data_10,48520,16
 
 	.type	compressed_assembly_data_11, @object
 	.local	compressed_assembly_data_11
@@ -48,7 +48,7 @@
 
 	.type	compressed_assembly_data_12, @object
 	.local	compressed_assembly_data_12
-	.comm	compressed_assembly_data_12,1951744,16
+	.comm	compressed_assembly_data_12,1967616,16
 
 	.type	compressed_assembly_data_13, @object
 	.local	compressed_assembly_data_13
@@ -92,7 +92,7 @@
 
 	.type	compressed_assembly_data_23, @object
 	.local	compressed_assembly_data_23
-	.comm	compressed_assembly_data_23,1277440,16
+	.comm	compressed_assembly_data_23,1277952,16
 
 	.type	compressed_assembly_data_24, @object
 	.local	compressed_assembly_data_24
@@ -176,7 +176,7 @@
 
 	.type	compressed_assembly_data_44, @object
 	.local	compressed_assembly_data_44
-	.comm	compressed_assembly_data_44,424960,16
+	.comm	compressed_assembly_data_44,425472,16
 
 	.type	compressed_assembly_data_45, @object
 	.local	compressed_assembly_data_45
@@ -272,61 +272,53 @@
 
 	.type	compressed_assembly_data_68, @object
 	.local	compressed_assembly_data_68
-	.comm	compressed_assembly_data_68,5632,16
+	.comm	compressed_assembly_data_68,380416,16
 
 	.type	compressed_assembly_data_69, @object
 	.local	compressed_assembly_data_69
-	.comm	compressed_assembly_data_69,5120,16
+	.comm	compressed_assembly_data_69,33280,16
 
 	.type	compressed_assembly_data_70, @object
 	.local	compressed_assembly_data_70
-	.comm	compressed_assembly_data_70,380416,16
+	.comm	compressed_assembly_data_70,930816,16
 
 	.type	compressed_assembly_data_71, @object
 	.local	compressed_assembly_data_71
-	.comm	compressed_assembly_data_71,33280,16
+	.comm	compressed_assembly_data_71,669696,16
 
 	.type	compressed_assembly_data_72, @object
 	.local	compressed_assembly_data_72
-	.comm	compressed_assembly_data_72,928256,16
+	.comm	compressed_assembly_data_72,19072,16
 
 	.type	compressed_assembly_data_73, @object
 	.local	compressed_assembly_data_73
-	.comm	compressed_assembly_data_73,669184,16
+	.comm	compressed_assembly_data_73,100352,16
 
 	.type	compressed_assembly_data_74, @object
 	.local	compressed_assembly_data_74
-	.comm	compressed_assembly_data_74,19072,16
+	.comm	compressed_assembly_data_74,625664,16
 
 	.type	compressed_assembly_data_75, @object
 	.local	compressed_assembly_data_75
-	.comm	compressed_assembly_data_75,101888,16
+	.comm	compressed_assembly_data_75,12800,16
 
 	.type	compressed_assembly_data_76, @object
 	.local	compressed_assembly_data_76
-	.comm	compressed_assembly_data_76,625664,16
+	.comm	compressed_assembly_data_76,10240,16
 
 	.type	compressed_assembly_data_77, @object
 	.local	compressed_assembly_data_77
-	.comm	compressed_assembly_data_77,12800,16
+	.comm	compressed_assembly_data_77,15360,16
 
 	.type	compressed_assembly_data_78, @object
 	.local	compressed_assembly_data_78
-	.comm	compressed_assembly_data_78,10240,16
+	.comm	compressed_assembly_data_78,41984,16
 
 	.type	compressed_assembly_data_79, @object
 	.local	compressed_assembly_data_79
-	.comm	compressed_assembly_data_79,15360,16
+	.comm	compressed_assembly_data_79,2118656,16
 
 	.type	compressed_assembly_data_80, @object
 	.local	compressed_assembly_data_80
-	.comm	compressed_assembly_data_80,41984,16
-
-	.type	compressed_assembly_data_81, @object
-	.local	compressed_assembly_data_81
-	.comm	compressed_assembly_data_81,2118144,16
-
-	.type	compressed_assembly_data_82, @object
-	.local	compressed_assembly_data_82
-	.comm	compressed_assembly_data_82,446976,16
+	.comm	compressed_assembly_data_80,446976,16
 
