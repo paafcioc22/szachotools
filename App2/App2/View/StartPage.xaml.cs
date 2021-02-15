@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,43 +15,59 @@ namespace App2.View
 	public partial class StartPage : ContentPage
 	{
         private bool connected;
-        public static string user="";
+        public static string user;
         public StartPage ()
 		{
 			InitializeComponent ();
             this.BindingContext = this;
             this.IsBusy = false;
             //this.IsEnabled = false;
- 
+           // user = "";
             // sprwersja();
+             
         }
 
         public static bool CzyPrzyciskiWlaczone;
 
 
       
-        public bool CheckInternetConnection()
+        public static bool CheckInternetConnection()
         {
-            string CheckUrl = "http://google.com";
 
-            try
+            var current = Connectivity.NetworkAccess;
+
+            if (current == NetworkAccess.Internet)
             {
-                HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
-                iNetRequest.Timeout = 2000;
 
-                WebResponse iNetResponse = iNetRequest.GetResponse();
 
-                iNetResponse.Close();
+
+            //string CheckUrl = "http://google.com";
+
+            //try
+            //{
+            //    HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
+
+            //    iNetRequest.Timeout = 4000;
+
+            //    WebResponse iNetResponse = iNetRequest.GetResponse();
+
+            //    iNetResponse.Close();
 
                 
-                return true;
+            //    return true;
 
-            }
-            catch (WebException )
-            {
-                  return false;
-            }
+            //}
+            //catch (WebException )
+            //{
+            //      return false;
+            //}
         }
 
         private async void sprwersja()
@@ -68,10 +84,11 @@ namespace App2.View
                     //_version = bulidVer;
 
                     var AktualnaWersja = await App.TodoManager.GetBuildVer();
-                    if (bulidVer != AktualnaWersja)
+
+                    if (bulidVer < Convert.ToInt16(AktualnaWersja))
                     // await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
                     {
-                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać??", "Tak", "Nie");
+                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
 
                         if (update)
                         {
@@ -102,6 +119,7 @@ namespace App2.View
          
             btn_CreateMM.IsEnabled = false;
             btn_przyjmijMM.IsEnabled = false;
+            btn_ListaAkcji.IsEnabled = false;
         }
 
         public void OdblokujPrzyciski()
@@ -109,36 +127,32 @@ namespace App2.View
 
             btn_CreateMM.IsEnabled = true;
             btn_przyjmijMM.IsEnabled = true;
-        }
-
-
-        private bool _userTapped;
-        private async void TapGestureRecognizer_Tapped()
-        {
-            //  string query = "[CDN].[PC_WykonajSelect] 58611";
-            //  var Maglista =  App.TodoManager.InsertDataNiezgodnosci(query); 
-
-
-            if (_userTapped)
-                return;
-
-            _userTapped = true;
-             
-                await Navigation.PushModalAsync(new View.SettingsPage());
-
-            _userTapped = false;
-
+            btn_ListaAkcji.IsEnabled = true;
 
         }
 
-        protected override void OnAppearing()
+
+
+
+
+        protected   override void OnAppearing()
         {
-            lbl_user.Text = user;
+            base.OnAppearing();
 
-           
-                sprwersja();
+            if (!string.IsNullOrEmpty(user) && user!= "Wylogowany" )
+            {
+                lbl_user.Text = "Zalogowany : "+ user; //dodałem zalogowane
+            }
 
-                if ((lbl_user.Text == "") || (lbl_user.Text is null) || (lbl_user.Text == "Wylogowany"))
+            if ( user == "Wylogowany")
+            {
+                lbl_user.Text = "Wylogowany" ; //dodałem zalogowane
+            }
+
+
+            sprwersja();
+              
+                if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
                 {
                     blokujPrzyciski();
                 }
@@ -146,10 +160,10 @@ namespace App2.View
                 {
                     OdblokujPrzyciski();
                 }
-               
+
                 
         }
-
+        //przyjmij mm
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
             btn_CreateMM.IsEnabled = false;
@@ -165,15 +179,24 @@ namespace App2.View
             btn_CreateMM.IsEnabled = true;
 
         }
-
+        //weryfikator
         private async void SkanTwr_Clicked(object sender, EventArgs e)
         {
             btn_weryfikator.IsEnabled = false;
-            await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
+
+            connected = SettingsPage.SprConn();
+                if (connected)
+                {
+                    await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
+                }
+                else
+                {
+                    await DisplayAlert(null, "Brak połączenia z siecią", "OK"); 
+                }
             btn_weryfikator.IsEnabled = true;
 
         }
-
+        //utwórz MM
         private async void BtnListaMMp_Clicked(object sender, EventArgs e)
         {
             //IsBusy = true;
@@ -207,16 +230,159 @@ namespace App2.View
             connected = SettingsPage.SprConn();
             if (connected)
             {
-                 
-                await Navigation.PushModalAsync(new LoginLista());
+
+                // await Navigation.PushModalAsync(new LoginLista());
+
+                var page = new LoginLista();
+
+                page.ListViewLogin.ItemSelected += (source, args) =>
+                {
+                    var pracownik = args.SelectedItem as Pracownik;
+                    if (SettingsPage.SelectedDeviceType == 1)
+                    {
+                        page.SkanujIdetyfikator();
+                    }
+                    else {
+                        page.enthaslo.Focus();
+                    }
+
+                    
+                    if(page.IsPassCorrect())
+                        lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
+                   // Navigation.PopModalAsync();
+                };
+
+               await Navigation.PushModalAsync(page);
+
                 btn_login.IsEnabled = true;
 
-                //WaitIco.IsRunning = false;
+                 
             }
             else
                 await DisplayAlert(null, "Brak połączenia z siecią", "OK");
             btn_login.IsEnabled = true;
 
+              
+        }
+
+        private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
+        {
+            btn_ListaAkcji.IsEnabled = false;
+            connected = SettingsPage.SprConn();
+            if (connected)
+            { 
+                   
+                //await Navigation.PushModalAsync(new List_AkcjeView());
+                await Navigation.PushAsync(new List_AkcjeView());
+
+                btn_ListaAkcji.IsEnabled = true; 
+            }
+            else
+                await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+            btn_ListaAkcji.IsEnabled = true;
+
+
+        }
+
+
+        private async void ImageButton_Clicked(object sender, EventArgs e)
+        {
+
+            //WaitIco.IsRunning = true;
+            //WaitIco.IsVisible = true;
+
+
+
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            //await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM));
+            await Navigation.PushAsync(new View.SettingsPage());
+
+            _userTapped = false;
+
+            //WaitIco.IsRunning = false;
+            //WaitIco.IsVisible = false;
+
+
+            //var delay = await Task.Run(async delegate
+            //{
+            //    await Task.Delay(TimeSpan.FromSeconds(0));
+            //    Device.BeginInvokeOnMainThread(async () =>
+            //    {
+
+
+
+
+
+            //    });
+            //    return 0;
+            //});
+        }
+
+        private bool _userTapped;
+        private async void Btn_settings_Tapped(object sender, EventArgs e)
+        {
+             
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            await Navigation.PushAsync(new View.SettingsPage());
+
+            _userTapped = false;
+        }
+
+        private async void Help_Clicked(object sender, EventArgs e)
+        {
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+
+            await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
+            //await Navigation.PushAsync(new View.widoktestowy());
+            _userTapped = false;
+        }
+
+        private bool maybe_exit = false;
+        protected override bool OnBackButtonPressed()
+        //-------------------------------------------------------------------
+        {
+            //some more custom checks here
+            //..
+
+            if (maybe_exit) return false; //QUIT
+
+            DependencyService.Get<Model.IAppVersionProvider>().ShowLong ("Wciśnij jeszcze raz by wyjść z aplikacji");
+            maybe_exit = true;
+
+            Device.StartTimer(TimeSpan.FromSeconds(2), () =>
+            {
+                maybe_exit = false; //reset those 2 seconds
+                                    // false - Don't repeat the timer 
+                return false;
+            });
+            return true; //true - don't process BACK by system
+        }
+
+        private async void BtnCreatePaczka_Clicked(object sender, EventArgs e)
+        {
+
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
+            connected = SettingsPage.SprConn();
+            if (connected)
+            {
+                await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
+
+            }
+            _userTapped = false;
         }
 
 

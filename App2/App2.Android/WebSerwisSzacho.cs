@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,9 @@ namespace App2.Droid
 {
     public sealed class WebSerwisSzacho : IMagazynSerwis
     {
-        public List<Magazynn> Items { get; private set; } 
+        public ObservableCollection<Magazynn> Items { get; private set; } 
         public List<RaportListaMM> TwrkodList { get; private set; } 
+        public ObservableCollection<AkcjeNagElem> AkcjeGidNazwaList { get; private set; } 
 
         public WebSzacho.CDNOffLineSrv client;
 
@@ -42,11 +44,11 @@ namespace App2.Droid
             };
         }
         #endregion
-        public async Task<List<Magazynn>> GetAllCustomers(string  criteria = null)
+        public async Task<ObservableCollection<Magazynn>> GetAllCustomers(string  criteria = null)
         {
             return await Task.Run(() =>
             {
-                Items = new List<Magazynn>();
+                Items = new ObservableCollection<Magazynn>();
                 var respone = client.ExecuteSQLCommand(criteria);
 
                 XmlDocument xmlDoc = new XmlDocument();
@@ -63,7 +65,8 @@ namespace App2.Droid
                        Id = mag.Id,
                        Magazyn = mag.Magazyn,
                        Region = mag.Region,
-                       Ilosc = mag.Ilosc
+                       Ilosc = mag.Ilosc,
+                       MagKod=mag.MagKod
                     });
                 }
                 return Items;
@@ -89,7 +92,7 @@ namespace App2.Droid
                     $"'{lista.DataDokumentu}'";
                     
                     var respone = client.ExecuteSQLCommand(InsertString);
-                     
+                    
                     odp = respone;
                     odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>","");
                 }
@@ -125,13 +128,17 @@ namespace App2.Droid
                         url = mag.url,
                         nazwa = mag.nazwa,
                         cena = mag.cena,
-                        symbol = mag.symbol
+                        symbol = mag.symbol,
+                        cena1 = mag.cena1
+                        
                     });
                 }
 
                 return TwrkodList;
             });
         }
+
+
         Wersja wersja;
 
         
@@ -152,13 +159,150 @@ namespace App2.Droid
 
                 XmlSerializer serializer = new XmlSerializer(typeof(AppVersionList)); 
 
-                AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader); 
+                AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader);
 
-                _wersja= odczytaj.wersja[0].VersionApp;
+
+                //XmlSerializer serializer = new XmlSerializer(typeof(List<Magazyn>), new XmlRootAttribute("ROOT"));
+                //StringReader reader = new StringReader(result);
+                //List<Magazyn> magazyny = (List<Magazyn>)serializer.Deserialize(reader); 
+
+
+                _wersja = odczytaj.wersja[0].VersionApp;
                      
                 return _wersja;
                 //return ver;
             });
+        }
+
+        public async Task<ObservableCollection<AkcjeNagElem>> GetGidAkcje(string query)
+        {
+
+            return await Task.Run(() =>
+            {
+                AkcjeGidNazwaList = new ObservableCollection<AkcjeNagElem>();
+
+                var respone = client.ExecuteSQLCommand(query);
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(respone);
+
+                TextReader reader = new StringReader(respone);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(GidNazwa));
+                GidNazwa gidNazwa = (GidNazwa)serializer.Deserialize(reader);
+
+                foreach (var akcje in gidNazwa.GidNazwaLista)
+                {
+                    var datastart = Convert.ToDateTime(akcje.AkN_DataStart).AddHours(2);
+                    var datakoniec = Convert.ToDateTime(akcje.AkN_DataKoniec).AddHours(2);
+                    AkcjeGidNazwaList.Add(new AkcjeNagElem
+                    {
+                        AkN_GidNumer = akcje.AkN_GidNumer,
+                        AkN_GidTyp = akcje.AkN_GidTyp,
+                        AkN_GidNazwa = akcje.AkN_GidNazwa,
+                        AkN_NazwaAkcji = akcje.AkN_NazwaAkcji,
+                        Ake_ElemLp = akcje.Ake_ElemLp,
+                        Ake_FiltrSQL = akcje.Ake_FiltrSQL,
+                        AkN_DataStart = datastart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                        AkN_DataKoniec = datakoniec.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), 
+                        Ake_NazwaFiltrSQL = akcje.Ake_NazwaFiltrSQL,
+                        TwrKod = akcje.TwrKod,
+                        TwrNazwa = akcje.TwrNazwa,
+                        TwrGrupa = akcje.TwrGrupa,
+                        TwrDep = akcje.TwrDep,
+                        TwrGidNumer = akcje.TwrGidNumer,
+                        TwrStan = akcje.TwrStan,
+                        TwrUrl = akcje.TwrUrl,
+                        TwrSymbol = akcje.TwrSymbol,
+                        TwrCena = akcje.TwrCena,
+                        TwrCena1 = akcje.TwrCena1,
+                        TwrSkan = 0,
+                        TwrEan = akcje.TwrEan,
+                        IsSendData = akcje.IsSendData
+                    });
+                }
+
+                return AkcjeGidNazwaList;
+            });
+        }
+
+        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie,Int16 magnumer,string ase_operator)
+        {
+
+            try
+            {
+                return await Task.Run(() =>
+                    {
+                        foreach (var lista in polecenie)
+                        {
+                            var InsertString = $@"cdn.PC_InsertAkcjeSkan
+                                {lista.AkN_GidNumer},
+                                {magnumer},
+                                '{lista.TwrGrupa}',
+                                '{lista.TwrDep}',
+                                {lista.TwrGidNumer},
+                                {lista.TwrStan},
+                                {lista.TwrSkan},
+                                '{ase_operator}'";
+
+                            var respone = client.ExecuteSQLCommand(InsertString);
+
+                            odp = respone;
+                            odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
+                        }
+                        return odp;
+                    });
+            }
+            catch (Exception s)
+            {
+
+                odp = s.Message;
+                return odp;
+            }
+        }
+
+        public async Task<ObservableCollection<T>> PobierzDaneZWeb<T>(string query)
+        {
+            ObservableCollection<T> res = new ObservableCollection<T>();
+            return await Task.Run(() =>
+            {
+                  
+                var respone = client.ExecuteSQLCommand(query);
+
+
+                return  DeserializeFromXml<T>(respone);
+
+
+
+
+
+                //XmlDocument xmlDoc = new XmlDocument();
+                //xmlDoc.LoadXml(respone);
+
+                //TextReader reader = new StringReader(respone);
+
+                //XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
+                //ObservableCollection<T> gidNazwa = (ObservableCollection<T>) serializer.Deserialize(reader);
+
+                //res = gidNazwa;
+
+
+                //return res;
+            });
+        }
+
+
+        public static ObservableCollection<T> DeserializeFromXml<T>(string xml)
+        {
+            ObservableCollection<T> result;
+            //Type type = result.GetType();
+
+            XmlSerializer ser = new XmlSerializer(typeof(ObservableCollection<T>), new XmlRootAttribute("ROOT"));
+            using (TextReader tr = new StringReader(xml))
+            {
+                result = (ObservableCollection<T>)ser.Deserialize(tr);
+            }
+            return result;
         }
 
         public class Wersja
@@ -166,6 +310,7 @@ namespace App2.Droid
             public string VersionApp { get; set; }
         }
 
+       
         [XmlRoot("ROOT")]
         public class AppVersionList
         {
@@ -174,12 +319,18 @@ namespace App2.Droid
 
         }
 
+        [XmlRoot("ROOT")]
+        public class GidNazwa
+        {
+            [XmlElement("Table", typeof(AkcjeNagElem))]
+            public List<AkcjeNagElem> GidNazwaLista { get; set; }
+        }
 
         [XmlRoot("ROOT")]
         public class MagazynLista
         {
             [XmlElement("Table", typeof(Magazynn))]
-            public List<Magazynn> MagazynList { get; set; }
+            public ObservableCollection<Magazynn> MagazynList { get; set; }
         }
 
         [XmlRoot("ROOT")]

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010. 8. 13. 오전 10:05:19                                                        
+
+     project    
+     description
+                   
+     leesk                                                                
+     ====================================================================== -->
+<project name="project" default="depends">
+    <description>
+            description
+    </description>
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="default" depends="depends" description="description">
+        <delete dir="./src/com/sewoo/jpos" />	
+        <copy todir="./src">
+        	<fileset dir="../SML_Common/src/"/>
+        </copy>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: depends                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="depends">
+    </target>
+
+	<!-- ================================= 
+          target: clean              
+         ================================= -->
+    <target name="clean" depends="depends" description="description">
+    	<delete dir="./src/com/sewoo/jpos" />	
+    </target>
+
+</project>

@@ -1,12 +1,7 @@
-﻿using Acr.UserDialogs;
+﻿
 using SQLite;
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -34,31 +29,22 @@ namespace App2.View
             var listaraport = await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == _gidnumer).ToListAsync();
             MyListView.ItemsSource = listaraport;// Model.RaportListaMM.RaportListaMMs;
 
+              
+
             base.OnAppearing();
         }
 
         public RaportListaElementow(Model.RaportListaMM raportListaMM)
         {
             InitializeComponent();
-
-            //Model.PrzyjmijMMClass.ListOfTwrOnMM.Clear();
-            //Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
-
-            //przyjmijMMClass.GetlistMMElements(EAN_mmka, gidnumer);
-            //tytul.Text = przyjmijMMClass.GetNrDokMmp;// mmp; 
+             
 
             MyListView.ItemsSource = Model.RaportListaMM.RaportListaMMs;
         }
 
          private async  void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //if (e.Item == null)
-            //    return;
-
-            //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
-            ////Deselect Item
-            //((ListView)sender).SelectedItem = null;
+           
 
 
             try
@@ -67,24 +53,12 @@ namespace App2.View
                     return;
                 var mmka = e.Item as Model.RaportListaMM;
 
+                string odpowiedz = await DisplayPromptAsync("Podaj Nową Wartość:", null, "Zatwierdź", "Anuluj", "Ilość",-1, Keyboard.Numeric);
 
-                PromptResult prr = await UserDialogs.Instance.PromptAsync
-                    (
-                        new PromptConfig
-                        {
-                            InputType = InputType.Number,
-                            Message = "Podaj Ilośc:  ",
-                            OkText = "Zatwierdź",
-                            CancelText = "Anuluj",
-                            
-                           // Title = "Pytanie..",
-                           // IsCancellable = true,
-                        }
-                    );
-                //await DisplayAlert("info", prr.Text, "ok");
-                if (prr.Text != "")
+                  
+                if (!String.IsNullOrEmpty(odpowiedz))
                 {
-                    mmka.ilosc_OK = Convert.ToInt16(prr.Text);
+                    mmka.ilosc_OK = Convert.ToInt16(odpowiedz);
                     await _connection.UpdateAsync(mmka);
                 }
 

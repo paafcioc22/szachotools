@@ -1,13 +1,12 @@
-﻿using BCrypt.Net;
-using CryptSharp;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
+ 
+ 
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -19,14 +18,19 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginLista : ContentPage
     {
-        public ObservableCollection<pracownik> Items { get; set; }
+        public   ObservableCollection<Pracownik> ListaLogin { get; set; }
         SqlConnection connection;
         string konfiguracyjna;
 
         static string haslo;
-        static string _user;
+        static public string _user;
         static public string _nazwisko;
+        static public int _opeGid;
         static string haslo_chk;
+         
+
+        public ListView ListViewLogin { get { return MyListView; } }
+        public Entry enthaslo { get { return entry_haslo; } }
 
         public LoginLista()
         {
@@ -43,71 +47,31 @@ namespace App2.View
             };
             konfiguracyjna = app.BazaConf;
             GetLogins();
-             
-             
+
+            if (SettingsPage.SelectedDeviceType == 1)
+                UseAparatButton.IsVisible = false;
         }
-
-        //async void nowawersja()
-        //{
-        //    try
-        //    {
-        //        var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
-
-        //        if (!isLatest)
-        //        {
-        //            var update = await DisplayAlert("New Version", "There is a new version of this app available. Would you like to update now?", "Yes", "No");
-
-        //            if (update)
-        //            {
-        //                await CrossLatestVersion.Current.OpenAppInStore();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception s)
-        //    {
-
-        //        await DisplayAlert(null, s.Message, "OK");
-        //    }
-        //}
-
+ 
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+
+
+        public async void SkanujIdetyfikator()
         {
-            if (e.Item == null)
-                return;
-
-            var prac = e.Item as pracownik;
-            haslo = prac.opehaslo;
-            haslo_chk = prac.opechk;
-            _user = "Zalogowany : " +prac.opekod;
-            _nazwisko = prac.openazwa;
-            //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
-
             if (SettingsPage.SprConn())
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
                     AutoRotate = false,
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
-               
-                ZXing.BarcodeFormat.EAN_13,
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODABAR,
-                ZXing.BarcodeFormat.CODE_39,
-                },
-                    //CameraResolutionSelector = availableResolutions => {
-
-                    //    foreach (var ar in availableResolutions)
-                    //    {
-                    //        Console.WriteLine("Resolution: " + ar.Width + "x" + ar.Height);
-                    //    }
-                    //    return availableResolutions[0];
-                    //},
-                    
+                    PossibleFormats = new List<ZXing.BarcodeFormat>()
+                    { 
+                        //ZXing.BarcodeFormat.EAN_13,
+                        //ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.EAN_8,
+                        ZXing.BarcodeFormat.CODE_39,
+                    }, 
 
                 };
 
@@ -182,11 +146,11 @@ namespace App2.View
                             if (scanPage.IsScanning) scanPage.AutoFocus(); return true;
                         });
                         Navigation.PopModalAsync();
-                        entry_haslo.Text= (result.Text);
+                        entry_haslo.Text = (result.Text);
                         entry_haslo.Focus();
                     });
                 };
-                 
+
                 await Navigation.PushModalAsync(scanPage);
             }
             else
@@ -194,24 +158,44 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
 
             }
-
-
-            //Deselect Item
-          //  ((ListView)sender).SelectedItem = null;
         }
 
+        void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item == null)
+                return;
 
+            var prac = e.Item as Pracownik;
+            haslo = prac.opehaslo;
+            haslo_chk = prac.opechk;
+            _opeGid = prac.opegidnumer;
+            _user = prac.opekod; //"Zalogowany : "
+            _nazwisko = prac.openazwa;
+            
+
+           // SkanujIdetyfikator();
+             
+ 
+        }
+
+         
 
         private void GetLogins()
         {
-            Items = new ObservableCollection<pracownik>();
+            ListaLogin = new ObservableCollection<Pracownik>();
             SqlCommand command = new SqlCommand();
          
             connection.Open();
-            command.CommandText = "select ope_kod, Ope_Nazwisko,Ope_Haslo, Ope_HasloChk "+
-                                  "from "+ konfiguracyjna+".cdn.operatorzy  "+
-                                   " where Ope_Nieaktywny=0 and ope_administrator=0";
-
+            command.CommandText = $@"select ope_gidnumer, ope_kod, Ope_Nazwisko,Ope_Haslo, Ope_HasloChk 
+                                  from  {konfiguracyjna}.cdn.operatorzy  
+                                  where Ope_Nieaktywny=0
+                                  order by  case left(ope_kod,1)
+								   when 'k' then 1 
+								   when 'z' then 2 
+								   when 'd' then 3
+								   when 's' then 4
+								   when 'r' then 5 else 6 end";
+            //and ope_administrator=0
 
             SqlCommand query = new SqlCommand(command.CommandText, connection);
             //query.Parameters.AddWithValue("@konf", konfiguracyjna);
@@ -220,63 +204,71 @@ namespace App2.View
 
             while (rs.Read())
             {
-                 Items.Add(new pracownik
+                ListaLogin.Add(new Pracownik
                 {
                     opekod = Convert.ToString(rs["ope_kod"]),
                     openazwa = Convert.ToString(rs["Ope_Nazwisko"]),
                     opehaslo = Convert.ToString(rs["Ope_Haslo"]),
                     opechk = Convert.ToString(rs["Ope_HasloChk"]),
-                     
-                }); 
+                    opegidnumer = Convert.ToInt32(rs["ope_gidnumer"])
+                    
+
+                 }); 
             }
             rs.Close();
             rs.Dispose();
             connection.Close();
 
-            MyListView.ItemsSource = Items;
+            MyListView.ItemsSource = ListaLogin;
         }
-        
+
+        public bool IsPassCorrect()
+        {
+
+            var isNumeric = int.TryParse(entry_haslo.Text, out int n);
+
+            if (isNumeric&& entry_haslo.Text.Length>=6)
+            {
+                int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
+                int znak24 = Convert.ToInt32(entry_haslo.Text.Substring(1, 3));
+                if (znak1 == 0 && entry_haslo.Text.Length == 8)
+                {
+                    if (znak24 == _opeGid)
+                    {
+                        return true;
+                    }
+                    else { return false; }
+
+                }
+                else if (entry_haslo.Text.Length != 6)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+             
+        }
+
         private void Button_Clicked(object sender, EventArgs e)
         {
-            if (entry_haslo.Text!="")
+            if (entry_haslo.Text != null) //entry_haslo.Text!=""
             {
-                string hasloAll = haslo_chk + haslo;
-
-                //string passwordHash = BCrypt.Net.BCrypt.HashPassword(entry_haslo.Text);
-                //var ssss= BCrypt.Net.BCrypt.Verify(entry_haslo.Text, passwordHash);
-
-                var key = Encoding.UTF8.GetBytes(entry_haslo.Text);
-
-                DES DESalg = DES.Create();
-                string sData = entry_haslo.Text;
-
-                // Encrypt the string to an in-memory buffer.
-                byte[] Data = EncryptTextToMemory(sData, DESalg.Key, DESalg.IV);
-                var haaslo = Convert.ToBase64String(Data);
-                // Decrypt the buffer back to a string.
-                string Final = DecryptTextFromMemory(Data, DESalg.Key, DESalg.IV);
-
-                //var bytes = Encoding.UTF8.GetBytes(entry_haslo.Text); 
-                //var salt= Crypter.Blowfish.GenerateSalt();
-                //var hhaaaa = Crypter.Blowfish.Crypt(bytes, salt);
-                //var hsh = EncryptData(entry_haslo.Text, haslo_chk);
-                //var dec = DecryptData(hsh, haslo_chk);
-
-                //var haslohas = Encrypt(entry_haslo.Text, haslo_chk);   //te jest ok
-                //var dehaslo = Decrypt(haslohas, haslo_chk);
-
-                // string zahaslowane = Crypter.Blowfish.Crypt(key, haslo_chk);
-
-                bool check = Crypter.SafeEquals(entry_haslo.Text, Final.Replace("\0", ""));
-                if (check)
+                 
+                  
+                if (IsPassCorrect())
                 {
-                    // DisplayAlert(null, "Brawo- OK", "OK");
-                    View.StartPage.user = _user;
+                     
 
-                    //View.StartPage.CzyPrzyciskiWlaczone = true;
+                    View.StartPage.user = _user;  
+                    
+                   
                     View.StartPage startPage = new StartPage();
                     startPage.OdblokujPrzyciski();
-
+                     
                     Navigation.PopModalAsync();
                 }
                 else
@@ -287,168 +279,29 @@ namespace App2.View
             }
         }
 
-        private static readonly  byte[] salt = Encoding.ASCII.GetBytes("Xamarin.iOS Version: 7.0.6.168");
-
-        internal static string Encrypt(string textToEncrypt, string encryptionPassword)
-        {
-            var algorithm = GetAlgorithm(encryptionPassword);
-
-            //Anything to process?
-            if (textToEncrypt == null || textToEncrypt == "") return "";
-
-            byte[] encryptedBytes;
-            using (ICryptoTransform encryptor = algorithm.CreateEncryptor(algorithm.Key, algorithm.IV))
-            {
-                byte[] bytesToEncrypt = Encoding.UTF8.GetBytes(textToEncrypt);
-                encryptedBytes = InMemoryCrypt(bytesToEncrypt, encryptor);
-            }
-            return Convert.ToBase64String(encryptedBytes);
-        }
-
-        internal static string Decrypt(string encryptedText, string encryptionPassword)
-        {
-            var algorithm = GetAlgorithm(encryptionPassword);
-
-            //Anything to process?
-            if (encryptedText == null || encryptedText == "") return "";
-
-            byte[] descryptedBytes;
-            using (ICryptoTransform decryptor = algorithm.CreateDecryptor(algorithm.Key, algorithm.IV))
-            {
-                byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
-                descryptedBytes = InMemoryCrypt(encryptedBytes, decryptor);
-            }
-            return Encoding.UTF8.GetString(descryptedBytes);
-        }
-
-
-        private static byte[] InMemoryCrypt(byte[] data, ICryptoTransform transform)
-        {
-            MemoryStream memory = new MemoryStream();
-            using (Stream stream = new CryptoStream(memory, transform, CryptoStreamMode.Write))
-            {
-                stream.Write(data, 0, data.Length);
-            }
-            return memory.ToArray();
-        }
-
-        private static RijndaelManaged GetAlgorithm(string encryptionPassword)
-        {
-            // Create an encryption key from the encryptionPassword and salt.
-            var key = new Rfc2898DeriveBytes(encryptionPassword, salt);
-
-            // Declare that we are going to use the Rijndael algorithm with the key that we've just got.
-            var algorithm = new RijndaelManaged();
-            int bytesForKey = algorithm.KeySize / 8;
-            int bytesForIV = algorithm.BlockSize / 8;
-            algorithm.Key = key.GetBytes(bytesForKey);
-            algorithm.IV = key.GetBytes(bytesForIV);
-            return algorithm;
-        }
-
        
 
-
-
-        public static byte[] EncryptTextToMemory(string Data, byte[] Key, byte[] IV)
+        protected override bool OnBackButtonPressed()
         {
-            try
-            {
-                // Create a MemoryStream.
-                MemoryStream mStream = new MemoryStream();
-
-                // Create a new DES object.
-                DES DESalg = DES.Create();
-
-                // Create a CryptoStream using the MemoryStream 
-                // and the passed key and initialization vector (IV).
-                CryptoStream cStream = new CryptoStream(mStream,
-                    DESalg.CreateEncryptor(Key, IV),
-                    CryptoStreamMode.Write);
-
-                // Convert the passed string to a byte array.
-                byte[] toEncrypt = new ASCIIEncoding().GetBytes(Data);
-
-                // Write the byte array to the crypto stream and flush it.
-                cStream.Write(toEncrypt, 0, toEncrypt.Length);
-                cStream.FlushFinalBlock();
-
-                // Get an array of bytes from the 
-                // MemoryStream that holds the 
-                // encrypted data.
-                byte[] ret = mStream.ToArray();
-
-                // Close the streams.
-                cStream.Close();
-                mStream.Close();
-
-                // Return the encrypted buffer.
-                return ret;
-            }
-            catch (CryptographicException e)
-            {
-                Console.WriteLine("A Cryptographic error occurred: {0}", e.Message);
-                return null;
-            }
-
+            return base.OnBackButtonPressed();
         }
 
-        public static string DecryptTextFromMemory(byte[] Data, byte[] Key, byte[] IV)
-        {
-            try
-            {
-                // Create a new MemoryStream using the passed 
-                // array of encrypted data.
-                MemoryStream msDecrypt = new MemoryStream(Data);
 
-                // Create a new DES object.
-                DES DESalg = DES.Create();
-
-                // Create a CryptoStream using the MemoryStream 
-                // and the passed key and initialization vector (IV).
-                CryptoStream csDecrypt = new CryptoStream(msDecrypt,
-                    DESalg.CreateDecryptor(Key, IV),
-                    CryptoStreamMode.Read);
-
-                // Create buffer to hold the decrypted data.
-                byte[] fromEncrypt = new byte[Data.Length];
-
-                // Read the decrypted data out of the crypto stream
-                // and place it into the temporary buffer.
-                csDecrypt.Read(fromEncrypt, 0, fromEncrypt.Length);
-
-                //Convert the buffer into a string and return it.
-                //return new Encoding.UTF8.GetString(fromEncrypt);
-                return Encoding.UTF8.GetString(fromEncrypt);
-            }
-            catch (CryptographicException e)
-            {
-                Console.WriteLine("A Cryptographic error occurred: {0}", e.Message);
-                return null;
-            }
-        }
-
+        
         private void entry_haslo_Completed(object sender, EventArgs e)
         {
-            var key = Encoding.UTF8.GetBytes(entry_haslo.Text);
 
-            DES DESalg = DES.Create();
-            string sData = entry_haslo.Text;
+
              
-            byte[] Data = EncryptTextToMemory(sData, DESalg.Key, DESalg.IV);
-            var haaslo = Convert.ToBase64String(Data);
-
-            string Final = DecryptTextFromMemory(Data, DESalg.Key, DESalg.IV); 
-
-            bool check = Crypter.SafeEquals(entry_haslo.Text, Final.Replace("\0", ""));
-            if (check)
+            if (IsPassCorrect())
             {
-                // DisplayAlert(null, "Brawo- OK", "OK");
-                View.StartPage.user = _user;
 
-                //View.StartPage.CzyPrzyciskiWlaczone = true;
+
+                View.StartPage.user = _user;
+                 
                 View.StartPage startPage = new StartPage();
                 startPage.OdblokujPrzyciski();
+                 
 
                 Navigation.PopModalAsync();
             }
@@ -459,66 +312,29 @@ namespace App2.View
             }
         }
 
-        //public string EncryptData(string strData, string strKey)
-        //{
-        //    byte[] key = { }; //Encryption Key   
-        //    byte[] IV = { 10, 20, 30, 40, 50, 60, 70, 80 };
-        //    byte[] inputByteArray;
+        private void UseAparatToScan_Clicked_1(object sender, EventArgs e)
+        {
 
+            DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
+            ListViewLogin.ItemSelected += (source, args) =>
+            {
+                var pracownik = args.SelectedItem as Pracownik;
 
+                SkanujIdetyfikator();
 
-        //    try
-        //    {
-        //        key = Encoding.UTF8.GetBytes(strKey);
-        //        // DESCryptoServiceProvider is a cryptography class defind in c#.  
-        //        DESCryptoServiceProvider ObjDES = new DESCryptoServiceProvider();
+            };
+        }
 
-        //        inputByteArray = Encoding.UTF8.GetBytes(strData);
-        //        MemoryStream Objmst = new MemoryStream();
-        //        CryptoStream Objcs = new CryptoStream(Objmst, ObjDES.CreateEncryptor(null,null), CryptoStreamMode.Write);
-        //        Objcs.Write(inputByteArray, 0, inputByteArray.Length);
-        //        Objcs.FlushFinalBlock();
-
-        //        return Convert.ToBase64String(Objmst.ToArray());//encrypted string  
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        //public string DecryptData(string strData, string strKey)
-        //{
-        //    byte[] key = { };// Key   
-        //    byte[] IV = { 10, 20, 30, 40, 50, 60, 70, 80 };
-        //    byte[] inputByteArray = new byte[strData.Length];
-
-        //    try
-        //    {
-        //        key = Encoding.UTF8.GetBytes(strKey);
-        //        DESCryptoServiceProvider ObjDES = new DESCryptoServiceProvider();
-        //        inputByteArray = Convert.FromBase64String(strData);
-
-        //        MemoryStream Objmst = new MemoryStream();
-        //        CryptoStream Objcs = new CryptoStream(Objmst, ObjDES.CreateDecryptor(null, null), CryptoStreamMode.Write);
-        //        Objcs.Write(inputByteArray, 0, inputByteArray.Length);
-        //        Objcs.FlushFinalBlock();
-
-        //        Encoding encoding = Encoding.UTF8;
-        //        return encoding.GetString(Objmst.ToArray());
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+        
     }
 
-    public class pracownik
+    public  class Pracownik
     {
         public string opekod { get; set; }
         public string openazwa { get; set; }
         public string opehaslo { get; set; }
         public string opechk { get; set; }
+        public int  opegidnumer { get; set; }
+        
     }
 }

@@ -23,10 +23,11 @@ namespace App2.View
               
               //  if (SprConn())
               //  {
-                    DokMMViewModel = new ViewModel.DokMMViewModel();
+                    DokMMViewModel = new DokMMViewModel();
                     DokMM = new Model.DokMM();
                     BindingContext = Model.DokMM.dokMMs; //DokMMViewModel.dokMMs; 
                     ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;
+
                     flagaMM = 1;
                     StartTimer(true);
                // }
@@ -127,6 +128,28 @@ namespace App2.View
                     return false;
                 }
             }
+        }
+
+         
+        private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+             
+            var aaa = sender as CheckBox;
+
+            ViewCell cell = (sender as CheckBox).Parent.Parent as ViewCell;
+
+            Model.DokMM model = cell.BindingContext as Model.DokMM;
+
+            
+            Model.DokMM dokMM = new Model.DokMM();
+            dokMM.gidnumer = model.gidnumer;
+            dokMM.mag_dcl = model.mag_dcl;
+            dokMM.opis = model.opis;
+            dokMM.IsExport = model.IsExport;
+            dokMM.fl_header = 1;
+            dokMM.UpdateMM(dokMM);
+
+
         }
     }
 }

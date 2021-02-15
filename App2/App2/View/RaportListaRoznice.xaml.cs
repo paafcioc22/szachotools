@@ -26,87 +26,7 @@ namespace App2.View
         //List<ListDiffrence> listaRoznic;  
 
 
-        //public RaportListaRoznice(IOrderedEnumerable<Model.ListDiffrence> nowa2, IEnumerable<Model.PrzyjmijMMLista> listaZMM)
-        //{
-        //    InitializeComponent();
-
-        //    lista = Convert(nowa2.OrderByDescending(x=>x.ilosc));
-
-        //    var tmp = listaZMM.ToList();
-        //    lbl_NrDokumentu.Text = "Raport różnic :" +tmp[0].nrdokumentuMM;
-
-        //    var ile_brak = lista.Where(x => x.ilosc < 0).Count();
-        //    var ile_nadstan = lista.Where(x => x.ilosc > 0).Count();
-
-        //    if (ile_brak > 0)
-        //    {
-        //        braki_grupa = new Model.RaportRoznicGrupa("BRAKI",Color.Red);
-        //        listDiffrence.Add(braki_grupa);
-        //    }
-        //    if (ile_nadstan > 0)
-        //    {
-        //        nadstany_grupa = new Model.RaportRoznicGrupa("NADSTANY",Color.Green);
-        //        listDiffrence.Add(nadstany_grupa);
-        //    }
-
-
-
-        //    if (ile_brak > 0 || ile_nadstan > 0)
-        //    {
-        //        foreach (var el in lista)
-        //        {
-        //            if (el.ilosc < 0)
-        //            {
-        //                Model.ListDiffrence element = new Model.ListDiffrence();
-        //                element.twrkod = el.twrkod;
-        //                element.NrDokumentu = el.NrDokumentu;
-        //                element.ilosc = el.ilosc;
-        //                element.GidMagazynu = el.GidMagazynu;
-        //                element.DataDokumentu = el.DataDokumentu;
-        //                element.IleZeSkan = el.IleZeSkan;
-        //                element.IleZMM = el.IleZMM;
-        //                element.TwrNazwa = el.TwrNazwa;
-        //                // element.typ = el.IleZMM.ToString() + " vs " + el.IleZeSkan.ToString();
-        //                braki_grupa.Add(element);
-        //            }
-        //            else
-        //            {
-        //                Model.ListDiffrence element = new Model.ListDiffrence();
-        //                element.twrkod = el.twrkod;
-        //                element.NrDokumentu = el.NrDokumentu;
-        //                element.GidMagazynu = el.GidMagazynu;
-        //                element.DataDokumentu = el.DataDokumentu;
-        //                element.ilosc = el.ilosc;
-        //                element.IleZeSkan = el.IleZeSkan;
-        //                element.IleZMM = el.IleZMM;
-        //                element.TwrNazwa = el.TwrNazwa;
-
-        //                //element.typ = el.IleZMM.ToString() + " vs " + el.IleZeSkan.ToString();
-        //                nadstany_grupa.Add(element);
-        //            }
-        //        }
-
-        //        listDiffrence.OrderBy(n => n.Select(x => x.ilosc));
-
-        //    }
-             
-
-        //    if (ile_brak == 0 && ile_nadstan == 0)
-        //    {
-        //        //lbl_komunikat.Text = "Pełna zgodność dostawy- brawo";
-        //        nadstany_grupa = new Model.RaportRoznicGrupa("Pełna zgodność dostawy",Color.LightGreen);
-        //        listDiffrence.Add(nadstany_grupa);
-        //        //Model.ListDiffrence element = new Model.ListDiffrence();
-        //        //element.twrkod = "Brawo";
-        //        //nadstany_grupa.Add(element);
-        //        MyListView.ItemsSource = listDiffrence;//lista; }
-
-        //    }
-        //    else
-        //    {
-        //        MyListView.ItemsSource = listDiffrence;//lista; }
-        //    }
-        //}
+         
 
         static private int _gidnumer;
         static private int _XLgidnumer;
@@ -119,9 +39,7 @@ namespace App2.View
         {
             InitializeComponent();
             _gidnumer = gidnumer;
-            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-
-             
+            _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection(); 
 
             //  _connection.CreateTableAsync<Model.RaportListaMM>();
 
@@ -230,7 +148,7 @@ namespace App2.View
                     DataDokumentu = ww.DatadokumentuMM,
                     TwrNazwa = ww.nazwa,
                     GidDokumentu= ww.GIDdokumentuMM,
-                    Operator = View.LoginLista._nazwisko,
+                    Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
                     XLGidMM = ww.XLGIDMM
                 });
                 _nrdokumentu = ww.nrdokumentuMM;
@@ -257,7 +175,7 @@ namespace App2.View
                     GidMagazynu = _MagGidnumer,
                     TwrNazwa = ww.nazwa,
                     GidDokumentu = _gidnumer,
-                    Operator = View.LoginLista._nazwisko,
+                    Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
                     XLGidMM = _XLgidnumer
                 });
             }
@@ -396,61 +314,67 @@ namespace App2.View
         private async void Btn_SendRaport_Clicked(object sender, EventArgs e)
         {
 
-
-
-
-            var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
-            if (action)
+             var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
+            try
             {
-                if (lista.Count != 0)
+
+                if (action)
                 {
-                    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
-                    if (Maglista.ToString() == "OK")
+                    if (lista.Count != 0)
                     {
-                        await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
-
-                        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
-
-                        //var wpis = wynik[0];
-
-                        foreach (var wpis in wynik)
+                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                        if (Maglista.ToString() == "OK")
                         {
-                            wpis.Sended = true;
-                            await _connection.UpdateAsync(wpis);
+                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+
+                            var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
+
+                            //var wpis = wynik[0];
+
+                            foreach (var wpis in wynik)
+                            {
+                                wpis.Sended = true;
+                                await _connection.UpdateAsync(wpis);
+                            }
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                            //await Navigation.PopToRootAsync();
+
                         }
                     }
                     else
                     {
-                        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                        //await Navigation.PopToRootAsync();
+                        lista.Add(new Model.ListDiffrence
+                        {
+                            twrkod = "Lista zgodna",
+                            IleZeSkan = 0,
+                            IleZMM = 0,
+                            ilosc = 0,
+                            NrDokumentu = _nrdokumentu,
+                            GidMagazynu = _MagGidnumer,
+                            DataDokumentu = _DataDokumentu,
+                            Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
+                            XLGidMM = _XLgidnumer
+                        });
 
+                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                        if (Maglista.ToString() == "OK")
+                        {
+                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                        }
                     }
                 }
-                else
-                {
-                    lista.Add(new Model.ListDiffrence
-                    {
-                        twrkod = "Lista zgodna",
-                        IleZeSkan = 0,
-                        IleZMM = 0,
-                        ilosc = 0,
-                        NrDokumentu = _nrdokumentu,
-                        GidMagazynu = _MagGidnumer,
-                        DataDokumentu = _DataDokumentu,
-                        Operator = View.LoginLista._nazwisko,
-                        XLGidMM = _XLgidnumer
-                    });
+            }
+            catch (Exception x)
+            {
 
-                    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
-                    if (Maglista.ToString() == "OK")
-                    {
-                        await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
-                    }
-                    else
-                    {
-                        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                    }
-                }
+                await DisplayAlert(null, x.Message, "OK");
             }
         }
     }

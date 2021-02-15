@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:App2.View"
+             x:Class="App2.View.Drukowanie">
+
+    <Grid Padding="20" ColumnSpacing="10" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="lblMaker" Grid.Row="0" Grid.ColumnSpan="2" Text="SEWOO Xamarin CPCL Sample"/>
+
+        <!-- Input Bluetooth address to connect -->
+        <Label x:Name="textBlock_address" Grid.Row="1" Grid.ColumnSpan="1" Grid.Column="0" Text="BT address : "/>
+        <Editor x:Name="txtAddress" Grid.Row="1" Grid.ColumnSpan="1" Grid.Column="1" Text="00:00:00:00:00:00" FontSize="Small"/>
+
+        <!-- Select interface to connect -->
+        <Label x:Name="textMediaType" Grid.Row="2" Grid.ColumnSpan="1" Grid.Column="0" Text="Media Type : "/>
+        <Picker x:Name="cboMediaType" Grid.Row="2" Grid.ColumnSpan="1" Grid.Column="1">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Gap</x:String>
+                    <x:String>Black mark</x:String>
+                    <x:String>Continuous</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <!-- Connect and disconnect button -->
+        <Button x:Name="btnConnect" Grid.Row="3" Grid.Column="0" Text="Connect" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnConnectClicked"/>
+        <Button x:Name="btnDisconnect" Grid.Row="3" Grid.Column="1" Text="Disconnect" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnDisconnectClicked"/>
+
+        <!-- Button for printing -->
+        <Button x:Name="btnPrintText" Grid.Row="4" Grid.ColumnSpan="1" Grid.Column="0" Text="Text" Font="Bold" TextColor="Black" BackgroundColor="#bbdefb" Clicked="btnPrintTextClicked"/>
+       
+       
+        
+
+        <!-- Display the paired bluetooth printers -->
+        <Label x:Name="connectableListBlock" Grid.Row="6" Grid.ColumnSpan="2" Text="Connectable bluetooth device list"/>
+        <ListView x:Name ="connectableDeviceView" Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0" ItemSelected="OnConnectableDeviceSelection">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail = "{Binding Address}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+
+</ContentPage>

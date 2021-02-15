@@ -2,22 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.StartPage"
+              
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
-               xmlns:local="clr-namespace:App2"
+                
              >
     <StackLayout VerticalOptions="FillAndExpand" BackgroundColor="#F5FFFF" Padding="0,50,0,0">
-        <Label Text="{Binding  }" x:Name="lbl_user" HorizontalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
-        <Grid  Padding="40" ColumnSpacing="25" RowSpacing="25" VerticalOptions="FillAndExpand">
-            <!--<Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" /> 
-                <ColumnDefinition Width="2*" /> 
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>-->
-            <Button Text="Przyjmij MM" Grid.Column="0" Grid.Row="0" 
+        <Label Text="" x:Name="lbl_user" HorizontalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="Black" />
+        <Grid  Padding="20" ColumnSpacing="25" RowSpacing="25" VerticalOptions="FillAndExpand"  >
+
+            <Button Text="Przyjmij MM" Grid.Column="0" Grid.Row="0"  Grid.RowSpan="2"
                     BackgroundColor="DarkCyan" 
                     FontSize="Medium" 
                     FontAttributes="Bold" 
@@ -30,13 +24,11 @@
                     ContentLayout="Top,20" x:Name="btn_przyjmijMM"
                     
                     />
-            <!--IsEnabled="{Binding Path=(local:Analyze.DataPresent)}"-->
-            <!--IsEnabled="{Binding Source={x:Static local:Model.Analyze.DataPresent}}"-->
             <Button Text="Utwórz MM" Grid.Column="1" Grid.Row="0" 
                     BackgroundColor="DarkCyan" 
                     FontSize="Medium" 
                     TextColor="Bisque"   
-                    FontAttributes="Bold" 
+                    
                     CornerRadius="10" 
                     BorderColor="mediumturquoise" 
                     BorderWidth="5"
@@ -44,7 +36,23 @@
                     ContentLayout="Top,40" 
                     Clicked="BtnCreateMm_Clicked" x:Name="btn_CreateMM"
                     />
-            <Button Text="Weryfikator Cen" Grid.Column="0" Grid.Row="1" 
+            
+            <Button Text="Utworz Paczke" Grid.Column="1" Grid.Row="1"  
+                    BackgroundColor="DarkCyan" 
+                    FontSize="10" 
+                    
+                    TextColor="Bisque"   
+                    CornerRadius="10" 
+                    BorderColor="mediumturquoise"   
+                    BorderWidth="5"
+                    Image="icons8_fedex.9"
+                    Clicked="BtnCreatePaczka_Clicked"
+                    ContentLayout="Top,20"  
+                    
+                    />
+            <!--IsEnabled="{Binding Path=(local:Analyze.DataPresent)}"-->
+            <!--IsEnabled="{Binding Source={x:Static local:Model.Analyze.DataPresent}}"-->
+            <Button Text="Weryfikator Cen" Grid.Column="0" Grid.Row="2"  Grid.RowSpan="2" 
                     BackgroundColor="DarkCyan" 
                     FontSize="14" 
                     TextColor="Bisque"  
@@ -58,31 +66,48 @@
                     x:Name="btn_weryfikator" 
 
                 />
-            <Button Text="Zrób przecenę" Grid.Column="1" Grid.Row="1" 
-                    BackgroundColor="DarkGray" 
+            <Button Text="Lista Akcji" Grid.Column="1" Grid.Row="2"  Grid.RowSpan="2" 
+                    BackgroundColor="DarkCyan" 
                     FontSize="Medium" 
-                    TextColor="DarkCyan"  
+                    TextColor="Bisque"  
                     CornerRadius="10" 
-                    BorderColor="black" 
+                    BorderColor="mediumturquoise" 
                     BorderWidth="5" 
                     FontAttributes="Bold" 
                     Image="znizka100"
                     ContentLayout="Top,1"
-                    
-                    
+                    x:Name="btn_ListaAkcji"
+                    Clicked="Btn_ListAkcje_Clicked"
                     />
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
         </Grid>
-
+        <!--<ActivityIndicator x:Name="WaitIco2" 
+                           IsRunning="False" 
+                           IsVisible="false" 
+                           HorizontalOptions="Center" 
+                           Color="Black"/>-->
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
-            <Button Text="Zaloguj" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="65" Clicked="Btn_Login_Clicked" x:Name="btn_login"/>
-        
-            <Image Source="ustawienia64" HorizontalOptions="End" Scale="2" >
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  x:Name="btn_settings"/>
-                </Image.GestureRecognizers>
-            </Image>
+            <ImageButton Source="help100.9"  
+                         Clicked="Help_Clicked"  
+                         BackgroundColor="#F5FFFF"/>
+
+            <Button Text="Logowanie" FontAttributes="Bold"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Center" 
+                    HeightRequest="65"
+                    BorderWidth="3"
+                    Clicked="Btn_Login_Clicked" 
+                    BorderColor="DarkCyan"
+                    x:Name="btn_login" 
+                    BackgroundColor="#54c4b4" 
+                    CornerRadius="15" Margin="15,0,15,0" TextColor="AntiqueWhite"/>
+
+            <ImageButton Source="settings_3.9"  
+                         Clicked="ImageButton_Clicked" 
+                          
+                         BackgroundColor="#F5FFFF"/>
+
             
         </StackLayout>
     </StackLayout>

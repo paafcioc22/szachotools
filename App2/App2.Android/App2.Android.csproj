@@ -16,7 +16,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -34,7 +34,11 @@
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis />
+    <AndroidSupportedAbis>armeabi-v7a;x86;arm64-v8a</AndroidSupportedAbis>
+    <EnableProguard>false</EnableProguard>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,11 +52,15 @@
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis />
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidSupportedAbis>armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <EnableProguard>true</EnableProguard>
     <MandroidI18n>Mideast;West</MandroidI18n>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -92,27 +100,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs">
-      <Version>7.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="BCrypt.Net-Next">
-      <Version>3.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="CryptSharp">
-      <Version>1.3.0</Version>
+    <PackageReference Include="Plugin.SewooXamarin.SDK">
+      <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.6.258-beta</Version>
+      <Version>1.6.292</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SqlClient">
-      <Version>4.6.0-preview2-26905-02</Version>
+      <Version>4.7.0</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
-    <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
-    <PackageReference Include="Xamarin.Android.Support.v4" Version="27.0.2.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="27.0.2.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2.1" />
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>1.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Forms">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>4.3.0.991250</Version>
+    </PackageReference>
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
     </PackageReference>
@@ -121,6 +126,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidBlueToothService.cs" />
     <Compile Include="AppVersionProvider.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -133,6 +139,7 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="WebSerwisSzacho.cs" />
+    <Compile Include="WiFiConnector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -163,9 +170,6 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\show_pwd.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\App2\App2.csproj">
       <Project>{65D16361-4D6F-49CE-ACEE-4D0C631951AB}</Project>
       <Name>App2</Name>
@@ -175,19 +179,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\hide_pwd.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Effects\hide_pwd.png" />
-    <Content Include="Effects\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\show_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\hide_pwd.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\show_pwd.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\add48x2.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\save48x2.png" />
     <AndroidResource Include="Resources\drawable\add48x2.png" />
@@ -219,39 +210,29 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\NewSzacho.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\NewSzacho.png" />
     <AndroidResource Include="Resources\drawable-hdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-hdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-hdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\kod96.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\skaner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\skaner100.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\znizka100.png" />
     <AndroidResource Include="Resources\drawable\dodaj100.png" />
-    <AndroidResource Include="Resources\drawable\kod96.png" />
     <AndroidResource Include="Resources\drawable\skaner.png" />
     <AndroidResource Include="Resources\drawable\skaner100.png" />
     <AndroidResource Include="Resources\drawable\znizka100.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ustawienia64.png" />
-    <AndroidResource Include="Resources\drawable\ustawienia64.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\barcode150.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\metka128.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\skaner64.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\Sended.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\NotSended.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Sended.png" />
@@ -277,5 +258,154 @@
       </CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\szacho.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\help100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\help100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\help100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\help100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\help100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_settings_100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_settings_100.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\settings_3.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_shortcut_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_add_property_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_analyze_48.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons8_fedex.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons8_fedex.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons8_fedex.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons8_fedex.9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons8_fedex.9.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties TriggeredFromHotReload="False" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

@@ -51,7 +51,7 @@ namespace App2.View
                     przyjmijMMLista.GIDMagazynuMM = ss.GIDMagazynuMM;
                     przyjmijMMLista.DatadokumentuMM = ss.DatadokumentuMM;
                     przyjmijMMLista.XLGIDMM = ss.XLGIDMM;
-                    przyjmijMMLista.Operator = View.LoginLista._nazwisko;
+                    przyjmijMMLista.Operator = View.LoginLista._user+" "+ View.LoginLista._nazwisko;
                     Model.PrzyjmijMMLista.przyjmijMMListas.Add(przyjmijMMLista);
                    // await _connection.InsertAsync(przyjmijMMLista);
                 }
@@ -65,30 +65,24 @@ namespace App2.View
         }
 
 
-        //public PrzyjmijMM_ListaElementowMM(Model.RaportListaMM raportListaMM)
-        //{
-        //    InitializeComponent();
 
-        //    //Model.PrzyjmijMMClass.ListOfTwrOnMM.Clear();
-        //    //Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
-
-        //    //przyjmijMMClass.GetlistMMElements(EAN_mmka, gidnumer);
-        //    //tytul.Text = przyjmijMMClass.GetNrDokMmp;// mmp; 
-
-        //    MyListView.ItemsSource = Model.RaportListaMM.RaportListaMMs;
-        //}
-
-
-         void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        bool _userTapped;
+        void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+
+            if (_userTapped)
+                return;
+
+            _userTapped = true;
             if (e.Item == null)
                 return;
-            //var mm = e.Item as Model.PrzyjmijMMClass;
+            var mm = e.Item as Model.PrzyjmijMMClass;
 
             //await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-            //await Navigation.PushModalAsync(new ListaMMP(null,mm.GIDdokumentuMM));
+             Navigation.PushModalAsync(new View.RaportLista_AddTwrKod(mm));
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
+            _userTapped = false;
         }
 
 
@@ -103,7 +97,7 @@ namespace App2.View
             try
             {
                 await Navigation.PushModalAsync(new RaportListaElementow(_gidnumer));  //!!
-                // var ile = Model.RaportListaMM.RaportListaMMs.Count;
+
                 var ile = await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == _gidnumer).ToListAsync();
 
                 if (ile.Count == 0)

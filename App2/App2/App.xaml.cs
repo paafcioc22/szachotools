@@ -1,8 +1,12 @@
 ﻿using App2.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+//using Microsoft.AppCenter;
+//using Microsoft.AppCenter.Push;
+ 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
 {
@@ -16,11 +20,18 @@ namespace App2
         private const string password = "password";
         private const string bazaProd = "bazaProd";
         private const string cennik = "cennik";
+        private const string drukarka = "drukarka";
+        private const string skanowanie = "skanowanie";
+        private const string magGidnumer = "magGidnumer";
+        private const string czycena1 = "czycena1";
 
+        
         public App()
         {
-            InitializeComponent(); 
-            MainPage = new NavigationPage( new View.StartPage());
+            InitializeComponent();
+            //AppCenter.Start("e5e8c9f5-7520-4f24-937e-3c0d00a929b0", typeof(Push));
+            //AppCenter.Start("e5e8c9f5-7520-4f24-937e-3c0d00a929b0", typeof(Push));
+            MainPage = new NavigationPage( new View.SplashPage());
         }
 
 
@@ -31,19 +42,45 @@ namespace App2
 
         protected override void OnSleep()
         {
-            View.StartPage.user = "Wylogowany";
-            //View.StartPage.CzyPrzyciskiWlaczone = false;
 
-            //Model.Analyze.DataPresent = false;
-            //View.StartPage.blokujPrzyciski();
 
-            //View.StartPage startPage = new View.StartPage();
-            //startPage.blokujPrzyciski();
+
+            var pages = Application.Current.MainPage.Navigation.ModalStack;
+            if (pages.Count > 0)
+            {
+                var nazwa = pages[pages.Count - 1].GetType().Name;
+                List<string> listaOkienNoLogOff = new List<string>()
+                {
+                    "RaportLista_AddTwrKod",
+                    "WeryfikatorCenPage",
+                    "AddTwrPage",
+                    "List_ScanPage",
+
+                };
+                
+
+                if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())
+                //if (nazwa == "RaportLista_AddTwrKod" || nazwa == "WeryfikatorCenPage")
+                    return;
+
+                   View.StartPage.user = "Wylogowany";
+
+                //if(nazwa != "WeryfikatorCenPage")
+                //    View.StartPage.user = "Wylogowany";
+
+            }
+            else {
+                View.StartPage.user = "Wylogowany";
+
+            }
+
+
+            
         }
 
         protected override void OnResume()
         {
-          //  View.StartPage.user = "";
+           
         }
 
         public string BazaConf
@@ -115,6 +152,7 @@ namespace App2
             }
 
         }
+
         public int Cennik
         {
             get
@@ -128,6 +166,67 @@ namespace App2
                 Properties[cennik] = value;
             }
 
+        }
+
+        public Int16 MagGidNumer
+        {
+            get
+            {
+                if (Properties.ContainsKey(magGidnumer))
+                    return (Int16)Properties[magGidnumer];
+                return 0;
+            }
+            set
+            {
+                Properties[magGidnumer] = value;
+            }
+
+        }
+
+        public string Drukarka
+        {
+            get
+            {
+                if (Properties.ContainsKey(drukarka))
+                    return (string)Properties[drukarka];
+                return "00:00:00:00:00:00";
+            }
+            set
+            {
+                Properties[drukarka] = value;
+            }
+
+        }
+
+        public sbyte Skanowanie
+        {
+            get
+            {
+                if (Properties.ContainsKey(skanowanie))
+                    return (sbyte)Properties[skanowanie];
+                return 0;
+            }
+            set
+            {
+                Properties[skanowanie] = value;
+            }
+
+        }
+
+         
+
+        public bool CzyCena1 
+        {
+            get
+            {
+                if (Properties.ContainsKey(czycena1))
+                    return (bool)Properties[czycena1];
+                return false;
+            }
+            set
+            {
+                Properties[czycena1] = value;
+            }
         }
 
 

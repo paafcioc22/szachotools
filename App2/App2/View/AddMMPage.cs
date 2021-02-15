@@ -32,7 +32,7 @@ namespace App2.View
 
             _opis = new Entry();
             _opis.Keyboard = Keyboard.Text;
-            _opis.Placeholder = "Opis";
+            _opis.Placeholder = "Opis ( Nie wpisuj tu danych osobowych!)";
             stackLayout.Children.Add(_opis);
 
             //_btnListSklep = new Button();
@@ -43,7 +43,7 @@ namespace App2.View
             _btnSave = new Button();
             _btnSave.Text = "Utwórz MMkę";
             _btnSave.Clicked += Button_Clicked;
-            _btnSave.Image = "create48x2.png";
+            _btnSave.ImageSource = "create48x2.png";
             _btnSave.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(_btnSave);
             //stackLayout.HorizontalOptions = LayoutOptions.Center;
@@ -81,26 +81,36 @@ namespace App2.View
 
         private  void Button_Clicked(object sender, EventArgs e) //zapisz mm
         {
-            if (_magDcl.Text == null || _opis.Text == null)
+            try
             {
-                DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
+                if (_magDcl.Text == null || _opis.Text == null)
+                {
+                    DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");
+                }
+                else
+                {
+                    Model.DokMM dokMM = new Model.DokMM();
+                    dokMM.mag_dcl = _magDcl.Text;
+                    dokMM.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
+                    dokMM.fl_header = 1;
+
+                    dokMM.SaveMM(dokMM);
+                    DisplayAlert(null, "Utworzono MM dla : " + dokMM.mag_dcl, "OK");
+
+                    Navigation.PopModalAsync();
+                    //dokMM.getMMki();
+                    dokMMs = new Model.DokMM().getMMki();
+                    Model.DokMM.dokElementy.Clear();
+                    var mm = dokMMs.OrderByDescending(x => x.gidnumer).First();
+
+
+                    if (!List_AkcjeView.TypAkcji.Contains("Zwrot"))
+                        Navigation.PushModalAsync(new View.AddElementMMList(mm));
+                }
             }
-            else { 
-            Model.DokMM dokMM = new Model.DokMM();
-            dokMM.mag_dcl = _magDcl.Text;
-            dokMM.opis = _opis.Text;
-            dokMM.fl_header = 1;
-
-            dokMM.SaveMM(dokMM);
-              DisplayAlert(null, "Utworzono MM dla : " + dokMM.mag_dcl, "OK");
-
-            Navigation.PopModalAsync();
-            //dokMM.getMMki();
-            dokMMs = new Model.DokMM().getMMki();
-            Model.DokMM.dokElementy.Clear();
-            var mm = dokMMs.OrderByDescending(x => x.gidnumer).First();
-             
-            Navigation.PushModalAsync(new View.AddElementMMList(mm));
+            catch (Exception s)
+            {
+                 DisplayAlert(null, s.Message, "OK");
             }
 
         }

@@ -6,16 +6,20 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using ZXing.Net.Mobile;
-using Acr.UserDialogs;
+using ZXing.Net.Mobile; 
 using System.Net;
 using Android.Content;
 using Android.Util;
 using Xamarin.Forms;
+using FFImageLoading.Forms.Platform;
+
+//using Microsoft.AppCenter.Push;
+//using Microsoft.AppCenter;
+
 
 namespace App2.Droid
-{
-    [Activity(Label = "SzachoTools", Icon = "@drawable/NewSzacho", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+{//, WindowSoftInputMode = Android.Views.SoftInput.AdjustResize
+    [Activity(Label = "SzachoTools", Icon = "@drawable/NewSzacho", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation|ConfigChanges.KeyboardHidden|ConfigChanges.Keyboard)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -23,22 +27,41 @@ namespace App2.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+
             base.OnCreate(savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);  // dodane do essential
+
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-           // UserDialogs.Init(this);
-            UserDialogs.Init(() => this);
+            // UserDialogs.Init(this);
+            //UserDialogs.Init(() => this);
+        
+            //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            //CachedImageRenderer.Init(true); 
+
+            CachedImageRenderer.Init(true);
+            CachedImageRenderer.InitImageViewHandler();
+
+
+            //Push.SetSenderId("466514621461");
+
             LoadApplication(new App());
-            Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
+           // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());
-             
+           // Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
         }
+         
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
 
+
+            //dodane do essential
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         //private void CheckUpdate(Action doIfUpToDate)
         //{
         //    if (NeedUpdate())

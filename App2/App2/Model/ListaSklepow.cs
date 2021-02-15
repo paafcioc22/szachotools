@@ -8,5 +8,6 @@ namespace App2.Model
     {
         public string mag_kod { set; get; }
         public string mag_nazwa { set; get; }
+        public string mag_gidnumer { set; get; }
     }             
 }

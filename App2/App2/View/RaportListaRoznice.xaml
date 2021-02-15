@@ -36,12 +36,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Vertical" Padding="15,0,0,0">
-                            <!--<StackLayout Orientation="Horizontal" Padding="15,0,0,0">
-                                <Label Text="{Binding twrkod}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                                <Label Text="{Binding ilosc}" HorizontalOptions="EndAndExpand" WidthRequest="40" VerticalOptions="Center"/>
                             
-                            </StackLayout>
-                            <Label Text="{Binding TwrNazwa}" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>--> 
                         <StackLayout Orientation="Horizontal" Padding="2"  VerticalOptions="Center">
                              
                             <StackLayout Orientation="Vertical"    
@@ -58,9 +53,9 @@
                                 <Label Text="{Binding ilosc}"  
                                            FontSize="16"  
                                            HorizontalOptions="End" 
-                                           VerticalOptions="Center" Margin="0,0,15,0"/>
+                                           VerticalOptions="Center" Margin="0,0,25,0"/>
                             </StackLayout>
-                            <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>
+                            <!--<Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>-->
                         </StackLayout>
                         </StackLayout>
 

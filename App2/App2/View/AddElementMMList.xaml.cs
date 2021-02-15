@@ -25,7 +25,7 @@ namespace App2.View
             _magDcl.TextColor = (mmka.nrdok == "" ? Color.Bisque : Color.LightCyan);
             //_magDcl.InputTransparent= (mmka.nrdok == "" ? true : false);
             _magDcl.WidthRequest = (mmka.nrdok == "" ? 70 : 300);
-            _opis.Text = mmka.opis;
+            _opis.Text = mmka.opis  ;
             _opis.IsEnabled = (mmka.nrdok == "" ? true : false);
             _opis.TextColor= (mmka.nrdok == "" ? Color.Bisque : Color.LightCyan);
             _opis.WidthRequest = 300;
@@ -43,25 +43,7 @@ namespace App2.View
             int _gidnumer;
 
 
-        //public Item SelectedItem
-        //{
-        //    get
-        //    {
-        //        return _selectedItem;
-        //    }
-        //    set
-        //    {
-        //        _selectedItem = value;
-
-        //        if (_selectedItem == null)
-        //            return;
-
-        //        SomeCommand.Execute(_selectedItem);
-
-        //        SelectedItem = null;
-        //    }
-        //}
-
+         
 
 
 
@@ -105,7 +87,7 @@ namespace App2.View
                 var kod = e.Item as Model.DokMM;
                 switch (odp)
                 {
-                    case "Usuń":
+                case "Usuń":
                         var action = await DisplayAlert(null, "Czy chcesz usunąć "+kod.twrkod+" z listy?", "Tak", "Nie");
                         if (action)
                         {
@@ -117,7 +99,7 @@ namespace App2.View
                             Model.DokMM.DeleteElementMM(usunMM);
                         }
                         break;
-                    case "Edytuj":
+                case "Edytuj":
                         // await DisplayAlert(null, odp, "OK");
                         flaga += 1;
                         if (flaga > 1) { StartTimer(false); }
@@ -126,6 +108,15 @@ namespace App2.View
                         Model.DokMM dokMM = new Model.DokMM();
                         dokMM.getElementy(mmka.gidnumer);
                         await Navigation.PushModalAsync(new View.AddTwrPage(mmka));
+                        break;
+                    case "Pokaż zdjęcie":
+                        flaga += 1;
+                        if (flaga > 1) { StartTimer(false); }
+                        var mmka2 = e.Item as Model.DokMM;
+                        ((ListView)sender).SelectedItem = null;
+                        Model.DokMM dokMM2 = new Model.DokMM();
+                        dokMM2.getElementy(mmka2.gidnumer);
+                        await Navigation.PushModalAsync(new View.AddTwrPage(mmka2,"foto"));
                         break;
                 }
             }

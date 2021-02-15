@@ -15,15 +15,26 @@ namespace App2.Model
         public int gidnumer { set; get; }
         public string mag_dcl { set; get; }
         public string twrkod { set; get; }
+        public string twrNazwa { set; get; }
         public int szt { set; get; }
         public Int16 fl_header { set; get; }
         public Int16 statuss { set; get; }
         public string opis { set; get; }
         public string nrdok { set; get; }
         public string symbol { set; get; }
-
+        private bool _isExport { set; get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        public Boolean IsExport
+        {
+            get { return _isExport; }
+            set
+            {
+                _isExport = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExport)));
+            }
+        }
 
         public string Mag_Nrdok
         {
@@ -65,6 +76,7 @@ namespace App2.Model
             }
         }
 
+         
 
         //static public List<DokMM> dokMMs = new List<DokMM>();
 
@@ -116,7 +128,14 @@ namespace App2.Model
                         " [opis] [varchar] (255) NULL, " +
                         " [nrdok] [varchar] (55) NULL, " +
                         " [gid_optima] int NULL " +
-                        ") ON[PRIMARY]  end";
+                        ",[IsExport] [bit] NULL"+
+                        ") ON[PRIMARY]  end " +
+                        "else "+
+      "IF COL_LENGTH('[dbo].[MM]', 'IsExport') IS NULL "+ 
+       " begin " +
+       "   alter table[dbo].[MM] " + 
+       "   add[IsExport][bit] NULL " +
+      "end";
 
             string query = "declare @id int " +
                     "set @id = (select IsNull(MAX(gidnumer), 0) from [dbo].[MM])+1 " +
@@ -128,11 +147,15 @@ namespace App2.Model
                     "0," +                                  //status
                     "'" + dokMM.opis + "'," +                    //opis
                     "null," +                                //nrdok         
-                    "null" +                                //gidoptima         
+                    "null," +                                //gidoptima         
+                    Convert.ToByte(dokMM.IsExport) +
                     ") ";
 
-            SqlCommand command = new SqlCommand( create + " " + query,connection);
+            //SqlCommand command = new SqlCommand( create + " " + query,connection);
+            SqlCommand command = new SqlCommand( create ,connection);
+            SqlCommand command2 = new SqlCommand( query ,connection);
             command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
             connection.Close();
 
             dokMMs.Add(new DokMM
@@ -141,16 +164,17 @@ namespace App2.Model
                 mag_dcl =dokMM.mag_dcl ,
                 opis = dokMM.opis,
                 nrdok = dokMM.nrdok,
-                statuss=dokMM.statuss
+                statuss=dokMM.statuss,
+                IsExport=dokMM.IsExport
         });
 
             return true;
         }
 
 
-        public static   ObservableCollection<DokMM> dokMMs = new ObservableCollection<DokMM>(); 
-        public static   ObservableCollection<DokMM> dokElementy = new ObservableCollection<DokMM>();
-
+        public static ObservableCollection<DokMM> dokMMs = new ObservableCollection<DokMM>(); 
+        public static ObservableCollection<DokMM> dokElementy = new ObservableCollection<DokMM>();
+        //public static List<DokMM> listaIstniecjacych = new List<DokMM>();
 
         public ObservableCollection<DokMM> getMMki()
         {
@@ -173,6 +197,8 @@ namespace App2.Model
 
             while (sqlData.Read())
             {
+
+               //SqlDependency
                 dokMMs.Add(new DokMM
                 {
                     gidnumer = Convert.ToInt32(sqlData["gidnumer"]),
@@ -181,12 +207,15 @@ namespace App2.Model
                     nrdok = Convert.ToString(sqlData["nrdok"]),
                     statuss = Convert.ToInt16(sqlData["statuss"])
                     ,_theColor = (statuss==1?Color.Black:Color.Green)
+
+                    ,IsExport= sqlData["IsExport"] is DBNull ? false :Convert.ToBoolean(sqlData["IsExport"]) 
                 });
             }
             sqlData.Close();
             sqlData.Dispose();
             connection.Close();
 
+            
             //MainPage mainPage = new MainPage();
             //mainPage.ListaMMek.ItemsSource = dokMMs;
              
@@ -194,7 +223,64 @@ namespace App2.Model
         }
 
 
+        public List<DokMM> ListaIstniejacych(string  twrkod)
+        {
+            List<DokMM> dokMMs = new List<DokMM>();
+            connection.Open();
+            string query =$@" select gidnumer, mag_dcl, opis, 
+                      (select ile from dbo.[MM] where gidnumer=nad.gidnumer and kod = '{twrkod}')ile
+                      from dbo.mm nad where 
+                      gidnumer in (
+			                    select gidnumer from  dbo.mm pod
+			                    where kod='{twrkod}' and statuss=0  
+			                    )
+                      and [fl_header]=1 and statuss=0  
+                            ";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            SqlDataReader sqlData = command.ExecuteReader();
+
+            while (sqlData.Read())
+            {
+
+                dokMMs.Add(new DokMM
+                {
+                    gidnumer = Convert.ToInt32(sqlData["gidnumer"]),
+                    mag_dcl = Convert.ToString(sqlData["mag_dcl"]),
+                    opis = Convert.ToString(sqlData["opis"]), 
+                    szt = Convert.ToInt16(sqlData["ile"]) 
+                });
+            }
+            sqlData.Close();
+            sqlData.Dispose();
+            connection.Close();
+             
+            return dokMMs;
+        }
+
         int ile;
+
+
+        public bool ExistsOtherDocs(DokMM dokMM)
+        {
+            bool tmp = false;
+            
+            connection.Open();
+
+            string query = $" select * from [dbo].[MM]  where gidnumer<>{ dokMM.gidnumer} " ;
+            SqlCommand command2 = new SqlCommand(query, connection);
+            SqlDataReader sqlData = command2.ExecuteReader();
+            if(sqlData.HasRows)
+            {
+                tmp = true;
+            }
+
+            sqlData.Close();
+            connection.Close();
+
+            return tmp;
+        }
+
 
         public int SaveElement(DokMM dokMM)
         {
@@ -211,9 +297,10 @@ namespace App2.Model
                     "0," +                                  //status
                     "@id," +                    //opis
                     "null," +                                //nrdok         
-                    "null" +                                //nrdok         
+                    "null," +                                //nrdok         
+                    Convert.ToByte(dokMM.IsExport)+
                     ") ";
-            string SprCzyIstnieje = "select isnull(sum(ile),0) ile from dbo.mm where kod='" + dokMM.twrkod + "' and gidnumer=" + dokMM.gidnumer;
+            string SprCzyIstnieje = $"select isnull(sum(ile),0) ile from dbo.mm where kod='{dokMM.twrkod}' and gidnumer={dokMM.gidnumer}";
 
             SqlCommand command2 = new SqlCommand(SprCzyIstnieje, connection);
             SqlDataReader sqlData = command2.ExecuteReader();
@@ -239,6 +326,7 @@ namespace App2.Model
                     twrkod = dokMM.twrkod,
                     szt = dokMM.szt,
                     opis=dokMM.opis   /////<<<<<<<<<<<<<<<<<<<<<<<<<<<< daodane 
+                    
                 });
 
                 return 0;
@@ -278,7 +366,7 @@ namespace App2.Model
             //    ConnectionString = "SERVER=" + MainPage._serwer + ";DATABASE=" + MainPage._database + ";TRUSTED_CONNECTION=No;UID=" + MainPage._uid + ";PWD=" + MainPage._pwd
             //};
             connection.Open();
-            string query = "Select m.*, twr_numerkat  from [dbo].[MM] m " +
+            string query = "Select m.*, twr_numerkat, twr_nazwa  from [dbo].[MM] m " +
                 "join cdn.towary on twr_kod=kod "+
                 "where fl_header =0 and gidnumer=" + gidnumer.ToString() +" order by cast(opis as int)";
 
@@ -295,8 +383,9 @@ namespace App2.Model
                     twrkod = Convert.ToString(sqlData["kod"]),
                     szt = Convert.ToInt32(sqlData["ile"]),
                     opis = Convert.ToString(sqlData["opis"]),//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
-                    symbol = Convert.ToString(sqlData["twr_numerkat"])//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
-                    
+                    symbol = Convert.ToString(sqlData["twr_numerkat"]),//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
+                    twrNazwa = Convert.ToString(sqlData["twr_nazwa"])//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< dodane
+                     
                 });
             }
             sqlData.Close();
@@ -361,7 +450,11 @@ namespace App2.Model
             connection.Open();
 
 
-            string query = "Update [dbo].[MM] set mag_dcl='"+dokMM.mag_dcl+"',opis='"+ dokMM.opis+"'  where fl_header=1 and gidnumer=" + dokMM.gidnumer;
+            string query = $@"Update [dbo].[MM] 
+                    set mag_dcl='{dokMM.mag_dcl}'
+                    ,opis='{dokMM.opis}'  
+                    ,IsExport={Convert.ToByte(dokMM.IsExport)}                    
+                    where fl_header=1 and gidnumer=" + dokMM.gidnumer;
 
             SqlCommand command = new SqlCommand(query, connection);
             command.ExecuteNonQuery();

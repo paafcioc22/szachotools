@@ -27,6 +27,7 @@
                     <ViewCell>
 
                         <StackLayout Orientation="Horizontal" Padding="2"  VerticalOptions="Center">
+                            
                             <StackLayout VerticalOptions="Center" >
                                 <Label Text="{Binding id}"  
                                        FontSize="30"  

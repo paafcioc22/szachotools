@@ -185,7 +185,7 @@ namespace App2.View
             //stackLayout.Children.Add(_btnSave);
             _btnSave.HorizontalOptions = LayoutOptions.FillAndExpand;
             _btnSave.Clicked += _btnSave_Clicked;
-            _btnSave.Image = "save48x2.png";
+            _btnSave.ImageSource = "save48x2.png";
             _btnSave.IsEnabled = (mmka.statuss == 0? true : false);
             _btnSave.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
 
@@ -197,7 +197,7 @@ namespace App2.View
             //stackLayout.Children.Add(_btnSave);
             _btnAddElement.Clicked += _btnAddElement_Clicked;
             _btnAddElement.HorizontalOptions= LayoutOptions.FillAndExpand;
-            _btnAddElement.Image = "add48x2.png";
+            _btnAddElement.ImageSource = "add48x2.png";
             _btnAddElement.IsEnabled = (mmka.statuss == 0 ? true : false);
             _btnAddElement.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayoutBtn.Children.Add(_btnAddElement);  

@@ -26,6 +26,7 @@ namespace App2.Model
         public string nazwa { set; get; }
         public string ean { set; get; }
         public string cena { set; get; }
+        public string cena1 { set; get; }
         public string nrdokumentuMM { set; get; }
         public string DatadokumentuMM { set; get; }
         public string OpisdokumentuMM { set; get; }
@@ -33,7 +34,7 @@ namespace App2.Model
         public int GIDdokumentuMM { set; get; }
         public int GIDMagazynuMM { set; get; }
         public int XLGIDMM { set; get; }
-        public string StatusMM { set; get; }
+        public bool StatusMM { set; get; }
 
 
         public string GetNrDokMmp
@@ -79,63 +80,108 @@ namespace App2.Model
         public static ObservableCollection<PrzyjmijMMClass> ListaMMDoPrzyjcia = new ObservableCollection<PrzyjmijMMClass>();
 
 
-        public    ObservableCollection<PrzyjmijMMClass> getListMM()
+
+        //public ObservableCollection<PrzyjmijMMClass> CreateListMM(PrzyjmijMMClass przyjmijMM)
+        //{
+
+        //    //ListaMMDoPrzyjcia.Clear();
+
+        //    ListaMMDoPrzyjcia.Add(przyjmijMM); 
+
+        //    return ListaMMDoPrzyjcia;
+        //}
+
+
+        public  async Task<ObservableCollection<PrzyjmijMMClass>> getListMM(bool CzyZatwierdzone)
         {
             //DokMM dokMM = new DokMM();
-            
+            string queryZatwierdzone = CzyZatwierdzone ?
+                                        "or (trn_rodzaj = 312010 and trn_datadok > getdate() - 10)" :
+                                        "";
+
+
+            PrzyjmijMMClass przyjmijMM;
+            try
+            {
                 ListaMMDoPrzyjcia.Clear();
                 connection.Open();
-                string query = @"SELECT  trn_trnid,trn_gidnumer,
+                string query = $@"SELECT  trn_trnid,trn_gidnumer,
                      cast(trn_datadok as date) dataMM
 	                 ,trn_numerobcy
 	                 ,trn_opis
                      ,trn_magzrdID magId
                   FROM[CDN].[TraNag]
-                        where
-                    (trn_rodzaj= 312010 and trn_bufor<>0 )
-                    or(trn_rodzaj = 312010 and trn_datadok > getdate() - 8)
-             
+                        where   (trn_rodzaj = 312010 and trn_bufor<>0 )
+                                {queryZatwierdzone}
+
+
                  order by 1";
 
+                    //(trn_rodzaj= 312010 and trn_bufor<>0 )
+                   //    or(trn_rodzaj = 312010 and trn_datadok > getdate() - 8)
 
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlDataReader sqlData = command.ExecuteReader();
                 //await _connection.CreateTableAsync<Model.PrzyjmijMMLista>();
                 while (sqlData.Read())
                 {
-                  DateTime dateTime = Convert.ToDateTime(sqlData["dataMM"]);
-                    ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    DateTime dateTime = System.Convert.ToDateTime(sqlData["dataMM"]);
+                    //ListaMMDoPrzyjcia.Add(new PrzyjmijMMClass
+                    przyjmijMM= new PrzyjmijMMClass()
                     {
-                        GIDdokumentuMM = Convert.ToInt32(sqlData["trn_trnid"]),
+                        GIDdokumentuMM = System.Convert.ToInt32(sqlData["trn_trnid"]),
                         DatadokumentuMM = dateTime.ToString("dd-MM-yyyy"),
-                        nrdokumentuMM = Convert.ToString(sqlData["trn_numerobcy"]),
-                        OpisdokumentuMM = Convert.ToString(sqlData["trn_opis"]),
-                        GIDMagazynuMM = Convert.ToInt32(sqlData["magId"]),
-                        XLGIDMM = Convert.ToInt32(sqlData["trn_gidnumer"]),
-                        
-                    });
-                PobierzSatus(Convert.ToInt32(sqlData["trn_gidnumer"]));
+                        nrdokumentuMM = System.Convert.ToString(sqlData["trn_numerobcy"]),
+                        OpisdokumentuMM = System.Convert.ToString(sqlData["trn_opis"]),
+                        GIDMagazynuMM = System.Convert.ToInt32(sqlData["magId"]),
+                        XLGIDMM = System.Convert.ToInt32(sqlData["trn_gidnumer"]),
+                        // StatusMM = await PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]))
+                    };
+                    //PobierzSatus(System.Convert.ToInt32(sqlData["trn_gidnumer"]));
+                   var tmpMM= await PobierzSatus(przyjmijMM);
+                    // CreateListMM(tmpMM);
+                    ListaMMDoPrzyjcia.Add(tmpMM);
                 }
                 sqlData.Close();
                 sqlData.Dispose();
                 connection.Close();
 
                 return ListaMMDoPrzyjcia;
+            }
+            catch (Exception )
+            {
+                //Console.WriteLine(s.Message);
+                throw;
+            }
              
         }
         //private SQLiteAsyncConnection _connection= DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-        public async void  PobierzSatus(int gidnumer)
+        public async Task<PrzyjmijMMClass>   PobierzSatus(PrzyjmijMMClass mMClass)
         {
-            await _connection.CreateTableAsync<Model.RaportListaMM>();
-          //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync();
+            try
+            {
+                  await _connection.CreateTableAsync<Model.RaportListaMM>();
+                    //  var wynik= await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == gidnumer).ToListAsync(); 
 
-        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", gidnumer);
-            if(wynik.Count>0)
-            { 
-            var wpis = wynik[0].StatusMM; 
+                    var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
+                if (wynik.Count > 0)
+                {
+                    var wpis = wynik[0].Sended;
 
-            var pozycja = ListaMMDoPrzyjcia.Where(x => x.GIDdokumentuMM == gidnumer).ToList();
-            pozycja[0].StatusMM = wpis;
+                    //var pozycja = ListaMMDoPrzyjcia.Where(x => x.GIDdokumentuMM == gidnumer).ToList();
+
+                    mMClass.StatusMM = wpis;
+                    return mMClass;
+                }
+                else
+                {
+                    return mMClass;
+                }
+               
+            }
+            catch (Exception )
+            {
+                return mMClass;
             }
         }
 
@@ -145,7 +191,7 @@ namespace App2.Model
 
             if (String.IsNullOrWhiteSpace(searchText))
                 return ListOfTwrOnMM;
-            return ListOfTwrOnMM.Where(c => c.twrkod.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase));
+            return ListOfTwrOnMM.Where(c => c.twrkod.Contains(searchText.ToUpper()));//, StringComparison.CurrentCultureIgnoreCase));
         }
 
 
@@ -228,15 +274,17 @@ namespace App2.Model
                          TrN_NumerPelny TrN_DokumentObcy,
                           cast(TrE_ilosc as int) ilosc
                          ,twr_kod, mag_gidnumer trn_magzrdID
-                         ,twr_numerkat as symbol
+                         ,twr_numerkat as symbol , twr_ean ean
                          ,case when len(twr_kod) > 5 and len(twr_url)> 5 then
                          replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
                         substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as urltwr,
+                        cast(twc_wartosc as decimal(5,2))cena,
                         cast(trn_datadok as date) dataMM
                                 from cdn.TraNag
                                 join cdn.traelem on TrN_TrNID = TrE_TrNId
                                 join cdn.magazyny on trn_magdocid=mag_magid
                                 join cdn.towary on TrE_TwrId = Twr_TwrId
+                                left join cdn.TwrCeny on twr_gidnumer=TwC_TwrNumer and TwC_TwrLp=2
                                 where (trn_gidnumer = @trnGidnumer or trn_trnid=@trnGidnumer)
                                 and  (trn_rodzaj=312010 )
                              order by tre_lp";// tre_lp;
@@ -254,33 +302,35 @@ namespace App2.Model
                 rs = query.ExecuteReader();
                 while (rs.Read())
                 {
-                    nrdokumentuMM = Convert.ToString(rs["TrN_DokumentObcy"]);
-                    string mmtwrkod = Convert.ToString(rs["twr_kod"]);
-                    string mmtwrnazwa = Convert.ToString(rs["twr_nazwa"]);
-                    int mmilosc = Convert.ToInt16(rs["ilosc"]);
-                    string mmurl = Convert.ToString(rs["urltwr"]);
-                    int mmgidnumer = Convert.ToInt32(rs["trn_trnid"]);
-                    int GidMagazynu = Convert.ToInt32(rs["trn_magzrdID"]);
-                    string mmid = Convert.ToString(rs["tre_lp"]);
-                    symbol = Convert.ToString(rs["symbol"]);
-                    DateTime dateTime = Convert.ToDateTime(rs["dataMM"]);
+                    nrdokumentuMM = System.Convert.ToString(rs["TrN_DokumentObcy"]);
+                    string mmtwrkod = System.Convert.ToString(rs["twr_kod"]);
+                    string mmtwrnazwa = System.Convert.ToString(rs["twr_nazwa"]);
+                    int mmilosc = System.Convert.ToInt16(rs["ilosc"]);
+                    string mmurl = System.Convert.ToString(rs["urltwr"]);
+                    int mmgidnumer = System.Convert.ToInt32(rs["trn_trnid"]);
+                    int GidMagazynu = System.Convert.ToInt32(rs["trn_magzrdID"]);
+                    string mmid = System.Convert.ToString(rs["tre_lp"]);
+                    symbol = System.Convert.ToString(rs["symbol"]);
+                    DateTime dateTime = System.Convert.ToDateTime(rs["dataMM"]);
                     GetNrDokMmp = nrdokumentuMM;
                     string pozycja = mmtwrkod;
-                    int xlGidNumer = Convert.ToInt32(rs["trn_gidnumer"]);
+                    int xlGidNumer = System.Convert.ToInt32(rs["trn_gidnumer"]);
                     ListOfTwrOnMM.Add(new PrzyjmijMMClass
-                    {
-                        id = mmid,
-                        twrkod = mmtwrkod,
-                        ilosc = mmilosc,
-                        url = mmurl,
-                        nazwa = mmtwrnazwa,
-                        symbol = this.symbol,
-                        GIDdokumentuMM = mmgidnumer,
-                        nrdokumentuMM = GetNrDokMmp,
-                        GIDMagazynuMM = GidMagazynu,
-                        DatadokumentuMM = dateTime.ToString("yyyy-MM-dd"),
-                        XLGIDMM = xlGidNumer
-                    }
+                        {
+                            id = mmid,
+                            twrkod = mmtwrkod,
+                            ilosc = mmilosc,
+                            url = mmurl,
+                            nazwa = mmtwrnazwa,
+                            symbol = this.symbol,
+                            GIDdokumentuMM = mmgidnumer,
+                            nrdokumentuMM = GetNrDokMmp,
+                            GIDMagazynuMM = GidMagazynu,
+                            DatadokumentuMM = dateTime.ToString("yyyy-MM-dd"),
+                            XLGIDMM = xlGidNumer,
+                            cena = System.Convert.ToString(rs["cena"]) ,
+                            ean = System.Convert.ToString(rs["ean"]) 
+                        }
                     );
                 }
                 rs.Close();
@@ -325,12 +375,12 @@ namespace App2.Model
 
                     TwrDataList.Add( new PrzyjmijMMClass
                     { 
-                        twrkod = Convert.ToString(rs["twr_kod"]),
-                        nazwa = Convert.ToString(rs["twr_nazwa"]),
-                        symbol = Convert.ToString(rs["twr_katalog"]),
-                        cena = Convert.ToString(rs["cena"]),
-                        url = Convert.ToString(rs["twr_url"]),
-                        ean = Convert.ToString(rs["twr_ean"])
+                        twrkod = System.Convert.ToString(rs["twr_kod"]),
+                        nazwa = System.Convert.ToString(rs["twr_nazwa"]),
+                        symbol = System.Convert.ToString(rs["twr_katalog"]),
+                        cena = System.Convert.ToString(rs["cena"]),
+                        url = System.Convert.ToString(rs["twr_url"]),
+                        ean = System.Convert.ToString(rs["twr_ean"])
                     });
                  
                 }
@@ -347,14 +397,6 @@ namespace App2.Model
             return TwrDataList;
         }
 
-        //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        //{
-        //    return (bool)value ? "sended.png" : "notsended.png";
-        //}
-
-        //public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        //{
-        //    return false; // not needed
-        //}
+       
     }
 }

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.CreatePaczkaListaZlecen" NavigationPage.BackButtonTitle="Lista Zleceń" Title="Lista Zleceń"  >
+
+
+    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" Padding="10">
+        <ListView x:Name="ListaZlecen"
+            ItemsSource="{Binding Zlecenia}"
+            ItemTapped="Handle_ItemTapped" HasUnevenRows="True"
+            CachingStrategy="RecycleElement" >
+
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+
+                        <Frame  HasShadow="true" 
+                                Margin="5" 
+                                BorderColor="DarkCyan"   
+                                CornerRadius="10" 
+                                OutlineColor="Cyan" Padding="3" 
+                                >
+                            <!--<Frame.Content> Orientation="Vertical"-->
+
+                            <AbsoluteLayout >
+
+                                <!--HorizontalOptions="CenterAndExpand"-->
+                                <Label Text="{Binding Fmm_gidnumer}" TextColor="Black"   
+                                        AbsoluteLayout.LayoutBounds=".01,1,.1,1"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                    />
+                                <Label Text="{Binding Fmm_Opis}" TextColor="Black"  
+                                        AbsoluteLayout.LayoutBounds=".5,0,1,.3"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center"
+                                    />
+                                <Label Text="{Binding Fmm_nrlistu}" TextColor="Black" 
+                                        FontSize="16" 
+                                        FontAttributes="Bold"   
+                                        AbsoluteLayout.LayoutBounds=".5,0.5,1,.3"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center"
+                                    />
+                                <Label Text="{Binding datautwrz }" FontSize="12" 
+                                         TextColor="Black" 
+                                         AbsoluteLayout.LayoutBounds=".5,1,1,.3"
+                                         AbsoluteLayout.LayoutFlags="All"  
+                                         HorizontalTextAlignment="Center"
+                                     />
+                                <Label Text="{Binding Mag_kod}" TextColor="Black"   
+                                        AbsoluteLayout.LayoutBounds="1,1,.1,1"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                    />
+                            </AbsoluteLayout>
+
+                            <!--</Frame.Content>-->
+                        </Frame>
+
+
+
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+        <Button Text="Utworz nowe zlecenie" Clicked="BtnCreateNewZlecenie_Clicked" HeightRequest="70"  />
+    </StackLayout>
+    
+    
+    
+</ContentPage>

@@ -22,7 +22,7 @@ namespace App2.View
         private Button btn_Zapisz;
         private Int32 _gidnumer;
 
-         
+
 
         public AddTwrPage(int gidnumer) //dodawamoe pozycji
         {
@@ -37,8 +37,10 @@ namespace App2.View
             var centerLabel = new Label
             {
                 Text = "Dodawanie Pozycji"
-               , HorizontalOptions = LayoutOptions.StartAndExpand
-               , BackgroundColor = Color.YellowGreen
+               ,
+                HorizontalOptions = LayoutOptions.StartAndExpand
+               ,
+                BackgroundColor = Color.YellowGreen
             };
 
             AbsoluteLayout.SetLayoutBounds(centerLabel, new Rectangle(0, 0, 1, 10));
@@ -65,16 +67,16 @@ namespace App2.View
             _gidnumer = gidnumer;
 
             stan = new Label();
-            stan.HorizontalOptions= LayoutOptions.Center;
+            stan.HorizontalOptions = LayoutOptions.Center;
 
             nazwa = new Label();
             nazwa.HorizontalOptions = LayoutOptions.Center;
             //stan.Text = "Stan";
-              ean = new Label();
-            ean.HorizontalOptions= LayoutOptions.Center;
+            ean = new Label();
+            ean.HorizontalOptions = LayoutOptions.Center;
 
-              symbol = new Label();
-            symbol.HorizontalOptions= LayoutOptions.Center;
+            symbol = new Label();
+            symbol.HorizontalOptions = LayoutOptions.Center;
 
             stackLayout.Children.Add(stan);
             stackLayout.Children.Add(nazwa);
@@ -93,32 +95,37 @@ namespace App2.View
             ilosc.Keyboard = Keyboard.Text;
             ilosc.Placeholder = "Wpisz Ilość";
             ilosc.Keyboard = Keyboard.Telephone;
+            ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                ZapiszPozycje();
+
+            };
             ilosc.HorizontalOptions = LayoutOptions.Center;
             stackLayout.Children.Add(ilosc);
 
             btn_Skanuj = new Button();
             btn_Skanuj.Text = "Skanuj EAN";
             btn_Skanuj.Clicked += Btn_Skanuj_Clicked;
-            btn_Skanuj.Image = "scan48x2.png";
+            btn_Skanuj.ImageSource = "scan48x2.png";
             btn_Skanuj.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Skanuj);
 
             btn_Zapisz = new Button();
             btn_Zapisz.Text = "Zapisz pozycję";
             btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
-            btn_Zapisz.Image = "save48x2.png";
+            btn_Zapisz.ImageSource = "save48x2.png";
             btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Zapisz);
             //stackLayout.HorizontalOptions = LayoutOptions.Center;
             stackLayout.VerticalOptions = LayoutOptions.Center;
-            stackLayout.Padding =new Thickness( 30,0,30,0);
+            stackLayout.Padding = new Thickness(30, 0, 30, 0);
 
             stackLayout_gl.Children.Add(stackLayout);
             //stackLayout_gl.VerticalOptions= LayoutOptions.CenterAndExpand;
             absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(0, 0.5, 1, 1), AbsoluteLayoutFlags.HeightProportional);
-             
+
             Content = stackLayout_gl;
-             
+
         }
 
         //protected override bool OnBackButtonPressed()
@@ -147,8 +154,8 @@ namespace App2.View
             lbl_naglowek.BackgroundColor = Color.DarkCyan;
 
             stack_naglowek.HorizontalOptions = LayoutOptions.FillAndExpand;
-            stack_naglowek.VerticalOptions = LayoutOptions.Start; 
-            stack_naglowek.BackgroundColor = Color.DarkCyan; 
+            stack_naglowek.VerticalOptions = LayoutOptions.Start;
+            stack_naglowek.BackgroundColor = Color.DarkCyan;
             stack_naglowek.Children.Add(lbl_naglowek);
 
             stackLayout_gl.Children.Add(stack_naglowek);
@@ -163,10 +170,10 @@ namespace App2.View
             //stan.Text = "Stan";
             stackLayout.Children.Add(stan);
 
-             ean = new Label();
+            ean = new Label();
             ean.HorizontalOptions = LayoutOptions.Center;
 
-             symbol = new Label();
+            symbol = new Label();
             symbol.HorizontalOptions = LayoutOptions.Center;
 
             nazwa = new Label();
@@ -190,6 +197,11 @@ namespace App2.View
             ilosc.Placeholder = "Wpisz Ilość";
             ilosc.Keyboard = Keyboard.Telephone;
             ilosc.Text = mmka.szt.ToString();
+            ilosc.Completed += (object sender, EventArgs e) =>
+            {
+                EdytujPozyce();
+
+            };
             ilosc.HorizontalOptions = LayoutOptions.Center;
             stackLayout.Children.Add(ilosc);
 
@@ -197,14 +209,14 @@ namespace App2.View
             btn_Skanuj.Text = "Skanuj EAN";
             btn_Skanuj.Clicked += Btn_Skanuj_Clicked;
             btn_Skanuj.IsEnabled = false;
-            btn_Skanuj.Image = "scan48x2.png";
+            btn_Skanuj.ImageSource = "scan48x2.png";
             btn_Skanuj.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Skanuj);
 
             btn_Zapisz = new Button();
             btn_Zapisz.Text = "Zapisz pozycję";
             btn_Zapisz.Clicked += Btn_Update_Clicked;
-            btn_Zapisz.Image = "save48x2.png";
+            btn_Zapisz.ImageSource = "save48x2.png";
             btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Zapisz);
             //stackLayout.HorizontalOptions = LayoutOptions.Center;
@@ -212,21 +224,51 @@ namespace App2.View
             stackLayout.Padding = new Thickness(30, 0, 30, 0);
             stackLayout_gl.Children.Add(stackLayout);
             Content = stackLayout_gl;
-            GetDataFromTwrKod(mmka.twrkod);
+            GetDataFromTwrKod(mmka.twrkod, false);
             ilosc.Focus();
         }
 
+
+        public AddTwrPage(Model.DokMM mmka, string CzyFoto = null)
+        {
+            this.Title = "Dodaj MM";
+            StackLayout stackLayout_gl = new StackLayout();
+            StackLayout stackLayout = new StackLayout();
+            StackLayout stack_naglowek = new StackLayout();
+
+            var absoluteLayout = new AbsoluteLayout();
+            var centerLabel = new Label
+            {
+                Text = " Zdjecie"
+               ,
+                HorizontalOptions = LayoutOptions.StartAndExpand
+               ,
+                BackgroundColor = Color.YellowGreen
+            };
+
+            foto = new Image();
+            stackLayout.Children.Add(foto);
+            stackLayout.VerticalOptions = LayoutOptions.CenterAndExpand;
+            stackLayout_gl.VerticalOptions = LayoutOptions.FillAndExpand;
+            stackLayout_gl.Children.Add(stackLayout);
+            //absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(1, 1, 1, 1), AbsoluteLayoutFlags.HeightProportional);
+            Content = stackLayout_gl;
+            GetDataFromTwrKod(mmka.twrkod, true);
+
+
+        }
 
         private void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
             pobierztwrkod(kodean.Text);
         }
 
-        private void Btn_Update_Clicked(object sender, EventArgs e)
+
+        private void EdytujPozyce()
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
-                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt))
+                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt) && Int32.Parse(ilosc.Text) == 0)
                 {
                     DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
                 }
@@ -248,13 +290,19 @@ namespace App2.View
             }
         }
 
-        private async void Btn_Zapisz_Clicked(object sender, EventArgs e)
+        private void Btn_Update_Clicked(object sender, EventArgs e)
+        {
+            EdytujPozyce();
+        }
+
+
+        private async void ZapiszPozycje()
         {
             if (ilosc.Text != null && kodean.Text != null)
             {
-                if (Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt))
+                if ((Int32.Parse(ilosc.Text) > Int32.Parse(stan_szt)) || Int32.Parse(ilosc.Text) == 0)
                 {
-                   await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
+                    await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
                 }
                 else
                 {
@@ -262,7 +310,13 @@ namespace App2.View
                     dokMM.gidnumer = _gidnumer;
                     dokMM.twrkod = kodean.Text;
                     dokMM.szt = Convert.ToInt32(ilosc.Text);
+
+                    if (dokMM.ExistsOtherDocs(dokMM))
+                        await DisplayAlert("Ostrzeżenie", "Dodawany towar znajduje się już na innej MM", "OK");
+
                     int IleIstnieje = dokMM.SaveElement(dokMM);
+
+
 
                     if (IleIstnieje > 0)
                     {
@@ -276,8 +330,8 @@ namespace App2.View
                                 return;
                             }
                             else
-                            { 
-                            //Model.DokMM dokMM = new Model.DokMM();
+                            {
+                                //Model.DokMM dokMM = new Model.DokMM();
                                 dokMM.gidnumer = _gidnumer;
                                 dokMM.twrkod = kodean.Text;
                                 dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
@@ -285,7 +339,8 @@ namespace App2.View
                                 dokMM.getElementy(_gidnumer);
                             }
                         }
-                        else {
+                        else
+                        {
 
                             await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
                         }
@@ -295,8 +350,60 @@ namespace App2.View
             }
             else
             {
-               await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
+                await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
             }
+        }
+
+        public async void ZapiszPozycje(int mmGidnumer, string twrKod, int ilosc, int stan_szt)
+        {
+            if ((ilosc) > (stan_szt) && (ilosc) == 0)
+            {
+                await DisplayAlert(null, "Wpisana ilość przekracza stan ", "OK");
+            }
+            else
+            {
+                Model.DokMM dokMM = new Model.DokMM();
+                dokMM.gidnumer = mmGidnumer;
+                dokMM.twrkod = twrKod;
+                dokMM.szt = (ilosc);
+
+                int IleIstnieje = dokMM.SaveElement(dokMM);
+
+                if (IleIstnieje > 0)
+                {
+                    var odp = await DisplayAlert("UWAGA!", "Dodawany kod już znajduje się na liście. Chcesz zsumować ilości?", "TAK", "NIE");
+                    if (odp)
+                    {
+                        int suma = (ilosc) + IleIstnieje;
+                        if (suma > (stan_szt))
+                        {
+                            await DisplayAlert(null, "Łączna ilość przekracza stan ", "OK");
+                            return;
+                        }
+                        else
+                        {
+                            //Model.DokMM dokMM = new Model.DokMM();
+                            dokMM.gidnumer = mmGidnumer;
+                            dokMM.twrkod = twrKod;
+                            dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
+                            dokMM.UpdateElement(dokMM);
+                            dokMM.getElementy(_gidnumer);
+                        }
+                    }
+                    else
+                    {
+
+                        await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
+                    }
+                }
+                await Navigation.PopModalAsync();
+            }
+
+        }
+
+        private void Btn_Zapisz_Clicked(object sender, EventArgs e)
+        {
+            ZapiszPozycje();
 
         }
 
@@ -306,7 +413,7 @@ namespace App2.View
 
         //public bool SprConn() //Third way, slightly slower than Method 1
         //{
-             
+
         //    var connStr = new SqlConnectionStringBuilder
         //    {
         //        DataSource = View.SettingsPage._serwer,
@@ -342,8 +449,8 @@ namespace App2.View
                 //ZXing.BarcodeFormat.EAN_8,
                 ZXing.BarcodeFormat.EAN_13,
 
-                ZXing.BarcodeFormat.CODE_128,
-                ZXing.BarcodeFormat.CODABAR,
+                //ZXing.BarcodeFormat.CODE_128,
+                //ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.CODE_39,
                 },
                     //CameraResolutionSelector = availableResolutions => {
@@ -382,7 +489,7 @@ namespace App2.View
                 var grid = new Grid
                 {
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center, 
+                    HorizontalOptions = LayoutOptions.Center,
                 };
 
                 var Overlay = new ZXingDefaultOverlay
@@ -394,7 +501,7 @@ namespace App2.View
 
                 };
                 //customOverlay.Children.Add(torch);
-               
+
 
                 var customOverlay = new StackLayout
                 {
@@ -404,7 +511,7 @@ namespace App2.View
                 //customOverlay.Children.Add(btn_Manual);
 
 
-              //  grid.Children.Add(customOverlay); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                //  grid.Children.Add(customOverlay); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 grid.Children.Add(Overlay);
                 Overlay.Children.Add(torch);
                 Overlay.BindingContext = Overlay;
@@ -414,7 +521,7 @@ namespace App2.View
                     DefaultOverlayTopText = "Zeskanuj kod ",
                     //DefaultOverlayBottomText = " Skanuj kod ";
                     DefaultOverlayShowFlashButton = true
-                    
+
                 };
                 scanPage.OnScanResult += (result) =>
                 {
@@ -422,7 +529,7 @@ namespace App2.View
                     scanPage.AutoFocus();
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        
+
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
                         {
                             if (scanPage.IsScanning) scanPage.AutoFocus(); return true;
@@ -435,7 +542,7 @@ namespace App2.View
                         //if (OnBackButtonPressed())
                         //{
                         //    kodean.Focus();
-                             
+
                         //}
                     });
                 };
@@ -450,17 +557,17 @@ namespace App2.View
 
         //protected override void OnAppearing()
         //{
-             
+
         //    kodean.Focus();
         //    base.OnAppearing();
         //}
 
-        private   void Btn_Skanuj_Clicked(object sender, EventArgs e)
+        private void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
-              SkanowanieEan();
+            SkanowanieEan();
         }
 
-        
+
 
         string twrkod;
         string stan_szt;
@@ -469,9 +576,9 @@ namespace App2.View
         string twr_symbol;
         string twr_ean;
 
-        public void pobierztwrkod(string _ean)
+        public async void pobierztwrkod(string _ean)
         {
-             var app = Application.Current as App;
+            var app = Application.Current as App;
             if (SettingsPage.SprConn())
             {
                 try
@@ -506,12 +613,12 @@ namespace App2.View
                         twr_symbol = Convert.ToString(rs["twr_symbol"]);
                         twr_ean = Convert.ToString(rs["twr_ean"]);
 
-                       // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
+                        // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
                     }
                     else
                     {
-                          
-                        DisplayAlert("Uwaga", "Kod nie istnieje!", "OK"); 
+
+                        await DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
                     }
                     rs.Close();
                     rs.Dispose();
@@ -520,23 +627,37 @@ namespace App2.View
                 }
                 catch (Exception exception)
                 {
-                    DisplayAlert("Uwaga", exception.Message, "OK");
+                    await DisplayAlert("Uwaga", exception.Message, "OK");
                 }
             }
             else
             {
-                DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                if (dane.Count > 0)
+                {
+
+                    twrkod = dane[0].twrkod;
+                    twr_url = dane[0].url;
+                    twr_nazwa = dane[0].nazwa;
+                    twr_ean = dane[0].ean;
+                    //twr_cena = dane[0].cena;
+                }
+
+
+                //DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
             }
             //return twrkod;
             kodean.Text = twrkod;
             ean.Text = twr_ean;
             symbol.Text = twr_symbol;
-            nazwa.Text = twr_nazwa; 
-            stan.Text ="Stan : "+ stan_szt;
+            nazwa.Text = twr_nazwa;
+            stan.Text = "Stan : " + stan_szt;
             foto.Source = twr_url;
         }
 
-        public void GetDataFromTwrKod(string _twrkod)
+
+        public void GetDataFromTwrKod(string _twrkod, bool CzyFoto)
         {
             var app = Application.Current as App;
             if (SettingsPage.SprConn())
@@ -575,7 +696,9 @@ namespace App2.View
                     }
                     else
                     {
-                         DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+                        DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+
+
                     }
                     rs.Close();
                     rs.Dispose();
@@ -590,15 +713,24 @@ namespace App2.View
             else
             {
                 DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+
+                //return twrkod;
+                //kodean.Text = twrkod;
+                if (CzyFoto)
+                {
+                    foto.Source = twr_url;
+                }
+                else
+                {
+                    ean.Text = twr_ean;
+                    symbol.Text = twr_symbol;
+                    nazwa.Text = twr_nazwa;
+                    foto.Source = twr_url;
+                    stan.Text = "Stan : " + stan_szt;
+                    ilosc.Focus();
+
+                }
             }
-            //return twrkod;
-            //kodean.Text = twrkod;
-            ean.Text = twr_ean;
-            symbol.Text = twr_symbol;
-            nazwa.Text = twr_nazwa;
-            stan.Text = "Stan : " + stan_szt;
-            foto.Source = twr_url;
-            ilosc.Focus();
         }
     }
 }

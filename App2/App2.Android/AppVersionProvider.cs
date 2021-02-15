@@ -26,18 +26,18 @@ namespace App2.Droid
                 var context = Android.App.Application.Context;
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
 
-                return $"{info.VersionName}.{info.VersionCode.ToString()}";
+                return $"{info.VersionName}";
             }
         }
 
-        public string BuildVersion
+        public int BuildVersion
         {
             get
             {
                 var context = Android.App.Application.Context;
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
 
-                return $"{info.VersionCode.ToString()}";
+                return info.VersionCode;
             }
         }
         string _packageName => Android.App.Application.Context.PackageName;
@@ -70,5 +70,14 @@ namespace App2.Droid
             return Task.FromResult(true);
         }
 
+        public void ShowLong(string message)
+        {
+            Android.Widget.Toast.MakeText(Android.App.Application.Context, message, ToastLength.Long).Show();
+        }
+
+        public void ShowShort(string message)
+        {
+            Android.Widget.Toast.MakeText(Android.App.Application.Context, message, ToastLength.Short).Show();
+        }
     }      
 }

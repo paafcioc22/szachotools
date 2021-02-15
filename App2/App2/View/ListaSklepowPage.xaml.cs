@@ -41,7 +41,7 @@ namespace App2.View
                 ";PWD=" + app.Password
                 };
                 connection.Open();
-                command.CommandText = "select [adr_magkod] mag_kod,[adr_magnazwa] mag_nazwa " +
+                command.CommandText = "select [adr_magkod] mag_kod,[adr_magnazwa] mag_nazwa, adr_magnumer " +
                     "from [CDN].[Joart_adresy] order by 1";
      
                 //sprSymSezon();
@@ -54,7 +54,8 @@ namespace App2.View
                     listaSklepows.Add(new Model.ListaSklepow
                     {
                         mag_kod = Convert.ToString(rs["mag_kod"]),
-                        mag_nazwa = Convert.ToString(rs["mag_nazwa"])
+                        mag_nazwa = Convert.ToString(rs["mag_nazwa"]),
+                        mag_gidnumer = Convert.ToString(rs["adr_magnumer"])
                          
                     });
                     
