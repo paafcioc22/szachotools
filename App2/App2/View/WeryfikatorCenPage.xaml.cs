@@ -371,8 +371,8 @@ namespace App2.View
             
             
             PrintSerwis printSerwis = new PrintSerwis();
-            if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
-            {
+            //if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
+           // {
                 if (await printSerwis.ConnToPrinter())
                 {
                     List<string> kolory = new List<string> {
@@ -382,7 +382,7 @@ namespace App2.View
                     var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
                     if (kolor != "Anuluj")
                     {
-                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", null, 1, Keyboard.Numeric);
+                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", "1", 1, Keyboard.Numeric);
                         if (result != null)
                             await printSerwis.PrintCommand(twrkarty, kolor, result);
                     }
@@ -392,11 +392,11 @@ namespace App2.View
                 {
                     await DisplayAlert(null, "Błąd drukarki", "OK");
                 }
-            }
-            else
-            {
-                await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
-            }
+           // }
+           // else
+            //{
+              //  await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
+           // }
            
 
 

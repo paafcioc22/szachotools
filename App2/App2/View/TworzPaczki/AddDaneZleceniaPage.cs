@@ -94,8 +94,8 @@ namespace App2.View
                 }
                 else
                 {
-                    if (_magDcl.Text.IndexOf("MS")>=0)
-                    {
+                    //if (_magDcl.Text.IndexOf("MS")>=0)
+                    //{
                         CreatePaczkaReposytorySQL reposytorySQL = new CreatePaczkaReposytorySQL();
                         FedexPaczka fedex = new FedexPaczka();
                         fedex.Fmm_MagDcl = MagDcl;
@@ -109,20 +109,19 @@ namespace App2.View
                         //listaZlecen.Fmm_MagZrd = app.MagGidNumer.ToString();
 
 
-
-                        //reposytorySQL.opis = $"Pakował(a): {View.LoginLista._nazwisko}, {_opis.Text}";
+                         
                         var id = Task.Run(() => reposytorySQL.GetLastGidNUmer()).Result;
 
                         await reposytorySQL.SaveZlecenieToBase(fedex, id, 0);
                         await DisplayAlert(null, "Dodano zlecenie dla : " + _magDcl.Text, "OK");
                      //   await NavigationPage.PushAsync(new CreatePaczkaListaPaczek(listaZlecen));
                         await Navigation.PopModalAsync();
-                        //dokMM.getMMki(); 
-                    }
-                    else
-                    {
-                        await DisplayAlert(null, "Nie obsługiwany magazyn", "OK");
-                    }
+                      
+                    //}
+                    //else
+                    //{
+                    //    await DisplayAlert(null, "Nie obsługiwany magazyn", "OK");
+                    //}
                     
                    
                 }

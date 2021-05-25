@@ -1252,3 +1252,4 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\9
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\lp\48\jl\files.cache
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\lp\51\jl\files.cache
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\lp\52\jl\files.cache
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\_VerifyXamarinAndroidSupportVersions.stamp
