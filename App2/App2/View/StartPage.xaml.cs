@@ -183,16 +183,17 @@ namespace App2.View
         private async void SkanTwr_Clicked(object sender, EventArgs e)
         {
             btn_weryfikator.IsEnabled = false;
+                    
+            await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
 
-            connected = SettingsPage.SprConn();
-                if (connected)
-                {
-                    await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
-                }
-                else
-                {
-                    await DisplayAlert(null, "Brak połączenia z siecią", "OK"); 
-                }
+            //connected = SettingsPage.SprConn();
+            //    if (connected)
+            //    {
+            //    }
+            //    else
+            //    {
+            //        await DisplayAlert(null, "Brak połączenia z siecią", "OK"); 
+            //    }
             btn_weryfikator.IsEnabled = true;
 
         }

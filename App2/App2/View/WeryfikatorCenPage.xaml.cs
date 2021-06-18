@@ -20,10 +20,12 @@ namespace App2.View
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
         SettingsPage settingsPage;
+        private IList<CennikClass> idceny;
+        private CennikClass nrcenika;
         string NazwaCennika;
         int NrCennika;
         SqlConnection connection;
-        public TwrKarty  twrkarty  { get; set; }
+        public TwrKarty twrkarty { get; set; }
 
 
         public WeryfikatorCenPage()
@@ -34,11 +36,12 @@ namespace App2.View
             BindingContext = this;
 
             settingsPage = new SettingsPage();
-            var idceny = settingsPage.cennikClasses;
+            idceny = settingsPage.cennikClasses;
             if (idceny != null)
             {
-                var nrcenika = idceny[app.Cennik];
-                NazwaCennika = "cena [" + nrcenika.RodzajCeny + "]";
+                nrcenika = idceny[app.Cennik];
+                var rodzaj = (SettingsPage.CzyCenaPierwsza) ? " pierwsza" : nrcenika.RodzajCeny;
+                NazwaCennika = $"cena [{rodzaj}]";
                 lbl_cennik.Text = NazwaCennika;
                 NrCennika = nrcenika.Id;
             }
@@ -52,7 +55,7 @@ namespace App2.View
 
             if (SettingsPage.SelectedDeviceType == 1)
                 SkanowanieEan(); //aparat
-             
+
             //Appearing += (object sender, System.EventArgs e) => manualEAN.Focus();
         }
 
@@ -60,12 +63,12 @@ namespace App2.View
 
         private async void SkanowanieEan()
         {
-            if (SettingsPage.SprConn())
+            //if (SettingsPage.SprConn())
+            //{
+            opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
             {
-                opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
-                {
-                    AutoRotate = false,
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
+                AutoRotate = false,
+                PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
                 //ZXing.BarcodeFormat.CODE_128,
                 //ZXing.BarcodeFormat.CODABAR,
@@ -73,90 +76,90 @@ namespace App2.View
                 ZXing.BarcodeFormat.EAN_13
                 }
 
-                };
+            };
 
-                opts.TryHarder = true;
+            opts.TryHarder = true;
 
-                zxing = new ZXingScannerView
-                {
-
-                    IsScanning = false,
-                    IsTorchOn = false,
-                    IsAnalyzing = false,
-                    AutomationId = "zxingDefaultOverlay",//zxingScannerView
-                    Opacity = 22,
-                    Options = opts
-                };
-
-                var torch = new Switch
-                {
-                };
-
-                torch.Toggled += delegate
-                {
-                    scanPage.ToggleTorch();
-                };
-
-                var grid = new Grid
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                };
-
-                var Overlay = new ZXingDefaultOverlay
-                {
-                    TopText = "Włącz latarkę",
-                    BottomText = "Skanowanie rozpocznie się automatycznie",
-                    ShowFlashButton = true,
-                    AutomationId = "zxingDefaultOverlay",
-
-                };
-
-                var customOverlay = new StackLayout
-                {
-                    HorizontalOptions = LayoutOptions.EndAndExpand,
-                    VerticalOptions = LayoutOptions.EndAndExpand
-                };
-
-                grid.Children.Add(Overlay);
-                Overlay.Children.Add(torch);
-                Overlay.BindingContext = Overlay;
-
-                scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
-                {
-                    DefaultOverlayTopText = "Zeskanuj kod ",
-                    //DefaultOverlayBottomText = " Skanuj kod ";
-                    DefaultOverlayShowFlashButton = true
-
-                };
-                scanPage.OnScanResult += (result) =>
-                {
-                    scanPage.IsScanning = false;
-                    scanPage.AutoFocus();
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-
-                        Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
-                        {
-                            if (scanPage.IsScanning) scanPage.AutoFocus();
-                            return true;
-                        });
-                        Navigation.PopModalAsync();
-                        pobierztwrkod(result.Text);
-
-
-                    });
-                };
-                await Navigation.PushModalAsync(scanPage);
-            }
-            else
+            zxing = new ZXingScannerView
             {
-                await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
 
-            }
+                IsScanning = false,
+                IsTorchOn = false,
+                IsAnalyzing = false,
+                AutomationId = "zxingDefaultOverlay",//zxingScannerView
+                Opacity = 22,
+                Options = opts
+            };
+
+            var torch = new Switch
+            {
+            };
+
+            torch.Toggled += delegate
+            {
+                scanPage.ToggleTorch();
+            };
+
+            var grid = new Grid
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+            };
+
+            var Overlay = new ZXingDefaultOverlay
+            {
+                TopText = "Włącz latarkę",
+                BottomText = "Skanowanie rozpocznie się automatycznie",
+                ShowFlashButton = true,
+                AutomationId = "zxingDefaultOverlay",
+
+            };
+
+            var customOverlay = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.EndAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand
+            };
+
+            grid.Children.Add(Overlay);
+            Overlay.Children.Add(torch);
+            Overlay.BindingContext = Overlay;
+
+            scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
+            {
+                DefaultOverlayTopText = "Zeskanuj kod ",
+                //DefaultOverlayBottomText = " Skanuj kod ";
+                DefaultOverlayShowFlashButton = true
+
+            };
+            scanPage.OnScanResult += (result) =>
+            {
+                scanPage.IsScanning = false;
+                scanPage.AutoFocus();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+
+                    Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                    {
+                        if (scanPage.IsScanning) scanPage.AutoFocus();
+                        return true;
+                    });
+                    Navigation.PopModalAsync();
+                    pobierztwrkod(result.Text);
+
+
+                });
+            };
+            await Navigation.PushModalAsync(scanPage);
+            // }
+            //else
+            //{
+            //  await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
+
+            //            }
         }
 
-     
+
 
         public async void pobierztwrkod(string _ean)
         {
@@ -165,10 +168,11 @@ namespace App2.View
             //var idceny = settingsPage.cennikClasses;
             //var nrcenika = idceny[app.Cennik];
             twrkarty = null;
-            if (SettingsPage.SprConn())
+            try
             {
-                try
+                if (SettingsPage.SprConn())
                 {
+
 
                     if (!string.IsNullOrEmpty(_ean))
                     {
@@ -183,15 +187,18 @@ namespace App2.View
                             where twr_ean='{_ean}'
                             group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
-                        
+
                         SqlCommand query = new SqlCommand(command.CommandText, connection);
                         SqlDataReader rs;
                         rs = query.ExecuteReader();
                         if (rs.Read())
                         {
+                            string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
+                            var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+
                             twrkarty = new TwrKarty
                             {
-                                 
+
                                 twr_kod = Convert.ToString(rs["twr_kod"]),
                                 twr_gidnumer = Convert.ToString(rs["twr_gidnumer"]),
                                 stan_szt = Convert.ToString(rs["ilosc"]),
@@ -199,14 +206,15 @@ namespace App2.View
                                 twr_nazwa = Convert.ToString(rs["twr_nazwa"]),
                                 twr_symbol = Convert.ToString(rs["twr_symbol"]),
                                 twr_ean = Convert.ToString(rs["twr_ean"]),
-                                twr_cena = Convert.ToString(rs["cena"]).Replace(",","."),
+                                twr_cena = Convert.ToString(rs["cena"]).Replace(",", "."),
+                                twr_cena1 = (dane.Count > 0) ? dane[0].cena1 : ""
                             };
                             // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
                         }
                         else
                         {
-                            var idceny = settingsPage.cennikClasses;
-                            var nrcenika = idceny[app.Cennik];
+                            // idceny = settingsPage.cennikClasses;
+                            //var nrcenika = idceny[app.Cennik];
                             if (nrcenika.RodzajCeny == "OUTLET")
                                 NrCennika = 4;
                             else NrCennika = 2;
@@ -214,7 +222,7 @@ namespace App2.View
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
                             if (dane.Count > 0)
                             {
-                               
+
                                 twrkarty = new TwrKarty
                                 {
                                     twr_gidnumer = dane[0].TwrGidnumer.ToString(),
@@ -223,28 +231,54 @@ namespace App2.View
                                     twr_nazwa = dane[0].nazwa,
                                     twr_ean = dane[0].ean,
                                     twr_cena = dane[0].cena,
-                                    twr_symbol = dane[0].symbol,    
-                                    twr_cena1=dane[0].cena1
+                                    twr_symbol = dane[0].symbol,
+                                    twr_cena1 = dane[0].cena1
                                 };
 
-                            } 
-                             
+                            }
+
                             DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak stanów lub nie istnieje!");
                         }
                         rs.Close();
                         rs.Dispose();
-                        connection.Close(); 
+                        connection.Close();
                     }
 
+
                 }
-                catch (Exception )
+                else
                 {
-                    await DisplayAlert("Uwaga","Nie znaleziono towaru..", "OK");
+                    //await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                    DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak połączenia z optimą!");
+
+                    //idceny = settingsPage.cennikClasses;
+                    //var nrcenika = idceny[app.Cennik];
+                    if (nrcenika.RodzajCeny == "OUTLET")
+                        NrCennika = 4;
+                    else NrCennika = 2;
+                    string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
+                    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                    if (dane.Count > 0)
+                    {
+
+                        twrkarty = new TwrKarty
+                        {
+                            twr_gidnumer = dane[0].TwrGidnumer.ToString(),
+                            twr_kod = dane[0].twrkod,
+                            twr_url = dane[0].url,
+                            twr_nazwa = dane[0].nazwa,
+                            twr_ean = dane[0].ean,
+                            twr_cena = dane[0].cena,
+                            twr_symbol = dane[0].symbol,
+                            twr_cena1 = dane[0].cena1
+                        };
+
+                    }
                 }
             }
-            else
+            catch (Exception)
             {
-                await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                await DisplayAlert("Uwaga", "Nie znaleziono towaru..", "OK");
             }
 
             if (twrkarty != null)
@@ -254,7 +288,7 @@ namespace App2.View
                 lbl_twrsymbol.Text = twrkarty.twr_symbol;
                 lbl_twrnazwa.Text = twrkarty.twr_nazwa;
                 lbl_stan.Text = twrkarty.stan_szt + " szt";
-                lbl_twrcena.Text = twrkarty.twr_cena + " zł";
+                lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.twr_cena1 : twrkarty.twr_cena + " zł";
                 img_foto.Source = twrkarty.twr_url;
             }
             else
@@ -267,7 +301,7 @@ namespace App2.View
                 lbl_twrcena.Text = "";
                 img_foto.Source = "";
             }
-           
+
 
 
 
@@ -276,7 +310,7 @@ namespace App2.View
         }
 
 
-        
+
 
         private void ScanTwr_Clicked(object sender, EventArgs e)
         {
@@ -332,13 +366,13 @@ namespace App2.View
             {
                 DisplayAlert("Uwaga", ex.Message, "OK");
             }
-             
+
             connection.Close();
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", "")) ;
+            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", ""));
         }
 
         //private List<string> nowy;
@@ -356,8 +390,8 @@ namespace App2.View
 
             foreach (var wpis in dane)
             {
-                nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n", 
-                    wpis.AkN_NazwaAkcji, "\r\n", 
+                nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n",
+                    wpis.AkN_NazwaAkcji, "\r\n",
                     wpis.AkN_ZakresDat, "\r\n- - - - - - - - - - - - - - - -"));
             }
 
@@ -367,37 +401,37 @@ namespace App2.View
 
         private async void btn_print_Clicked(object sender, EventArgs e)
         {
-           
-            
-            
+
+
+
             PrintSerwis printSerwis = new PrintSerwis();
             //if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
-           // {
-                if (await printSerwis.ConnToPrinter())
-                {
-                    List<string> kolory = new List<string> {
+            // {
+            if (await printSerwis.ConnToPrinter())
+            {
+                List<string> kolory = new List<string> {
                     "biały", "pomarańczowy"
                 };
-                    //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
-                    var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
-                    if (kolor != "Anuluj")
-                    {
-                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", "1", 1, Keyboard.Numeric);
-                        if (result != null)
-                            await printSerwis.PrintCommand(twrkarty, kolor, result);
-                    }
-
-                }
-                else
+                //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
+                var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
+                if (kolor != "Anuluj")
                 {
-                    await DisplayAlert(null, "Błąd drukarki", "OK");
+                    string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", "1", 1, Keyboard.Numeric);
+                    if (result != null)
+                        await printSerwis.PrintCommand(twrkarty, kolor, result);
                 }
-           // }
-           // else
+
+            }
+            else
+            {
+                await DisplayAlert(null, "Błąd drukarki", "OK");
+            }
+            // }
+            // else
             //{
-              //  await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
-           // }
-           
+            //  await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
+            // }
+
 
 
         }
