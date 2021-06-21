@@ -17,7 +17,7 @@
 
 	/* 1: App2.dll */
 	/* uncompressed_file_size */
-	.word	413184
+	.word	414208
 	/* loaded */
 	.byte	0
 	/* data */

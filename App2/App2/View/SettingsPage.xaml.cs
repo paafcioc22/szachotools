@@ -24,6 +24,7 @@ namespace App2.View
 
         public static bool IsBuforOff;
         public static bool CzyCenaPierwsza;
+        public static bool OnAlfaNumeric;
         public static SByte SelectedDeviceType;
         public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
@@ -72,6 +73,7 @@ namespace App2.View
 
             sprwersja();
             SwitchStatus.IsToggled = IsBuforOff;
+            SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
 
          
@@ -789,6 +791,11 @@ namespace App2.View
             var aaa = Application.Current as App;
 
             aaa.CzyCena1 = rodzajCeny.IsToggled;
+        }
+
+        private void SwitchKlawiatura_Toggled(object sender, ToggledEventArgs e)
+        {
+            OnAlfaNumeric = SwitchKlawiatura.IsToggled;
         }
     }
 

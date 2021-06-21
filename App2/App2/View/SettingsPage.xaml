@@ -120,6 +120,15 @@
                
                     >
                     </Picker>-->
+                    <Label Text="Włącz klawiaturę alfanumeryczną (weryfikator) oraz druk code128" 
+                   HorizontalOptions="FillAndExpand" 
+                   BackgroundColor="Silver" 
+                   HorizontalTextAlignment="Center"/>
+                    <Switch HorizontalOptions="CenterAndExpand"   
+                    IsToggled="False" 
+                    Toggled="SwitchKlawiatura_Toggled"
+                    x:Name="SwitchKlawiatura" 
+                    />
                 </StackLayout>
             </ScrollView>
            <!--<ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" d:IsRunning="True" />-->

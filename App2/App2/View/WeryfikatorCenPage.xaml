@@ -95,7 +95,7 @@
                HorizontalOptions="CenterAndExpand" 
                Unfocused="kodean_Unfocused" 
                VerticalOptions="EndAndExpand" 
-               Keyboard="Telephone"
+               Keyboard="Numeric"
                WidthRequest="200"
                HorizontalTextAlignment="Center"
                 AbsoluteLayout.LayoutBounds="1,.93,1,.1"

@@ -35,6 +35,9 @@ namespace App2.View
 
             BindingContext = this;
 
+            if (SettingsPage.OnAlfaNumeric)
+                manualEAN.Keyboard = Keyboard.Default;
+
             settingsPage = new SettingsPage();
             idceny = settingsPage.cennikClasses;
             if (idceny != null)
@@ -68,15 +71,20 @@ namespace App2.View
             opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
             {
                 AutoRotate = false,
+
                 PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
-                //ZXing.BarcodeFormat.CODE_128,
-                //ZXing.BarcodeFormat.CODABAR,
-                ZXing.BarcodeFormat.CODE_39,
-                ZXing.BarcodeFormat.EAN_13
+                    //ZXing.BarcodeFormat.CODE_128,
+                    ZXing.BarcodeFormat.CODABAR,
+                    ZXing.BarcodeFormat.CODE_39,
+                    ZXing.BarcodeFormat.EAN_13
                 }
 
+               
+
             };
+            if(SettingsPage.OnAlfaNumeric)
+                opts.PossibleFormats.Add(ZXing.BarcodeFormat.CODE_128);
 
             opts.TryHarder = true;
 

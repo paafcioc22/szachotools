@@ -81,6 +81,8 @@ namespace App2.Model
         public async Task<bool> PrintCommand(TwrKarty _akcja,string kolor, string ile = null)
         {
             int drukSzt;
+            string typCodeEan = "";
+            int przesuniecieDlaCode128=0;
 
             if (!string.IsNullOrEmpty(ile))
                 drukSzt = Convert.ToInt16(ile);
@@ -166,12 +168,24 @@ namespace App2.Model
 
             
                 await SettingsPage._cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+                //LK_CPCL_BCS_EAN13
 
+
+                if (SettingsPage.OnAlfaNumeric)
+                {
+                    typCodeEan = cpclConst.LK_CPCL_BCS_128;
+                    przesuniecieDlaCode128 = 60;
+                }
+                else
+                {
+                    typCodeEan = cpclConst.LK_CPCL_BCS_EAN13;
+                    przesuniecieDlaCode128 = 80;
+                }
 
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.twr_kod, 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, twr_nazwa, 0);
-                await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 1,
-                        cpclConst.LK_CPCL_BCS_0RATIO, 40, 80, 55, _akcja.twr_ean, 0);
+                await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, typCodeEan, 1,
+                        cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.twr_ean, 0);
 
                 if (kolor!="biały")
                 {
