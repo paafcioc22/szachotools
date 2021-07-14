@@ -72,7 +72,7 @@
                 </Entry.Effects>-->
 
                     </Entry>
-                    <Label Text="Pokaż na liście również zatwierdzone MM (10 dni)" 
+                    <Label Text="Pokaż na liście również zatwierdzone MM (100 dni)" 
                    HorizontalOptions="FillAndExpand" 
                    BackgroundColor="Silver" 
                    HorizontalTextAlignment="Center"/>

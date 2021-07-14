@@ -1253,3 +1253,8 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\9
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\bin\Debug\App2.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxxhdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-hdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-mdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xhdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxhdpi\icons8_fedex.9.png

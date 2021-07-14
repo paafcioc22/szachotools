@@ -107,7 +107,7 @@ namespace App2.View
                     {
                         twrkod = csline.twrkod,
                         IleZeSkan = c.Sum(x => x.IleZeSkan),
-                        IleZMM = csline.IleZMM,
+                        IleZMM = c.Sum(cc=>cc.IleZMM),
                         ilosc = c.Sum(cc => cc.ilosc),
                         NrDokumentu = csline.NrDokumentu,
                         GidMagazynu = csline.GidMagazynu,
@@ -189,7 +189,7 @@ namespace App2.View
                     {
                         twrkod = csline.twrkod,
                         IleZeSkan = c.Sum(x => x.IleZeSkan),
-                        IleZMM = csline.IleZMM,
+                        IleZMM = c.Sum(cc => cc.IleZMM),
                         ilosc = c.Sum(cc => cc.ilosc),
                         NrDokumentu = csline.NrDokumentu,
                         GidMagazynu = csline.GidMagazynu,

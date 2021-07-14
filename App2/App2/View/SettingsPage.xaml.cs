@@ -422,7 +422,7 @@ namespace App2.View
             }
 
 
-            string wifi = "Szachownica";//JOART_WiFi
+            string wifi = "Szachownica";//JOART_WiFi Szachownica
 
             var version = DependencyService.Get<Model.IWifiConnector>();
             if (version.IsConnectedToWifi(wifi))//Szachownica

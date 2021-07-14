@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "53CJ1zL0XopZah++/LrfcjY3PovnyMLwoB2wK1fjFOt1GoT8fbSF5ZaFCpuFKGdFtub/zlm0VGDgR8Ve6iECjQ==",
+  "dgSpecHash": "qiUSFe8n8//MTPPzcWIY2vlJdtE6cK+FT5FmXxN9cy5BY2SC8SskZpIXbZhdMOWJec/56zMDShCplX4sZkRGsw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.0\\microsoft.netcore.platforms.2.1.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.win32.registry\\4.6.0\\microsoft.win32.registry.4.6.0.nupkg.sha512",
