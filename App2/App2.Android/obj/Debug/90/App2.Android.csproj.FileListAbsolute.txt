@@ -623,6 +623,11 @@ C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stam
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
 C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\bin\Debug\App2.dll.mdb
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxxhdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-hdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-mdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xhdpi\icons8_fedex.9.png
+C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxhdpi\icons8_fedex.9.png
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\bin\Debug\App2.Android.dll
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\bin\Debug\App2.Android.pdb
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\bin\Debug\com.SzachoTools.apk
@@ -636,7 +641,6 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\9
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\build.props
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\adb.props
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\App2.Android.csprojAssemblyReference.cache
-C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\_VerifyXamarinAndroidSupportVersions.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\stamp\_BuildLibraryImportsCache.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\res.flag
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\lp\21\jl\files.cache
@@ -1253,8 +1257,3 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\9
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2.Android\bin\Debug\App2.dll.mdb
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxxhdpi\icons8_fedex.9.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-hdpi\icons8_fedex.9.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-mdpi\icons8_fedex.9.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xhdpi\icons8_fedex.9.png
-C:\Users\pawel\source\repos\App2\szachotools\App2\App2.Android\obj\Debug\90\res\drawable-xxhdpi\icons8_fedex.9.png

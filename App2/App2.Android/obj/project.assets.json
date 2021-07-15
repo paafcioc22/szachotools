@@ -997,6 +997,7 @@
           "System.ServiceModel.Http": "4.5.3",
           "System.ServiceModel.NetTcp": "4.5.3",
           "System.ServiceModel.Security": "4.5.3",
+          "Xamarin.Android.Support.v7.AppCompat": "28.0.0.3",
           "Xamarin.Essentials": "1.6.0",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.3.0.991250",
@@ -2689,6 +2690,7 @@
       "Inwentary >= 1.0.0",
       "Plugin.SewooXamarin.SDK >= 1.0.1",
       "System.Data.SqlClient >= 4.7.0",
+      "Xamarin.Android.Support.v7.AppCompat >= 28.0.0.3",
       "Xamarin.Essentials >= 1.6.0",
       "Xamarin.FFImageLoading.Forms >= 2.4.11.982",
       "Xamarin.Forms >= 4.3.0.991250",
@@ -2704,11 +2706,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
       "projectName": "App2.Android",
-      "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
       "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2.Android\\obj\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -2724,14 +2726,13 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\pawel\\Documents\\NugetPaczki": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "monoandroid90": {
           "projectReferences": {
-            "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj": {
-              "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj"
+            "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj": {
+              "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj"
             }
           }
         }
@@ -2747,6 +2748,10 @@
           "System.Data.SqlClient": {
             "target": "Package",
             "version": "[4.7.0, )"
+          },
+          "Xamarin.Android.Support.v7.AppCompat": {
+            "target": "Package",
+            "version": "[28.0.0.3, )"
           },
           "Xamarin.Essentials": {
             "target": "Package",

@@ -16,6 +16,7 @@
           "System.ServiceModel.Http": "4.5.3",
           "System.ServiceModel.NetTcp": "4.5.3",
           "System.ServiceModel.Security": "4.5.3",
+          "Xamarin.Android.Support.v7.AppCompat": "28.0.0.3",
           "Xamarin.Essentials": "1.6.0",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
           "Xamarin.Forms": "4.3.0.991250",
@@ -281,6 +282,7 @@
           }
         }
       },
+      "Xamarin.Android.Support.v7.AppCompat/28.0.0.3": {},
       "Xamarin.Essentials/1.6.0": {
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
@@ -556,6 +558,13 @@
       "sha512": "sha512-OCUK9C/U97+UheVwo+JE+IUcKySUE3Oe+BcHhVtQrvmKSUFLrUDO8B5zEPRL6mBGbczxZp4w1boSck6/fw4dog==",
       "path": "system.text.encoding.codepages/4.6.0",
       "hashPath": "system.text.encoding.codepages.4.6.0.nupkg.sha512"
+    },
+    "Xamarin.Android.Support.v7.AppCompat/28.0.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GO+NAVD2H3+Ic27xCAG++4s6Qj+xeF1BFppUyYMUGtk+3IaeTKNHMf5OsuqQJbff09YwzuBmk/w2gNKn0FY1dw==",
+      "path": "xamarin.android.support.v7.appcompat/28.0.0.3",
+      "hashPath": "xamarin.android.support.v7.appcompat.28.0.0.3.nupkg.sha512"
     },
     "Xamarin.Essentials/1.6.0": {
       "type": "package",

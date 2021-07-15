@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qiUSFe8n8//MTPPzcWIY2vlJdtE6cK+FT5FmXxN9cy5BY2SC8SskZpIXbZhdMOWJec/56zMDShCplX4sZkRGsw==",
+  "dgSpecHash": "sSDbpfJ1l9xn81dmDkGCiUqLSA3jH+f6ZmLZsftjECPbPxzsx2gPppTm2HMMMq2PFZa8F2LJIYXQnPN7xXlatA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
+  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.0\\microsoft.netcore.platforms.2.1.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.win32.registry\\4.6.0\\microsoft.win32.registry.4.6.0.nupkg.sha512",
@@ -31,6 +31,7 @@
     "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.primitives\\4.5.3\\system.servicemodel.primitives.4.5.3.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.security\\4.5.3\\system.servicemodel.security.4.5.3.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.text.encoding.codepages\\4.6.0\\system.text.encoding.codepages.4.6.0.nupkg.sha512",
+    "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.android.support.v7.appcompat\\28.0.0.3\\xamarin.android.support.v7.appcompat.28.0.0.3.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.essentials\\1.6.0\\xamarin.essentials.1.6.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",

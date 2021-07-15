@@ -365,6 +365,9 @@
           }
         }
       },
+      "Xamarin.Android.Support.v7.AppCompat/28.0.0.3": {
+        "type": "package"
+      },
       "Xamarin.Essentials/1.6.0": {
         "type": "package",
         "dependencies": {
@@ -1489,6 +1492,18 @@
         "version.txt"
       ]
     },
+    "Xamarin.Android.Support.v7.AppCompat/28.0.0.3": {
+      "sha512": "GO+NAVD2H3+Ic27xCAG++4s6Qj+xeF1BFppUyYMUGtk+3IaeTKNHMf5OsuqQJbff09YwzuBmk/w2gNKn0FY1dw==",
+      "type": "package",
+      "path": "xamarin.android.support.v7.appcompat/28.0.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "proguard/monoandroid90/proguard.txt",
+        "xamarin.android.support.v7.appcompat.28.0.0.3.nupkg.sha512",
+        "xamarin.android.support.v7.appcompat.nuspec"
+      ]
+    },
     "Xamarin.Essentials/1.6.0": {
       "sha512": "geJYnjTyPv2npClIkBxLXk9cOV9CPwj/oayA8I4+6NpZc/dIiYxax36m25SW8TrCMR/rvyY44fZBjWBvj7BCQQ==",
       "type": "package",
@@ -1949,6 +1964,7 @@
       "System.ServiceModel.Http >= 4.5.3",
       "System.ServiceModel.NetTcp >= 4.5.3",
       "System.ServiceModel.Security >= 4.5.3",
+      "Xamarin.Android.Support.v7.AppCompat >= 28.0.0.3",
       "Xamarin.Essentials >= 1.6.0",
       "Xamarin.FFImageLoading.Forms >= 2.4.11.982",
       "Xamarin.Forms >= 4.3.0.991250",
@@ -1959,21 +1975,19 @@
   },
   "packageFolders": {
     "C:\\Users\\pawel\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
       "projectName": "Inwentary",
-      "projectPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\App2.csproj",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
       "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawel\\source\\repos\\App2\\szachotools\\App2\\App2\\obj\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
         "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1985,7 +1999,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\pawel\\Documents\\NugetPaczki": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2034,6 +2047,10 @@
             "target": "Package",
             "version": "[4.5.3, )"
           },
+          "Xamarin.Android.Support.v7.AppCompat": {
+            "target": "Package",
+            "version": "[28.0.0.3, )"
+          },
           "Xamarin.Essentials": {
             "target": "Package",
             "version": "[1.6.0, )"
@@ -2069,7 +2086,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   },
