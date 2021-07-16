@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "dgSpecHash": "PTF9IO/jSDowTBpqaLpbU0q+gLQZwSAwZMBhpyoN6DUhY7JsHN4adaBV2ogGgso8EwlZVJn4ClQgc2HnMOe31g==",
+  "success": false,
+  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.0\\microsoft.netcore.platforms.2.1.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.win32.registry\\4.6.0\\microsoft.win32.registry.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\plugin.sewooxamarin.sdk\\1.0.1\\plugin.sewooxamarin.sdk.1.0.1.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.6.0\\runtime.native.system.data.sqlclient.sni.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\sqlite-net-pcl\\1.6.292\\sqlite-net-pcl.1.6.292.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.bundle_green\\1.1.13\\sqlitepclraw.bundle_green.1.1.13.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.core\\1.1.13\\sqlitepclraw.core.1.1.13.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.data.sqlclient\\4.7.0\\system.data.sqlclient.4.7.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.6.0\\system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.private.servicemodel\\4.5.3\\system.private.servicemodel.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.reflection.dispatchproxy\\4.5.0\\system.reflection.dispatchproxy.4.5.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.security.accesscontrol\\4.6.0\\system.security.accesscontrol.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.security.principal.windows\\4.6.0\\system.security.principal.windows.4.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.duplex\\4.5.3\\system.servicemodel.duplex.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.http\\4.5.3\\system.servicemodel.http.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.nettcp\\4.5.3\\system.servicemodel.nettcp.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.primitives\\4.5.3\\system.servicemodel.primitives.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.servicemodel.security\\4.5.3\\system.servicemodel.security.4.5.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.text.encoding.codepages\\4.6.0\\system.text.encoding.codepages.4.6.0.nupkg.sha512",
+    "C:\\Microsoft\\Xamarin\\NuGet\\xamarin.android.support.v7.appcompat\\28.0.0.3\\xamarin.android.support.v7.appcompat.28.0.0.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.androidx.legacy.support.v4\\1.0.0.5\\xamarin.androidx.legacy.support.v4.1.0.0.5.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.androidx.lifecycle.livedata\\2.2.0.3\\xamarin.androidx.lifecycle.livedata.2.2.0.3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.essentials\\1.6.0\\xamarin.essentials.1.6.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.forms\\4.3.0.991250\\xamarin.forms.4.3.0.991250.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.google.android.material\\1.1.0.5-rc3\\xamarin.google.android.material.1.1.0.5-rc3.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile\\2.4.1\\zxing.net.mobile.2.4.1.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Pakiet „Plugin.SewooXamarin.SDK 1.0.1” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8” zamiast platformy docelowej projektu „.NETStandard,Version=v2.0”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
+      "libraryId": "Plugin.SewooXamarin.SDK",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1202",
+      "level": "Error",
+      "message": "Pakiet Xamarin.AndroidX.Legacy.Support.V4 1.0.0.5 nie jest zgodny z elementem netstandard2.0 (.NETStandard,Version=v2.0). Pakiet Xamarin.AndroidX.Legacy.Support.V4 1.0.0.5 obsługuje: monoandroid90 (MonoAndroid,Version=v9.0)",
+      "libraryId": "Xamarin.AndroidX.Legacy.Support.V4",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1202",
+      "level": "Error",
+      "message": "Pakiet Xamarin.AndroidX.Lifecycle.LiveData 2.2.0.3 nie jest zgodny z elementem netstandard2.0 (.NETStandard,Version=v2.0). Pakiet Xamarin.AndroidX.Lifecycle.LiveData 2.2.0.3 obsługuje: monoandroid90 (MonoAndroid,Version=v9.0)",
+      "libraryId": "Xamarin.AndroidX.Lifecycle.LiveData",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1202",
+      "level": "Error",
+      "message": "Pakiet Xamarin.Google.Android.Material 1.1.0.5-rc3 nie jest zgodny z elementem netstandard2.0 (.NETStandard,Version=v2.0). Pakiet Xamarin.Google.Android.Material 1.1.0.5-rc3 obsługuje: monoandroid90 (MonoAndroid,Version=v9.0)",
+      "libraryId": "Xamarin.Google.Android.Material",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.0"
+      ]
+    }
+  ]
+}

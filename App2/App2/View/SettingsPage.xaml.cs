@@ -405,55 +405,49 @@ namespace App2.View
 
         }
 
-        private async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private   void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
-            IsSearching = true;
-            var profiles = Connectivity.ConnectionProfiles;
-            if (profiles.Contains(ConnectionProfile.WiFi))
-            {
-                System.Diagnostics.Debug.WriteLine("połączenie wigi");
-            }
-
-            var current = Connectivity.NetworkAccess;
-
-            if (current == NetworkAccess.Internet)
-            {
-                System.Diagnostics.Debug.WriteLine("połączenie dostępne");
-            }
-
-
-            string wifi = "Szachownica";//JOART_WiFi Szachownica
-
-            var version = DependencyService.Get<Model.IWifiConnector>();
-            if (version.IsConnectedToWifi(wifi))//Szachownica
-            {
-                await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
-                return;
-            }
-
-
-            if (version.ConnectToWifi(wifi, "J0@rt11a"))
-            {
-                await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
-            }
-            else
-            {
-                await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
-            }
-
-            
-
-            //if (version.IsConnectedToWifi(wifi))
+            //IsSearching = true;
+            //var profiles = Connectivity.ConnectionProfiles;
+            //if (profiles.Contains(ConnectionProfile.WiFi))
             //{
-            //    DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
+            //    System.Diagnostics.Debug.WriteLine("połączenie wigi");
+            //}
 
+            //var current = Connectivity.NetworkAccess;
+
+            //if (current == NetworkAccess.Internet)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("połączenie dostępne");
+            //}
+
+
+            string wifi = "JOART_WiFi";//JOART_WiFi Szachownica
+
+            //var version = DependencyService.Get<Model.IWifiConnector>();
+            //if (version.IsConnectedToWifi(wifi))//Szachownica
+            //{
+            //    await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
+            //    return;
+            //}
+
+
+            //if (version.ConnectToWifi(wifi, "J0@rt11a"))
+            //{
+            //    await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
             //}
             //else
             //{
-
-            //    DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
-
+            //    await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
             //}
+
+            //Device.BeginInvokeOnMainThread(async () =>
+           // {
+                IWifiConn10  wifiConn= DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
+                //wifiConn.RequestNetwork(wifi, "J0@rt11a");
+                wifiConn.SuggestNetwork(wifi, "J0@rt11a");
+
+            //});
             IsSearching = false;
 
         }

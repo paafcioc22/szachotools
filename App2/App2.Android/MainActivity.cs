@@ -1,17 +1,25 @@
 ﻿using System;
-
+ 
 using Android.App;
+using Android.Net;
+ 
+using Android.OS;
+using Android.Support.V7.App;
+using Android.Widget;
+ 
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using Android.OS;
+ 
 using ZXing.Net.Mobile; 
 using System.Net;
 using Android.Content;
 using Android.Util;
 using Xamarin.Forms;
 using FFImageLoading.Forms.Platform;
+using Android.Net.Wifi;
+using App2.Model;
+
 
 //using Microsoft.AppCenter.Push;
 //using Microsoft.AppCenter;
@@ -22,10 +30,13 @@ namespace App2.Droid
     [Activity(Label = "SzachoTools", Icon = "@drawable/NewSzacho", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation|ConfigChanges.KeyboardHidden|ConfigChanges.Keyboard)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+
+        public static MainActivity MainActivityInstance { get; private set; }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+            //TabLayoutResource = Resource.Layout.Tabbar;
+            //ToolbarResource = Resource.Layout.Toolbar;
 
 
             base.OnCreate(savedInstanceState);
@@ -41,14 +52,14 @@ namespace App2.Droid
 
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
-
-
+ 
             //Push.SetSenderId("466514621461");
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());
-           // Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+            // Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+            MainActivityInstance = this;
         }
          
 
@@ -62,6 +73,9 @@ namespace App2.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        
+
         //private void CheckUpdate(Action doIfUpToDate)
         //{
         //    if (NeedUpdate())

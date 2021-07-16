@@ -74,10 +74,6 @@
               "target": "Package",
               "version": "[4.5.3, )"
             },
-            "Xamarin.Android.Support.v7.AppCompat": {
-              "target": "Package",
-              "version": "[28.0.0.3, )"
-            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.6.0, )"
