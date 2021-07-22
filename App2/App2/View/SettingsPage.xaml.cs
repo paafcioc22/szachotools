@@ -311,7 +311,7 @@ namespace App2.View
                     ";PWD=" + app.Password
                 };
                 connection.Open();
-                command.CommandText = " SELECT DfC_lp, DfC_Nazwa  FROM [CDN].[DefCeny] where DfC_Nieaktywna = 0";
+                command.CommandText = " SELECT DfC_lp, DfC_Nazwa  FROM [CDN].[DefCeny] where DfC_Nieaktywna = 0 and DfC_Nazwa<>'Zakupu'";
 
                 SqlCommand query = new SqlCommand(command.CommandText, connection);
                 SqlDataReader rs;
@@ -405,47 +405,63 @@ namespace App2.View
 
         }
 
-        private   void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private  async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
-            //IsSearching = true;
-            //var profiles = Connectivity.ConnectionProfiles;
-            //if (profiles.Contains(ConnectionProfile.WiFi))
-            //{
-            //    System.Diagnostics.Debug.WriteLine("połączenie wigi");
-            //}
 
-            //var current = Connectivity.NetworkAccess;
-
-            //if (current == NetworkAccess.Internet)
-            //{
-            //    System.Diagnostics.Debug.WriteLine("połączenie dostępne");
-            //}
-
-
+            IsSearching = true;
             string wifi = "JOART_WiFi";//JOART_WiFi Szachownica
+            int versionA = DeviceInfo.Version.Major;
 
-            //var version = DependencyService.Get<Model.IWifiConnector>();
-            //if (version.IsConnectedToWifi(wifi))//Szachownica
-            //{
-            //    await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
-            //    return;
-            //}
+            if (versionA <= 9)
+            {
+                var profiles = Connectivity.ConnectionProfiles;
+                if (profiles.Contains(ConnectionProfile.WiFi))
+                {
+                    System.Diagnostics.Debug.WriteLine("połączenie wigi");
+                }
+
+                var current = Connectivity.NetworkAccess;
+
+                if (current == NetworkAccess.Internet)
+                {
+                    System.Diagnostics.Debug.WriteLine("połączenie dostępne");
+                }
 
 
-            //if (version.ConnectToWifi(wifi, "J0@rt11a"))
-            //{
-            //    await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
-            //}
-            //else
-            //{
-            //    await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
-            //}
+
+                var version = DependencyService.Get<Model.IWifiConnector>();
+                if (version.IsConnectedToWifi(wifi))//Szachownica
+                {
+                    await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
+                    return;
+                }
+
+
+                if (version.ConnectToWifi(wifi, "J0@rt11a"))
+                {
+                    await DisplayAlert("Info", "Połączenie z Wifi nawiązane pomyślnie.", "OK");
+                }
+                else
+                {
+                    await DisplayAlert("Uwaga", "Nie udało się połączyć z Wifi..", "OK");
+                }
+            }
+            else
+            {
+                IWifiConn10 wifiConn = DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
+               
+                if (!string.IsNullOrEmpty(wifiConn.SuggestNetwork(wifi, "J0@rt11a")))
+                    await DisplayAlert("Info", wifiConn.SuggestNetwork(wifi, "J0@rt11a"), "OK");
+            }
+
+            
 
             //Device.BeginInvokeOnMainThread(async () =>
-           // {
-                IWifiConn10  wifiConn= DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
-                //wifiConn.RequestNetwork(wifi, "J0@rt11a");
-                wifiConn.SuggestNetwork(wifi, "J0@rt11a");
+            // {
+            //    IWifiConn10  wifiConn= DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
+            ////wifiConn.RequestNetwork(wifi, "J0@rt11a");
+            //if(!string.IsNullOrEmpty(wifiConn.SuggestNetwork(wifi, "J0@rt11a")))
+            //await DisplayAlert("Info", wifiConn.SuggestNetwork(wifi, "J0@rt11a"), "OK"); 
 
             //});
             IsSearching = false;
@@ -515,7 +531,7 @@ namespace App2.View
              
             List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
             //todo : odremuj
-            var blueToothService = DependencyService.Get<Model.IBlueToothService>();
+            //var blueToothService = DependencyService.Get<Model.IBlueToothService>();
 
             var deviceList = await _cpclPrinter.connectableDevice();
 

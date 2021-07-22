@@ -1,28 +1,9 @@
-﻿using System;
- 
+﻿
 using Android.App;
-using Android.Net;
- 
-using Android.OS;
-using Android.Support.V7.App;
-using Android.Widget;
- 
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
- 
-using ZXing.Net.Mobile; 
-using System.Net;
-using Android.Content;
-using Android.Util;
-using Xamarin.Forms;
+using Android.OS;
 using FFImageLoading.Forms.Platform;
-using Android.Net.Wifi;
-using App2.Model;
 
-
-//using Microsoft.AppCenter.Push;
-//using Microsoft.AppCenter;
 
 
 namespace App2.Droid
@@ -35,8 +16,8 @@ namespace App2.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            //TabLayoutResource = Resource.Layout.Tabbar;
-            //ToolbarResource = Resource.Layout.Toolbar;
+            TabLayoutResource = Resource.Layout.Tabbar;
+            ToolbarResource = Resource.Layout.Toolbar;
 
 
             base.OnCreate(savedInstanceState);
@@ -52,8 +33,7 @@ namespace App2.Droid
 
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
- 
-            //Push.SetSenderId("466514621461");
+
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));

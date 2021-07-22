@@ -38,8 +38,16 @@ namespace App2.Droid
 
             WifiManager wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
 
+            var network = wifiManager.ConfiguredNetworks
+                 .FirstOrDefault(n => n.Ssid == ssid);
 
-           // Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
+            if (network == null)
+            {
+                Console.WriteLine($"Cannot connect to network: {ssid}");
+                //return false;
+            }
+
+            // Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
             if (!wifiManager.IsWifiEnabled)
             wifiManager.SetWifiEnabled(true);
 
@@ -57,14 +65,18 @@ namespace App2.Droid
 
             if (wifiManager.Reconnect())
             {
+                var activity = MainActivity.MainActivityInstance;
+                activity.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
                 return true;
             }
             else
             {
+
+                var activity = MainActivity.MainActivityInstance;
+                activity.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
                 return false;
             }
 
-             Forms.Context.StartActivity(new Android.Content.Intent(Android.Provider.Settings.ActionWifiSettings));
 
         }
 

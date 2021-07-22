@@ -22,7 +22,7 @@ namespace App2.View
         private List<AkcjeNagElem> _nagElem;
         App app;
         string NazwaCennika;
-        int NrCennika;
+        int NrCennika=2;
 
         private BindableProperty IsSearchingProperty =
            BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
