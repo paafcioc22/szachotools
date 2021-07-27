@@ -115,7 +115,7 @@ namespace App2.Model
                                 {queryZatwierdzone}
 
 
-                 order by 1";
+                 order by dataMM desc";
 
                     //(trn_rodzaj= 312010 and trn_bufor<>0 )
                    //    or(trn_rodzaj = 312010 and trn_datadok > getdate() - 8)

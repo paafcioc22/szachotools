@@ -409,7 +409,7 @@ namespace App2.View
         {
 
             IsSearching = true;
-            string wifi = "JOART_WiFi";//JOART_WiFi Szachownica
+            string wifi = "Szachownica";//JOART_WiFi Szachownica
             int versionA = DeviceInfo.Version.Major;
 
             if (versionA <= 9)
@@ -449,9 +449,24 @@ namespace App2.View
             else
             {
                 IWifiConn10 wifiConn = DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
-               
-                if (!string.IsNullOrEmpty(wifiConn.SuggestNetwork(wifi, "J0@rt11a")))
-                    await DisplayAlert("Info", wifiConn.SuggestNetwork(wifi, "J0@rt11a"), "OK");
+
+                var odp = wifiConn.SuggestNetwork(wifi, "J0@rt11a");
+                if (!string.IsNullOrEmpty(odp))
+                    if(odp== "Sieć została już dodana")
+                    {
+                        var czyRemoveNet = await DisplayAlert("Info", "Sieć została już dodana\n Czy chcesz usunąć sugerowane sieci?", "Tak", "NIE");
+                        if (czyRemoveNet)
+                            wifiConn.RemoveSuggestNetwork(wifi, "J0@rt11a");
+                    }
+                    else
+                    {
+                        await DisplayAlert("Info", odp, "OK");
+                        if (odp== "Sieć dodano - zatwierdź w ustawieniach")
+                        {
+                            wifiConn.OpenSettings();
+                        } 
+                    }
+                   
             }
 
             
