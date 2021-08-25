@@ -17,7 +17,7 @@
         </StackLayout>
 
 
-        <ListView x:Name="MyListView" RowHeight="80" 
+        <ListView x:Name="MyListView" RowHeight="100" 
                 ItemsSource="{Binding Items}"
                 BindingContext="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"

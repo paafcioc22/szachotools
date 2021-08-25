@@ -39,6 +39,9 @@ namespace App2.View
         {
             IsSearching = true;
 
+            List_AkcjeView akcjeView = new List_AkcjeView();
+            string magnr= akcjeView.GetMagnumer().ToString();
+
             try
             {
                 if (StartPage.CheckInternetConnection())
@@ -52,6 +55,8 @@ namespace App2.View
                     INNER JOIN   CDN.PC_AkcjeElem ON AkN_GidNumer =Ake_AknNumer
                     join [CDN].[PC_AkcjeTyp] on akn_gidtyp = GidTypAkcji
                      where AkN_GidTyp={_gidtyp} and AkN_DataKoniec>=GETDATE() -10 -{dodajDni}
+                        and  (AkN_MagDcl like ''%m={magnr},%'' or AkN_MagDcl=''wszystkie'')
+                        and getdate() >= AkN_DataStart
                      order by AkN_DataStart desc
                      '";
                     var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync(Webquery2);
