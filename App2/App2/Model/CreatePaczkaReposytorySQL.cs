@@ -42,7 +42,17 @@ namespace App2.Model
 
                         set @id= (select case when {nrpaczki}<>0 then {nrpaczki} else @id end)
 
-                    insert into cdn.pc_fedexmm values " + Environment.NewLine;
+                    insert into cdn.pc_fedexmm  ([Fmm_GidNumer]
+           ,[Fmm_EleNumer]
+           ,[Fmm_NrListu]
+           ,[Fmm_NrPaczki]
+           ,[Fmm_NazwaPaczki]
+           ,[Fmm_Elmenty]
+           ,[Fmm_DataZlecenia]
+           ,[Fmm_MagDcl]
+           ,[Fmm_MagZrd]
+           ,[Fmm_NrDokWydania]
+           ,[Fmm_Opis]) values " + Environment.NewLine;
 
             string insert = "";
             string NryMMek = "Numery MM(ek):";
@@ -106,7 +116,17 @@ namespace App2.Model
 						set @magzrd=(select top 1 Fmm_MagZrd from cdn.pc_fedexmm  where fmm_gidnumer={gidnr})
 
 
-                    insert into cdn.pc_fedexmm values " + Environment.NewLine;
+                    insert into cdn.pc_fedexmm  ([Fmm_GidNumer]
+           ,[Fmm_EleNumer]
+           ,[Fmm_NrListu]
+           ,[Fmm_NrPaczki]
+           ,[Fmm_NazwaPaczki]
+           ,[Fmm_Elmenty]
+           ,[Fmm_DataZlecenia]
+           ,[Fmm_MagDcl]
+           ,[Fmm_MagZrd]
+           ,[Fmm_NrDokWydania]
+           ,[Fmm_Opis]) values " + Environment.NewLine;
 
             string insert = "";
             string NryMMek = "Numery MM(ek):";
@@ -160,7 +180,17 @@ namespace App2.Model
 
                     delete from cdn.pc_fedexmm where fmm_gidnumer={fp.Fmm_GidNumer} and fmm_eleNumer={fp.Fmm_EleNumer} and Fmm_NazwaPaczki=''''
                     
-                    insert into cdn.pc_fedexmm values " + Environment.NewLine;
+                    insert into cdn.pc_fedexmm  ([Fmm_GidNumer]
+           ,[Fmm_EleNumer]
+           ,[Fmm_NrListu]
+           ,[Fmm_NrPaczki]
+           ,[Fmm_NazwaPaczki]
+           ,[Fmm_Elmenty]
+           ,[Fmm_DataZlecenia]
+           ,[Fmm_MagDcl]
+           ,[Fmm_MagZrd]
+           ,[Fmm_NrDokWydania]
+           ,[Fmm_Opis]) values " + Environment.NewLine;
 
             string insert = "";
             string NryMMek = "Numery MM(ek):";

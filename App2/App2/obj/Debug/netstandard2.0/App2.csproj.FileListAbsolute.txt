@@ -1,7 +1,6 @@
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\bin\Debug\netstandard2.0\App2.deps.json
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\bin\Debug\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\bin\Debug\netstandard2.0\App2.pdb
-C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.csprojAssemblyReference.cache
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.Properties.Resources.resources
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.csproj.GenerateResource.cache
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App.xaml.g.cs
@@ -32,3 +31,4 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstanda
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\XamlC.stamp
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.pdb
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.csprojAssemblyReference.cache

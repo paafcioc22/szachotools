@@ -728,7 +728,7 @@ namespace App2.View
             entry_EanSkaner = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
-                Keyboard = Keyboard.Numeric,
+                Keyboard = SettingsPage.OnAlfaNumeric? Keyboard.Default :Keyboard.Numeric,
                 WidthRequest = 180,
                 //Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
                 Placeholder = "Wpisz/zeskanuj Ean",
@@ -1289,6 +1289,8 @@ namespace App2.View
         public async Task<bool> PrintCommand(string ile = null)
         {
             int drukSzt;
+            string typCodeEan = "";
+            int przesuniecieDlaCode128 = 0;
             //_cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2); 
 
             if (ile != null)
@@ -1369,11 +1371,23 @@ namespace App2.View
                 // Set the code page of font number(7) 
                 await SettingsPage._cpclPrinter.setCodePage((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
- 
+                if (SettingsPage.OnAlfaNumeric)
+                {
+                    typCodeEan = cpclConst.LK_CPCL_BCS_128;
+                    przesuniecieDlaCode128 = 60;
+                }
+                else
+                {
+                    typCodeEan = cpclConst.LK_CPCL_BCS_EAN13;
+                    przesuniecieDlaCode128 = 80;
+                }
+
+
+
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.TwrKod, 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, twr_nazwa, 0);
-                await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_BCS_EAN13, 1,
-    cpclConst.LK_CPCL_BCS_0RATIO, 40, 80, 55, _akcja.TwrEan, 0);
+                await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, typCodeEan, 1,
+    cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.TwrEan, 0);
 
                 if (!List_AkcjeView.TypAkcji.Contains("Zmiana"))
                 {
