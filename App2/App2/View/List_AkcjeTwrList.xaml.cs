@@ -19,9 +19,9 @@ namespace App2.View
         public IList<AkcjeNagElem> SumaList { get; set; }
         private SqlConnection connection;
         private SQLiteAsyncConnection _connection; 
-        private List<AkcjeNagElem> _nagElem;
+        private List<NagElem> _nagElem;
         App app;
-        string NazwaCennika;
+        //string NazwaCennika;
         int NrCennika=2;
 
         private BindableProperty IsSearchingProperty =
@@ -34,7 +34,7 @@ namespace App2.View
 
          
 
-        public List_AkcjeTwrList(List<AkcjeNagElem> nagElem)
+        public List_AkcjeTwrList(List<NagElem> nagElem)
         {
             InitializeComponent();
             BindingContext = this;
@@ -169,7 +169,7 @@ namespace App2.View
         }
 
 
-        private async void GetListFromLocal(List<Model.AkcjeNagElem> lista)
+        private async void GetListFromLocal(List<Model.NagElem> lista)
         {
             TwrListLocal = new ObservableCollection<Model.AkcjeNagElem>();
             //SumaList = new ObservableCollection<Model.AkcjeNagElem>();
@@ -251,8 +251,8 @@ namespace App2.View
        
             
 
-            return await Task.Run(async () =>
-            {
+           // return await Task.Run(async () =>
+           // {
                 try
                 {
 
@@ -289,10 +289,12 @@ namespace App2.View
                     }
                     return _fromWeb;
                 }
-                catch (Exception)
+                catch (Exception s)
                 {
 
-                    throw;
+                    //throw;
+                    await DisplayAlert(null, s.Message, "OK");
+                    return null;
                 }
                     #region MyRegion
                 //var listFromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
@@ -396,7 +398,7 @@ namespace App2.View
                 #endregion
 
 
-            });
+            //});
         }
 
         public static bool TableExists<T>(SQLiteConnection connection) 
@@ -536,10 +538,10 @@ namespace App2.View
                         await DisplayAlert(null, odp, "OK");
                 }
             }
-            catch 
+            catch (Exception x)
             {
 
-                 ;
+                await DisplayAlert(null, x.Message, "OK");
             }
 
         }

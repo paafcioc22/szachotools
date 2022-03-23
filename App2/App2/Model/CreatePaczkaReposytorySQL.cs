@@ -54,7 +54,7 @@ namespace App2.Model
            ,[Fmm_NrDokWydania]
            ,[Fmm_Opis]) values " + Environment.NewLine;
 
-            string insert = "";
+           // string insert = "";
             string NryMMek = "Numery MM(ek):";
 
             //foreach (var i in checkMMToPaczkaList)

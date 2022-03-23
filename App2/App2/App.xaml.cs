@@ -41,8 +41,6 @@ namespace App2
         protected override void OnSleep()
         {
 
-
-
             var pages = Application.Current.MainPage.Navigation.ModalStack;
             if (pages.Count > 0)
             {
@@ -56,20 +54,15 @@ namespace App2
 
                 };
                 
-
-                if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())
-                //if (nazwa == "RaportLista_AddTwrKod" || nazwa == "WeryfikatorCenPage")
+                if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())                
                     return;
 
-                   View.StartPage.user = "Wylogowany";
-
-                //if(nazwa != "WeryfikatorCenPage")
-                //    View.StartPage.user = "Wylogowany";
+                   View.StartPage.user = "Wylogowany";               
 
             }
-            else {
+            else 
+            {
                 View.StartPage.user = "Wylogowany";
-
             }
 
 
@@ -101,13 +94,15 @@ namespace App2
             {
                 if (Properties.ContainsKey(serwer))
                     return Properties[serwer].ToString();
-                return "192.168.1.2\\optima";
+                //return "192.168.1.2\\optima"; todo : popraw adres ip
+                return "10.8.0.146\\optima";
             }
             set
             {
                 Properties[serwer] = value;
             } 
         }
+
         public string User
         {
             get
@@ -121,6 +116,7 @@ namespace App2
                 Properties[user] = value;
             } 
         }
+
         public string Password
         {
             get

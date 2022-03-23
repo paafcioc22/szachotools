@@ -10,8 +10,8 @@
                            VerticalOptions="Center"
                            Color="DarkCyan"
                              />
-        <ListView x:Name="MyListView2" HasUnevenRows="True"
-                ItemsSource="{Binding Items2}" SeparatorVisibility="None"
+        <ListView   HasUnevenRows="True"
+                ItemsSource="{Binding ListaZFiltrem}" SeparatorVisibility="None"
                 ItemTapped="Handle_ItemTapped"
                 CachingStrategy="RecycleElement" >
 

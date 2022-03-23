@@ -236,7 +236,7 @@ namespace App2.View
 
                 var page = new LoginLista();
 
-                page.ListViewLogin.ItemSelected += (source, args) =>
+                page.ListViewLogin.ItemSelected += async (source, args) =>
                 {
                     var pracownik = args.SelectedItem as Pracownik;
                     if (SettingsPage.SelectedDeviceType == 1)
@@ -248,7 +248,7 @@ namespace App2.View
                     }
 
                     
-                    if(page.IsPassCorrect())
+                    if(await page.IsPassCorrect(pracownik.opegidnumer))
                         lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
                    // Navigation.PopModalAsync();
                 };

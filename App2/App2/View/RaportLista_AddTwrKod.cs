@@ -23,7 +23,7 @@ namespace App2.View
         private Entry entry_kodean;
         private Entry entry_ilosc;
         private Image img_foto;
-        private Button btn_Skanuj;
+        //private Button btn_Skanuj;
         private Button btn_AddEanPrefix;
         private Button btn_Zapisz;
         private Int32 _gidnumer;

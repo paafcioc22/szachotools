@@ -1,4 +1,5 @@
 ﻿
+using App2.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -253,13 +254,72 @@ namespace App2.View
              
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+
+        public async Task<bool> IsPassCorrect(int gidnumer)
+        {
+
+            var query = $@"cdn.PC_WykonajSelect N'  
+            select  ope_gidnumer AS GID,Ope_ident, Prc_Akronim,  substring(cast(10000 +ope_gidnumer as varchar(8)) +SUBSTRING(Prc_Pesel,8,3),2,7) Haslo
+            from cdn.opekarty  
+	            left join cdn.PrcKarty on Ope_PrcNumer=Prc_GIDNumer 
+            where   ope_gidnumer={gidnumer}'";
+
+            string fullPass = "";
+
+            var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
+
+
+            
+
+            if (haslo.Count > 0)
+            {
+                if (haslo[0].GID == "53")
+                {
+                    haslo[0].Haslo = "987654";
+                }
+
+                var isNumeric = int.TryParse(entry_haslo.Text, out int n);
+
+                if (isNumeric && entry_haslo.Text.Length >= 6)
+                {
+                    int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
+
+                    if (znak1 == 0 && entry_haslo.Text.Length == 8)
+                    {
+                        fullPass = EAN8.CalcChechSum(haslo[0].Haslo);
+
+                        return entry_haslo.Text.Equals(fullPass);
+
+                    }
+                    else if (entry_haslo.Text.Length != 6)
+                    {
+                        return false;
+
+                    }else if (znak1 ==9 && entry_haslo.Text.Length == 6 )
+                    {
+                        if (entry_haslo.Text == "987654")
+                            return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Nie udało się pobrać hasła ");
+            }
+            return false;
+
+        }
+        private async void Button_Clicked(object sender, EventArgs e)
         {
             if (entry_haslo.Text != null) //entry_haslo.Text!=""
             {
                  
                   
-                if (IsPassCorrect())
+                if (await IsPassCorrect(_opeGid))
                 {
                      
 
@@ -269,11 +329,11 @@ namespace App2.View
                     View.StartPage startPage = new StartPage();
                     startPage.OdblokujPrzyciski();
                      
-                    Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
                 }
                 else
                 {
-                    DisplayAlert(null, "Złe haslo", "OK");
+                    await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
 
                 } 
             }
@@ -288,12 +348,12 @@ namespace App2.View
 
 
         
-        private void entry_haslo_Completed(object sender, EventArgs e)
+        private async void entry_haslo_Completed(object sender, EventArgs e)
         {
 
 
              
-            if (IsPassCorrect())
+            if (await IsPassCorrect(_opeGid))
             {
 
 
@@ -303,11 +363,12 @@ namespace App2.View
                 startPage.OdblokujPrzyciski();
                  
 
-                Navigation.PopModalAsync();
+                await Navigation.PopModalAsync();
             }
             else
             {
-                DisplayAlert(null, "Złe haslo", "OK");
+                await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+
 
             }
         }

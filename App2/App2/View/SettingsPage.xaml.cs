@@ -501,13 +501,13 @@ namespace App2.View
 
         // private ISewooXamarinCPCL _cpclPrinter;
         // CPCLConst cpclConst;
-        private Picker mediaTypePicker;
+        //private Picker mediaTypePicker;
 
         public static Editor editAddress;
         private Button connectButton;
         private Button disconnectButton;
         private Button printText;
-        private IEnumerable<object> deviceList;
+        //private IEnumerable<object> deviceList;
 
 
         //private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);

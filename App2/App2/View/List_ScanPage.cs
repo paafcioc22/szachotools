@@ -26,7 +26,7 @@ namespace App2.View
         private Label lbl_cena1;
         private Entry entry_skanowanaIlosc;
         private Entry entry_EanSkaner;
-        private Image img_foto;
+        //private Image img_foto;
 
         private SQLiteAsyncConnection _connection;
         private string skanean;
@@ -42,7 +42,7 @@ namespace App2.View
 
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         // private  ISewooXamarinCPCL cpclPrinter;
-        string drukarka;
+        //string drukarka;
         Array Controls;
 
 

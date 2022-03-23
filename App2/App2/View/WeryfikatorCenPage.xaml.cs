@@ -396,6 +396,8 @@ namespace App2.View
  order by AkN_DataStart desc   '";
             var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 
+
+
             foreach (var wpis in dane)
             {
                 nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n",
@@ -409,8 +411,6 @@ namespace App2.View
 
         private async void btn_print_Clicked(object sender, EventArgs e)
         {
-
-
 
             PrintSerwis printSerwis = new PrintSerwis();
             //if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
@@ -434,13 +434,6 @@ namespace App2.View
             {
                 await DisplayAlert(null, "Błąd drukarki", "OK");
             }
-            // }
-            // else
-            //{
-            //  await DisplayAlert("Uwaga", "Brak na stanie - nie wydrukuję", "OK");
-            // }
-
-
 
         }
     }

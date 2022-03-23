@@ -35,15 +35,7 @@ namespace App2.View
         }
 
 
-            //using (SqlConnection connection = new SqlConnection(connToBase.SqlconnXL))
-            //{
-            //    connection.Open();
-            //    using (SqlCommand command2 = new SqlCommand(querystring, connection))
-            //    {
-            //        command2.ExecuteNonQuery();
-            //    }
-            //}
-
+        
 
 
 
@@ -52,32 +44,43 @@ namespace App2.View
 
         public int GetMagnumer()
         {
-            if (SettingsPage.SprConn())
+            try
             {
 
-                using (SqlConnection connection = new SqlConnection(connectionstring))
+                if (SettingsPage.SprConn())
                 {
-                    connection.Open();
-                    string querystring = $@"SELECT  [Mag_GIDNumer]
+
+                    using (SqlConnection connection = new SqlConnection(connectionstring))
+                    {
+                        connection.Open();
+                        string querystring = $@"SELECT  [Mag_GIDNumer]
                                   FROM  [CDN].[Magazyny]
                                   where mag_typ=1 
 								  and [Mag_GIDNumer] is not null
 								  and mag_nieaktywny=0";
 
-                    using (SqlCommand command2 = new SqlCommand(querystring, connection))
-                    {
-                        using (SqlDataReader rs = command2.ExecuteReader())
+                        using (SqlCommand command2 = new SqlCommand(querystring, connection))
                         {
-                            while (rs.Read())
+                            using (SqlDataReader rs = command2.ExecuteReader())
                             {
-                                return System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+                                while (rs.Read())
+                                {
+                                    return System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+                                }
                             }
-                        } 
+                        }
                     }
-                } 
-                 
+
+                }
+                return 0;
             }
-            return 0;
+            catch (Exception)
+            {
+
+                DisplayAlert(null, "Błąd pobierania- wejdź w ustawienia\n kliknij zapisz sprawdź połączenie", "OK");
+                return 0;
+
+            }
         }
 
 
@@ -85,10 +88,14 @@ namespace App2.View
         {
             string user = LoginLista._user;
             int dodajDni = user == "ADM" ? 50 : 0;
-            string magnr = GetMagnumer().ToString();
+            int magnr = GetMagnumer();
+
 
             try
             {
+                if(magnr==0)
+                    throw new InvalidOperationException("Błąd pobierania danych");
+
                 if (StartPage.CheckInternetConnection())
                 {
                     string Webquery = $@"cdn.PC_WykonajSelect N'select distinct AkN_GidTyp  
