@@ -32,3 +32,4 @@ C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstanda
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.dll
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.pdb
 C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\App2.csprojAssemblyReference.cache
+C:\Users\pawel\source\repos\paafcioc22\szachotools\App2\App2\obj\Debug\netstandard2.0\View\Foto\Foto.xaml.g.cs

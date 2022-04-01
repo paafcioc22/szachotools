@@ -42,6 +42,14 @@
       "frameworks": {
         "monoandroid11.0": {
           "dependencies": {
+            "Azure.Storage.Blobs": {
+              "target": "Package",
+              "version": "[12.11.0, )"
+            },
+            "PhotoBrowser.Forms": {
+              "target": "Package",
+              "version": "[0.1.4, )"
+            },
             "Plugin.SewooXamarin.SDK": {
               "target": "Package",
               "version": "[1.0.1, )"
@@ -49,6 +57,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.7.0, )"
+            },
+            "Xam.Plugin.Media": {
+              "target": "Package",
+              "version": "[5.0.1, )"
             },
             "Xamarin.AndroidX.Legacy.Support.V4": {
               "target": "Package",
@@ -68,7 +80,7 @@
             },
             "Xamarin.Forms": {
               "target": "Package",
-              "version": "[4.3.0.991250, )"
+              "version": "[4.4.0.991265, )"
             },
             "Xamarin.Google.Android.Material": {
               "target": "Package",
@@ -108,15 +120,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netstandard2.0"
+          "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netstandard2.0": {
-            "targetAlias": "netstandard2.0",
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -127,14 +139,16 @@
         }
       },
       "frameworks": {
-        "netstandard2.0": {
-          "targetAlias": "netstandard2.0",
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
-            "NETStandard.Library": {
-              "suppressParent": "All",
+            "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[2.0.3, )",
-              "autoReferenced": true
+              "version": "[12.11.0, )"
+            },
+            "PhotoBrowser.Forms": {
+              "target": "Package",
+              "version": "[0.1.4, )"
             },
             "Plugin.SewooXamarin.SDK": {
               "target": "Package",
@@ -160,6 +174,10 @@
               "target": "Package",
               "version": "[4.5.3, )"
             },
+            "Xam.Plugin.Media": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.6.0, )"
@@ -170,7 +188,7 @@
             },
             "Xamarin.Forms": {
               "target": "Package",
-              "version": "[4.3.0.991250, )"
+              "version": "[4.4.0.991265, )"
             },
             "ZXing.Net.Mobile": {
               "target": "Package",
@@ -195,6 +213,11 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
           "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }

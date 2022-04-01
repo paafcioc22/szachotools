@@ -386,6 +386,11 @@ namespace App2.View
             _userTapped = false;
         }
 
+        private async void btn_zdjecia_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new View.Foto.Foto2());
+        }
+
 
 
 

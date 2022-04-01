@@ -3,8 +3,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
-
-
+using Xamarin.Forms;
 
 namespace App2.Droid
 {//, WindowSoftInputMode = Android.Views.SoftInput.AdjustResize
@@ -22,12 +21,14 @@ namespace App2.Droid
 
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);  // dodane do essential
-
+            //Forms.SetFlags("SwipeView_Experimental");
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Stormlion.PhotoBrowser.Droid.Platform.Init(this);
+
             // UserDialogs.Init(this);
             //UserDialogs.Init(() => this);
-        
+
             //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             //CachedImageRenderer.Init(true); 
 
