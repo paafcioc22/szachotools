@@ -82,9 +82,14 @@ namespace App2.View.Foto
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            var toRemove = collectionView.SelectedItems;
+            var toRemove = (List<Photo>)collectionView.SelectedItems;
 
-            collectionView.SelectedItems.Remove(toRemove);
+
+            foreach (var i in toRemove)
+            {
+                viewModel.Photos.Remove(i);
+            }
+
         }
     }
 }
