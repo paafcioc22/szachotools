@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.Foto.Foto2"
+             xmlns:viewmodels="clr-namespace:App2.ViewModel"
+                x:Name="MyPage"
+             >
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            
+            <Button Text="Zapisz zdjęcia" />
+            <CollectionView x:Name="collectionView"   
+                            ItemsSource="{Binding Photos}"  
+                            SelectionMode="Multiple"
+                            Margin="10" 
+                            EmptyView="Dodaj swoje pierwsze zdjęcie" >
+                <CollectionView.ItemTemplate  >
+                    <DataTemplate  >
+                        <!--<SwipeView>
+                            <SwipeView.TopItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="cofnij"
+                                   
+                                   BackgroundColor="LightGreen"
+                                   Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.FavoriteCommand}"
+                                   CommandParameter="{Binding}" />
+                                    
+                                    <SwipeItem Text="Usuń"                                   
+                                        BackgroundColor="LightPink"
+                                        Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
+                                   
+                                        CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.TopItems>
+                            --><!--<Grid BackgroundColor="White"
+                                    Padding="10">-->
+                                 <!--Define item appearance--><!-- 
+                                <Frame BorderColor="Aqua"  CornerRadius="40"    >
+                                    <Image  x:Name=""   
+                                        Source="{Binding URL}" 
+                                        Aspect="AspectFit" > 
+                                    </Image>
+
+                                </Frame>
+                            --><!--</Grid>--><!--
+                        </SwipeView>-->
+
+                        <Frame BorderColor="Aqua"  CornerRadius="40"    >
+                            <Image  x:Name=""   
+                                        Source="{Binding URL}" 
+                                        Aspect="AspectFit" >
+                            </Image>
+
+                        </Frame>
+
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.ItemsLayout   >
+                    <!--<LinearItemsLayout ItemSpacing="20" Orientation="Vertical" />-->
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="4" VerticalItemSpacing="4" />
+
+
+                </CollectionView.ItemsLayout>
+            </CollectionView>
+            <!--Command="{Binding BindingContext.DeleteCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}-->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
+                <Button Text="Usun.." HorizontalOptions="StartAndExpand" Clicked="Button_Clicked_1"   Margin="5"  />
+                <Button Text="Zrob Foto" Clicked="Button_Clicked"  HorizontalOptions="End" Margin="5"  />
+                
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

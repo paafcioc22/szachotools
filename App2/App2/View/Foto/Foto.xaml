@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.Foto.Foto">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="AliceBlue" Padding="22" CornerRadius="10" Margin="5" >
+                <Label Text="Menadzer Foto" HorizontalOptions="Center" TextColor="Black" FontSize="33" />
+            </Frame>
+
+            <Button Text="Galeria" x:Name="takeFoto" Clicked="takeFoto_Clicked"/>
+            <Entry x:Name="lbl_nazwaSklepu" Placeholder="wpisz nazwe sklepu" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
+            <Grid VerticalOptions="FillAndExpand" Margin="10" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+            
+                <Frame Grid.Row="0" Grid.Column="0">
+
+                    <Image x:Name="reultImage1"  Aspect="AspectFill" >
+                        <Image.GestureRecognizers >
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped1"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Frame>
+                
+                <Frame Grid.Row="0" Grid.Column="1">
+
+                    <Image x:Name="reultImage2"  Aspect="AspectFill" >
+                        <Image.GestureRecognizers >
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped1"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Frame>
+                
+                <Frame Grid.Row="1" Grid.Column="0" >
+                    <Image x:Name="reultImage3"  Aspect="AspectFill">
+                        <Image.GestureRecognizers >
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped1"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.Column="1">
+                    <Image x:Name="reultImage4"  Aspect="AspectFill">
+                        <Image.GestureRecognizers >
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped1"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Frame>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
