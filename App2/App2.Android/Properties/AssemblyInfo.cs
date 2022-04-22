@@ -38,6 +38,7 @@ using Xamarin.Forms.Xaml;
 [assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)]
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
+//[assembly: UsesPermission(Android.Manifest.Permission.Camera)]
 [assembly: UsesFeature("android.hardware.camera.autofocus", Required = true)]
 [assembly: UsesFeature("android.hardware.camera", Required = true)]
 //[assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]

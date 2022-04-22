@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App2.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -33,17 +34,13 @@ namespace App2.View
 
             //StworzListe();
         }
-
-
         
 
-
-
-
-
-
-        public int GetMagnumer()
+        public Magazynn GetMagnumer()
         {
+            Magazynn mag= new Magazynn();
+            
+
             try
             {
 
@@ -53,7 +50,7 @@ namespace App2.View
                     using (SqlConnection connection = new SqlConnection(connectionstring))
                     {
                         connection.Open();
-                        string querystring = $@"SELECT  [Mag_GIDNumer]
+                        string querystring = $@"SELECT  [Mag_GIDNumer], Mag_Symbol
                                   FROM  [CDN].[Magazyny]
                                   where mag_typ=1 
 								  and [Mag_GIDNumer] is not null
@@ -65,30 +62,34 @@ namespace App2.View
                             {
                                 while (rs.Read())
                                 {
-                                    return System.Convert.ToInt16(rs["Mag_GIDNumer"]);
+                                    mag= new Magazynn
+                                    {
+                                        Id = System.Convert.ToInt16(rs["Mag_GIDNumer"]),
+                                        MagKod = rs["Mag_Symbol"].ToString(),
+                                    };
+                                    
                                 }
                             }
                         }
                     }
 
                 }
-                return 0;
+                return mag;
             }
             catch (Exception)
             {
 
                 DisplayAlert(null, "Błąd pobierania- wejdź w ustawienia\n kliknij zapisz sprawdź połączenie", "OK");
-                return 0;
+                return mag;
 
             }
         }
 
-
-        private async  void GetAkcje()
+        private async void GetAkcje()
         {
             string user = LoginLista._user;
             int dodajDni = user == "ADM" ? 50 : 0;
-            int magnr = GetMagnumer();
+            int magnr = GetMagnumer().Id;
 
 
             try
@@ -130,8 +131,6 @@ namespace App2.View
                 //await DisplayAlert(null, x.Message, "OK");
             }
         }
-
-
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {

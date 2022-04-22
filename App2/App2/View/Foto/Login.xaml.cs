@@ -16,11 +16,22 @@ namespace App2.View.Foto
         public Login()
         {
             InitializeComponent();
+
+            passwordEntry.Completed += async (object sender, EventArgs e) =>
+            {
+                await LoginChack();
+            };
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            if (passwordEntry.Text == "haslo")
+            base.OnAppearing();
+            passwordEntry.Focus();
+
+        }
+        async Task LoginChack()
+        {
+            if (passwordEntry.Text == "H@sl099")
             {
                 await Navigation.PushAsync(new View.Foto.FotoRelacjeListView());
                 await PopupNavigation.Instance.PopAllAsync();
@@ -28,5 +39,11 @@ namespace App2.View.Foto
             else
                 await DisplayAlert("uwaga", "podaj poprawne hasło", "OK");
         }
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            await LoginChack();
+        }
+
+
     }
 }

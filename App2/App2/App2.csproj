@@ -32,6 +32,8 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
     <PackageReference Include="PhotoBrowser.Forms" Version="0.1.4" />
     <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.1" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
     <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.5.3" />
@@ -51,6 +53,15 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Foto\Foto2.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Foto\FotoRelacjeListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Foto\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Foto\OddzialyListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\TworzPaczki\CreatePaczkaListaMM.xaml">

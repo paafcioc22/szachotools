@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App2.View.Foto;
+using Rg.Plugins.Popup.Services;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -388,7 +390,23 @@ namespace App2.View
 
         private async void btn_zdjecia_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new View.Foto.Foto2());
+
+
+            await PopupNavigation.Instance.PushAsync(new Login());
+
+            //var odp =await DisplayPromptAsync("Logowanie", "Podaj hasło", "OK", "anuluj");
+
+            //if (!string.IsNullOrEmpty(odp))
+            //{
+            //    if (odp == "popo")
+            //    {
+            //        await Navigation.PushAsync(new View.Foto.FotoRelacjeListView());
+            //    }
+            //    else
+            //    {
+            //        await DisplayAlert("uwaga", "podaj poprawne hasło", "OK");
+            //    }
+            //}
         }
 
 

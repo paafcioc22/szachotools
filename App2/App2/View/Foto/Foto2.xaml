@@ -3,22 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.Foto.Foto2"
              xmlns:viewmodels="clr-namespace:App2.ViewModel"
-                x:Name="MyPage"
+             x:Name="MyPage" Title="{Binding FullTitle}" NavigationPage.HasBackButton="False"
              >
 
     <ContentPage.Content>
-        <StackLayout>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
 
-            
-            <Button Text="Zapisz zdjęcia" />
-            <CollectionView x:Name="collectionView"   
+                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Color="Green" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
+                <!--<Entry  Text="{Binding Sklep}" Placeholder="wpisz nazwe sklepu" HorizontalTextAlignment="Center" HorizontalOptions="Center" IsEnabled="False"/>-->
+                <!--<Button Text="wyslij do azura" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .} "--> 
+                
+                <CollectionView x:Name="collectionView"   
                             ItemsSource="{Binding Photos}"  
                             SelectionMode="Multiple"
                             Margin="10" 
                             EmptyView="Dodaj swoje pierwsze zdjęcie" >
-                <CollectionView.ItemTemplate  >
-                    <DataTemplate  >
-                        <!--<SwipeView>
+                    <CollectionView.ItemTemplate  >
+                        <DataTemplate>
+                            <!--<SwipeView>
                             <SwipeView.TopItems>
                                 <SwipeItems>
                                     <SwipeItem Text="cofnij"
@@ -34,9 +37,10 @@
                                         CommandParameter="{Binding}" />
                                 </SwipeItems>
                             </SwipeView.TopItems>
-                            --><!--<Grid BackgroundColor="White"
-                                    Padding="10">-->
-                                 <!--Define item appearance--><!-- 
+                            -->
+                            <!--<Grid BackgroundColor="White" Padding="10">-->
+                            <!--Define item appearance-->
+                            <!-- 
                                 <Frame BorderColor="Aqua"  CornerRadius="40"    >
                                     <Image  x:Name=""   
                                         Source="{Binding URL}" 
@@ -44,35 +48,60 @@
                                     </Image>
 
                                 </Frame>
-                            --><!--</Grid>--><!--
+                            -->
+                            <!--</Grid>-->
+                            <!--
                         </SwipeView>-->
 
-                        <Frame BorderColor="Aqua"  CornerRadius="40"    >
-                            <Image  x:Name=""   
-                                        Source="{Binding URL}" 
-                                        Aspect="AspectFit" >
-                            </Image>
+                            <Frame BorderColor="#D8EAFA"  CornerRadius="40"    >
+                                <Image   Source="{Binding URL}" Aspect="AspectFit" />
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-                        </Frame>
+                    <CollectionView.ItemsLayout   >
 
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="4" VerticalItemSpacing="4" />
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-
-                <CollectionView.ItemsLayout   >
-                    <!--<LinearItemsLayout ItemSpacing="20" Orientation="Vertical" />-->
-                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="4" VerticalItemSpacing="4" />
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
 
 
-                </CollectionView.ItemsLayout>
-            </CollectionView>
-            <!--Command="{Binding BindingContext.DeleteCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}-->
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue">
-                <Button Text="Usun.." HorizontalOptions="StartAndExpand" Clicked="Button_Clicked_1"   Margin="5"  />
-                <Button Text="Zrob Foto" Clicked="Button_Clicked"  HorizontalOptions="End" Margin="5"  />
+                <!--<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue" >
+                    <Button ImageSource="ic_action_delete"   Clicked="Button_Clicked_1"  CornerRadius="20" BackgroundColor="#D8EAFA"/>
+                    <Button ImageSource="ic_action_collections"  Command="{Binding GaleriaCommand}"   CornerRadius="20" BackgroundColor="#D8EAFA"/>
+                    <Button ImageSource="ic_action_backup" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}" CornerRadius="20" BackgroundColor="#D8EAFA"  />
+                    <Button ImageSource="ic_action_add_a_photo" Clicked="Button_Clicked"     CornerRadius="20" BackgroundColor="#D8EAFA" />                
+                </StackLayout>-->
+                <Grid HeightRequest="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>                        
+                    </Grid.ColumnDefinitions>
+                    <Button ImageSource="ic_action_delete"  Clicked="Button_Clicked_1"  CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="0" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_collections"  Command="{Binding GaleriaCommand}"   CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="1"/>
+                    <Button ImageSource="ic_action_backup" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}" CornerRadius="20" BackgroundColor="#D8EAFA"  Grid.Column="2" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_add_a_photo" Clicked="Button_Clicked"     CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="3" IsEnabled="{Binding IsVisible}"/>
+                </Grid>
                 
             </StackLayout>
-        </StackLayout>
+            
+                <AbsoluteLayout 
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    IsVisible="{Binding IsBusy}">
+                    
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#80000000" 
+                                   AbsoluteLayout.LayoutFlags="All"
+                                   AbsoluteLayout.LayoutBounds="0.5,0.5,0.22,0.22"
+                                   />
+
+                </AbsoluteLayout>
+        </AbsoluteLayout>
+        
+        
     </ContentPage.Content>
 
 </ContentPage>

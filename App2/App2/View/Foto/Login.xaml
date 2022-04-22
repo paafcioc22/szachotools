@@ -32,7 +32,7 @@
             </StackLayout>
             <StackLayout>
                 <Label Text="Password" />
-                <Entry FontSize="20" x:Name="passwordEntry"
+                <Entry FontSize="20" x:Name="passwordEntry" 
                    IsPassword="True"
                      />
             </StackLayout>

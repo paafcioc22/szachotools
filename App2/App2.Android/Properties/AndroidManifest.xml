@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.45" package="com.SzachoTools" android:installLocation="auto" android:versionCode="45">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2.46" package="com.SzachoTools" android:installLocation="auto" android:versionCode="46">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -28,15 +28,8 @@
         <category android:name="${applicationId}" />
       </intent-filter>
     </receiver>-->
-    <provider android:name="androidx.core.content.FileProvider"
-         android:authorities="${applicationId}.fileprovider"
-         android:exported="false"
-         android:grantUriPermissions="true">
-
-      <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
-                       android:resource="@xml/file_paths">
-        
-      </meta-data>
-    </provider>
+		<provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
+		</provider>
 	</application>
 </manifest>

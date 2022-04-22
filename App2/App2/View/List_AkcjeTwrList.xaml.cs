@@ -20,9 +20,11 @@ namespace App2.View
         private SqlConnection connection;
         private SQLiteAsyncConnection _connection; 
         private List<NagElem> _nagElem;
+        private ObservableCollection<Model.AkcjeNagElem> _fromWeb;
         App app;
-        //string NazwaCennika;
+        Int16 magnumer;         
         int NrCennika=2;
+        bool _istapped;
 
         private BindableProperty IsSearchingProperty =
            BindableProperty.Create("IsSearching", typeof(bool), typeof(List_AkcjeElemView), false);
@@ -68,9 +70,7 @@ namespace App2.View
 
                     await _connection.CreateTableAsync<AkcjeNagElem>();
 
-                    var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
-                    
-
+                    var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync(); 
 
                     SumaList = (
                      from lWeb in TwrListWeb
@@ -101,9 +101,7 @@ namespace App2.View
 
                     if (isSendData && View.LoginLista._user != "ADM")
                         //  if (StartPage.CheckInternetConnection())
-                        SendDataSkan(SumaList);///wysyłka z listy z grupowania
-
-
+                        SendDataSkan(SumaList);///wysyłka z listy z grupowania 
 
                     var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
                     {
@@ -126,9 +124,6 @@ namespace App2.View
                         MyListView3.ItemsSource = sorted;
                     } 
                 }
-                
-
-
 
 
             }
@@ -141,7 +136,6 @@ namespace App2.View
 
         }
 
-        bool _istapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
@@ -167,7 +161,6 @@ namespace App2.View
 
             ((ListView)sender).SelectedItem = null;
         }
-
 
         private async void GetListFromLocal(List<Model.NagElem> lista)
         {
@@ -229,7 +222,6 @@ namespace App2.View
 
         }
 
-        private ObservableCollection<Model.AkcjeNagElem> _fromWeb;
         private async Task<ObservableCollection<Model.AkcjeNagElem>> GetTwrListFromWeb(int _gidNumer)
         {
             SettingsPage settingsPage = new SettingsPage();
@@ -407,7 +399,6 @@ namespace App2.View
             var cmd = connection.CreateCommand(cmdText, typeof(T).Name); 
             return cmd.ExecuteScalar<string>() != null; 
         }
-
         
         protected override async void OnAppearing()
         {
@@ -499,7 +490,6 @@ namespace App2.View
 
         }
 
-        Int16 magnumer;
         private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
 

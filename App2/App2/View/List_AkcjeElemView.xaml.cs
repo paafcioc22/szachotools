@@ -28,6 +28,7 @@ namespace App2.View
             set { SetValue(IsSearchingProperty, value); }
         }
 
+        static string Sklep;
         public List_AkcjeElemView( int gidtyp)
         {
             InitializeComponent();
@@ -122,19 +123,16 @@ namespace App2.View
         private async void GetAkcje(int _gidtyp)
         {
             IsSearching = true;
-            IList<NagElem> tmp= new List<NagElem>();
-
-
+            IList<NagElem> tmp= new List<NagElem>(); 
 
             List_AkcjeView akcjeView = new List_AkcjeView();
-            int magnr= akcjeView.GetMagnumer();
+            var magInfo = akcjeView.GetMagnumer();
+            int magnr= magInfo.Id;
+            Sklep = magInfo.MagKod;
 
-
-           
             if (magnr != 0)
             {
-
-            
+                 
                 try
                 {
                     if (StartPage.CheckInternetConnection())
@@ -152,23 +150,32 @@ namespace App2.View
                             and getdate() >= AkN_DataStart
                          order by AkN_DataStart desc
                          '";
+
                         //var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync<NagElem>(Webquery2);
                         var AkcjeElemLista = await App.TodoManager.PobierzDaneZWeb<NagElem>(Webquery2);
                         Items2 = AkcjeElemLista;
-                        // Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.FirstOrDefault()).ToList();
+
+                        //Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.FirstOrDefault()).ToList();
                         //Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(g => g.OrderBy(x => x.AkN_GidNumer).Where(s=>s.AkN_GidNumer !=0).FirstOrDefault()).ToList();
 
-                        // ListaZFiltrem = AkcjeElemLista;
+                        //ListaZFiltrem = AkcjeElemLista;
+
                         foreach (var item in AkcjeElemLista)
                         {
-
-                            var have = await IsAnyItemFromLocal(item.Ake_FiltrSQL);
-                            if (have)
+                            if (item.AkN_GidNazwa != "Foto Relacja")
+                            {
+                                var have = await IsAnyItemFromLocal(item.Ake_FiltrSQL);
+                                if (have)
+                                {
+                                    tmp.Add(item);
+                                }
+                            }
+                            else 
                             {
                                 tmp.Add(item);
                             }
-                        } 
-                      
+
+                        }  
 
                         foreach (var i in tmp.GroupBy(dd => dd.AkN_GidNumer).Select(g => g.OrderBy(x => x.AkN_GidNumer).Where(s => s.AkN_GidNumer != 0).FirstOrDefault()))
                         {
@@ -207,7 +214,14 @@ namespace App2.View
 
                 var nowa =Items2.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
 
-            await    Navigation.PushAsync(new List_AkcjeTwrList(nowa));
+            if(pozycja.AkN_GidNazwa!="Foto Relacja")
+            {
+                await    Navigation.PushAsync(new List_AkcjeTwrList(nowa));
+            }
+            else
+            {
+                await Navigation.PushAsync(new Foto.Foto2(nowa.FirstOrDefault(),Sklep, true));
+            }
 
             _istapped = false;
 

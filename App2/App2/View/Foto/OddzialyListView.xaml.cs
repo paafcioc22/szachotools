@@ -46,12 +46,27 @@ namespace App2.View.Foto
 
             var sklep = e.Item as FotoOddzial;
 
-            await Navigation.PushAsync(new Foto2(pozycja,sklep.mag_kod ));
+            await Navigation.PushAsync(new Foto2(pozycja,sklep.mag_kod,false ));
 
 
             _istapped = false;
 
             ((ListView)sender).SelectedItem = null;
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            viewModel.FilterItems();
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {             
+            switchTogg.IsToggled = !switchTogg.IsToggled;
+        }
+
+        private void SwitchTogg_Toggled(object sender, ToggledEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

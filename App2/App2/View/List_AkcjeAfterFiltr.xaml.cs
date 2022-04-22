@@ -21,6 +21,7 @@ namespace App2.View
         public ObservableCollection<Model.AkcjeNagElem> Items;
         IList<Model.AkcjeNagElem> _listatwr;
         SqlConnection connection;
+
         public List_AkcjeAfterFiltr(IList<Model.AkcjeNagElem> nowa)
         {
             Items = new ObservableCollection<Model.AkcjeNagElem>();

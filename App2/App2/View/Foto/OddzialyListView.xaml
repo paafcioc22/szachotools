@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.Foto.OddzialyListView" 
              xmlns:converter="clr-namespace:App2.Model"
-             NavigationPage.HasNavigationBar="False">
+             NavigationPage.HasNavigationBar="False" >
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -13,17 +13,12 @@
     
     
     <ContentPage.Content>
-        <StackLayout>
-            
-        <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20" >
-            <Picker 
-                    ItemsSource="{Binding FilterOptions}" 
-                    SelectedItem="{Binding SelectedFilter}"  
-                    VerticalOptions="Center" 
-                    HorizontalOptions="FillAndExpand" />
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
 
-            <ListView   ItemsSource="{Binding Items}" CachingStrategy="RecycleElement" ItemTapped="ListView_ItemTapped"  HasUnevenRows="True" >
 
+            <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20"  AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+            <ListView   ItemsSource="{Binding Items}" CachingStrategy="RecycleElement" ItemTapped="ListView_ItemTapped"  HasUnevenRows="True" SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -34,20 +29,17 @@
                                 OutlineColor="Cyan" Padding="3" 
                                 > 
                                 <AbsoluteLayout >                                 
-                                     
-                                            
                                             <Image Source="{Binding IsDone, Converter={StaticResource StatusConverter}}" 
                                                 AbsoluteLayout.LayoutBounds="0,.5,.15,1"  
                                                 AbsoluteLayout.LayoutFlags="All"  
-                                            />
-                                                    
+                                            />                                                   
                                             
-                                            <Label Text="{Binding mag_kod}" TextColor="Black"  
+                                            <Label Text="{Binding mag_kod}" TextColor="Black"  FontSize="18"
                                                 AbsoluteLayout.LayoutBounds=".5,0,1,.3"
                                                 AbsoluteLayout.LayoutFlags="All"  
                                                 HorizontalTextAlignment="Center"
                                             />
-                                            <Label Text="{Binding IleFotek}" TextColor="Black" 
+                                            <Label Text="{Binding IleFotek, StringFormat='{0} zdjęć'}" TextColor="Black" 
                                                 FontSize="16" 
                                                 FontAttributes="Bold"   
                                                 AbsoluteLayout.LayoutBounds=".5,0.5,1,.3"
@@ -60,28 +52,40 @@
                                                     AbsoluteLayout.LayoutFlags="All"  
                                                     HorizontalTextAlignment="Center"
                                             />
-                                   
                                 </AbsoluteLayout>
-
                             </Frame>
                         </ViewCell>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-
-
+                </ListView.ItemTemplate> 
             </ListView>
+                <StackLayout Orientation="Horizontal">
+                    
+                <Picker Title="Wybierz region" BackgroundColor="#D8EAFA"
+                    ItemsSource="{Binding FilterOptions}" 
+                    SelectedItem="{Binding SelectedFilter}"  
+                    VerticalOptions="Center" 
+                    HorizontalOptions="FillAndExpand" />
+                    <StackLayout Orientation="Horizontal" BackgroundColor="#D8EAFA">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        </StackLayout.GestureRecognizers>
+                        
+                        <Label Text="Nie wykonane" VerticalTextAlignment="Center"/>
+                        <Switch IsToggled="{Binding IsToggled}"  Toggled="Switch_Toggled" Scale="1"  x:Name="switchTogg"/>
+                    </StackLayout>
+                </StackLayout>
         </StackLayout>
-        <AbsoluteLayout 
-                    AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                    IsVisible="{Binding IsBusy}">
+            <AbsoluteLayout 
+                        AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        IsVisible="{Binding IsBusy}">
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#80000000" 
-                                   AbsoluteLayout.LayoutFlags="All"
-                                   AbsoluteLayout.LayoutBounds="0.5,0.5,0.22,0.22"
-                                   />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#80000000" 
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       AbsoluteLayout.LayoutBounds="0.5,0.5,0.22,0.22"
+                                       />
 
+            </AbsoluteLayout>
         </AbsoluteLayout>
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

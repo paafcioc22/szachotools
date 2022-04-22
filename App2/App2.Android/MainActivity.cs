@@ -26,6 +26,7 @@ namespace App2.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Stormlion.PhotoBrowser.Droid.Platform.Init(this);
 
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             // UserDialogs.Init(this);
             //UserDialogs.Init(() => this);
 

@@ -12,5 +12,10 @@ namespace App2.Model
         public string Region { get; set; }
         public string Telefon { get; set; }
         public int Ilosc { get; set; }
+
+        public Magazynn()
+        {
+            Id = 0;
+        }
     }
 }

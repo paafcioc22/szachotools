@@ -68,7 +68,7 @@
                     x:Name="btn_weryfikator" 
                 />
             
-            <Button Text="Zdjęcia" Grid.Column="0" Grid.Row="3"   
+            <Button Text="Foto Relacja RKS" Grid.Column="0" Grid.Row="3"   
                     BackgroundColor="DarkCyan" 
                     FontSize="14" 
                     TextColor="Bisque"  
@@ -125,6 +125,28 @@
 
             
         </StackLayout>
+        <ContentView x:Name="popupLoginView"
+                     BackgroundColor="#C0808080"
+                     Padding="10, 0"
+                     IsVisible="false"
+                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                     AbsoluteLayout.LayoutFlags="All">
+            <StackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center">
+                <StackLayout Orientation="Vertical"
+                             HeightRequest="200"
+                             WidthRequest="300"
+                             BackgroundColor="White">
+                    <Entry Margin="20,20,20,10"
+                           Placeholder="Enter Username"></Entry>
+                    <Entry Margin="20,0,20,0"
+                           IsPassword="True"
+                           Placeholder="Enter Password"></Entry>
+                    <Button Margin="20,0,20,0"
+                            Text="Login"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ContentView>
     </StackLayout>
 
 </ContentPage>

@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[1.0.1, )"
             },
+            "Rg.Plugins.Popup": {
+              "target": "Package",
+              "version": "[1.2.0.223, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.7.0, )"
@@ -153,6 +157,14 @@
             "Plugin.SewooXamarin.SDK": {
               "target": "Package",
               "version": "[1.0.1, )"
+            },
+            "Refractored.MvvmHelpers": {
+              "target": "Package",
+              "version": "[1.6.2, )"
+            },
+            "Rg.Plugins.Popup": {
+              "target": "Package",
+              "version": "[1.2.0.223, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",

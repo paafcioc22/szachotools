@@ -21,9 +21,11 @@ namespace App2.ViewModel
         public ObservableRangeCollection<FotoOddzial> Items { get; set; }
         public ObservableRangeCollection<FotoOddzial> AllItems { get; set; }
         public ObservableRangeCollection<string> FilterOptions { get; }
- 
 
-        string selectedFilter = "Wszystkie";
+
+        private string selectedFilter = "Wszystkie";
+        private bool isToggled;
+
         public string SelectedFilter
         {
             get => selectedFilter;
@@ -33,6 +35,16 @@ namespace App2.ViewModel
                     FilterItems();
             }
         }
+        public bool IsToggled 
+        { 
+            get => isToggled;              
+            set
+            {
+                if (SetProperty(ref isToggled, value))
+                    FilterItems();
+            }
+        }
+
 
         public OddzialyViewModel(PhotoViewModel _photoView)
         {
@@ -48,24 +60,33 @@ namespace App2.ViewModel
                 "R06",
                 "Wszystkie"
             };
-           
+
             LoadItemsCommand = new AsyncCommand(ExecuteLoadItemsCommand);
-         
+
         }
 
 
-        private void FilterItems()
+        public void FilterItems()
         {
-            Items.ReplaceRange(AllItems.Where(a => a.mag_region == SelectedFilter || SelectedFilter == "Wszystkie"));
+            if (IsToggled)
+            {
+                Items.ReplaceRange(AllItems.Where(a => (a.mag_region == SelectedFilter || SelectedFilter == "Wszystkie") && a.IsDone != IsToggled));
+            }
+            else
+            {
+                Items.ReplaceRange(AllItems.Where(a => a.mag_region == SelectedFilter || SelectedFilter == "Wszystkie" ));
+            }
         }
-        int _fotki = 1;
+
 
         async Task<List<PathSplitter>> GetIleFotek()
         {
-            await photoView.ListBlobsHierarchicalListing(photoView.containerClient, photoView.Title,1);
+
+            //todo : try catch
+            await photoView.ListBlobsHierarchicalListing(photoView.containerClient, photoView.Title, 1);
             var lista = photoView.fotki;
             List<PathSplitter> ps = new List<PathSplitter>();
-            string[]  pthsplt ;
+            string[] pthsplt;
 
             if (lista.Count > 0)
             {
@@ -82,7 +103,7 @@ namespace App2.ViewModel
                 }
             }
             return ps;
-            
+
         }
 
         private async Task ExecuteLoadItemsCommand()
@@ -114,10 +135,10 @@ namespace App2.ViewModel
                 from p in ps.DefaultIfEmpty()
                 select new FotoOddzial
                 {
-                     mag_kod= fWeb.mag_kod,
-                     mag_nazwa= fWeb.mag_nazwa,
-                     mag_region =  fWeb.mag_region,
-                     mag_gidnumer= p?.NazwaFoto ?? string.Empty
+                    mag_kod = fWeb.mag_kod,
+                    mag_nazwa = fWeb.mag_nazwa,
+                    mag_region = fWeb.mag_region,
+                    mag_gidnumer = p?.NazwaFoto ?? string.Empty
                 }).GroupBy(c => c.mag_kod)
                .SelectMany(a => a
                .Select(o => new FotoOddzial

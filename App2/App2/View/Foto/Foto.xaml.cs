@@ -107,7 +107,14 @@ namespace App2.View.Foto
                 });
             }
 
-            PhotoBrowserr photoBrowserr = new PhotoBrowserr(photos);
+            if (photos.Count > 0)
+            {
+                PhotoBrowserr photoBrowserr = new PhotoBrowserr(photos);
+            }
+            else
+            {
+                await DisplayAlert("info", "Brak zdjęć", "OK");
+            }
 
         }
 
