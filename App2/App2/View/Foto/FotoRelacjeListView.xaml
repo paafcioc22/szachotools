@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.Foto.FotoRelacjeListView"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+             >
+    
+    <StackLayout HorizontalOptions="Center" VerticalOptions="FillAndExpand" Padding="20 ">
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="DarkCyan"
+                             />
+        <ListView   HasUnevenRows="True" x:Name="ListaView"
+                ItemsSource="{Binding ListaZFiltrem}"  
+                ItemTapped="ListView_ItemTapped"
+                CachingStrategy="RecycleElement" > 
+        
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame  HasShadow="true" 
+                                Margin="5" 
+                                BorderColor="DarkCyan"   
+                                CornerRadius="10" 
+                                OutlineColor="Cyan" Padding="3" 
+                                > 
+
+                            <AbsoluteLayout >
+
+           
+                                <Label Text="{Binding AkN_GidNazwa}" TextColor="Black"  
+                                        AbsoluteLayout.LayoutBounds=".5,0,1,.3"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center"
+                                    />
+                                <Label Text="{Binding AkN_NazwaAkcji}" TextColor="Black" 
+                                        FontSize="16" 
+                                        FontAttributes="Bold"   
+                                        AbsoluteLayout.LayoutBounds=".5,0.5,1,.3"
+                                        AbsoluteLayout.LayoutFlags="All"  
+                                        HorizontalTextAlignment="Center"
+                                    />
+                                <Label Text="{Binding AkN_ZakresDat }" FontSize="12" 
+                                         TextColor="Black" 
+                                         AbsoluteLayout.LayoutBounds=".5,1,1,.3"
+                                         AbsoluteLayout.LayoutFlags="All"  
+                                         HorizontalTextAlignment="Center"
+                                     />
+                            </AbsoluteLayout>
+ 
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+    </StackLayout>
+</ContentPage>
+
+ 
