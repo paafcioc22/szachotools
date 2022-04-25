@@ -48,8 +48,10 @@ namespace App2.View.Foto
                     CustomPhotoSize = 35,
                     Directory = "Sample",
                     Name = $"{_nazwaAkcji}.jpg",
-                    CompressionQuality = 80
+                    CompressionQuality = 80,
+                    SaveToAlbum = true
                 });
+
                 if (file == null)
                     return;
 

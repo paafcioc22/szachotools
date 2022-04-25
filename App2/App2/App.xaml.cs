@@ -94,8 +94,9 @@ namespace App2
             {
                 if (Properties.ContainsKey(serwer))
                     return Properties[serwer].ToString();
-                //return "192.168.1.2\\optima"; todo : popraw adres ip
-                return "10.8.0.134\\optima";
+                return "192.168.1.2\\optima"; 
+                //todo : popraw adres ip
+                //return "10.8.0.134\\optima";
             }
             set
             {

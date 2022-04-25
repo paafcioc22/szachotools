@@ -33,14 +33,18 @@ using Xamarin.Forms.Xaml;
 
 // Add some common permissions, these can be removed if not needed
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
-[assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+[assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)] 
+[assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.Flashlight)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)]
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
+[assembly: UsesPermission(Android.Manifest.Permission.Camera)]
 //[assembly: UsesPermission(Android.Manifest.Permission.Camera)]
 [assembly: UsesFeature("android.hardware.camera.autofocus", Required = true)]
 [assembly: UsesFeature("android.hardware.camera", Required = true)]
+
+
 //[assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 //[assembly: UsesPermission(Name = "android.permission.WAKE_LOCK")]
 //[assembly: UsesPermission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
