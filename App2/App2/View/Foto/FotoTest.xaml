@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.Foto.FotoTest"
+             xmlns:viewmodels="clr-namespace:App2.ViewModel"
+             x:Name="MyPage" Title="{Binding FullTitle}" NavigationPage.HasBackButton="False"
+             >
+
+    <ContentPage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"> 
+
+                <CollectionView x:Name="collectionView"   
+                            ItemsSource="{Binding Photos}"  
+                            SelectionMode="Multiple"
+                            Margin="10" 
+                            EmptyView="Dodaj swoje pierwsze zdjęcie" >
+                    <CollectionView.ItemTemplate  >
+                        <DataTemplate> 
+                            <Frame BorderColor="#D8EAFA"  CornerRadius="40"    >
+                                <Image   Source="{Binding URL}" Aspect="AspectFit" />
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="4" VerticalItemSpacing="4" />
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
+ 
+                <Grid HeightRequest="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button ImageSource="ic_action_delete"  Clicked="Button_Clicked_1"  CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="0" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_collections"  Command="{Binding GaleriaCommand}"   CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="1"/>
+                    <Button ImageSource="ic_action_backup" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}" CornerRadius="20" BackgroundColor="#D8EAFA"  Grid.Column="2" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_dashboard_customize" Clicked="Button_Clicked_2" CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="3" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_add_a_photo" Clicked="Button_Clicked"  CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="4" IsEnabled="{Binding IsVisible}"/>
+                </Grid>
+
+            </StackLayout>
+
+            <AbsoluteLayout 
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    IsVisible="{Binding IsBusy}">
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#80000000" 
+                                   AbsoluteLayout.LayoutFlags="All"
+                                   AbsoluteLayout.LayoutBounds="0.5,0.5,0.22,0.22"
+                                   />
+
+            </AbsoluteLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>
