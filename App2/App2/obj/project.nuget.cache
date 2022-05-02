@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "FCa//3/ZuF6s4+Vg4QZjqIZyRbPbwWg9PJcTfNyM7FlrvJWK7GWwQdGp+52+w4tH2aUjulfHSSXQ5vNOsxlKxg==",
+  "dgSpecHash": "rjOUIS5iBOp9Zts3vlY6Cd/jHmBB9P9pOyPmc7G4SDyhUUYG4mAsyp4CSDCC+3EUomlaIe33ggbw8Vr7p19q5g==",
   "success": true,
   "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pawel\\.nuget\\packages\\azure.core\\1.22.0\\azure.core.1.22.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\azure.storage.blobs\\12.11.0\\azure.storage.blobs.12.11.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\azure.storage.common\\12.10.0\\azure.storage.common.12.10.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.appcenter\\4.5.0\\microsoft.appcenter.4.5.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.appcenter.analytics\\4.5.0\\microsoft.appcenter.analytics.4.5.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.appcenter.crashes\\4.5.0\\microsoft.appcenter.crashes.4.5.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.0\\microsoft.netcore.platforms.2.1.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
@@ -116,7 +119,8 @@
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.essentials\\1.7.2\\xamarin.essentials.1.7.2.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading\\2.4.11.982\\xamarin.ffimageloading.2.4.11.982.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\xamarin.ffimageloading.forms\\2.4.11.982\\xamarin.ffimageloading.forms.2.4.11.982.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.forms\\4.4.0.991265\\xamarin.forms.4.4.0.991265.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.forms\\5.0.0.1874\\xamarin.forms.5.0.0.1874.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\xamarin.mediagallery\\2.1.1\\xamarin.mediagallery.2.1.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile\\2.4.1\\zxing.net.mobile.2.4.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
   ],

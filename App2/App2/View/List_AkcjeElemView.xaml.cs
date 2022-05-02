@@ -220,7 +220,8 @@ namespace App2.View
             }
             else
             {
-                await Navigation.PushAsync(new Foto.Foto2(nowa.FirstOrDefault(),Sklep, true));
+                //await Navigation.PushAsync(new Foto.Foto2(nowa.FirstOrDefault(),Sklep, true));
+                await Navigation.PushAsync(new Foto.FotoTest(nowa.FirstOrDefault(),Sklep, true));
             }
 
             _istapped = false;

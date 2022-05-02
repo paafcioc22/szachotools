@@ -1,5 +1,6 @@
 ﻿
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
@@ -20,6 +21,7 @@ namespace App2.Droid
 
 
             base.OnCreate(savedInstanceState);
+            NativeMedia.Platform.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);  // dodane do essential
             //Forms.SetFlags("SwipeView_Experimental");
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
@@ -56,7 +58,14 @@ namespace App2.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent intent)
+        {
+            if (NativeMedia.Platform.CheckCanProcessResult(requestCode, resultCode, intent))
+                NativeMedia.Platform.OnActivityResult(requestCode, resultCode, intent);
+
+            base.OnActivityResult(requestCode, resultCode, intent);
+        }
+
 
         //private void CheckUpdate(Action doIfUpToDate)
         //{

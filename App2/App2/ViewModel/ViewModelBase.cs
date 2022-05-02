@@ -10,6 +10,7 @@ namespace App2.ViewModel
     public class ViewModelBase : BaseViewModel
     {
         private bool isVisible;
+        //todo : wywal ture
 
         public string Sklep { get; set; }
         public string FullTitle => $"{Title} - {Sklep}";

@@ -266,76 +266,90 @@ namespace App2.View
 
             string fullPass = "";
 
-            var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
-
-
-            
-
-            if (haslo.Count > 0)
+            try
             {
-                if (haslo[0].GID == "53")
+
+
+                var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
+
+                if (haslo.Count > 0)
                 {
-                    haslo[0].Haslo = "987654";
+                    if (haslo[0].GID == "53")
+                    {
+                        haslo[0].Haslo = "987654";
+                    }
+
+                    var isNumeric = int.TryParse(entry_haslo.Text, out int n);
+
+                    if (isNumeric && entry_haslo.Text.Length >= 6)
+                    {
+                        int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
+
+                        if (znak1 == 0 && entry_haslo.Text.Length == 8)
+                        {
+                            fullPass = EAN8.CalcChechSum(haslo[0].Haslo);
+
+                            return entry_haslo.Text.Equals(fullPass);
+
+                        }
+                        else if (entry_haslo.Text.Length != 6)
+                        {
+                            return false;
+
+                        }
+                        else if (znak1 == 9 && entry_haslo.Text.Length == 6)
+                        {
+                            if (entry_haslo.Text == "987654")
+                                return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                 }
-
-                var isNumeric = int.TryParse(entry_haslo.Text, out int n);
-
-                if (isNumeric && entry_haslo.Text.Length >= 6)
+                else
                 {
-                    int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
-
-                    if (znak1 == 0 && entry_haslo.Text.Length == 8)
-                    {
-                        fullPass = EAN8.CalcChechSum(haslo[0].Haslo);
-
-                        return entry_haslo.Text.Equals(fullPass);
-
-                    }
-                    else if (entry_haslo.Text.Length != 6)
-                    {
-                        return false;
-
-                    }else if (znak1 ==9 && entry_haslo.Text.Length == 6 )
-                    {
-                        if (entry_haslo.Text == "987654")
-                            return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    throw new ArgumentException("Nie udało się pobrać hasła ");
                 }
             }
-            else
+            catch (Exception s)
             {
-                throw new ArgumentException("Nie udało się pobrać hasła ");
+                await DisplayAlert(null, s.Message, "OK");
             }
             return false;
 
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            if (entry_haslo.Text != null) //entry_haslo.Text!=""
+            try
             {
-                 
-                  
-                if (await IsPassCorrect(_opeGid))
+                if (entry_haslo.Text != null) //entry_haslo.Text!=""
                 {
-                     
 
-                    View.StartPage.user = _user;  
-                    
-                   
-                    View.StartPage startPage = new StartPage();
-                    startPage.OdblokujPrzyciski();
-                     
-                    await Navigation.PopModalAsync();
+
+                    if (await IsPassCorrect(_opeGid))
+                    {
+
+
+                        View.StartPage.user = _user;
+
+
+                        View.StartPage startPage = new StartPage();
+                        startPage.OdblokujPrzyciski();
+
+                        await Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+
+                    }
                 }
-                else
-                {
-                    await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
-
-                } 
+            }
+            catch (Exception s)
+            {
+                await DisplayAlert(null, s.Message, "OK");
             }
         }
 

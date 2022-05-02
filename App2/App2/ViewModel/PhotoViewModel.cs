@@ -145,6 +145,7 @@ namespace App2.ViewModel
                         {
                             isDone = true;
                             sended++;
+                            //DoDeleteFile(i.URL);
                         }
                         else
                         {
@@ -175,15 +176,7 @@ namespace App2.ViewModel
                 IsBusy = false;
             }
             
-        }        
-             
-        void RemovePhoto(List<Photo> photo)
-        {   
-            foreach (var item in photo)
-            {
-                Photos.Remove(item);
-            }
-        }
+        }                     
 
         public async Task ListBlobsHierarchicalListing(BlobContainerClient container, string prefix, int? segmentSize)
         {
@@ -269,6 +262,18 @@ namespace App2.ViewModel
             }
             return true;
              
+        }
+        void DoDeleteFile(string localPath)
+        {
+            if (File.Exists(localPath))
+                File.Delete(localPath);
+        }
+        void RemovePhoto(List<Photo> photo)
+        {   
+            foreach (var item in photo)
+            {
+                Photos.Remove(item);
+            }
         }
 
          

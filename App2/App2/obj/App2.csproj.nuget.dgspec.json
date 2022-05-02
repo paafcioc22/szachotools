@@ -48,6 +48,14 @@
               "target": "Package",
               "version": "[12.11.0, )"
             },
+            "Microsoft.AppCenter.Analytics": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "Microsoft.AppCenter.Crashes": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
             "PhotoBrowser.Forms": {
               "target": "Package",
               "version": "[0.1.4, )"
@@ -98,7 +106,11 @@
             },
             "Xamarin.Forms": {
               "target": "Package",
-              "version": "[4.4.0.991265, )"
+              "version": "[5.0.0.1874, )"
+            },
+            "Xamarin.MediaGallery": {
+              "target": "Package",
+              "version": "[2.1.1, )"
             },
             "ZXing.Net.Mobile": {
               "target": "Package",

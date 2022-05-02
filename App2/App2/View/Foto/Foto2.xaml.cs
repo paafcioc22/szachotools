@@ -28,7 +28,8 @@ namespace App2.View.Foto
 
             BindingContext = viewModel = new PhotoViewModel(_nazwaAkcji, sklep);
             this.akcja = _nazwaAkcji;
-            viewModel.IsVisible = isvisible;
+            //viewModel.IsVisible = isvisible;
+            //todo : odremuj
         }
 
         async Task TakePicture(string _nazwaAkcji)

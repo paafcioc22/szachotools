@@ -169,13 +169,11 @@ namespace App2.View.Foto
 
             var time = DateTime.Now;
 
-            var czasnazwa = time.ToString("yyyyMMddHHmmss");
-
-
+            var czasnazwa = time.ToString("yyyyMMddHHmmss"); 
 
             try
             {
-                var file = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
                 {
                     PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
                     CustomPhotoSize = 35,
@@ -243,7 +241,7 @@ namespace App2.View.Foto
 
             try
             {
-                var file = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
                 {
                     PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
                     CustomPhotoSize = 35,

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
- 
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -35,7 +37,11 @@ namespace App2
 
         protected override void OnStart()
         {
-             
+            AppCenter.Start("android=81c9a3a4-22c2-495f-8d63-c07f259b834a;" +
+                 "uwp={Your UWP App secret here};" +
+                 "ios={Your iOS App secret here};" +
+                 "macos={Your macOS App secret here};",
+                 typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()

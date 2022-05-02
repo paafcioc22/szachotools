@@ -46,7 +46,9 @@ namespace App2.View.Foto
 
             var sklep = e.Item as FotoOddzial;
 
-            await Navigation.PushAsync(new Foto2(pozycja,sklep.mag_kod,false ));
+            //todo: podmień  strone
+            //await Navigation.PushAsync(new Foto2(pozycja,sklep.mag_kod,false ));
+            await Navigation.PushAsync(new FotoTest(pozycja,sklep.mag_kod,false ));
 
 
             _istapped = false;
