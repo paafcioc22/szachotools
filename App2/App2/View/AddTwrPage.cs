@@ -20,8 +20,19 @@ namespace App2.View
         private Image foto;
         private Button btn_Skanuj;
         private Button btn_Zapisz;
-        private Int32 _gidnumer;
+        private Int32 _gidnumer; 
 
+        string twrkod;
+        string stan_szt;
+        string twr_url;
+        string twr_nazwa;
+        string twr_symbol;
+        string twr_ean;
+
+
+        ZXing.Mobile.MobileBarcodeScanningOptions opts;
+        ZXingScannerPage scanPage;
+        ZXingScannerView zxing;
 
 
         public AddTwrPage(int gidnumer) //dodawamoe pozycji
@@ -31,15 +42,14 @@ namespace App2.View
             StackLayout stackLayout = new StackLayout();
             StackLayout stack_naglowek = new StackLayout();
 
-            SkanowanieEan();
+            if (SettingsPage.SelectedDeviceType == 1)
+                SkanowanieEan();
 
             var absoluteLayout = new AbsoluteLayout();
             var centerLabel = new Label
             {
-                Text = "Dodawanie Pozycji"
-               ,
-                HorizontalOptions = LayoutOptions.StartAndExpand
-               ,
+                Text = "Dodawanie Pozycji",
+                HorizontalOptions = LayoutOptions.StartAndExpand,
                 BackgroundColor = Color.YellowGreen
             };
 
@@ -71,7 +81,7 @@ namespace App2.View
 
             nazwa = new Label();
             nazwa.HorizontalOptions = LayoutOptions.Center;
-            //stan.Text = "Stan";
+
             ean = new Label();
             ean.HorizontalOptions = LayoutOptions.Center;
 
@@ -261,8 +271,7 @@ namespace App2.View
         private void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
             pobierztwrkod(kodean.Text);
-        }
-
+        } 
 
         private void EdytujPozyce()
         {
@@ -294,8 +303,6 @@ namespace App2.View
         {
             EdytujPozyce();
         }
-
-
         private async void ZapiszPozycje()
         {
             if (ilosc.Text != null && kodean.Text != null)
@@ -353,7 +360,6 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
             }
         }
-
         public async void ZapiszPozycje(int mmGidnumer, string twrKod, int ilosc, int stan_szt)
         {
             if ((ilosc) > (stan_szt) && (ilosc) == 0)
@@ -400,16 +406,11 @@ namespace App2.View
             }
 
         }
-
         private void Btn_Zapisz_Clicked(object sender, EventArgs e)
         {
             ZapiszPozycje();
 
-        }
-
-        ZXing.Mobile.MobileBarcodeScanningOptions opts;
-        ZXingScannerPage scanPage;
-        ZXingScannerView zxing;
+        } 
 
         //public bool SprConn() //Third way, slightly slower than Method 1
         //{
@@ -439,36 +440,24 @@ namespace App2.View
         //}
 
         public async void SkanowanieEan()
-        {
+        { 
+
             if (SettingsPage.SprConn())
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
                     AutoRotate = false,
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
-                //ZXing.BarcodeFormat.EAN_8,
-                ZXing.BarcodeFormat.EAN_13,
-
-                //ZXing.BarcodeFormat.CODE_128,
-                //ZXing.BarcodeFormat.CODABAR,
-                ZXing.BarcodeFormat.CODE_39,
-                },
-                    //CameraResolutionSelector = availableResolutions => {
-
-                    //    foreach (var ar in availableResolutions)
-                    //    {
-                    //        Console.WriteLine("Resolution: " + ar.Width + "x" + ar.Height);
-                    //    }
-                    //    return availableResolutions[0];
-                    //}
-
+                    PossibleFormats = new List<ZXing.BarcodeFormat>()
+                    {
+                        ZXing.BarcodeFormat.EAN_13,
+                        ZXing.BarcodeFormat.CODE_39,
+                    },
                 };
 
                 opts.TryHarder = true;
 
                 zxing = new ZXingScannerView
                 {
-
                     IsScanning = false,
                     IsTorchOn = false,
                     IsAnalyzing = false,
@@ -536,14 +525,9 @@ namespace App2.View
                         });
                         Navigation.PopModalAsync();
                         pobierztwrkod(result.Text);
-                        //DisplayAlert("Zeskanowany Kod ", result.Text, "OK");
-                        //kodean.Text= pobierztwrkod(result.Text);
+              
                         ilosc.Focus();
-                        //if (OnBackButtonPressed())
-                        //{
-                        //    kodean.Focus();
-
-                        //}
+                         
                     });
                 };
                 await Navigation.PushModalAsync(scanPage);
@@ -554,28 +538,12 @@ namespace App2.View
 
             }
         }
-
-        //protected override void OnAppearing()
-        //{
-
-        //    kodean.Focus();
-        //    base.OnAppearing();
-        //}
-
+         
         private void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
             SkanowanieEan();
         }
-
-
-
-        string twrkod;
-        string stan_szt;
-        string twr_url;
-        string twr_nazwa;
-        string twr_symbol;
-        string twr_ean;
-
+          
         public async void pobierztwrkod(string _ean)
         {
             var app = Application.Current as App;
@@ -642,12 +610,10 @@ namespace App2.View
                     twr_nazwa = dane[0].nazwa;
                     twr_ean = dane[0].ean;
                     //twr_cena = dane[0].cena;
-                }
-
-
-                //DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                } 
+         
             }
-            //return twrkod;
+       
             kodean.Text = twrkod;
             ean.Text = twr_ean;
             symbol.Text = twr_symbol;
@@ -655,8 +621,7 @@ namespace App2.View
             stan.Text = "Stan : " + stan_szt;
             foto.Source = twr_url;
         }
-
-
+         
         public void GetDataFromTwrKod(string _twrkod, bool CzyFoto)
         {
             var app = Application.Current as App;

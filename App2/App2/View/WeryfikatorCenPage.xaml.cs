@@ -26,6 +26,8 @@ namespace App2.View
         int NrCennika;
         SqlConnection connection;
         public TwrKarty twrkarty { get; set; }
+        List<string> ceny;
+        private List<string> nowy;
 
 
         public WeryfikatorCenPage()
@@ -61,9 +63,6 @@ namespace App2.View
 
             //Appearing += (object sender, System.EventArgs e) => manualEAN.Focus();
         }
-
-
-
         private async void SkanowanieEan()
         {
             //if (SettingsPage.SprConn())
@@ -166,11 +165,9 @@ namespace App2.View
 
             //            }
         }
-
-
-
         public async void pobierztwrkod(string _ean)
         {
+            string Webquery = "";
             var app = Application.Current as App;
             //SettingsPage settingsPage = new SettingsPage();
             //var idceny = settingsPage.cennikClasses;
@@ -195,13 +192,12 @@ namespace App2.View
                             where twr_ean='{_ean}'
                             group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
-
                         SqlCommand query = new SqlCommand(command.CommandText, connection);
                         SqlDataReader rs;
                         rs = query.ExecuteReader();
                         if (rs.Read())
                         {
-                            string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
+                            Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
 
                             twrkarty = new TwrKarty
@@ -226,7 +222,7 @@ namespace App2.View
                             if (nrcenika.RodzajCeny == "OUTLET")
                                 NrCennika = 4;
                             else NrCennika = 2;
-                            string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
+                            Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
                             var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
                             if (dane.Count > 0)
                             {
@@ -264,7 +260,7 @@ namespace App2.View
                     if (nrcenika.RodzajCeny == "OUTLET")
                         NrCennika = 4;
                     else NrCennika = 2;
-                    string Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
+                    Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
                     var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
                     if (dane.Count > 0)
                     {
@@ -316,10 +312,6 @@ namespace App2.View
             connection.Close();
 
         }
-
-
-
-
         private void ScanTwr_Clicked(object sender, EventArgs e)
         {
             SkanowanieEan();
@@ -331,20 +323,15 @@ namespace App2.View
             manualEAN.Text = "";
         }
 
-
-
         private async void BtnShowOther_Clicked(object sender, EventArgs e)
         {
             if (twrkarty.twr_gidnumer != null)
                 await Navigation.PushModalAsync(new StanyTwrInnych(twrkarty.twr_gidnumer));
         }
-
-        List<string> ceny;
-        private List<string> nowy;
-
         private void ViewCell_Tapped(object sender, EventArgs e)
         {
-            ceny = new List<string>();
+            ceny = new List<string>(); 
+
             connection.Open();
             try
             {
@@ -377,64 +364,109 @@ namespace App2.View
 
             connection.Close();
         }
-
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", ""));
-        }
-
-        //private List<string> nowy;
+        }        
         private async void ViewCell_Tapped_1(object sender, EventArgs e)
         {
+
             nowy = new List<string>();
-            string Webquery = $@"cdn.PC_WykonajSelect N' select distinct   AkN_GidNazwa ,AkN_NazwaAkcji,
 
-    AkN_DataStart,AkN_DataKoniec
- from cdn.pc_akcjeNag
-    INNER JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
- where Ake_FiltrSQL like ''%{twrkarty.twr_kod}%''  and AkN_DataKoniec>= GETDATE() - 30
- order by AkN_DataStart desc   '";
-            var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
-
-
-
-            foreach (var wpis in dane)
+            if(twrkarty != null)
             {
-                nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n",
-                    wpis.AkN_NazwaAkcji, "\r\n",
-                    wpis.AkN_ZakresDat, "\r\n- - - - - - - - - - - - - - - -"));
-            }
+                string Webquery = $@"cdn.PC_WykonajSelect N' select distinct   AkN_GidNazwa ,AkN_NazwaAkcji, 
+                        AkN_DataStart,AkN_DataKoniec
+                        from cdn.pc_akcjeNag
+                        JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
+                        where Ake_FiltrSQL like ''%{twrkarty.twr_kod}%''  and AkN_DataKoniec>= GETDATE() - 30
+                        order by AkN_DataStart desc '";
 
-            await DisplayActionSheet("Aktualne Akcje:", "OK", null, nowy.ToArray());
-            //and AkN_DataKoniec>= GETDATE() - 10
-        }
+                var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
 
-        private async void btn_print_Clicked(object sender, EventArgs e)
-        {
-
-            PrintSerwis printSerwis = new PrintSerwis();
-            //if (twrkarty != null & !string.IsNullOrEmpty(twrkarty.stan_szt))
-            // {
-            if (await printSerwis.ConnToPrinter())
-            {
-                List<string> kolory = new List<string> {
-                    "biały", "pomarańczowy"
-                };
-                //var kolor = await DisplayAlert(null, "Wybierz kolor Etykiety..", "Tak", "Nie");
-                var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
-                if (kolor != "Anuluj")
+                if (dane.Count > 0)
                 {
-                    string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "", "OK", "Anuluj", "1", 1, Keyboard.Numeric);
-                    if (result != null)
-                        await printSerwis.PrintCommand(twrkarty, kolor, result);
-                }
+                    foreach (var wpis in dane)
+                    {
+                        nowy.Add(String.Concat(wpis.AkN_GidNazwa, "\r\n",
+                        wpis.AkN_NazwaAkcji, "\r\n",
+                        wpis.AkN_ZakresDat, "\r\n- - - - - - - - - - - - - - - -"));
+                    }
 
+                    await DisplayActionSheet("Aktualne Akcje:", "OK", null, nowy.ToArray());
+                }
+                else
+                {
+                    await DisplayAlert(null, "Brak aktualnych akcji dla tego produktu", "OK");
+                }
+            }            
+             
+        }
+        bool IsStringCorrect(string wprowadzona, out sbyte liczba)
+        {
+            bool isCorrect = false;
+            sbyte ileMetek;
+
+            if (!string.IsNullOrEmpty(wprowadzona))
+            {
+                var isok = sbyte.TryParse(wprowadzona, out ileMetek);
+                if (isok )
+                {
+                    isCorrect = (ileMetek > 0 && ileMetek <= 20);
+                    liczba = ileMetek;
+                }
+                else
+                {
+                    liczba = 1;
+                    return isCorrect;
+                }
             }
             else
             {
-                await DisplayAlert(null, "Błąd drukarki", "OK");
+                liczba = 1;
+                return isCorrect;
             }
 
+            return isCorrect;
+        }
+        private async void btn_print_Clicked(object sender, EventArgs e)
+        {
+            sbyte ileMetek;
+            if (twrkarty!=null)
+            {
+
+                PrintSerwis printSerwis = new PrintSerwis();
+             
+                if (await printSerwis.ConnToPrinter())
+                {
+                    List<string> kolory = new List<string> {
+                    "biały", "pomarańczowy"
+                };
+
+                    var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
+                    if (kolor != "Anuluj")
+                    {
+                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "(1-20 szt)", "OK", "Anuluj", "1", 2, Keyboard.Numeric, "1");
+                         
+                        if (IsStringCorrect(result, out ileMetek))
+                        {
+                            await printSerwis.PrintCommand(twrkarty, kolor, ileMetek);
+                        }
+                        else
+                        {
+                            await DisplayAlert(null, "Wprowadzono błędną wartość", "OK");
+                        }
+                    }
+                }
+                else
+                {
+                    await DisplayAlert(null, "Błąd drukarki", "OK");
+                }
+            }
+            else
+            {
+                await DisplayAlert("uwaga", "Nie pobrano karty towaru", "OK");
+            }
         }
     }
 }

@@ -42,10 +42,7 @@ namespace App2.View
         private int flaga;
             int _gidnumer;
 
-
-         
-
-
+        
 
         public void StartTimer(bool status)
         {
@@ -63,7 +60,6 @@ namespace App2.View
             });
         }
          
-
         private void UpdateUserDataAsync()
         {
 
@@ -75,7 +71,6 @@ namespace App2.View
                 ListaElementowMM.ItemsSource = dokMM.getElementy(gidnumer); 
             }
         }
-
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {

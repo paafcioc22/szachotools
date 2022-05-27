@@ -31,44 +31,68 @@ namespace App2.View
         private async void pobierzdane()
         {
             Model.PrzyjmijMMClass daneZkartylista = new Model.PrzyjmijMMClass();
-            var daneZkarty = daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
-            if (daneZkarty.Count == 0)
+
+            if (_towar.twrkod != null)
             {
-                string Webquery = "cdn.pc_pobierztwr '" + _towar.twrkod + "'";
-                var twrdane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                img_foto.Source = twrdane[0].url;
-                lbl_twrcena.Text = twrdane[0].cena;
-                lbl_twrnazwa.Text = twrdane[0].nazwa;
-                lbl_twrsymbol.Text = twrdane[0].symbol;
-                lbl_twrean.Text = twrdane[0].ean;
+                var daneZkarty = daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
+
+                if (daneZkarty.Count == 0)
+                {
+                    string Webquery = "cdn.pc_pobierztwr '" + _towar.twrkod + "'";
+                    var twrdane = await App.TodoManager.PobierzTwrAsync(Webquery);
+
+                    if (twrdane.Count > 0)
+                    {
+                        img_foto.Source = twrdane[0].url;
+                        lbl_twrcena.Text = twrdane[0].cena;
+                        lbl_twrnazwa.Text = twrdane[0].nazwa;
+                        lbl_twrsymbol.Text = twrdane[0].symbol;
+                        lbl_twrean.Text = twrdane[0].ean;
+                    }
+                }
+                else
+                {
+                    img_foto.Source = daneZkarty[0].url;
+                    lbl_twrcena.Text = daneZkarty[0].cena;
+                    lbl_twrnazwa.Text = daneZkarty[0].nazwa;
+                    lbl_twrsymbol.Text = daneZkarty[0].symbol;
+                    lbl_twrean.Text = daneZkarty[0].ean;
+                }
+
+                lbl_twr_kod.Text = _towar.twrkod;
+
+                lbl_ileZMM.Text = _towar.IleZMM.ToString();
+                entry_ileZeSkan.Text = _towar.IleZeSkan.ToString();
             }
-            else
-            {
-                img_foto.Source = daneZkarty[0].url;
-                lbl_twrcena.Text = daneZkarty[0].cena;
-                lbl_twrnazwa.Text = daneZkarty[0].nazwa;
-                lbl_twrsymbol.Text = daneZkarty[0].symbol;
-                lbl_twrean.Text = daneZkarty[0].ean;
-            }
-            lbl_twr_kod.Text = _towar.twrkod; 
-            //_gidnumer=dane.
-            //lbl_twrnazwa.Text = dane.t
-            lbl_ileZMM.Text = _towar.IleZMM.ToString();
-            entry_ileZeSkan.Text = _towar.IleZeSkan.ToString();
+
+           
         }
 
         private async void Btn_save_Clicked(object sender, EventArgs e)
         {
             Model.ListDiffrence.listDiffrences.Clear();
             var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where nrdokumentuMM = ? and twrkod=?", _towar.NrDokumentu, _towar.twrkod);
+            int ilosc;
+            if (wynik.Count > 0)
+            {
+                var wpis = wynik[0];
 
-            var wpis = wynik[0];
-            wpis.ilosc_OK = Convert.ToInt32(entry_ileZeSkan.Text);
-            _gidnumer = wynik[0].GIDdokumentuMM;
-            await _connection.UpdateAsync(wpis);
-          //  przelicz();
+                var tryConv = Int32.TryParse(entry_ileZeSkan.Text, out ilosc);
+                if (tryConv)
+                {
+                    wpis.ilosc_OK = ilosc;
+                    _gidnumer = wynik[0].GIDdokumentuMM;
+                    await _connection.UpdateAsync(wpis);
 
-            await Navigation.PopModalAsync(); 
+                    await Navigation.PopModalAsync();
+                }
+                else
+                {
+                    await DisplayAlert(null, "Wpisana ilość nie jest liczbą", "OK");
+                }
+               
+            }
+            //todo : sprawdź ten warunek
 
         }
 

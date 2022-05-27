@@ -101,7 +101,8 @@ namespace App2.View.Foto
         async Task PickImages2(string _nazwaakcji)
         {
             int cntFile=0;
-             
+
+            Analytics.TrackEvent("wybranie zdjęcia z galerii");
             var options = new Plugin.Media.Abstractions.PickMediaOptions
             {
                 PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
@@ -111,7 +112,7 @@ namespace App2.View.Foto
 
             var multi = new MultiPickerOptions {
                 MaximumImagesCount = 3,
-                LoadingTitle = "wybirz"
+                LoadingTitle = "wybierz"
                 
             };
             var files = await Plugin.Media.CrossMedia.Current.PickPhotosAsync(options, multi);
@@ -191,7 +192,8 @@ namespace App2.View.Foto
             //{
             //    Console.WriteLine($"CapturePhotoAsync THREW: {ex.Message}");
             //}
-            Analytics.TrackEvent("My custom event");
+
+            Analytics.TrackEvent("zrobienie zdjęcia");
             bool isEnabled = await Crashes.IsEnabledAsync();
 
             #region oldMediaPicture

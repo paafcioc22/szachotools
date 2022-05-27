@@ -1568,12 +1568,9 @@ namespace App2.View
             };
 
 
-
             if (SettingsPage.SprConn())
             {
                 var magGidnumer = (Application.Current as App).MagGidNumer;
-
-
 
                 if (magGidnumer==0)
                 {
@@ -1595,9 +1592,7 @@ namespace App2.View
                     }
                     magGidnumer = magnumer;
                     connection.Close(); 
-                }
-
-                 
+                }                 
 
                 if (listaToSend[0].TwrSkan>0)
                 {
@@ -1605,7 +1600,6 @@ namespace App2.View
                     var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
                     if (odp != "OK")
                     {
-
                         await DisplayAlert(null, odp, "OK");
                     }
                     else
@@ -1620,7 +1614,8 @@ namespace App2.View
 
                             await _connection.UpdateAsync(wpisKlasa);
                         }
-                        else {
+                        else 
+                        {
 
                             _akcja.IsUpdatedData = true;
                             await _connection.InsertAsync(_akcja);

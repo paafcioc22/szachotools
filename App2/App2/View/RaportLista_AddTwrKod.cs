@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Microsoft.AppCenter.Crashes;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -71,9 +72,7 @@ namespace App2.View
             _gidnumer = gidnumer;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
 
-            NavigationPage.SetHasNavigationBar(this, false);
-
-
+            NavigationPage.SetHasNavigationBar(this, false); 
      
             Label lbl_naglowek = new Label()
             {
@@ -86,19 +85,35 @@ namespace App2.View
                 BackgroundColor = Color.DarkCyan
             };
             AbsoluteLayout.SetLayoutBounds(lbl_naglowek, new Rectangle(0, 0, 1, .1));
-            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All);
-
-
-              
+            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All); 
 
             img_foto = new Image();
             img_foto.Aspect = Aspect.AspectFill;
             TapGestureRecognizer tapGesture= new TapGestureRecognizer();
-            tapGesture.Tapped += (s, e) =>
+
+            //todo : proba naprawy błędu
+            tapGesture.Tapped += async (s, e) =>
             {
-                 Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
-                 //Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                try
+                {
+                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "")); 
+                }
+                catch (Exception x)
+                {
+                    var properties = new Dictionary<string, string>
+                    {
+                        { "_gidnumer", _gidnumer.ToString() },
+                        { "foto", twr_url}
+                    };
+                    Crashes.TrackError(x, properties);
+
+                }
+                finally
+                {
+                    await Launcher.OpenAsync(twr_url);
+                }
             };
+
             img_foto.GestureRecognizers.Add(tapGesture);
             AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.1, 1, .5));
             AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
@@ -137,15 +152,12 @@ namespace App2.View
                 HorizontalOptions = LayoutOptions.Center,
                 ReturnType = ReturnType.Go,
                 HorizontalTextAlignment=TextAlignment.Center,
-
             };
+
             entry_ilosc.Completed += (object sender, EventArgs e) =>
             {
                 Zapisz();
-            };
-            //entry_ilosc.Keyboard = Keyboard.Text;
-
-
+            };           
 
             btn_Zapisz = new Button()
             {
@@ -158,21 +170,18 @@ namespace App2.View
             };
             btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
             AbsoluteLayout.SetLayoutBounds(btn_Zapisz, new Rectangle(0.5, 1, .9, 50));
-            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
-
-
+            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional); 
 
             btn_AddEanPrefix = new Button()
             {
-                Text = "+2010000",
+                Text = "+201000",
                 BorderColor = Color.DarkCyan,
                 BorderWidth = 2,
                 CornerRadius = 20,
             };
             btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked;
             AbsoluteLayout.SetLayoutBounds(btn_AddEanPrefix, new Rectangle(1, .82, .25, 50));
-            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
-
+            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional); 
              
 
             stack_dane.Children.Add(lbl_nazwa);
@@ -183,12 +192,7 @@ namespace App2.View
             stack_dane.Children.Add(entry_kodean);
             AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .45));
             AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
-
-
-           
-
-            //stackLayout.VerticalOptions = LayoutOptions.EndAndExpand; //Center
-            //stackLayout.Padding = new Thickness(15, 0, 15, 0);
+                        
 
             absoluteLayout.Children.Add(img_foto);
             absoluteLayout.Children.Add(lbl_naglowek); 
@@ -196,13 +200,7 @@ namespace App2.View
             absoluteLayout.Children.Add(btn_Zapisz);
             absoluteLayout.Children.Add(btn_AddEanPrefix);
 
-            Content = absoluteLayout;
-
-
-            // scrollView.Content = relativeLayout;//dodane scrollview
-
-            //Content = stackLayout_gl;
-            //Content = scrollView;
+            Content = absoluteLayout; 
 
             Appearing += (object sender, System.EventArgs e) => entry_kodean.Focus();
         }
@@ -243,10 +241,26 @@ namespace App2.View
             img_foto = new Image();
             img_foto.Aspect = Aspect.AspectFill;
             TapGestureRecognizer tapGesture = new TapGestureRecognizer();
-            tapGesture.Tapped += (s, e) =>
+            tapGesture.Tapped += async (s, e) =>
             {
-                Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
-                //Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                try
+                {
+                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                }
+                catch (Exception x)
+                {
+                    var properties = new Dictionary<string, string>
+                    {
+                        { "_gidnumer", _gidnumer.ToString() },
+                        { "foto", twr_url}
+                    };
+                    Crashes.TrackError(x, properties);
+
+                }
+                finally
+                {
+                    await Launcher.OpenAsync(twr_url);
+                }
             };
             img_foto.GestureRecognizers.Add(tapGesture);
             AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.1, 1, .5));
@@ -313,7 +327,7 @@ namespace App2.View
 
             btn_AddEanPrefix = new Button()
             {
-                Text = "+2010000",
+                Text = "+201000",
                 BorderColor = Color.DarkCyan,
                 BorderWidth = 2,
                 CornerRadius = 20,
@@ -361,7 +375,7 @@ namespace App2.View
             entry_kodean.Focused += (sender, args) =>
             {
                 entry_kodean.Keyboard = Keyboard.Telephone;
-                entry_kodean.Text = "2010000";
+                entry_kodean.Text = "201000";
 
 
             };
@@ -679,25 +693,12 @@ namespace App2.View
                 DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
             }
         }
-
-
-        //public async Task ZapiszISkanujDalej()
-        //{
-        //    await Task.Run(() => //Task.Run automatically unwraps nested Task types!
-        //    {
-        //        //  Zapisz();
-        //        Task.Delay(5000);
-        //        DisplayAlert(null, "po zapisie", "ok");
-        //        // SkanowanieEan();
-        //    });
-
-        //}
-
+               
 
         public async void Zapisz()
         {
 
-            if (entry_ilosc.Text != null && entry_kodean.Text != null)
+            if (!string.IsNullOrEmpty(entry_ilosc.Text) && !string.IsNullOrEmpty(entry_kodean.Text) && !string.IsNullOrEmpty(twr_nazwa))
             {
 
                 try
@@ -738,6 +739,12 @@ namespace App2.View
                 catch (Exception ex)
                 {
                     await DisplayAlert(null, ex.Message, "OK");
+                    var prop = new Dictionary<string, string>
+                    {
+                        { "operator", View.StartPage.user},
+                        
+                    };
+                    Crashes.TrackError(ex, prop);
                 }
 
 
@@ -786,6 +793,7 @@ namespace App2.View
         }
         private void Btn_Zapisz_Clicked(object sender, EventArgs e)
         {
+
             Zapisz();
             Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
             {
@@ -797,11 +805,7 @@ namespace App2.View
                 
                 return false;
             });
-        }
-
-        
-        // ZXingDefaultOverlay overlay;
-
+        } 
 
         private async void SkanowanieEan()
         {
@@ -938,8 +942,6 @@ namespace App2.View
             }
         }
 
-
-
         //private void Abort_Clicked(object sender, EventArgs e)
         //{
         //    Device.BeginInvokeOnMainThread(async () =>
@@ -952,74 +954,101 @@ namespace App2.View
         private void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
             SkanowanieEan();
-        }
-
-
-
-        
+        }         
 
         public async void pobierztwrkod(string _ean)
         {
             var app = Application.Current as App;
-            if (SettingsPage.SprConn())
+
+            try
             {
-                if(!string.IsNullOrEmpty(_ean)||_ean!= "2010000")
-                try
+                if (SettingsPage.SprConn())
                 {
-                    SqlCommand command = new SqlCommand();
-                    SqlConnection connection = new SqlConnection
-                    {
-                        ConnectionString = "SERVER=" + app.Serwer +
-                        ";DATABASE=" + app.BazaProd +
-                        ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                        ";PWD=" + app.Password
-                    };
-                    connection.Open();
-                    command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                        ",cast(sum(TwZ_Ilosc) as int)ilosc, case when len(twr_kod) > 5 and len(twr_url)> 5 then "+
-                            "replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4), "+
-                        " substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as twr_url,twr_ean " +
-                        "from cdn.towary " +
-                        "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
-                        "left join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
-                        "where twr_ean='" + _ean + "' or twr_kod='" + _ean + "'" +
-                        "group by twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
-
-
-                    SqlCommand query = new SqlCommand(command.CommandText, connection);
-                    SqlDataReader rs;
-                    rs = query.ExecuteReader();
-                    if (rs.Read())
-                    {
-                        twrkod = Convert.ToString(rs["twr_kod"]);
-                        stan_szt = Convert.ToString(rs["ilosc"]);
-                        twr_url = Convert.ToString(rs["twr_url"]);
-                        twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
-                        twr_symbol = Convert.ToString(rs["twr_symbol"]);
-                        twr_ean = Convert.ToString(rs["twr_ean"]);
-                        twr_cena = Convert.ToString(rs["cena"]);
-
-                        // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
-                    }
-                    else
-                    {
-                        string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                        var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                            if (dane.Count > 0)
+                    if (!string.IsNullOrEmpty(_ean) || _ean != "201000")
+                        try
+                        {
+                            SqlCommand command = new SqlCommand();
+                            SqlConnection connection = new SqlConnection
                             {
-                                twrkod = dane[0].twrkod;
-                                twr_url = dane[0].url;
-                                twr_nazwa = dane[0].nazwa;
-                                twr_ean = dane[0].ean;
-                                twr_cena = dane[0].cena;
+                                ConnectionString = "SERVER=" + app.Serwer +
+                                ";DATABASE=" + app.BazaProd +
+                                ";TRUSTED_CONNECTION=No;UID=" + app.User +
+                                ";PWD=" + app.Password
+                            };
+                            connection.Open();
+                            command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
+                                ",cast(sum(TwZ_Ilosc) as int)ilosc, case when len(twr_kod) > 5 and len(twr_url)> 5 then " +
+                                    "replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4), " +
+                                " substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as twr_url,twr_ean " +
+                                "from cdn.towary " +
+                                "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
+                                "left join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
+                                "where twr_ean='" + _ean + "' or twr_kod='" + _ean + "'" +
+                                "group by twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
-                            }else
-                        
-                         await  DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
-                    }
-                    rs.Close();
-                    rs.Dispose();
-                    connection.Close();
+
+                            SqlCommand query = new SqlCommand(command.CommandText, connection);
+                            SqlDataReader rs;
+                            rs = query.ExecuteReader();
+                            if (rs.Read())
+                            {
+                                twrkod = Convert.ToString(rs["twr_kod"]);
+                                stan_szt = Convert.ToString(rs["ilosc"]);
+                                twr_url = Convert.ToString(rs["twr_url"]);
+                                twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
+                                twr_symbol = Convert.ToString(rs["twr_symbol"]);
+                                twr_ean = Convert.ToString(rs["twr_ean"]);
+                                twr_cena = Convert.ToString(rs["cena"]);
+
+
+                            }
+                            else
+                            {
+                                string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                                if (dane.Count > 0)
+                                {
+                                    twrkod = dane[0].twrkod;
+                                    twr_url = dane[0].url;
+                                    twr_nazwa = dane[0].nazwa;
+                                    twr_ean = dane[0].ean;
+                                    twr_cena = dane[0].cena;
+
+                                }
+                                else
+
+                                    await DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+                            }
+                            rs.Close();
+                            rs.Dispose();
+                            connection.Close();
+
+                            entry_kodean.Text = twrkod;
+                            lbl_ean.Text = twr_ean;
+                            lbl_symbol.Text = twr_symbol;
+                            lbl_nazwa.Text = twr_nazwa;
+                            lbl_cena.Text = twr_cena;
+                            lbl_stan.Text = "Stan : " + stan_szt;
+                            if (!string.IsNullOrEmpty(twr_url))
+                                img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+
+                        }
+                        catch (Exception)
+                        {
+                            await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
+                        }
+                }
+                else
+                {
+                    string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                    if (dane.Count > 0)
+                    {
+                        twrkod = dane[0].twrkod;
+                        twr_url = dane[0].url;
+                        twr_nazwa = dane[0].nazwa;
+                        twr_ean = dane[0].ean;
+                        twr_cena = dane[0].cena;
 
                         entry_kodean.Text = twrkod;
                         lbl_ean.Text = twr_ean;
@@ -1028,40 +1057,20 @@ namespace App2.View
                         lbl_cena.Text = twr_cena;
                         lbl_stan.Text = "Stan : " + stan_szt;
                         if (!string.IsNullOrEmpty(twr_url))
-                        img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+                            img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
 
                     }
-                catch (Exception )
-                {
-                    await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
+                    else
+
+                        await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
                 }
             }
-            else
+            catch (Exception s)
             {
-                string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                if (dane.Count > 0)
-                {
-                    twrkod = dane[0].twrkod;
-                    twr_url = dane[0].url;
-                    twr_nazwa = dane[0].nazwa;
-                    twr_ean = dane[0].ean;
-                    twr_cena = dane[0].cena;
 
-                    entry_kodean.Text = twrkod;
-                    lbl_ean.Text = twr_ean;
-                    lbl_symbol.Text = twr_symbol;
-                    lbl_nazwa.Text = twr_nazwa;
-                    lbl_cena.Text = twr_cena;
-                    lbl_stan.Text = "Stan : " + stan_szt;
-                    if (!string.IsNullOrEmpty(twr_url))
-                        img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
-
-                }
-                else
-
-                    await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+                await DisplayAlert(null, s.Message, "OK");
             }
+
             //return twrkod;
             
         }

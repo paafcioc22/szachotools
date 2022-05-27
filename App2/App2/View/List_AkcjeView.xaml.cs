@@ -38,9 +38,7 @@ namespace App2.View
 
         public Magazynn GetMagnumer()
         {
-            Magazynn mag= new Magazynn();
-            
-
+            Magazynn mag= new Magazynn(); 
             try
             {
 
@@ -89,8 +87,7 @@ namespace App2.View
         {
             string user = LoginLista._user;
             int dodajDni = user == "ADM" ? 50 : 0;
-            int magnr = GetMagnumer().Id;
-
+            int magnr = GetMagnumer().Id; 
 
             try
             {
@@ -128,7 +125,7 @@ namespace App2.View
             {
                 MyListView.IsVisible =false;
                 notFoundFrame.IsVisible = !MyListView.IsVisible;
-                //await DisplayAlert(null, x.Message, "OK");
+            
             }
         }
 

@@ -120,7 +120,10 @@ namespace App2.ViewModel
                                 ,mag_gidnumer
                                 ,MAG_Opis as mag_region 
                                 from CDN.Magazyny
-                                where MAG_Zablokowany=0 and MAG_Wewnetrzny=1 order by mag_kod'";
+                                left join cdn.Atrybuty isclos on isclos.Atr_ObiNumer=mag_gidnumer and (isclos.Atr_AtkId=41)
+                                where MAG_Zablokowany=0 and MAG_Wewnetrzny=1 and mag_kod not in (''LW'',''zro'')
+                                and isnull(isclos.Atr_Wartosc,''NIE'')=''NIE''
+                                order by mag_kod'";
 
             try
             {

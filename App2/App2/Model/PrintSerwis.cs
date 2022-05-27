@@ -78,16 +78,17 @@ namespace App2.Model
 
 
 
-        public async Task<bool> PrintCommand(TwrKarty _akcja,string kolor, string ile = null)
+        public async Task<bool> PrintCommand(TwrKarty _akcja,string kolor, sbyte drukSzt=1 )
         {
-            int drukSzt;
+           // int drukSzt;
             string typCodeEan = "";
             int przesuniecieDlaCode128=0;
 
-            if (!string.IsNullOrEmpty(ile))
-                drukSzt = Convert.ToInt16(ile);
-            else
-                drukSzt = 1;
+            //if (!string.IsNullOrEmpty(ile))
+            //    drukSzt = Convert.ToInt16(ile);
+            //else
+            //    drukSzt = 1;
+
 
 
             if(string.IsNullOrEmpty(_akcja.twr_cena1))

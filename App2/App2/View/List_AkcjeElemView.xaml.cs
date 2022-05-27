@@ -28,6 +28,8 @@ namespace App2.View
             set { SetValue(IsSearchingProperty, value); }
         }
 
+        bool _istapped;
+        private SqlConnection connection;
         static string Sklep;
         public List_AkcjeElemView( int gidtyp)
         {
@@ -82,17 +84,14 @@ namespace App2.View
                         Select count(twr_gidnumer) as IleKodow                     
                         from cdn.towary  
                         join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId 
-                        where {filtrSQL}";
-
+                        where {filtrSQL}"; 
 
                         SqlCommand query = new SqlCommand(command.CommandText, connection);
                         SqlDataReader rs;
                         rs = query.ExecuteReader();
                         while (rs.Read())
                         {
-
-                            ileKodow = Convert.ToInt32(rs["IleKodow"]);
-                             
+                            ileKodow = Convert.ToInt32(rs["IleKodow"]);                             
                         }
 
                         rs.Close();
@@ -118,7 +117,6 @@ namespace App2.View
             return false;
 
         }
-
 
         private async void GetAkcje(int _gidtyp)
         {
@@ -174,29 +172,30 @@ namespace App2.View
                             {
                                 tmp.Add(item);
                             }
-
                         }  
 
                         foreach (var i in tmp.GroupBy(dd => dd.AkN_GidNumer).Select(g => g.OrderBy(x => x.AkN_GidNumer).Where(s => s.AkN_GidNumer != 0).FirstOrDefault()))
                         {
                             ListaZFiltrem.Add(i);
-                        } 
+                        }
+
+                        if (ListaZFiltrem.Count == 0)
+                        {
+                            notFoundFrame.IsVisible = true;
+                            lista.IsVisible = false;
+                        }
 
                         //MyListView2.ItemsSource = tmp; 
                     }
                 }
                 catch (Exception x)
                 {
-
                     await DisplayAlert(null, x.Message, "OK");
                 }
             }
 
             IsSearching = false;
         }
-
-        bool _istapped;
-        private SqlConnection connection;
 
         async void  Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
