@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.List_AkcjeAfterFiltr"
+              NavigationPage.HasBackButton="False" NavigationPage.HasNavigationBar="False" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             >
+
+
+
+
+
+    <StackLayout Padding="10">
+        <StackLayout  Orientation="Horizontal" BackgroundColor="DarkCyan" >
+            <Label Text="Kod" TextColor="Beige" HorizontalOptions="StartAndExpand" FontSize="15" Margin="20,0,0,0"/>
+            <Label Text="Skanowane/Stan" TextColor="Beige" HorizontalOptions="End" FontSize="15" Margin="0,0,80,0"/>
+        </StackLayout>
+
+
+        <ListView x:Name="MyListView" RowHeight="130" 
+                ItemsSource="{Binding Items}"
+                BindingContext="{Binding Items}"
+                ItemTapped="Handle_ItemTapped"
+                CachingStrategy="RecycleElement">
+
+            <!--Built in Cells-->
+
+
+            <!--Custom View Cells-->
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <AbsoluteLayout     > 
+                      
+                            <Label Text="{Binding TwrKod }" TextColor="Black"
+                                       AbsoluteLayout.LayoutBounds="0.02,0.01,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <Label Text="{Binding TwrNazwa }" 
+                                       TextColor="Black"  
+                                       FontSize="12"  
+                                       AbsoluteLayout.LayoutBounds="0.1,0.65,.5,.6"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                            />
+                            <Label Text="{Binding TwrSymbol}" FontSize="12" 
+                                       TextColor="Black" 
+                                       AbsoluteLayout.LayoutBounds="0.05,1,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <Label Text="{Binding TwrEan}" FontSize="12" 
+                                       TextColor="Black" 
+                                       AbsoluteLayout.LayoutBounds="0.05,.8,.5,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <!--</StackLayout>-->
+
+
+                            <!--<StackLayout Padding="0"
+                                FlexLayout.AlignSelf="Center" 
+                                         FlexLayout.Grow="0" 
+                                         FlexLayout.Basis="30%" 
+                                         Orientation="Vertical" 
+                                         VerticalOptions="Center"   
+                                         Spacing="0" >-->
+                            <!--<StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="StartAndExpand" Padding="0"
+                                       AbsoluteLayout.LayoutBounds="0.7,0.1,.25,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                      >-->
+                            
+                            <!--<Label Text="{Binding TwrSkan }" FontSize="20" 
+                                       TextColor="Black"  
+                                       HorizontalTextAlignment="End" 
+                                       VerticalTextAlignment="Start"
+                                       AbsoluteLayout.LayoutBounds="0.55,0.1,.10,.5"
+                                       AbsoluteLayout.LayoutFlags="All"  
+                                />-->
+                            <!--<Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" FontFamily="Arial"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Start" 
+                                       VerticalTextAlignment="Start" 
+                                       AbsoluteLayout.LayoutBounds="0.70,0.1,.15,.5"
+                                       AbsoluteLayout.LayoutFlags="All" Margin="0,0,5,0"
+                                 />-->
+                            <Label HorizontalTextAlignment="End"  
+                                    VerticalTextAlignment="Start"
+                                    AbsoluteLayout.LayoutBounds="0.65,0.1,.25,.5"
+                                    AbsoluteLayout.LayoutFlags="All" >
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding TwrSkan }" 
+                                              FontSize="20" 
+                                              TextColor="Black" />
+                                        <Span Text="{Binding TwrStan,StringFormat='/{0}'}" 
+                                              FontSize="20" 
+                                              FontFamily="Arial"
+                                              TextColor="Black"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label> 
+                         
+                            <Label Text="{Binding TwrCena, StringFormat='{0}zł'}" TextColor="Black" FontSize="16" 
+                                       AbsoluteLayout.LayoutBounds="0.7,0.8,.25,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Center" 
+                                       VerticalTextAlignment="End"
+                                       />
+                         
+                            <ffimageloading:CachedImage 
+                                Source="{Binding TwrUrl}"
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended" 
+                                AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
+                                AbsoluteLayout.LayoutFlags="All"
+                            Aspect="AspectFill"
+                            /> 
+
+                        </AbsoluteLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+        <Frame  HasShadow="true" 
+                                Margin="5" 
+                                BorderColor="DarkCyan"   
+                                CornerRadius="10" 
+                                OutlineColor="DarkCyan" Padding="3" >
+            <SearchBar Placeholder="Szukaj model..(część kodu) " TextChanged="SearchBar_TextChanged" HeightRequest="40" />
+        </Frame>
+         
+    </StackLayout>
+</ContentPage>
