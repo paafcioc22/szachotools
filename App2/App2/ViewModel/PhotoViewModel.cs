@@ -33,7 +33,7 @@ namespace App2.ViewModel
         public ICommand GaleriaCommand => new Command(OpenGalery);
 
         public bool isDone=false;
-
+        public string Data;
         public PhotoViewModel(Model.NagElem _nazwaAkcji, string sklep="")
         {
             client = new BlobServiceClient(storageConnectionString);
@@ -41,7 +41,11 @@ namespace App2.ViewModel
             containerClient = client.GetBlobContainerClient("galeria2");
 
             source = new List<Photo>();
-            Title = _nazwaAkcji.AkN_NazwaAkcji;
+            //todo : zmiany w nazwie do poprawy
+            Data = _nazwaAkcji.AkN_DataStart.Substring(0, 10);
+            var akcjaData = string.Concat( _nazwaAkcji.AkN_DataStart.Substring(0,10), _nazwaAkcji.AkN_NazwaAkcji );
+            //Title = akcjaData;// _nazwaAkcji.AkN_NazwaAkcji;
+            Title =  _nazwaAkcji.AkN_NazwaAkcji;
             if(!string.IsNullOrEmpty(sklep))
             Sklep = sklep;
             Photos = new ObservableCollection<Photo>(source);
@@ -66,7 +70,7 @@ namespace App2.ViewModel
             string azureWeb = "https://joartclickonce.blob.core.windows.net/galeria2/";
             List<Photo> photos = new List<Photo>(); 
 
-            await ListBlobsHierarchicalListing(containerClient, $"{Title}/{Sklep}", 1);
+            await ListBlobsHierarchicalListing(containerClient, $"{Title}/{Sklep}/", 1);
 
             foreach (var item in fotki)
             {
@@ -99,8 +103,10 @@ namespace App2.ViewModel
             {
                 string azureWeb = "https://joartclickonce.blob.core.windows.net/galeria2/";
                 List<Photo> photos = new List<Photo>();
+                var dozmian = Title.Replace(Data, "");
 
-                await ListBlobsHierarchicalListing(containerClient, $"{Title}/{Sklep}", 1);
+                await ListBlobsHierarchicalListing(containerClient, $"{Title}/{Sklep}/", 1);
+                //await ListBlobsHierarchicalListing(containerClient, $"{dozmian}/{Sklep}/", 1);
 
                 foreach (var item in fotki)
                 {

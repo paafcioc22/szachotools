@@ -325,7 +325,7 @@ namespace App2.View
 
         private async void BtnShowOther_Clicked(object sender, EventArgs e)
         {
-            if (twrkarty.twr_gidnumer != null)
+            if (twrkarty != null)
                 await Navigation.PushModalAsync(new StanyTwrInnych(twrkarty.twr_gidnumer));
         }
         private void ViewCell_Tapped(object sender, EventArgs e)
@@ -366,7 +366,9 @@ namespace App2.View
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", ""));
+            if(twrkarty!=null)
+            if(!string.IsNullOrEmpty(twrkarty.twr_url))
+            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", "").Replace("small","large"));
         }        
         private async void ViewCell_Tapped_1(object sender, EventArgs e)
         {

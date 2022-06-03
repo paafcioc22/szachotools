@@ -261,9 +261,7 @@ namespace App2.Model
                           cast(TrE_ilosc as int) ilosc
                          ,twr_kod, mag_gidnumer trn_magzrdID
                          ,twr_numerkat as symbol , twr_ean ean
-                         ,case when len(twr_kod) > 5 and len(twr_url)> 5 then
-                         replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4),
-                        substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as urltwr,
+                         , twr_url   as urltwr,
                         cast(twc_wartosc as decimal(5,2))cena,
                         cast(trn_datadok as date) dataMM
                                 from cdn.TraNag
@@ -302,12 +300,13 @@ namespace App2.Model
                     GetNrDokMmp = nrdokumentuMM;
                     string pozycja = mmtwrkod;
                     int xlGidNumer = System.Convert.ToInt32(rs["trn_gidnumer"]);
+
                     ListOfTwrOnMM.Add(new PrzyjmijMMClass
                     {
                         id = mmid,
                         twrkod = mmtwrkod,
                         ilosc = mmilosc,
-                        url = mmurl,
+                        url = FilesHelper.ConvertUrlToOtherSize(mmurl,mmtwrkod,FilesHelper.OtherSize.small),
                         nazwa = mmtwrnazwa,
                         symbol = this.symbol,
                         GIDdokumentuMM = mmgidnumer,

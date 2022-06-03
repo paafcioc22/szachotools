@@ -95,16 +95,16 @@
     <EmbeddedResource Update="View\ListaSklepowPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\List_AkcjeAfterFiltr.xaml">
+    <EmbeddedResource Update="View\Akcje\List_AkcjeAfterFiltr.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\List_AkcjeElemView.xaml">
+    <EmbeddedResource Update="View\Akcje\List_AkcjeElemView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\List_AkcjeTwrList.xaml">
+    <EmbeddedResource Update="View\Akcje\List_AkcjeTwrList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\List_AkcjeView.xaml">
+    <EmbeddedResource Update="View\Akcje\List_AkcjeView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\LoginLista.xaml">

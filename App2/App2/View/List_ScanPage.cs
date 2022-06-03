@@ -133,7 +133,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", ""));
+                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", "").Replace("small", "large"));
             };
             //img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -147,7 +147,7 @@ namespace App2.View
                 RetryDelay = 100,
                 BitmapOptimizations = false,
                 ErrorPlaceholder = "NotSended.png",
-                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "") : _akcja.TwrUrl
+                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "").Replace("small","home") : _akcja.TwrUrl
 
             };
 
@@ -486,7 +486,7 @@ namespace App2.View
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", ""));
+                Launcher.OpenAsync(_akcja.TwrUrl.Replace("Miniatury/", "").Replace("small", "large"));
             };
             //img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -500,7 +500,7 @@ namespace App2.View
                 RetryDelay = 100,
                 BitmapOptimizations = false,
                 ErrorPlaceholder = "NotSended.png",
-                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "") : _akcja.TwrUrl
+                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "").Replace("small", "home") : _akcja.TwrUrl
 
             };
 

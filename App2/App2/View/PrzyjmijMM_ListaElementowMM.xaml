@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.PrzyjmijMM_ListaElementowMM"
-             NavigationPage.HasNavigationBar="false">
+             NavigationPage.HasNavigationBar="false"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
 
 
 
@@ -16,16 +17,67 @@
                VerticalOptions="Center"  
                FontSize="Medium"  />
         </StackLayout>
-        <ListView x:Name="MyListView"
+        <ListView x:Name="MyListView" RowHeight="130"
                   CachingStrategy="RecycleElement"
-                  HasUnevenRows="True"
+                   
                   ItemTapped="Handle_ItemTapped"
                   VerticalOptions="FillAndExpand" >
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ViewCell  >
+                        <AbsoluteLayout     >
+                            <Label Text="{Binding id }"  FontSize="30"   
+                                       TextColor="#47BFA7" 
+                                       AbsoluteLayout.LayoutBounds="0,0.01,.15,1"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                        VerticalTextAlignment="Center"
+                                       />
+                            
+                            <Label Text="{Binding twrkod }" TextColor="Black"  
+                                       AbsoluteLayout.LayoutBounds="0.2,0.01,.7,.3"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                            <Label Text="{Binding nazwa }" 
+                                       TextColor="Black"  
+                                       FontSize="12"  
+                                       AbsoluteLayout.LayoutBounds="0.2,0.35,.7,.3"  
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                            />
+                            <Label Text="{Binding symbol}" FontSize="12" 
+                                       TextColor="Black" 
+                                       AbsoluteLayout.LayoutBounds="0.15,.95,.5,.3"  
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Start"
+                                       />
+                           
 
+                            <Label Text="{Binding ilosc}" TextColor="Black" FontSize="26"   
+                                       AbsoluteLayout.LayoutBounds="0.7,1,.2,.6"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalTextAlignment="Center" 
+                                       VerticalTextAlignment="Start"
+                                       />
+
+                            <ffimageloading:CachedImage 
+                                Source="{Binding url}"
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended" 
+                                AbsoluteLayout.LayoutBounds="1,0.05,.25,0.95"
+                                AbsoluteLayout.LayoutFlags="All"
+                            Aspect="AspectFill"
+                            />
+
+                        </AbsoluteLayout>
+
+
+
+                        <!--
                         <StackLayout Orientation="Horizontal" Padding="2"  VerticalOptions="Center">
                             
                             <StackLayout VerticalOptions="Center" >
@@ -55,13 +107,13 @@
                                            FontSize="16"  
                                            HorizontalOptions="Center" WidthRequest="40"
                                            VerticalOptions="Center" />
-                                <!--<Label Text="{Binding ilosc_OK } Margin="0,0,2,0"" 
+                                --><!--<Label Text="{Binding ilosc_OK } Margin="0,0,2,0"" 
                                             VerticalOptions="Center" 
                                             HorizontalOptions="Start"                                            
-                                            x:Name="poprawna" />-->
+                                            x:Name="poprawna" />--><!--
                             </StackLayout>
                             <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>
-                        </StackLayout>
+                        </StackLayout>-->
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

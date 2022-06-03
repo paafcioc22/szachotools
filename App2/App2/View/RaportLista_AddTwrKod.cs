@@ -1,4 +1,5 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using App2.Model;
+using Microsoft.AppCenter.Crashes;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -96,21 +97,23 @@ namespace App2.View
             {
                 try
                 {
-                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "")); 
+                    if(!string.IsNullOrEmpty(twr_url))
+                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small","large")); 
                 }
                 catch (Exception x)
                 {
                     var properties = new Dictionary<string, string>
                     {
                         { "_gidnumer", _gidnumer.ToString() },
-                        { "foto", twr_url}
+                        { "foto", twrkod}
                     };
                     Crashes.TrackError(x, properties);
 
                 }
                 finally
                 {
-                    await Launcher.OpenAsync(twr_url);
+                    if (!string.IsNullOrEmpty(twr_url))
+                        await Launcher.OpenAsync(twr_url);
                 }
             };
 
@@ -245,7 +248,8 @@ namespace App2.View
             {
                 try
                 {
-                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", ""));
+                    if(!string.IsNullOrEmpty(twr_url))
+                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small","large"));
                 }
                 catch (Exception x)
                 {
@@ -259,7 +263,8 @@ namespace App2.View
                 }
                 finally
                 {
-                    await Launcher.OpenAsync(twr_url);
+                    if (!string.IsNullOrEmpty(twr_url))
+                        await Launcher.OpenAsync(twr_url);
                 }
             };
             img_foto.GestureRecognizers.Add(tapGesture);
@@ -416,11 +421,13 @@ namespace App2.View
 
 
             img_foto = new Image();
-            img_foto.Source = mmka.url.Replace("Miniatury/", "");
+             
+            img_foto.Source = mmka.url.Replace("Miniatury/", "").Replace("small", "home");
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Launcher.OpenAsync(mmka.url.Replace("Miniatury/", ""));
+                if(!string.IsNullOrEmpty(mmka.url))
+                Launcher.OpenAsync(mmka.url.Replace("Miniatury/", "").Replace("small", "large"));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
             stackLayout.Children.Add(img_foto);
@@ -523,11 +530,12 @@ namespace App2.View
 
 
             img_foto = new Image();
-            img_foto.Source = akcje.TwrUrl.Replace("Miniatury/", "");
+            img_foto.Source = akcje.TwrUrl.Replace("Miniatury/", "").Replace("small", "home");
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                Launcher.OpenAsync(akcje.TwrUrl.Replace("Miniatury/", ""));
+                if(!string.IsNullOrEmpty(akcje.TwrUrl))
+                Launcher.OpenAsync(akcje.TwrUrl.Replace("Miniatury/", "").Replace("small", "large"));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
             stackLayout.Children.Add(img_foto);
@@ -708,6 +716,7 @@ namespace App2.View
                     dokMM.twrkod = entry_kodean.Text;
                     dokMM.ilosc_OK = Convert.ToInt16(entry_ilosc.Text);
                     dokMM.nazwa = lbl_nazwa.Text;
+                    dokMM.url = FilesHelper.ConvertUrlToOtherSize(twr_url, entry_kodean.Text,FilesHelper.OtherSize.small);
                     int maxid = await _connection.ExecuteScalarAsync<int>("select ifnull(max(IdElement),0) maxid from RaportListaMM where GIDdokumentuMM =?", _gidnumer);
 
 
@@ -729,6 +738,7 @@ namespace App2.View
                         dokMM.DatadokumentuMM = listaZMM[0].DatadokumentuMM;
                         dokMM.nrdokumentuMM = listaZMM[0].nrdokumentuMM;
                         dokMM.XLGIDMM = listaZMM[0].XLGIDMM;
+
                         //dokMM.nazwa = 
                         // dokMM.RaportListaMMs.Add(dokMM);
                         Model.RaportListaMM.RaportListaMMs.Add(dokMM);
@@ -742,6 +752,8 @@ namespace App2.View
                     var prop = new Dictionary<string, string>
                     {
                         { "operator", View.StartPage.user},
+                        { "wartosc",entry_ilosc.Text},
+                        { "kod",entry_kodean.Text}
                         
                     };
                     Crashes.TrackError(ex, prop);
@@ -977,9 +989,7 @@ namespace App2.View
                             };
                             connection.Open();
                             command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                                ",cast(sum(TwZ_Ilosc) as int)ilosc, case when len(twr_kod) > 5 and len(twr_url)> 5 then " +
-                                    "replace(twr_url, substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4), " +
-                                " substring(twr_url, 1, len(twr_url) - len(twr_kod) - 4) + 'Miniatury/') else twr_kod end as twr_url,twr_ean " +
+                                ",cast(sum(TwZ_Ilosc) as int)ilosc,   twr_url,twr_ean " +
                                 "from cdn.towary " +
                                 "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
                                 "left join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
@@ -1030,7 +1040,7 @@ namespace App2.View
                             lbl_cena.Text = twr_cena;
                             lbl_stan.Text = "Stan : " + stan_szt;
                             if (!string.IsNullOrEmpty(twr_url))
-                                img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+                                img_foto.Source = twr_url.Replace("Miniatury/", "").Replace("small", "home"); //twr_url;
 
                         }
                         catch (Exception)
@@ -1057,7 +1067,7 @@ namespace App2.View
                         lbl_cena.Text = twr_cena;
                         lbl_stan.Text = "Stan : " + stan_szt;
                         if (!string.IsNullOrEmpty(twr_url))
-                            img_foto.Source = twr_url.Replace("Miniatury/", ""); //twr_url;
+                            img_foto.Source = twr_url.Replace("Miniatury/", "").Replace("small", "home"); //twr_url;
 
                     }
                     else

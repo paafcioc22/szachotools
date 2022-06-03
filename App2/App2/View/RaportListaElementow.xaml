@@ -14,7 +14,7 @@
         </StackLayout>
         <ListView x:Name="MyListView"
                   CachingStrategy="RecycleElement"
-                  HasUnevenRows="True"
+                  RowHeight="80"
                   ItemTapped="Handle_ItemTapped"
                   VerticalOptions="FillAndExpand" >
 
@@ -50,7 +50,7 @@
                                            HorizontalOptions="End" WidthRequest="40"
                                            VerticalOptions="Center" Margin="0,0,15,0"/> 
                             </StackLayout>
-                            <!--<Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70"/>-->
+                            <Image Source="{Binding url}" VerticalOptions="FillAndExpand" WidthRequest="70" HeightRequest="100"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
