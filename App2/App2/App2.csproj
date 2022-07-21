@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
     <PackageReference Include="PhotoBrowser.Forms" Version="0.1.4" />
     <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.1" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
