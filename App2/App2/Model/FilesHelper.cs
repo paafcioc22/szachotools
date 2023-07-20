@@ -23,7 +23,7 @@ namespace App2.Model
             return filePath;
         }
 
-        public static string ConvertUrlToOtherSize(string url, string twrkod , OtherSize otherSize )
+        public static string ConvertUrlToOtherSize(string url, string twrkod , OtherSize otherSize, bool onlyFromPresta=false )
         {
             string rtrnUrl = "";
             if (!string.IsNullOrEmpty(url))
@@ -35,7 +35,14 @@ namespace App2.Model
                 else
                 {
                     //replace(twr_url,replace(twr_kod,'/','-')+'.JPG','')+'Miniatury/'+replace(twr_kod,'/','-')+'.JPG' as Twr_Url_Small
-                    rtrnUrl = url.Replace(twrkod.Replace('/', '-') + ".JPG", "") + string.Concat("Miniatury/",twrkod.Replace('/', '-') ,".JPG");
+                    if (onlyFromPresta)
+                    {
+                        return url;
+                    }
+                    else
+                    {
+                        rtrnUrl = url.Replace(twrkod.Replace('/', '-') + ".JPG", "") + string.Concat("Miniatury/",twrkod.Replace('/', '-') ,".JPG");
+                    }
                 }
             }
 

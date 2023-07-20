@@ -77,6 +77,6 @@
             </ListView.ItemTemplate>
 
         </ListView>
-        <!--<Button Text=" usun tabele" Clicked="Button_Clicked"/>-->
+        <Button Text="Zaczytaj skany z drugiego" Clicked="ImportSkanFromOther_Clicked"/>
     </StackLayout>
 </ContentPage>

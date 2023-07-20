@@ -14,7 +14,7 @@
                 <!--<StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20,0" Spacing="0">-->
 
                     <Image x:Name="img_foto" Aspect="AspectFill" 
-                               AbsoluteLayout.LayoutBounds="0.0,0,1,.45"
+                               AbsoluteLayout.LayoutBounds="0,0,1,.45"
                                    AbsoluteLayout.LayoutFlags="All" >
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer  Tapped="TapGestureRecognizer_Tapped" />
@@ -24,7 +24,7 @@
                     <!--<Label Text="Dane" HorizontalOptions="Center" FontSize="18"/>-->
 
                     <TableView Intent="Data" RowHeight="30"  
-                               AbsoluteLayout.LayoutBounds="0.0,1,1,.55"
+                               AbsoluteLayout.LayoutBounds="0,1,1,.55"
                                AbsoluteLayout.LayoutFlags="All">
                         <TableRoot >
                             <TableSection Title="" >

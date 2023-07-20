@@ -126,12 +126,11 @@ namespace App2.View
             btn_Zapisz.ImageSource = "save48x2.png";
             btn_Zapisz.ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10);
             stackLayout.Children.Add(btn_Zapisz);
-            //stackLayout.HorizontalOptions = LayoutOptions.Center;
+             
             stackLayout.VerticalOptions = LayoutOptions.Center;
             stackLayout.Padding = new Thickness(30, 0, 30, 0);
 
-            stackLayout_gl.Children.Add(stackLayout);
-            //stackLayout_gl.VerticalOptions= LayoutOptions.CenterAndExpand;
+            stackLayout_gl.Children.Add(stackLayout);           
             absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(0, 0.5, 1, 1), AbsoluteLayoutFlags.HeightProportional);
 
             Content = stackLayout_gl;

@@ -239,12 +239,7 @@ namespace App2.View
                
             }
 
-            
-       
-            
-
-           // return await Task.Run(async () =>
-           // {
+         
                 try
                 {
 
@@ -558,8 +553,37 @@ namespace App2.View
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-
             await _connection.DropTableAsync<Model.AkcjeNagElem>();
+        }
+        private void ImportSkanFromOther_Clicked(object sender, EventArgs e)
+        {
+            var magGidnumer = (Application.Current as App).MagGidNumer;
+            if (magGidnumer > 0)
+            {
+                ImportZeskanowychZCentrali(_nagElem[0].AkN_GidNumer, magGidnumer);
+            }
+        }
+        
+
+        private async void ImportZeskanowychZCentrali(int asn_gidnumer, int magnumer)
+        {
+            var query = @$"cdn.PC_WykonajSelect N'
+                    select ASE_AknNumer as AkN_GidNumer, ASE_AknMagNumer as Ake_ElemLp 
+                    ,ASE_Grupa  as TwrGrupa                        
+                    ,ASE_TwrDep as TwrDep
+                    ,ASE_TwrNumer as  TwrGidNumer
+                    ,ASE_TwrStan as TwrStan ,ASE_TwrSkan as TwrSkan 
+                    FROM CDN.PC_AkcjeSkanElem
+              where ASE_AknNumer = {asn_gidnumer} and ASE_AknMagNumer = {magnumer} and ASE_TwrSkan> 0'";
+
+            var zbazy= await App.TodoManager.PobierzDaneZWeb<AkcjeNagElem> (query);
+
+
+            var test= await _connection.InsertAllAsync(zbazy, true);
+
+
+            var wynik = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+
         }
     }
 

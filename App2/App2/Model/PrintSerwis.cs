@@ -157,7 +157,15 @@ namespace App2.Model
 
                 string twr_nazwa = (_akcja.twr_nazwa.Length > 20 ? _akcja.twr_nazwa.Substring(0, 20) : _akcja.twr_nazwa);
 
-                string procent = Convert.ToInt16((Double.Parse(_akcja.twr_cena.Replace(".", ",")) / Double.Parse(_akcja.twr_cena1.Replace(".", ",")) - 1) * 100).ToString();
+                var cena = Double.Parse(_akcja.twr_cena.Replace(".", ","));
+                var cena1 = Double.Parse(_akcja.twr_cena1.Replace(".", ","));
+
+                var prr = double.IsInfinity((cena / cena1 - 1) * 100) ? 0: (cena / cena1 - 1) * 100;
+                //prevent from devide by 0, when cena1 dsnt exists
+
+
+                string procent = Convert.ToInt16(prr).ToString();
+                //string procent = Convert.ToInt16((Double.Parse(_akcja.twr_cena.Replace(".", ",")) / Double.Parse(_akcja.twr_cena1.Replace(".", ",")) - 1) * 100).ToString();
 
                 if (kolor=="biały")
                     await SettingsPage._cpclPrinter.setForm(0, 200, 200, 270, 350, drukSzt);
@@ -193,7 +201,9 @@ namespace App2.Model
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.twr_cena1, 0);
                     await SettingsPage._cpclPrinter.printLine(40, 160, koniecLinii, 125, 10);
                     if (Convert.ToInt16(procent) < -15)
-                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);
+                    {                        
+                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);//245  165 wyzej
+                    }
 
                 }
                 int YpolozenieCeny;
@@ -210,6 +220,11 @@ namespace App2.Model
                 await SettingsPage._cpclPrinter.resetConcat();
 
 
+
+                //todo : cena ostatnie 30 dni
+                //await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"ost.30dni: {_akcja.twr_cena1}", 0);//245
+               
+                
 
                 await SettingsPage._cpclPrinter.printForm();
 

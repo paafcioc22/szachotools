@@ -1,5 +1,6 @@
 ﻿
 using App2.Model;
+using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -366,24 +367,35 @@ namespace App2.View
         {
 
 
-             
-            if (await IsPassCorrect(_opeGid))
+
+            try
             {
+                if (await IsPassCorrect(_opeGid))
+                {
+
+                    View.StartPage.user = _user;
+
+                    View.StartPage startPage = new StartPage();
+                    startPage.OdblokujPrzyciski();
 
 
-                View.StartPage.user = _user;
-                 
-                View.StartPage startPage = new StartPage();
-                startPage.OdblokujPrzyciski();
-                 
-
-                await Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
+                }
+                else
+                {
+                    await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+                }
             }
-            else
+            catch (Exception exception)
             {
-                await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
 
-
+                var properties = new Dictionary<string, string>
+                {
+                    { "user", _user},
+                    { "gid", _opeGid.ToString()},
+                    { "haslo", entry_haslo.Text}
+                };
+                Crashes.TrackError(exception, properties);
             }
         }
 

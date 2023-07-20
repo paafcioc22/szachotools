@@ -65,18 +65,8 @@ namespace App2.View
             BindingContext = this;
              
             var tmp= Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
-            MyListView.ItemsSource = Convert(tmp);
-
-
-            //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-
-            //if (StartPage.CheckInternetConnection())
-            //{
-            //    SendDataSkan(tmp);
-            //}else 
-            //{
-            //    DisplayAlert(null, "Brak połączenia z internetem", "OK");
-            //}
+            MyListView.ItemsSource = Convert(tmp); 
+           
         }
 
 

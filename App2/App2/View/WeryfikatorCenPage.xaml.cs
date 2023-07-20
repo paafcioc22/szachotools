@@ -293,7 +293,7 @@ namespace App2.View
                 lbl_twrnazwa.Text = twrkarty.twr_nazwa;
                 lbl_stan.Text = twrkarty.stan_szt + " szt";
                 lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.twr_cena1 : twrkarty.twr_cena + " zł";
-                img_foto.Source = twrkarty.twr_url;
+                img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.twr_url,twrkarty.twr_kod,FilesHelper.OtherSize.home,true);
             }
             else
             {
