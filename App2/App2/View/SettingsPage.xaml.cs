@@ -1,13 +1,15 @@
 ﻿using App2.Model;
+using App2.OptimaAPI;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlClient;
+ 
 using System.Diagnostics;
 using System.Linq;
- 
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -29,6 +31,12 @@ namespace App2.View
         public static ISewooXamarinCPCL _cpclPrinter;
         private static SemaphoreSlim printSemaphore = new SemaphoreSlim(1, 1);
         public static CPCLConst cpclConst;
+        private const string serverIp = "192.168.1.155:5063";
+        private static RestClient _client;
+        public static ObservableCollection<DrukarkaClass> listaDrukarek;
+        public IList<CennikClass> cennikClasses;
+
+        public static bool CzyDrukarkaOn = false;
 
         private BindableProperty IsSearchingProperty =
             BindableProperty.Create("IsSearching", typeof(bool), typeof(SettingsPage), false);
@@ -56,27 +64,52 @@ namespace App2.View
             BindingContext = Application.Current;
 
 
-            if (SprConn())
+            //if ( SprConn().Result)
+            //{
+            //    GetBaseName();
+            //    GetGidnumer();
+
+            //    cennikClasses = GetCenniki();
+            //    if (cennikClasses != null)//cennikClasses.Count > 0 || 
+            //    {
+            //        pickerlist.ItemsSource = GetCenniki().ToList();
+            //        pickerlist.SelectedIndex = app.Cennik;
+            //    }
+
+            //}
+
+            var options = new RestClientOptions($"http://{serverIp}")
             {
-                GetBaseName();
-                GetGidnumer();
+                //MaxTimeout = 10000 // 10 sekund
+            };
 
-                cennikClasses = GetCenniki();
-                if (cennikClasses != null)//cennikClasses.Count > 0 || 
-                {
-                    pickerlist.ItemsSource = GetCenniki().ToList();
-                    pickerlist.SelectedIndex = app.Cennik;
-                }
+            _client = new RestClient(options);
+           
 
-            }
-
-
-            sprwersja();
+            InicjalizujAsync(app);
             SwitchStatus.IsToggled = IsBuforOff;
             SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
 
-         
+        private async void InicjalizujAsync(App app)
+        {
+            bool wynik = await SprConn();
+
+            if (wynik)
+            {
+                await GetBaseName(app);
+                await GetGidnumer();
+
+                cennikClasses = (await GetCenniki());
+                if (cennikClasses != null)//cennikClasses.Count > 0 || 
+                {
+                    pickerlist.ItemsSource = (await GetCenniki()).ToList();
+                    pickerlist.SelectedIndex = app.Cennik;
+                }
+            }
+
+            //sprwersja();
+        }
 
 
         private void SelectDeviceMetod()
@@ -132,159 +165,101 @@ namespace App2.View
 
 
 
-        public static ObservableCollection<DrukarkaClass> listaDrukarek;
-    
-        public static bool CzyDrukarkaOn = false; 
+        
 
 
-        private void SprConn_Clicked(object sender, EventArgs e)
+        private async void SprConn_Clicked(object sender, EventArgs e)
         {
-
 
             try
             {
                 var app = Application.Current as App;
-                var connStr = new SqlConnectionStringBuilder
-                {
-                    DataSource = app.Serwer,//_serwer,
-                    InitialCatalog = app.BazaConf, //_database,
-                    UserID = app.User,//_uid,
-                    Password = app.Password, //_pwd,
-                    ConnectTimeout = 2
-                }.ConnectionString;
-                using (SqlConnection conn = new SqlConnection(connStr))
-                {
-                    try
-                    {
-                        conn.Open();
-                        if ( GetBaseName().Result)
-                        {
-                            DisplayAlert("Sukces..", "Połączono z bazą "+app.BazaProd, "OK");
-                            GetGidnumer();
-                            Application.Current.SavePropertiesAsync();
-                            Navigation.PopAsync();
-                        }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
-                    }
+                var request = new RestRequest("/api/test");
+
+                var response = await _client.GetAsync(request);
+
+                var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
+                if (dbNameHeader != null)
+                {
+                    Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
                 }
+
+                var connOk = response.IsSuccessStatusCode;
+                if(connOk) 
+                {
+                        await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
+                        var magInfo = await GetGidnumer();
+                        app.MagGidNumer= (short)magInfo.Id;
+                     
+                        app.BazaProd = dbNameHeader.Value.ToString();
+                        BazaProd.Text = dbNameHeader.Value.ToString();
+                        await Application.Current.SavePropertiesAsync();
+                        await Navigation.PopAsync();
+                }
+                else
+                {
+                   await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+                } 
+                
             }
             catch (Exception ex)
             {
-                DisplayAlert("Uwaga", ex.Message, "OK");
+                await DisplayAlert("Uwaga", ex.Message, "OK");
             }
-            // ZapiszUstawienia();
+          
         }
 
 
 
-        public static bool SprConn() //Third way, slightly slower than Method 1
+        public static async Task<bool> SprConn() //Third way, slightly slower than Method 1
         {
-            // NadajWartosci();
-
-
-            var app = Application.Current as App;
-            var connStr = new SqlConnectionStringBuilder
+            try
             {
-                DataSource = app.Serwer,//_serwer,
-                InitialCatalog = app.BazaProd, //_database,
-                UserID = app.User,//_uid,
-                Password = app.Password, //_pwd,
-                ConnectTimeout = 3
-            }.ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                try
-                {
-                    conn.Open();
-                    //DisplayAlert("Connected", "Połączono z siecia", "OK");
-                    return true;
-                }
-                catch  
-                {
-                    //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
-                    //string aa=x.Message;
-                    return false;
-                }
+                //todo : skonfiguruj ustawienia
+
+                var request = new RestRequest("/api/test");
+                var response = await _client.GetAsync(request); 
+
+                var data = response.IsSuccessStatusCode;
+                return data;
             }
-
-
-        }
-
-
-        void GetGidnumer()
-        {
-
-            var app = Application.Current as App;
-
-            var ConnectionString = "SERVER=" + app.Serwer +
-                    ";DATABASE=" + app.BazaProd +
-                    ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                    ";PWD=" + app.Password;
-
-
-
-
-            var stringquery2 = $@"SELECT  [Mag_GIDNumer]
-                                  FROM  [CDN].[Magazyny]
-                                  where mag_typ=1 
-								  and [Mag_GIDNumer] is not null
-								  and mag_nieaktywny=0";
-
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            catch (HttpRequestException a)
             {
-                connection.Open();
-                using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
-                using (SqlDataReader reader = command2.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        app.MagGidNumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
-                    }
-                }
+                var sdas = a.InnerException;
+                Console.WriteLine(sdas);
+                return false; 
             }
 
         }
 
-        public async Task<bool> GetBaseName()
-        {
 
-            var app = Application.Current as App;
+        public static async Task<Magazynn> GetGidnumer()
+        {            
+            ServicePrzyjmijMM serviceApi = new ServicePrzyjmijMM();
+            return await serviceApi.GetSklepMagNumer();
+
+        }
+
+        public async Task<bool> GetBaseName(App app)
+        {
 
             try
             {
-                 
+                var request = new RestRequest("/api/test");
 
-                string ConnectionString = "SERVER=" + app.Serwer +
-                    ";DATABASE=" + app.BazaConf +
-                    ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                    ";PWD=" + app.Password;
-                 
+                var response = await _client.GetAsync(request);
 
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
-                { 
-                    connection.Open();
+                var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
+                if (dbNameHeader != null)
+                {
+                    Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
+                    app.BazaProd= dbNameHeader.Value.ToString();
+                    return true;
+                }
+                    return false;
 
-                    string stringquery = $@"SELECT top 1 [Baz_NazwaBazy] nazwaBazy 
-                                        FROM {app.BazaConf}.[CDN].[Bazy] order by [Baz_TS_Arch] desc ";
 
-                    using (SqlCommand command = new SqlCommand(stringquery, connection))
-                    using (SqlDataReader rs = command.ExecuteReader())
-                    {
-                        while (rs.Read())
-                        {
-                            string bazaProd = Convert.ToString(rs["nazwaBazy"]);
-                            app.BazaProd = bazaProd;
-                            BazaProd.Text = bazaProd;
-                        }
-                    }  
-                } 
-                 
-                 
-                return true;
             }
             catch (Exception s)
             {
@@ -294,60 +269,41 @@ namespace App2.View
 
         }
 
-        List<CennikClass> lista;
-        private IList<CennikClass> GetCenniki()
+     
+        private async Task<IList<CennikClass>> GetCenniki()
         {
             try
             {
-                var app = Application.Current as App;
-                string nazwaCennika;
-                int IdCennik;
-                SqlCommand command = new SqlCommand();
-                SqlConnection connection = new SqlConnection
+                var request = new RestRequest("/api/getCenniki");
+
+                var response = await _client.ExecuteGetAsync<List<CennikClass>>(request);                              
+
+                if (response.IsSuccessful)
                 {
-                    ConnectionString = "SERVER=" + app.Serwer +
-                    ";DATABASE=" + app.BazaProd +
-                    ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                    ";PWD=" + app.Password
-                };
-                connection.Open();
-                command.CommandText = " SELECT DfC_lp, DfC_Nazwa  FROM [CDN].[DefCeny] where DfC_Nieaktywna = 0 and DfC_Nazwa<>'Zakupu'";
+                    return response.Data;
+                }else
+                    return null;
 
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                lista = new List<CennikClass>();
-                lista.Clear();
-                while (rs.Read())
-                {
-                    IdCennik = Convert.ToInt32(rs["DfC_lp"]);
-
-                    nazwaCennika = Convert.ToString(rs["DfC_Nazwa"]);
-                    lista.Add(new CennikClass { Id = IdCennik, RodzajCeny = nazwaCennika });
-                }
-
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
             }
-            catch
+            catch (HttpRequestException a)
             {
-                DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane", "OK");
+                var sdas = a.InnerException;
+                Console.WriteLine(sdas);
+                return null;
             }
-            return lista;
 
         }
 
-        public IList<CennikClass> cennikClasses;
+      
 
-        private void pickerlist_OnChanged(object sender, EventArgs e)
+        private async void pickerlist_OnChanged(object sender, EventArgs e)
         {
             //pickerlist.ItemsSource = GetCenniki().ToList();
             var app = Application.Current as App;
 
 
             var cennik = pickerlist.Items[pickerlist.SelectedIndex];
-            var idceny = GetCenniki().Single(cc => cc.RodzajCeny == cennik);
+            var idceny = (await GetCenniki()).Single(cc => cc.RodzajCeny == cennik);
 
 
             int selectedIndex = pickerlist.SelectedIndex;
@@ -370,17 +326,15 @@ namespace App2.View
 
 
         public Picker PickerDrukarki { get { return pickerlist; } }
-        private void pickerlist_Focused(object sender, FocusEventArgs e)
+        private async void pickerlist_Focused(object sender, FocusEventArgs e)
         {
-            if (!SprConn())
+            if (!await SprConn())
             {
                 pickerlist.Title = "Brak połączenia z bazą";
             }
             else
             {
-                //   cennikClasses = GetCenniki();
-                //GetCenniki().Clear();
-                //pickerlist.ItemsSource = GetCenniki().ToList();
+                
             }
         }
 

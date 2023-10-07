@@ -1,14 +1,11 @@
 ﻿using App2.Model;
+using App2.OptimaAPI;
 using FFImageLoading;
 using FFImageLoading.Cache;
-using FFImageLoading.Forms;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -20,7 +17,7 @@ namespace App2.View
     {
         public ObservableCollection<Model.AkcjeNagElem> Items;
         IList<Model.AkcjeNagElem> _listatwr;
-        SqlConnection connection;
+       
 
         public List_AkcjeAfterFiltr(IList<Model.AkcjeNagElem> nowa)
         {
@@ -32,14 +29,7 @@ namespace App2.View
             Items = Convert(nowa);
 
             var app = Application.Current as App;
-            connection = new SqlConnection
-            {
-                ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
-            };
-
+         
             //czyscPamiec();
             MyListView.ItemsSource = Items;
             ToggleScreenLock();
@@ -70,35 +60,17 @@ namespace App2.View
         }
 
 
-        Int16 magnumer;
+         
         private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
-            if (SettingsPage.SprConn())
+            if (await SettingsPage.SprConn())
             {
-                SqlCommand command = new SqlCommand();
+                ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                var magazyn = await api.GetSklepMagNumer();
+                var magGidnumer = (short)magazyn.Id;
 
-                connection.Open();
-                command.CommandText = $@"SELECT  [Mag_GIDNumer]
-                                  FROM  [CDN].[Magazyny]
-                                  where mag_typ=1 
-								  and [Mag_GIDNumer] is not null
-								  and mag_nieaktywny=0";
-
-
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                    magnumer = System.Convert.ToInt16(rs["Mag_GIDNumer"]);
-                }
-
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
                 string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                var odp = await App.TodoManager.InsertDataSkan(sumaList, magnumer, ase_operator);
+                var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
                 if (odp != "OK")
                     await DisplayAlert(null, odp, "OK"); 
             }

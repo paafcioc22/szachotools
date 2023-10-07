@@ -1,9 +1,11 @@
 ﻿using App2.Model;
+using App2.Model.ApiModel;
+using App2.OptimaAPI;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlClient;
+
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -17,7 +19,7 @@ namespace App2.View
         public IList<AkcjeNagElem> TwrListWeb { get; set; }
         public ObservableCollection<AkcjeNagElem> TwrListLocal { get; set; } 
         public IList<AkcjeNagElem> SumaList { get; set; }
-        private SqlConnection connection;
+
         private SQLiteAsyncConnection _connection; 
         private List<NagElem> _nagElem;
         private ObservableCollection<Model.AkcjeNagElem> _fromWeb;
@@ -42,13 +44,7 @@ namespace App2.View
             BindingContext = this;
 
             app = Application.Current as App;
-            connection = new SqlConnection
-            {
-                ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
-            };
+            
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             //_connection.DropTableAsync<Model.AkcjeNagElem>();
             _nagElem = nagElem;
@@ -166,46 +162,35 @@ namespace App2.View
         {
             TwrListLocal = new ObservableCollection<Model.AkcjeNagElem>();
             //SumaList = new ObservableCollection<Model.AkcjeNagElem>();
-            SqlCommand command = new SqlCommand();
+            ServicePrzyjmijMM api = new ServicePrzyjmijMM();
 
-            connection.Open();
-
-            if (SettingsPage.SprConn())
+            if (await SettingsPage.SprConn())
             {
+
                 foreach (var _lista in lista)
                 {
                     try
                     {
-                        command.CommandText = $@"Select twr_gidnumer,twr_kod, twr_nazwa
-                    ,cast(sum(TwZ_Ilosc) as int)ilosc,   g.twg_kod grupa
-                    from cdn.towary 
-                    join cdn.TwrGrupy t on twr_gidnumer = t.TwG_GIDNumer
-                    join cdn.TwrGrupy g on t.TwG_GrONumer = g.TwG_GIDNumer and g.twg_gidtyp=-16 
-                    join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId 
-                    where {_lista.Ake_FiltrSQL} and g.twg_gronumer=0
-                    group by twr_gidnumer,twr_kod, twr_nazwa, g.twg_kod";
+                        var twrList = await api.GetTowaryGrupyListAsync(_lista.Ake_FiltrSQL);
 
-
-                        SqlCommand query = new SqlCommand(command.CommandText, connection);
-                        SqlDataReader rs;
-                        rs = query.ExecuteReader();
-                        while (rs.Read())
+                        if(twrList.IsSuccessful)
                         {
-                            TwrListLocal.Add(new Model.AkcjeNagElem()
+                            foreach (var twr in twrList.Data)
                             {
-                                TwrKod = Convert.ToString(rs["twr_kod"]),
-                                TwrGidNumer = Convert.ToInt32(rs["twr_gidnumer"]),
-                                TwrNazwa = Convert.ToString(rs["twr_nazwa"]),
-                                TwrGrupa = Convert.ToString(rs["grupa"]),
-                                TwrStan = Convert.ToInt32(rs["ilosc"])
-                            });
-
-                            // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
+                                TwrListLocal.Add(new Model.AkcjeNagElem()
+                                {
+                                    TwrKod = twr.Twr_Kod,
+                                    TwrGidNumer = twr.Twr_Gidnumer,
+                                    TwrNazwa = twr.Twr_Nazwa,
+                                    TwrGrupa = twr.Twr_Grupa,
+                                    TwrStan = twr.Stan_szt
+                                });                                
+                            }
                         }
-
-                        rs.Close();
-                        rs.Dispose();
-
+                        else
+                        {
+                            await DisplayAlert("Uwaga", twrList.ErrorMessage, "OK");
+                        }
 
                     }
                     catch (Exception exception)
@@ -213,7 +198,7 @@ namespace App2.View
                         await DisplayAlert("Uwaga", exception.Message, "OK");
                     }
                 }
-                connection.Close();
+             
             }
             else
             {
@@ -489,30 +474,15 @@ namespace App2.View
 
             try
             {
-                if (SettingsPage.SprConn())
+                if (await SettingsPage.SprConn())
                 {
                     var magGidnumer = (Application.Current as App).MagGidNumer;
 
                     if (magGidnumer == 0)
                     {
-                        var stringquery2 = $@"SELECT  [Mag_GIDNumer]
-                                  FROM  [CDN].[Magazyny]
-                                  where mag_typ=1 
-								  and [Mag_GIDNumer] is not null
-								  and mag_nieaktywny=0";
-
-
-                        connection.Open();
-                        using (SqlCommand command2 = new SqlCommand(stringquery2, connection))
-                        using (SqlDataReader reader = command2.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                magnumer = System.Convert.ToInt16(reader["Mag_GIDNumer"]);
-                            }
-                        }
-                        magGidnumer = magnumer;
-                        connection.Close();
+                        ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                        var magazyn = await api.GetSklepMagNumer();
+                        magGidnumer = (short)magazyn.Id;
                     }
 
 

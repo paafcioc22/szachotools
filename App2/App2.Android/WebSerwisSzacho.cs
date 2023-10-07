@@ -1,21 +1,14 @@
-﻿using System;
+﻿using App2.Model;
+using App2.Model.ApiModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using App2.Model;
-using Xamarin.Forms;
 
 //[assembly: Dependency(typeof(App1.Droid.WebSerwisSzacho))]
 namespace App2.Droid
@@ -23,9 +16,9 @@ namespace App2.Droid
     public sealed class WebSerwisSzacho : IMagazynSerwis
     {
         public ObservableCollection<Magazynn> Items { get; private set; } 
-        public List<RaportListaMM> TwrkodList { get; private set; } 
+        public List<TwrInfo> TwrkodList { get; private set; } 
         public ObservableCollection<AkcjeNagElem> AkcjeGidNazwaList { get; private set; } 
-
+            
         public WebSzacho.CDNOffLineSrv client;
 
         public WebSerwisSzacho()
@@ -102,40 +95,31 @@ namespace App2.Droid
 
          
 
-        public async Task<List<RaportListaMM>> PobierzTwr(string ean)
+        public async Task<TwrInfo> PobierzTwr(string ean)
         {
-            return await Task.Run(() =>
+           
+            try
             {
-                TwrkodList = new List<RaportListaMM>();
+                var response =   client.ExecuteSQLCommand(ean);
 
-                var respone = client.ExecuteSQLCommand(ean);
+                var twrList = DeserializeFromXml<TwrInfo>(response);
 
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(respone);
-
-                TextReader reader = new StringReader(respone);
-
-                XmlSerializer serializer = new XmlSerializer(typeof(TwrLista));
-                TwrLista twrlista = (TwrLista)serializer.Deserialize(reader);
-
-                foreach (var mag in twrlista.TwrList)
+                // Zakładając, że chcesz zwrócić pierwszy element z listy
+                if (twrList.Any() )
                 {
-                    TwrkodList.Add(new RaportListaMM
-                    {
-                        twrkod = mag.twrkod,
-                        TwrGidnumer = mag.TwrGidnumer,
-                        ean = mag.ean,
-                        url = mag.url,
-                        nazwa = mag.nazwa,
-                        cena = mag.cena,
-                        symbol = mag.symbol,
-                        cena1 = mag.cena1
-                        
-                    });
+                    return twrList[0];
                 }
-
-                return TwrkodList;
-            });
+                else
+                {
+                    throw new Exception("Lista produktów jest pusta.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Obsługa błędów - możesz zalogować błąd lub zgłosić go wyżej
+                throw new Exception("Wystąpił błąd podczas pobierania informacji o produkcie.", ex);
+            }
+       
         }
 
 
@@ -272,7 +256,14 @@ namespace App2.Droid
 
             });
         }
-
+        public static T DeserializeXml<T>(string xmlString)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(T), new XmlRootAttribute("ROOT"));
+            using (TextReader reader = new StringReader(xmlString))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
+        }
 
         public static ObservableCollection<T> DeserializeFromXml<T>(string xml)
         {

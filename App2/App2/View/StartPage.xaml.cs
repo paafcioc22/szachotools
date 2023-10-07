@@ -2,7 +2,7 @@
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+ 
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -23,9 +23,7 @@ namespace App2.View
 			InitializeComponent ();
             this.BindingContext = this;
             this.IsBusy = false;
-            //this.IsEnabled = false;
-           // user = "";
-            // sprwersja();
+         
              
         }
 
@@ -152,7 +150,7 @@ namespace App2.View
             }
 
 
-            sprwersja();
+            //sprwersja();
               
                 if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
                 {
@@ -169,7 +167,7 @@ namespace App2.View
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
             btn_CreateMM.IsEnabled = false;
-            connected = SettingsPage.SprConn();
+            connected = await SettingsPage.SprConn();
             if (connected)
             {
                await Navigation.PushModalAsync(new View.StartCreateMmPage());
@@ -177,7 +175,7 @@ namespace App2.View
 
             }
             else
-               await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+               await DisplayAlert(null, "Brak połączenia z serwisem", "OK");
             btn_CreateMM.IsEnabled = true;
 
         }
@@ -188,14 +186,7 @@ namespace App2.View
                     
             await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
 
-            //connected = SettingsPage.SprConn();
-            //    if (connected)
-            //    {
-            //    }
-            //    else
-            //    {
-            //        await DisplayAlert(null, "Brak połączenia z siecią", "OK"); 
-            //    }
+            
             btn_weryfikator.IsEnabled = true;
 
         }
@@ -207,7 +198,7 @@ namespace App2.View
             //{
                 btn_przyjmijMM.IsEnabled = false;
                 WaitIco.IsRunning = true;
-                connected = SettingsPage.SprConn();
+                connected = await SettingsPage.SprConn();
                 if (connected)
                 {
                     await Navigation.PushModalAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
@@ -230,7 +221,7 @@ namespace App2.View
         private async void Btn_Login_Clicked(object sender, EventArgs e)
         {
             btn_login.IsEnabled = false;
-            connected = SettingsPage.SprConn();
+            connected =await SettingsPage.SprConn();
             if (connected)
             {
 
@@ -271,7 +262,7 @@ namespace App2.View
         private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
         {
             btn_ListaAkcji.IsEnabled = false;
-            connected = SettingsPage.SprConn();
+            connected = await SettingsPage.SprConn();
             if (connected)
             { 
                    
@@ -379,7 +370,7 @@ namespace App2.View
                 return;
 
             _userTapped = true;
-            connected = SettingsPage.SprConn();
+            connected = await SettingsPage.SprConn();
             if (connected)
             {
                 await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
@@ -391,66 +382,10 @@ namespace App2.View
         private async void btn_zdjecia_Clicked(object sender, EventArgs e)
         {
 
-
             await PopupNavigation.Instance.PushAsync(new Login());
-
-            //var odp =await DisplayPromptAsync("Logowanie", "Podaj hasło", "OK", "anuluj");
-
-            //if (!string.IsNullOrEmpty(odp))
-            //{
-            //    if (odp == "popo")
-            //    {
-            //        await Navigation.PushAsync(new View.Foto.FotoRelacjeListView());
-            //    }
-            //    else
-            //    {
-            //        await DisplayAlert("uwaga", "podaj poprawne hasło", "OK");
-            //    }
-            //}
-        }
-
-
-
-
-
-
-        //       SELECT* 0101604002406956344
-        //FROM[CDN_Joart_ZRO].[CDN].[DefCeny]
-        //       where DfC_Nieaktywna = 0
-
-
-
-        // select DfC_Nazwa, twr_kod, twr.*  
-        // from cdn.twrceny twr
-        // join cdn.[DefCeny] on twr.TwC_TwCNumer= DfC_DfCId
-        // join cdn.Towary on twr_twrid = twc_twrid
-
-        //public bool SprConn() //Third way, slightly slower than Method 1
-        //{
-        //    //  NadajWartosci();
-        //    var connStr = new SqlConnectionStringBuilder
-        //    {
-        //        DataSource = SettingsPage._serwer,
-        //        InitialCatalog = SettingsPage._database,
-        //        UserID = SettingsPage._uid,
-        //        Password = SettingsPage._pwd,
-        //        ConnectTimeout = 3
-        //    }.ConnectionString;
-        //    using (SqlConnection conn = new SqlConnection(connStr))
-        //    {
-        //        try
-        //        {
-        //            conn.Open();
-        //            //DisplayAlert("Connected", "Połączono z siecia", "OK");
-        //            return true;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            //DisplayAlert("Uwaga", "NIE Połączono z siecia", "OK");
-        //            return false;
-        //        }
-        //    }
-        //}
+             
+        } 
+         
 
     }
 

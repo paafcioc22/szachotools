@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
+﻿using RestSharp;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Xamarin.Forms;
@@ -13,23 +12,21 @@ namespace App2.Model
 
 
         private static string _serwer;
-        private static string _database;
-        private static string _uid;
-        private static string _pwd;
-        SqlConnection connection;
+ 
+
+        private static RestClient _client;
         public CreatePaczkaReposytorySQL()
         {
             var app = Application.Current as App;
             _serwer = app.Serwer;
-            _database = app.BazaProd;
-            _uid = app.User;
-            _pwd = app.Password;
-            connection = new SqlConnection
+      
+
+            var options = new RestClientOptions($"http://{_serwer}")
             {
-
-                ConnectionString = "SERVER=" + _serwer + ";DATABASE=" + _database + ";TRUSTED_CONNECTION=No;UID=" + _uid + ";PWD=" + _pwd
-
+                MaxTimeout = 10000 // 10 sekund
             };
+
+            _client = new RestClient(options);
 
         }
 
@@ -212,33 +209,27 @@ namespace App2.Model
         }
 
 
-        public  bool IsMMOKToSave(string text,string fmm_magdcl)
+        public async Task<bool> IsMMOKToSave(string text,string fmm_magdcl)
         {
-            bool dozapis=false;
-            var query = $@"
-              select     dcl.Mag_GIDNumer magzrd, trn_bufor
-              from cdn.tranag
-	            join cdn.magazyny dcl on dcl.mag_magid=TrN_MagDocId 
-	            join cdn.magazyny zr on zr.mag_magid=TrN_MagZrdId 
-              where TrN_TypDokumentu=312  
-              and trn_bufor=0 and dcl.Mag_GIDNumer={fmm_magdcl}
-			  and trn_magzrdid=1 
-			  and TrN_NumerPelny='{text}'
-                    ";//and trn_Stan = 1
+            try
+            {
+                var request = new RestRequest("/api/fedex/isMMok", Method.Get);
+                request.AddQueryParameter("nrmm", text);
+                request.AddQueryParameter("magdcl", fmm_magdcl);
+                var response = await _client.ExecuteAsync(request);
+
+                return response.IsSuccessful;
+                
 
 
-            
-                connection.Open();
-                using (SqlCommand command2 = new SqlCommand(query, connection))
-                using (SqlDataReader reader = command2.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                        dozapis = true;
-                }
+            }
+            catch (HttpRequestException a)
+            {
 
-                connection.Close();
-
-            return dozapis;
+                var sdas = a.InnerException;
+                Console.WriteLine(sdas);
+                return false;
+            }
         }
 
 

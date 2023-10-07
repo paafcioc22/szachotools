@@ -30,14 +30,14 @@ namespace App2.Droid
             }
         }
 
-        public int BuildVersion
+        public long BuildVersion
         {
             get
             {
                 var context = Android.App.Application.Context;
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
 
-                return info.VersionCode;
+                return info.LongVersionCode;
             }
         }
         string _packageName => Android.App.Application.Context.PackageName;

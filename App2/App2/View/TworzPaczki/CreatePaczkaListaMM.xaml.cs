@@ -62,7 +62,9 @@ namespace App2.View.TworzPaczki
             
             fedexPaczka.Fmm_NazwaPaczki = text;
 
-            if (reposytorySQL.IsMMOKToSave(text, fedexPaczka.Fmm_MagDcl))
+            var test = await reposytorySQL.IsMMOKToSave(text, fedexPaczka.Fmm_MagDcl);
+
+            if (test)
             {
                 if (await reposytorySQL.IsNotReadyAdded(text))
                 {
@@ -179,7 +181,7 @@ namespace App2.View.TworzPaczki
                 {
                     scanPage.IsScanning = false;
                     scanPage.AutoFocus();
-                    Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(async() =>
                     {
 
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
@@ -187,8 +189,8 @@ namespace App2.View.TworzPaczki
                             if (scanPage.IsScanning) scanPage.AutoFocus();
                             return true;
                         });
-                        Navigation.PopModalAsync();
-                        DodajMMDoKartonu(result.Text);
+                        await Navigation.PopModalAsync();
+                        await DodajMMDoKartonu(result.Text);
 
                     });
                 };

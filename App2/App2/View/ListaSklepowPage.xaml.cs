@@ -1,8 +1,9 @@
-﻿using System;
+﻿using App2.OptimaAPI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.SqlClient;
+ 
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,57 +22,47 @@ namespace App2.View
             szukaj.Focus();
         }
 
-        public ObservableCollection<string> Items { get; set; }
+        
         public static ObservableCollection<Model.ListaSklepow> listaSklepows;
 
         public ListaSklepowPage(string param)
         {
             InitializeComponent();
-             listaSklepows = new ObservableCollection<Model.ListaSklepow>();
+            listaSklepows = new ObservableCollection<Model.ListaSklepow>();
             opcja = param;
             var app = Application.Current as App;
+
+            Getsklepy();
+            MyListView.ItemsSource = listaSklepows;
+            szukaj.Focus();
+        }
+
+        async void Getsklepy()
+        {
             try
             {
-                SqlCommand command = new SqlCommand();
-                SqlConnection connection = new SqlConnection
+                ServiceDokumentyApi api = new ServiceDokumentyApi();
+                var sklepy= await api.GetSklepyInfo();
+              
+
+                foreach(var item in sklepy) 
                 {
-                    ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
-                };
-                connection.Open();
-                command.CommandText = "select [adr_magkod] mag_kod,[adr_magnazwa] mag_nazwa, adr_magnumer " +
-                    "from [CDN].[Joart_adresy] order by 1";
-     
-                //sprSymSezon();
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                    
+
                     listaSklepows.Add(new Model.ListaSklepow
                     {
-                        mag_kod = Convert.ToString(rs["mag_kod"]),
-                        mag_nazwa = Convert.ToString(rs["mag_nazwa"]),
-                        mag_gidnumer = Convert.ToString(rs["adr_magnumer"])
-                         
+                        mag_kod = item.MagKod,
+                        mag_nazwa = item.Magazyn,
+                        mag_gidnumer = item.Id.ToString()
+
                     });
-                    
+
                 }
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
-               
+
             }
             catch (Exception ex)
             {
-                DisplayAlert("Uwaga", ex.Message, "OK");
+                await DisplayAlert("Uwaga", ex.Message, "OK");
             }
-
-			MyListView.ItemsSource = listaSklepows;
-            szukaj.Focus();
         }
 
 
@@ -83,27 +74,8 @@ namespace App2.View
             return listaSklepows.Where(c => c.mag_kod.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public ListView ListViewSklepy { get { return MyListView; } }
-
-        //async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        //{
-        //    if (e.Item == null)
-        //        return;
-
-        //    var sklep = e.Item as Model.ListaSklepow;
-
-        //    //await DisplayAlert("Kliknięto :", sklep.mag_kod, "OK");
-        //    if (opcja == "edytuj")
-        //    { AddElementMMList._magDcl.Text = sklep.mag_kod; }
-        //    //{ AddElementMM._magDcl.Text = sklep.mag_kod; }
-        //    else
-        //    { AddMMPage._magDcl.Text = sklep.mag_kod; }
-        //    //await DisplayAlert(null, "An item was tapped.", "OK");
-        //    await Navigation.PopModalAsync();
-        //    //Deselect Item
-        //    ((ListView)sender).SelectedItem = null;
-        //}
-
+        public ListView ListViewSklepy { get { return MyListView; } } 
+ 
         private void szukaj_TextChanged(object sender, TextChangedEventArgs e)
         {
             MyListView.ItemsSource = Getsklep(e.NewTextValue);

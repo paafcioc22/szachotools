@@ -174,26 +174,22 @@ namespace App2.View
             {
                 scanPage.IsScanning = false;
                 scanPage.AutoFocus();
-                Device.BeginInvokeOnMainThread(() =>
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    Navigation.PopModalAsync();
+                    await Navigation.PopModalAsync();
                     EANKodMM = result.Text;
-                    int? MMgidNumer = null;
+                    int? MMgidNumer = 0;
                     przyjmijMMClass = new Model.PrzyjmijMMClass();
-                    przyjmijMMClass.ReturnGidNumerFromEANMM(EANKodMM, out MMgidNumer);
+                    MMgidNumer= await przyjmijMMClass.ReturnGidNumerFromEANMM(EANKodMM);
 
-                    if (MMgidNumer == 0 || MMgidNumer == null)
+                    if (MMgidNumer == 0 )
                     {
-                        DisplayAlert("Uwaga", "Brak MM w systemie", "OK");
+                        await DisplayAlert("Uwaga", "Brak MM w systemie", "OK");
                         return;
                     }
                     else {
-                        Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(EANKodMM, (int)MMgidNumer)); 
-                    }
-                    //DisplayAlert("Zeskanowany Kod ", gidnumerMM, "OK");
-
-
-                   // Navigation.PushModalAsync(new ListaMMP(nrdokumentuMM, 0));
+                        await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(EANKodMM, (int)MMgidNumer)); 
+                    } 
                  
                 });
             };

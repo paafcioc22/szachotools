@@ -1,12 +1,15 @@
-﻿using Microsoft.AppCenter.Crashes;
+﻿using App2.Model.ApiModel;
+using App2.OptimaAPI;
+using Microsoft.AppCenter.Crashes;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.SqlClient;
+
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -58,20 +61,14 @@ namespace App2.Model
         }
 
 
-        SqlConnection connection;
 
+
+        ServicePrzyjmijMM serviceApi;
         public PrzyjmijMMClass()
         {
             var app = Application.Current as App;
-            connection = new SqlConnection
-            {
+            serviceApi = new ServicePrzyjmijMM();
 
-                ConnectionString = "SERVER=" + app.Serwer + ";" +
-                "DATABASE=" + app.BazaProd + ";" +
-                "TRUSTED_CONNECTION=No" +
-                ";UID=" + app.User + ";" +
-                "PWD=" + app.Password
-            };
         }
 
 
@@ -82,84 +79,67 @@ namespace App2.Model
 
 
 
-        public async Task<ObservableCollection<PrzyjmijMMClass>> getListMM(bool CzyZatwierdzone)
+        public async Task getListMM(bool CzyZatwierdzone, int pastDays = 100)
         {
+            PrzyjmijMMClass przyjmijMM; 
 
-            string queryZatwierdzone = CzyZatwierdzone ?
-                                        "or (trn_rodzaj = 312010 and trn_datadok > getdate() - 100)" :
-                                        "";
+            var listaMM = await serviceApi.GetDokMmList(CzyZatwierdzone, pastDays); 
 
-            string query = "";
-            PrzyjmijMMClass przyjmijMM;
             try
             {
                 ListaMMDoPrzyjcia.Clear();
-                connection.Open();
-                query = $@"SELECT  trn_trnid,trn_gidnumer,
-                     cast(trn_datadok as date) dataMM
-	                 ,trn_numerobcy
-	                 ,trn_opis
-                     ,trn_magzrdID magId
-                  FROM [CDN].[TraNag]
-                        where   (trn_rodzaj = 312010 and trn_bufor<>0 )
-                                {queryZatwierdzone}  
-                 order by dataMM desc";
 
-
-
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader sqlData = command.ExecuteReader();
-
-                while (sqlData.Read())
+                if (listaMM.IsSuccessful)
                 {
-                    DateTime dateTime = System.Convert.ToDateTime(sqlData["dataMM"]);
-
-                    przyjmijMM = new PrzyjmijMMClass()
+                    foreach (var item in listaMM.Data)
                     {
-                        GIDdokumentuMM = System.Convert.ToInt32(sqlData["trn_trnid"]),
-                        DatadokumentuMM = dateTime.ToString("dd-MM-yyyy"),
-                        nrdokumentuMM = System.Convert.ToString(sqlData["trn_numerobcy"]),
-                        OpisdokumentuMM = System.Convert.ToString(sqlData["trn_opis"]),
-                        GIDMagazynuMM = System.Convert.ToInt32(sqlData["magId"]),
-                        XLGIDMM = System.Convert.ToInt32(sqlData["trn_gidnumer"]),
+                        przyjmijMM = new PrzyjmijMMClass()
+                        {
+                            GIDdokumentuMM = item.Trn_Trnid,
+                            DatadokumentuMM = item.DataMM,
+                            nrdokumentuMM = item.TrN_DokumentObcy,
+                            OpisdokumentuMM = item.TrN_Opis,
+                            GIDMagazynuMM = item.Trn_MagZrdId,
+                            XLGIDMM = item.Trn_Gidnumer,
 
-                    };
+                        };
 
-                    var tmpMM = await PobierzSatus(przyjmijMM);
+                        var tmpMM = await PobierzSatus(przyjmijMM);
 
-                    ListaMMDoPrzyjcia.Add(tmpMM);
+                        ListaMMDoPrzyjcia.Add(tmpMM);
+                    }
+
+                  
                 }
-                sqlData.Close();
-                sqlData.Dispose();
-                connection.Close();
 
-                return ListaMMDoPrzyjcia;
+
+
             }
             catch (Exception s)
             {
                 var properties = new Dictionary<string, string>
                 {
-                    { "conn", connection.ToString() },
-                    { "query", query}
+                    { "conn", "/api/przyjmijMM/GetMmListNag" },
+                    { "query", listaMM.ErrorMessage}
                 };
 
-                Crashes.TrackError(s,properties);
+                Crashes.TrackError(s, properties);
                 throw;
             }
 
         }
-       
+
         public async Task<PrzyjmijMMClass> PobierzSatus(PrzyjmijMMClass mMClass)
         {
             try
             {
                 await _connection.CreateTableAsync<Model.RaportListaMM>();
-             
+
 
                 var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
                 if (wynik.Count > 0)
                 {
-                    var wpis = wynik[0].Sended;                      
+                    var wpis = wynik[0].Sended;
 
                     mMClass.StatusMM = wpis;
                     return mMClass;
@@ -185,143 +165,47 @@ namespace App2.Model
             return ListOfTwrOnMM.Where(c => c.twrkod.Contains(searchText.ToUpper()));//, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public void ReturnGidNumerFromEANMM(string BarCodeMM, out int? MMgidNumer)
+        public async Task<int> ReturnGidNumerFromEANMM(string BarCodeMM)
         {
-            MMgidNumer = null;
-            SqlCommand command = new SqlCommand();
-            connection.Open();
-            command.CommandText = @" 
-                    DECLARE @codeLength AS TINYINT
-                    DECLARE @gidTypLength AS TINYINT
-                    DECLARE @gidTypOffset AS TINYINT
-                    DECLARE @gidNumerLength AS TINYINT
-                    DECLARE @gidNumerOffset AS TINYINT
-                    DECLARE @Code as VARCHAR(19)  
-
-                    SET @codeLength = 19;
-                    SET @gidTypLength = 5;
-                    SET @gidTypOffset = 3;
-                    SET @gidNumerLength = 10;
-                    SET @gidNumerOffset = 8;
-                    set @Code=@BarCodeString
-                    IF LEN(@Code) <> @codeLength
-                            RETURN 
-
-                    IF LEFT(@Code,2) <> '01'
-                            RETURN 
- 
-                    IF RIGHT('0'+CONVERT(VARCHAR(2),98-(CONVERT(BIGINT,SUBSTRING(@Code,2,@codeLength-3)) % 97)),2) <> RIGHT(@Code,2)
-                            RETURN 
-
-                    --select   CONVERT(INT,SUBSTRING(@Code,@gidTypOffset,@gidTypLength))gidtyp,
-                    --CONVERT(INT,SUBSTRING(@Code,@gidNumerOffset,@gidNumerLength)) gidnumer
-                    
-                    if exists(select trn_trnid gidnumer 
-					from cdn.tranag 
-					where trn_gidnumer =( 
-					select	CONVERT(INT,SUBSTRING(@Code,@gidNumerOffset,@gidNumerLength)) gidnumer)
-					and  trn_gidtyp =1600) 
-					begin
-						select trn_trnid gidnumer 
-					from cdn.tranag 
-					where trn_gidnumer =( 
-					select	CONVERT(INT,SUBSTRING(@Code,@gidNumerOffset,@gidNumerLength)) gidnumer)
-					and  trn_gidtyp =1600
-					end else select 0 as gidnumer";
-            SqlCommand query = new SqlCommand(command.CommandText, connection);
-            query.Parameters.AddWithValue("@BarCodeString", BarCodeMM);
-
-            using (SqlDataReader reader = query.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    MMgidNumer = (int?)reader["gidnumer"];
-                }
-            }
+            ServicePrzyjmijMM serviceApi = new ServicePrzyjmijMM();
+            return await serviceApi.GetGidNumerFromEANMM(BarCodeMM);
         }
 
-        public void GetlistMMElements(string KodEanMM = null, int gidnumer = 0)
+        public async Task GetlistMMElements(string KodEanMM = "", int gidnumer = 0)
         {
-            //ListOfTwrOnMM.Clear();
-            int? MMgidNumer = null;
-            if (KodEanMM != null)
-                ReturnGidNumerFromEANMM(KodEanMM, out MMgidNumer);
-            var app = Application.Current as App;
+
+            int trnId = 0;
+
+            if (!string.IsNullOrEmpty(KodEanMM))
+                trnId = await ReturnGidNumerFromEANMM(KodEanMM);
+
+            var dokumentWithEle = await serviceApi.GetDokMMWithElements(trnId, gidnumer);
+
             try
             {
-                SqlCommand command = new SqlCommand();
-                SqlConnection connection = new SqlConnection
-                {
-                    ConnectionString = "SERVER=" + app.Serwer + ";DATABASE=" + app.BazaProd + ";TRUSTED_CONNECTION=No;UID=" + app.User + ";PWD=" + app.Password
-                };
-                connection.Open();
-                command.CommandText = @" select trn_trnid,trn_gidnumer,
-                         tre_lp,twr_nazwa,
-                         TrN_NumerPelny TrN_DokumentObcy,
-                          cast(TrE_ilosc as int) ilosc
-                         ,twr_kod, mag_gidnumer trn_magzrdID
-                         ,twr_numerkat as symbol , twr_ean ean
-                         , twr_url   as urltwr,
-                        cast(twc_wartosc as decimal(5,2))cena,
-                        cast(trn_datadok as date) dataMM
-                                from cdn.TraNag
-                                join cdn.traelem on TrN_TrNID = TrE_TrNId
-                                join cdn.magazyny on trn_magdocid=mag_magid
-                                join cdn.towary on TrE_TwrId = Twr_TwrId
-                                left join cdn.TwrCeny on twr_gidnumer=TwC_TwrNumer and TwC_TwrLp=2
-                                where (trn_gidnumer = @trnGidnumer or trn_trnid=@trnGidnumer)
-                                and  (trn_rodzaj=312010 )
-                             order by tre_lp";// tre_lp;
 
-
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                if (KodEanMM != null)
+                foreach (var ele in dokumentWithEle.Elementy)
                 {
-                    query.Parameters.AddWithValue(@"trnGidnumer", MMgidNumer);
-                }
-                else
-                {
-                    query.Parameters.AddWithValue(@"trnGidnumer", gidnumer);
-                }
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                    nrdokumentuMM = System.Convert.ToString(rs["TrN_DokumentObcy"]);
-                    string mmtwrkod = System.Convert.ToString(rs["twr_kod"]);
-                    string mmtwrnazwa = System.Convert.ToString(rs["twr_nazwa"]);
-                    int mmilosc = System.Convert.ToInt16(rs["ilosc"]);
-                    string mmurl = System.Convert.ToString(rs["urltwr"]);
-                    int mmgidnumer = System.Convert.ToInt32(rs["trn_trnid"]);
-                    int GidMagazynu = System.Convert.ToInt32(rs["trn_magzrdID"]);
-                    string mmid = System.Convert.ToString(rs["tre_lp"]);
-                    symbol = System.Convert.ToString(rs["symbol"]);
-                    DateTime dateTime = System.Convert.ToDateTime(rs["dataMM"]);
-                    GetNrDokMmp = nrdokumentuMM;
-                    string pozycja = mmtwrkod;
-                    int xlGidNumer = System.Convert.ToInt32(rs["trn_gidnumer"]);
 
                     ListOfTwrOnMM.Add(new PrzyjmijMMClass
                     {
-                        id = mmid,
-                        twrkod = mmtwrkod,
-                        ilosc = mmilosc,
-                        url = FilesHelper.ConvertUrlToOtherSize(mmurl,mmtwrkod,FilesHelper.OtherSize.small),
-                        nazwa = mmtwrnazwa,
-                        symbol = this.symbol,
-                        GIDdokumentuMM = mmgidnumer,
-                        nrdokumentuMM = GetNrDokMmp,
-                        GIDMagazynuMM = GidMagazynu,
-                        DatadokumentuMM = dateTime.ToString("yyyy-MM-dd"),
-                        XLGIDMM = xlGidNumer,
-                        cena = System.Convert.ToString(rs["cena"]),
-                        ean = System.Convert.ToString(rs["ean"])
+                        id = ele.Tre_Lp.ToString(),
+                        twrkod = ele.Twr_Kod,
+                        ilosc = ele.Stan_szt,
+                        url = FilesHelper.ConvertUrlToOtherSize(ele.Twr_Url, ele.Twr_Kod, FilesHelper.OtherSize.small),
+                        nazwa = ele.Twr_Nazwa,
+                        symbol = ele.Twr_Symbol,
+                        GIDdokumentuMM = dokumentWithEle.Trn_Trnid,
+                        nrdokumentuMM = dokumentWithEle.TrN_DokumentObcy,
+                        GIDMagazynuMM = dokumentWithEle.Trn_MagZrdId,
+                        DatadokumentuMM = dokumentWithEle.DataMM,
+                        XLGIDMM = dokumentWithEle.Trn_Gidnumer,
+                        cena = ele.Twr_Cena.ToString(),
+                        ean = ele.Twr_Ean.ToString()
                     }
                     );
                 }
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
+
 
             }
             catch (Exception)
@@ -330,46 +214,12 @@ namespace App2.Model
             }
         }
 
-        List<PrzyjmijMMClass> TwrDataList;
-
-        public List<PrzyjmijMMClass> PobierzDaneZKarty(string _twrkod)
-        { 
-
-            TwrDataList = new List<PrzyjmijMMClass>();
-
-            SqlCommand command = new SqlCommand();
-         
-            connection.Open();
-            command.CommandText = @"Select twr_kod, twr_nazwa, twr_katalog, cast(twc_wartosc as decimal(5,2))cena ,
-                        twr_url, twr_ean
-                        from cdn.twrkarty  
-                        join cdn.TwrCeny on twr_gidnumer=TwC_TwrNumer and TwC_TwrLp=2
-                        where twr_kod=@twr_kod";
 
 
-            SqlCommand query = new SqlCommand(command.CommandText, connection);
-            query.Parameters.AddWithValue("@twr_kod", _twrkod);
-            SqlDataReader rs;
-            rs = query.ExecuteReader();
-            while (rs.Read())
-            {
+        public async Task<ApiResponse<TwrInfo>> PobierzDaneZKarty(string _twrkod)
+        {
+            return await serviceApi.GetTwrFromOptima(_twrkod);
 
-                TwrDataList.Add(new PrzyjmijMMClass
-                {
-                    twrkod = System.Convert.ToString(rs["twr_kod"]),
-                    nazwa = System.Convert.ToString(rs["twr_nazwa"]),
-                    symbol = System.Convert.ToString(rs["twr_katalog"]),
-                    cena = System.Convert.ToString(rs["cena"]),
-                    url = System.Convert.ToString(rs["twr_url"]),
-                    ean = System.Convert.ToString(rs["twr_ean"])
-                });
-
-            }
-            rs.Close();
-            rs.Dispose();
-            connection.Close(); 
-
-            return TwrDataList;
         }
 
 

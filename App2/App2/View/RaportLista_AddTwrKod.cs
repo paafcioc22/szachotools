@@ -1,10 +1,13 @@
 ﻿using App2.Model;
+using App2.Model.ApiModel;
+using App2.OptimaAPI;
 using Microsoft.AppCenter.Crashes;
+using RestSharp;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
@@ -36,8 +39,8 @@ namespace App2.View
         ZXingDefaultOverlay overlay;
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
-
-
+        private RestClient _client;
+        ServiceDokumentyApi serwisApi;
         string twrkod;
         string stan_szt;
         string twr_url;
@@ -49,7 +52,7 @@ namespace App2.View
 
         public RaportLista_AddTwrKod(int gidnumer) : base() //dodawamoe pozycji
         {
-          
+            
             if (SettingsPage.SelectedDeviceType == 1)
             {
                 WidokAparat(gidnumer);
@@ -58,13 +61,13 @@ namespace App2.View
             {
                 WidokSkaner(gidnumer);
             }
-             
+
 
         }
 
-        private void WidokSkaner(int gidnumer)
+        private async void WidokSkaner(int gidnumer)
         {
-            
+
             StackLayout stack_dane = new StackLayout();
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
@@ -73,8 +76,8 @@ namespace App2.View
             _gidnumer = gidnumer;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
 
-            NavigationPage.SetHasNavigationBar(this, false); 
-     
+            NavigationPage.SetHasNavigationBar(this, false);
+
             Label lbl_naglowek = new Label()
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -86,19 +89,19 @@ namespace App2.View
                 BackgroundColor = Color.DarkCyan
             };
             AbsoluteLayout.SetLayoutBounds(lbl_naglowek, new Rectangle(0, 0, 1, .1));
-            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All); 
+            AbsoluteLayout.SetLayoutFlags(lbl_naglowek, AbsoluteLayoutFlags.All);
 
             img_foto = new Image();
             img_foto.Aspect = Aspect.AspectFill;
-            TapGestureRecognizer tapGesture= new TapGestureRecognizer();
+            TapGestureRecognizer tapGesture = new TapGestureRecognizer();
 
             //todo : proba naprawy błędu
             tapGesture.Tapped += async (s, e) =>
             {
                 try
                 {
-                    if(!string.IsNullOrEmpty(twr_url))
-                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small","large")); 
+                    if (!string.IsNullOrEmpty(twr_url))
+                        await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small", "large"));
                 }
                 catch (Exception x)
                 {
@@ -121,14 +124,14 @@ namespace App2.View
             AbsoluteLayout.SetLayoutBounds(img_foto, new Rectangle(0, 0.1, 1, .5));
             AbsoluteLayout.SetLayoutFlags(img_foto, AbsoluteLayoutFlags.All);
 
-             
+
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
 
             lbl_nazwa = new Label();
             lbl_nazwa.HorizontalOptions = LayoutOptions.Center;
-            
+
             lbl_ean = new Label();
             lbl_ean.HorizontalOptions = LayoutOptions.Center;
 
@@ -147,33 +150,33 @@ namespace App2.View
                 //ReturnCommand = new Command(() => entry_ilosc.Focus()) 
             };
             entry_kodean.Unfocused += Kodean_Unfocused;
-             
+
             entry_ilosc = new Entry()
             {
                 Placeholder = "Wpisz Ilość",
                 Keyboard = Keyboard.Telephone,
                 HorizontalOptions = LayoutOptions.Center,
                 ReturnType = ReturnType.Go,
-                HorizontalTextAlignment=TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
 
-            entry_ilosc.Completed += (object sender, EventArgs e) =>
+            entry_ilosc.Completed += async (object sender, EventArgs e) =>
             {
-                Zapisz();
-            };           
+                await Zapisz();
+            };
 
             btn_Zapisz = new Button()
             {
                 Text = "Zapisz pozycję",
                 ImageSource = "save48x2.png",
-                ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10) ,
+                ContentLayout = new ButtonContentLayout(ImagePosition.Right, 10),
                 BorderColor = Color.DarkCyan,
                 BorderWidth = 2,
                 CornerRadius = 10,
             };
             btn_Zapisz.Clicked += Btn_Zapisz_Clicked;
             AbsoluteLayout.SetLayoutBounds(btn_Zapisz, new Rectangle(0.5, 1, .9, 50));
-            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional); 
+            AbsoluteLayout.SetLayoutFlags(btn_Zapisz, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
             btn_AddEanPrefix = new Button()
             {
@@ -184,8 +187,8 @@ namespace App2.View
             };
             btn_AddEanPrefix.Clicked += Btn_AddEanPrefix_Clicked;
             AbsoluteLayout.SetLayoutBounds(btn_AddEanPrefix, new Rectangle(1, .82, .25, 50));
-            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional); 
-             
+            AbsoluteLayout.SetLayoutFlags(btn_AddEanPrefix, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
 
             stack_dane.Children.Add(lbl_nazwa);
             stack_dane.Children.Add(lbl_ean);
@@ -195,23 +198,23 @@ namespace App2.View
             stack_dane.Children.Add(entry_kodean);
             AbsoluteLayout.SetLayoutBounds(stack_dane, new Rectangle(0, 1, 1, .45));
             AbsoluteLayout.SetLayoutFlags(stack_dane, AbsoluteLayoutFlags.All);
-                        
+
 
             absoluteLayout.Children.Add(img_foto);
-            absoluteLayout.Children.Add(lbl_naglowek); 
+            absoluteLayout.Children.Add(lbl_naglowek);
             absoluteLayout.Children.Add(stack_dane);
             absoluteLayout.Children.Add(btn_Zapisz);
             absoluteLayout.Children.Add(btn_AddEanPrefix);
 
-            Content = absoluteLayout; 
+            Content = absoluteLayout;
 
             Appearing += (object sender, System.EventArgs e) => entry_kodean.Focus();
         }
 
-        private void WidokAparat(int gidnumer)
+        private async void WidokAparat(int gidnumer)
         {
-             
-            SkanowanieEan();
+
+            await SkanowanieEan();
 
             StackLayout stack_dane = new StackLayout();
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
@@ -248,8 +251,8 @@ namespace App2.View
             {
                 try
                 {
-                    if(!string.IsNullOrEmpty(twr_url))
-                    await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small","large"));
+                    if (!string.IsNullOrEmpty(twr_url))
+                        await Launcher.OpenAsync(twr_url.Replace("Miniatury/", "").Replace("small", "large"));
                 }
                 catch (Exception x)
                 {
@@ -307,9 +310,9 @@ namespace App2.View
                 HorizontalTextAlignment = TextAlignment.Center,
 
             };
-            entry_ilosc.Completed += (object sender, EventArgs e) =>
+            entry_ilosc.Completed += async (object sender, EventArgs e) =>
             {
-                Zapisz();
+                await Zapisz();
             };
             //entry_ilosc.Keyboard = Keyboard.Text;
 
@@ -366,7 +369,7 @@ namespace App2.View
 
             Content = absoluteLayout;
 
-             
+
         }
 
         private void Btn_AddEanPrefix_Clicked(object sender, EventArgs e)
@@ -430,13 +433,13 @@ namespace App2.View
             };
 
             //img_foto.Source = mmka.url.Replace("Miniatury/", "").Replace("small", "home");
-         
-            img_foto.GestureRecognizers.Add(tapGestureRecognizer); 
+
+            img_foto.GestureRecognizers.Add(tapGestureRecognizer);
 
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
-            lbl_stan.Text = "Ilość : " + mmka.ilosc + " szt"; 
+            lbl_stan.Text = "Ilość : " + mmka.ilosc + " szt";
 
             lbl_twrkod = new Label();
             lbl_twrkod.HorizontalOptions = LayoutOptions.Center;
@@ -475,7 +478,7 @@ namespace App2.View
 
             stackLayout.Children.Add(lbl_stan);
             stackLayout.Children.Add(lbl_twrkod);
-            stackLayout.Children.Add(lbl_nazwa);            
+            stackLayout.Children.Add(lbl_nazwa);
             stackLayout.Children.Add(entry_kodean);
             stackLayout.Children.Add(lbl_symbol);
             stackLayout.Children.Add(lbl_cena);
@@ -490,7 +493,7 @@ namespace App2.View
             absoluteLayout.Children.Add(stackLayout, new Rectangle(0, 1, 1, 0.5), AbsoluteLayoutFlags.All);
 
             Content = absoluteLayout;
-       
+
         }
 
         //public RaportLista_AddTwrKod(Model.PrzyjmijMMClass mmka) //edycja
@@ -628,18 +631,18 @@ namespace App2.View
             stack_naglowek.BackgroundColor = Color.DarkCyan;
             stack_naglowek.Children.Add(lbl_naglowek);
 
-            stackLayout_gl.Children.Add(stack_naglowek); 
+            stackLayout_gl.Children.Add(stack_naglowek);
 
             img_foto = new Image();
             img_foto.Source = akcje.TwrUrl.Replace("Miniatury/", "").Replace("small", "home");
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
-                if(!string.IsNullOrEmpty(akcje.TwrUrl))
-                Launcher.OpenAsync(akcje.TwrUrl.Replace("Miniatury/", "").Replace("small", "large"));
+                if (!string.IsNullOrEmpty(akcje.TwrUrl))
+                    Launcher.OpenAsync(akcje.TwrUrl.Replace("Miniatury/", "").Replace("small", "large"));
             };
             img_foto.GestureRecognizers.Add(tapGestureRecognizer);
-            stackLayout.Children.Add(img_foto); 
+            stackLayout.Children.Add(img_foto);
 
             lbl_stan = new Label();
             lbl_stan.HorizontalOptions = LayoutOptions.Center;
@@ -682,14 +685,14 @@ namespace App2.View
             open_url.Text = "Zacznij skanowanie";
             open_url.CornerRadius = 15;
 
-         
+
             overlay = new ZXingDefaultOverlay
             {
                 TopText = $"Skanowany : {akcje.TwrKod}",
                 BottomText = $"Zeskanowanych szt : {ile}",
                 AutomationId = "zxingDefaultOverlay",
-               
-                
+
+
             };
 
             var torch = new Switch
@@ -702,33 +705,36 @@ namespace App2.View
             };
 
             overlay.Children.Add(torch);
-            open_url.Clicked += async delegate {
+            open_url.Clicked += async delegate
+            {
                 scanPage = new ZXingScannerPage(
                     new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay);
-                    scanPage.DefaultOverlayShowFlashButton = true;
-                    scanPage.OnScanResult += (result) =>
-                    Device.BeginInvokeOnMainThread(() => { 
+                scanPage.DefaultOverlayShowFlashButton = true;
+                scanPage.OnScanResult += (result) =>
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     skanean = result.Text;
 
-                        if (skanean == lbl_ean.Text)
-                        {
-                            ile += 1;
-                            overlay.BottomText = $"Zeskanowanych szt : {ile}";
-                            DisplayAlert(null, $"Zeskanowanych szt : {ile}", "OK");
+                    if (skanean == lbl_ean.Text)
+                    {
+                        ile += 1;
+                        overlay.BottomText = $"Zeskanowanych szt : {ile}";
+                        DisplayAlert(null, $"Zeskanowanych szt : {ile}", "OK");
 
-                            entry_kodean.Text = ile.ToString();
+                        entry_kodean.Text = ile.ToString();
 
-                        }
-                        else {
+                    }
+                    else
+                    {
 
-                            DisplayAlert(null,"Probujesz zeskanować inny model..", "OK");
-                        }
-                    });
+                        DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
+                    }
+                });
                 await Navigation.PushModalAsync(scanPage);
             };
- 
+
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
-     
+
             stackLayout.Children.Add(lbl_twrkod);
             stackLayout.Children.Add(lbl_nazwa);
             stackLayout.Children.Add(lbl_ean);
@@ -746,11 +752,11 @@ namespace App2.View
             absoluteLayout.Children.Add(stackLayout_gl, new Rectangle(0, 0.5, 1, 1), AbsoluteLayoutFlags.HeightProportional);
 
             Content = stackLayout_gl;
-            
+
         }
 
 
-        int ile=0 ;
+        int ile = 0;
         private void Open_url_Clicked(object sender, EventArgs e)
         {
             //Device.OpenUri(new Uri(_MMElement.url.Replace("Miniatury/", "")));
@@ -760,48 +766,57 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
-            if(ile>0)
-            _akcja.TwrSkan = ile;
+            if (ile > 0)
+                _akcja.TwrSkan = ile;
 
             return base.OnBackButtonPressed();
         }
 
-        private void Kodean_Unfocused(object sender, FocusEventArgs e)
+        private async void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
-            if(!string.IsNullOrEmpty(entry_kodean.Text))
-            pobierztwrkod(entry_kodean.Text);
-            if(!string.IsNullOrEmpty(twrkod))
+            if (!string.IsNullOrEmpty(entry_kodean.Text))
+                await pobierztwrkod(entry_kodean.Text);
+            if (!string.IsNullOrEmpty(twrkod))
                 entry_ilosc.Focus();
         }
 
-        private void Btn_Update_Clicked(object sender, EventArgs e)
-        {
-            if (entry_ilosc.Text != null && entry_kodean.Text != null)
-            {
-                if (Int32.Parse(entry_ilosc.Text) > Int32.Parse(stan_szt))
-                {
-                    DisplayAlert(null, "Wpisana ilość przekracza stan {}", "OK");
-                }
-                else
-                {
-                    Model.DokMM dokMM = new Model.DokMM();
-                    dokMM.gidnumer = _gidnumer;
-                    dokMM.twrkod = entry_kodean.Text;
-                    dokMM.szt = Convert.ToInt32(entry_ilosc.Text);
-                    dokMM.UpdateElement(dokMM);
-                    //Model.DokMM.dokElementy.GetEnumerator();// (usunMM);
-                    dokMM.getElementy(_gidnumer);
-                    Navigation.PopModalAsync();
-                }
-            }
-            else
-            {
-                DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
-            }
-        }
-               
+        //private async void Btn_Update_Clicked(object sender, EventArgs e)
+        //{
+        //    serwisApi = new ServiceDokumentyApi();
+        //    if (entry_ilosc.Text != null && entry_kodean.Text != null)
+        //    {
+        //        if (Int32.Parse(entry_ilosc.Text) > Int32.Parse(stan_szt))
+        //        {
+        //            await DisplayAlert(null, "Wpisana ilość przekracza stan {}", "OK");
+        //        }
+        //        else
+        //        {
+        //            Model.DokMM dokMM = new Model.DokMM();
+        //            dokMM.gidnumer = _gidnumer;
+        //            dokMM.twrkod = entry_kodean.Text;
+        //            dokMM.szt = Convert.ToInt32(entry_ilosc.Text);
 
-        public async void Zapisz()
+        //            var czyLiczbaOk=Int32.TryParse(entry_ilosc.Text, out int iloscSkanowana);
+
+        //            if (czyLiczbaOk)
+        //            {
+                   
+        //                var resposne = await serwisApi.UpadteElement(iloscSkanowana, _gidnumer, elementDto.Id);
+                   
+        //                dokMM.getElementy(_gidnumer);
+        //                await Navigation.PopModalAsync();
+        //            }
+                    
+        //        }
+        //    }
+        //    else
+        //    {
+        //        DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
+        //    }
+        //}
+
+
+        public async Task Zapisz()
         {
 
             if (!string.IsNullOrEmpty(entry_ilosc.Text) && !string.IsNullOrEmpty(entry_kodean.Text) && !string.IsNullOrEmpty(twr_nazwa))
@@ -814,7 +829,7 @@ namespace App2.View
                     dokMM.twrkod = entry_kodean.Text;
                     dokMM.ilosc_OK = Convert.ToInt16(entry_ilosc.Text);
                     dokMM.nazwa = lbl_nazwa.Text;
-                    dokMM.url = FilesHelper.ConvertUrlToOtherSize(twr_url, entry_kodean.Text,FilesHelper.OtherSize.small);
+                    dokMM.url = FilesHelper.ConvertUrlToOtherSize(twr_url, entry_kodean.Text, FilesHelper.OtherSize.small);
                     int maxid = await _connection.ExecuteScalarAsync<int>("select ifnull(max(IdElement),0) maxid from RaportListaMM where GIDdokumentuMM =?", _gidnumer);
 
 
@@ -825,7 +840,7 @@ namespace App2.View
 
                         int suma = wynik[0].ilosc_OK + Convert.ToInt16(entry_ilosc.Text);
 
-                        await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana, razem : {2}", dokMM.twrkod, wpis.ilosc_OK,suma), "OK");
+                        await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana, razem : {2}", dokMM.twrkod, wpis.ilosc_OK, suma), "OK");
                         wpis.ilosc_OK = suma;
                         await _connection.UpdateAsync(wpis);
                     }
@@ -852,7 +867,7 @@ namespace App2.View
                         { "operator", View.StartPage.user},
                         { "wartosc",entry_ilosc.Text},
                         { "kod",entry_kodean.Text}
-                        
+
                     };
                     Crashes.TrackError(ex, prop);
                 }
@@ -901,25 +916,28 @@ namespace App2.View
                 await DisplayAlert("Uwaga", "Nie uzupełniono wszystkich pól!", "OK");
             }
         }
-        private void Btn_Zapisz_Clicked(object sender, EventArgs e)
+        private async void Btn_Zapisz_Clicked(object sender, EventArgs e)
         {
 
-            Zapisz();
+            await Zapisz();
             Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
             {
                 if (SettingsPage.SelectedDeviceType == 1)
                 {
-                    SkanowanieEan();
+                    //await SkanowanieEan();
+
+                    Task.Run(async () => await SkanowanieEan());//  uruchomi na innym wątku,
+                    Device.BeginInvokeOnMainThread(async () => await SkanowanieEan());
+                    //uruchomienia tej funkcji na głównym wątku
                 }
-                 
-                
+
                 return false;
             });
-        } 
+        }
 
-        private async void SkanowanieEan()
+        private async Task SkanowanieEan()
         {
-            if (SettingsPage.SprConn())
+            if (await SettingsPage.SprConn())
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
@@ -1016,7 +1034,7 @@ namespace App2.View
                     scanPage.AutoFocus();
                     scanPage.IsTorchOn = true; //dodane
                     scanPage.HasTorch = true; //dodane
-                    Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(async () =>
                     {
 
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
@@ -1029,8 +1047,8 @@ namespace App2.View
 
                             return true;
                         });
-                        Navigation.PopModalAsync();
-                        pobierztwrkod(result.Text);
+                        await Navigation.PopModalAsync();
+                        await pobierztwrkod(result.Text);
                         entry_ilosc.Focus();
                     });
                 };
@@ -1061,75 +1079,46 @@ namespace App2.View
         //    });
         //}
 
-        private void Btn_Skanuj_Clicked(object sender, EventArgs e)
+        private async void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
-            SkanowanieEan();
-        }         
+            await SkanowanieEan();
+        }
 
-        public async void pobierztwrkod(string _ean)
+        public async Task pobierztwrkod(string _ean)
         {
             var app = Application.Current as App;
 
+            _client = new RestClient($"http://{app.Serwer}");
+
             try
             {
-                if (SettingsPage.SprConn())
+                if (await SettingsPage.SprConn())
                 {
                     if (!string.IsNullOrEmpty(_ean) || _ean != "201000")
                         try
                         {
-                            SqlCommand command = new SqlCommand();
-                            SqlConnection connection = new SqlConnection
+
+
+                            var karta = new TwrKodRequest()
                             {
-                                ConnectionString = "SERVER=" + app.Serwer +
-                                ";DATABASE=" + app.BazaProd +
-                                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                                ";PWD=" + app.Password
+                                Twrcenaid = 3,
+                                Twrkod = "",
+                                Twrean = _ean
                             };
-                            connection.Open();
-                            command.CommandText = $"Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                                ",cast(sum(TwZ_Ilosc) as int)ilosc,   twr_url,twr_ean " +
-                                "from cdn.towary " +
-                                "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
-                                "left join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
-                                "where twr_ean='" + _ean + "' or twr_kod='" + _ean + "'" +
-                                "group by twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
+                            var request = new RestRequest("/api/gettowar")
+                                  .AddJsonBody(karta);
 
-                            SqlCommand query = new SqlCommand(command.CommandText, connection);
-                            SqlDataReader rs;
-                            rs = query.ExecuteReader();
-                            if (rs.Read())
-                            {
-                                twrkod = Convert.ToString(rs["twr_kod"]);
-                                stan_szt = Convert.ToString(rs["ilosc"]);
-                                twr_url = Convert.ToString(rs["twr_url"]);
-                                twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
-                                twr_symbol = Convert.ToString(rs["twr_symbol"]);
-                                twr_ean = Convert.ToString(rs["twr_ean"]);
-                                twr_cena = Convert.ToString(rs["cena"]);
+                            //todo : cennik zmienna
+                            var produkt = await FilesHelper.GetCombinedTwrInfo(_ean, 2, request, _client);
 
-
-                            }
-                            else
-                            {
-                                string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                                if (dane.Count > 0)
-                                {
-                                    twrkod = dane[0].twrkod;
-                                    twr_url = dane[0].url;
-                                    twr_nazwa = dane[0].nazwa;
-                                    twr_ean = dane[0].ean;
-                                    twr_cena = dane[0].cena;
-
-                                }
-                                else
-
-                                    await DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
-                            }
-                            rs.Close();
-                            rs.Dispose();
-                            connection.Close();
+                            twrkod = produkt.Twr_Kod;
+                            twr_ean = produkt.Twr_Ean;
+                            twr_symbol= produkt.Twr_Symbol;
+                            twr_nazwa = produkt.Twr_Nazwa;
+                            twr_cena = produkt.Twr_Cena.ToString();
+                            stan_szt = produkt.Stan_szt.ToString();
+                            twr_url=produkt.Twr_Url;
 
                             entry_kodean.Text = twrkod;
                             lbl_ean.Text = twr_ean;
@@ -1145,32 +1134,7 @@ namespace App2.View
                         {
                             await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
                         }
-                }
-                else
-                {
-                    string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                    if (dane.Count > 0)
-                    {
-                        twrkod = dane[0].twrkod;
-                        twr_url = dane[0].url;
-                        twr_nazwa = dane[0].nazwa;
-                        twr_ean = dane[0].ean;
-                        twr_cena = dane[0].cena;
 
-                        entry_kodean.Text = twrkod;
-                        lbl_ean.Text = twr_ean;
-                        lbl_symbol.Text = twr_symbol;
-                        lbl_nazwa.Text = twr_nazwa;
-                        lbl_cena.Text = twr_cena;
-                        lbl_stan.Text = "Stan : " + stan_szt;
-                        if (!string.IsNullOrEmpty(twr_url))
-                            img_foto.Source = twr_url.Replace("Miniatury/", "").Replace("small", "home"); //twr_url;
-
-                    }
-                    else
-
-                        await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
                 }
             }
             catch (Exception s)
@@ -1180,73 +1144,73 @@ namespace App2.View
             }
 
             //return twrkod;
-            
+
         }
 
-        public void GetDataFromTwrKod(string _twrkod)
-        {
-            var app = Application.Current as App;
-            if (SettingsPage.SprConn()&&!string.IsNullOrEmpty(_twrkod))
-            {
-                try
-                {
-                    SqlCommand command = new SqlCommand();
-                    SqlConnection connection = new SqlConnection
-                    {
-                        ConnectionString = "SERVER=" + app.Serwer +
-                        ";DATABASE=" + app.BazaProd +
-                        ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                        ";PWD=" + app.Password
-                    };
-                    connection.Open();
-                    command.CommandText = "Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
-                        ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
-                        "from cdn.towary " +
-                        "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
-                        "join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
-                        "where twr_kod='" + _twrkod + "'" +
-                        "group by twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
+        //public void GetDataFromTwrKod(string _twrkod)
+        //{
+        //    var app = Application.Current as App;
+        //    if (SettingsPage.SprConn() && !string.IsNullOrEmpty(_twrkod))
+        //    {
+        //        try
+        //        {
+        //            SqlCommand command = new SqlCommand();
+        //            SqlConnection connection = new SqlConnection
+        //            {
+        //                ConnectionString = "SERVER=" + app.Serwer +
+        //                ";DATABASE=" + app.BazaProd +
+        //                ";TRUSTED_CONNECTION=No;UID=" + app.User +
+        //                ";PWD=" + app.Password
+        //            };
+        //            connection.Open();
+        //            command.CommandText = "Select twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena " +
+        //                ",cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean " +
+        //                "from cdn.towary " +
+        //                "join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwrLp = 2 " +
+        //                "join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId " +
+        //                "where twr_kod='" + _twrkod + "'" +
+        //                "group by twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
 
 
-                    SqlCommand query = new SqlCommand(command.CommandText, connection);
-                    SqlDataReader rs;
-                    rs = query.ExecuteReader();
-                    if (rs.Read())
-                    {
-                        twrkod = Convert.ToString(rs["twr_kod"]);
-                        stan_szt = Convert.ToString(rs["ilosc"]);
-                        twr_url = Convert.ToString(rs["twr_url"]);
-                        twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
-                        twr_symbol = Convert.ToString(rs["twr_symbol"]);
-                        twr_ean = Convert.ToString(rs["twr_ean"]);
-                    }
-                    else
-                    {
-                        DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
-                    }
-                    rs.Close();
-                    rs.Dispose();
-                    connection.Close();
+        //            SqlCommand query = new SqlCommand(command.CommandText, connection);
+        //            SqlDataReader rs;
+        //            rs = query.ExecuteReader();
+        //            if (rs.Read())
+        //            {
+        //                twrkod = Convert.ToString(rs["twr_kod"]);
+        //                stan_szt = Convert.ToString(rs["ilosc"]);
+        //                twr_url = Convert.ToString(rs["twr_url"]);
+        //                twr_nazwa = Convert.ToString(rs["twr_nazwa"]);
+        //                twr_symbol = Convert.ToString(rs["twr_symbol"]);
+        //                twr_ean = Convert.ToString(rs["twr_ean"]);
+        //            }
+        //            else
+        //            {
+        //                DisplayAlert("Uwaga", "Kod nie istnieje!", "OK");
+        //            }
+        //            rs.Close();
+        //            rs.Dispose();
+        //            connection.Close();
 
-                }
-                catch (Exception exception)
-                {
-                    DisplayAlert("Uwaga", exception.Message, "OK");
-                }
-            }
-            else
-            {
-                DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-            }
-            //return twrkod;
-            //kodean.Text = twrkod;
-            lbl_ean.Text = twr_ean;
-            lbl_symbol.Text = twr_symbol;
-            lbl_nazwa.Text = twr_nazwa;
-            lbl_stan.Text = "Stan : " + stan_szt;
-            img_foto.Source = twr_url;
-            entry_ilosc.Focus();
-        }
+        //        }
+        //        catch (Exception exception)
+        //        {
+        //            DisplayAlert("Uwaga", exception.Message, "OK");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+        //    }
+        //    //return twrkod;
+        //    //kodean.Text = twrkod;
+        //    lbl_ean.Text = twr_ean;
+        //    lbl_symbol.Text = twr_symbol;
+        //    lbl_nazwa.Text = twr_nazwa;
+        //    lbl_stan.Text = "Stan : " + stan_szt;
+        //    img_foto.Source = twr_url;
+        //    entry_ilosc.Focus();
+        //}
     }
 }
 

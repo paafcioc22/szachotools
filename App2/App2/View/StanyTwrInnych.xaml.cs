@@ -1,9 +1,11 @@
-﻿using System;
+﻿using App2.Model;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,11 +20,14 @@ namespace App2.View
     public partial class StanyTwrInnych : ContentPage
     {
         public static ObservableCollection<Model.Magazynn> listaSklepows;
+        private static RestClient _client;
 
         public  StanyTwrInnych(string TwrGidnumer)
         {
             InitializeComponent();
-            PobierzDaneDoListy(TwrGidnumer);  
+            PobierzDaneDoListy(TwrGidnumer);
+            var app = Application.Current as App;
+            _client = new RestClient($"http://{app.Serwer}");
         }
 
         private async void PobierzDaneDoListy(string twrGidnumer)
@@ -42,7 +47,7 @@ namespace App2.View
             // MyListView.ItemsSource = Maglista;
         }
 
-        private   void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async  void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
@@ -55,8 +60,8 @@ namespace App2.View
                 //(75) 649-71-89
                 //518 - 275 - 950
                 //string telefon = "(75) 649-71-89";
-                string tele = GetNumberTel(tel.MagKod);
-                Launcher.OpenAsync($"tel:{tele}") ;
+                string tele = await GetNumberTel(tel.MagKod);
+                await Launcher.OpenAsync($"tel:{tele}") ;
                 //await DisplayAlert(null, $"Ta funkcja pozwoli wykonać tel do {tel.Magazyn}", "OK");
 
                 //Deselect Item
@@ -65,43 +70,34 @@ namespace App2.View
             catch (Exception s)
             {
 
-                DisplayAlert(null, s.Message, "oik");
+                await DisplayAlert(null, s.Message, "oik");
             }
         }
-        string nrtelefonu;
-        string GetNumberTel(string mag_kod)
+    
+        async Task<string> GetNumberTel(string mag_kod)
         {
+                      
+            try
+            {
+                var request = new RestRequest($"/api/getMagazynInfo/{mag_kod}");
 
-            var app = Application.Current as App;
+                var response = await _client.ExecuteGetAsync<Magazynn>(request);
 
-            
-                SqlCommand command = new SqlCommand();
-                SqlConnection connection = new SqlConnection
+
+                if (response.IsSuccessful)
                 {
-                    ConnectionString = "SERVER=" + app.Serwer +
-                    ";DATABASE=" + app.BazaProd +
-                    ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                    ";PWD=" + app.Password
-                };
-                connection.Open();
-                command.CommandText = $@"SELECT  adr_tel
-                                          FROM CDN.Joart_adresy
-                                          where adr_magkod='{mag_kod}'";
-
-
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                while (rs.Read())
-                {
-                     nrtelefonu = Convert.ToString(rs["adr_tel"]);
+                    return response.Data.Telefon;
                 }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
 
-                rs.Close();
-                rs.Dispose();
-                connection.Close();
+                throw;
+            }
 
-            return nrtelefonu;
+        
         }
 
         public static IEnumerable<Model.Magazynn> Getsklep(string searchText = null)

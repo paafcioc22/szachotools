@@ -20,44 +20,44 @@
 
   <ItemGroup>
     <Compile Remove="MainPage.xaml.cs" />
+    <Compile Remove="View\Foto\Foto.xaml.cs" />
+    <Compile Remove="View\Foto\Foto2.xaml.cs" />
     <Compile Remove="View\ListaMMP.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="MainPage.xaml" />
+    <EmbeddedResource Remove="View\Foto\Foto.xaml" />
+    <EmbeddedResource Remove="View\Foto\Foto2.xaml" />
     <EmbeddedResource Remove="View\ListaMMP.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PhotoBrowser.Forms" Version="0.1.4" />
     <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.1" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
-    <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.5.3" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.5.3" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.5.3" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.5.3" />
-    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.2" />
+    <PackageReference Include="Xam.Plugin.Media" Version="6.0.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.7" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
-    <PackageReference Include="Xamarin.MediaGallery" Version="2.1.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />
+    <PackageReference Include="Xamarin.MediaGallery" Version="2.2.1" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="View\Foto\Foto.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="View\Foto\Foto2.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="View\Foto\FotoRelacjeListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

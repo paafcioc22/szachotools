@@ -1,10 +1,11 @@
 ﻿using App2.Model;
+using App2.Model.ApiModel;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.SqlClient;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace App2.View
     public partial class List_AkcjeElemView : ContentPage
     {
         public ObservableCollection<NagElem> ListaZFiltrem  { get; set; }
+        private static RestClient _client;
         public IList<NagElem> Items2 { get; set; }
         App app;
 
@@ -29,7 +31,7 @@ namespace App2.View
         }
 
         bool _istapped;
-        private SqlConnection connection;
+ 
         static string Sklep;
         public List_AkcjeElemView( int gidtyp)
         {
@@ -39,13 +41,7 @@ namespace App2.View
             GetAkcje( gidtyp);
 
             app = Application.Current as App;
-            connection = new SqlConnection
-            {
-                ConnectionString = "SERVER=" + app.Serwer +
-              ";DATABASE=" + app.BazaProd +
-              ";TRUSTED_CONNECTION=No;UID=" + app.User +
-              ";PWD=" + app.Password
-            };
+           
 
         }
 
@@ -70,45 +66,43 @@ namespace App2.View
 
         private async Task<bool> IsAnyItemFromLocal(string filtrSQL)
         {
-             
-            SqlCommand command = new SqlCommand();
+            var listFromFiltr= ExtractCode.ExtractCodes(filtrSQL);
+            
             int ileKodow = 0;
-            connection.Open();
+          
 
-            if (SettingsPage.SprConn())
+            if (await SettingsPage.SprConn())
             {
                 
-                    try
+                try
+                {
+                    var karta = new TwrKodRequest()
                     {
-                        command.CommandText = $@"
-                        Select count(twr_gidnumer) as IleKodow                     
-                        from cdn.towary  
-                        join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId 
-                        where {filtrSQL}"; 
+                        Twrkody = listFromFiltr
+                    };
 
-                        SqlCommand query = new SqlCommand(command.CommandText, connection);
-                        SqlDataReader rs;
-                        rs = query.ExecuteReader();
-                        while (rs.Read())
-                        {
-                            ileKodow = Convert.ToInt32(rs["IleKodow"]);                             
-                        }
+                    var request = new RestRequest("/api/gettowarycnt", Method.Post)
+                                        .AddJsonBody(karta);
 
-                        rs.Close();
-                        rs.Dispose();
-
+                    var response = await _client.ExecuteAsync(request);
+                    if (response.IsSuccessful)
+                    {
+                        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                        ileKodow = jsonResponse.result;
+                        return true;
 
                     }
-                    catch (Exception exception)
+                    else
                     {
-                        await DisplayAlert("Uwaga", exception.Message, "OK");
+                        return false;
                     }
 
-                connection.Close();
-
-                if (ileKodow > 0)
-                    return true;
-                return false;
+                }
+                catch (Exception exception)
+                {
+                    await DisplayAlert("Uwaga", exception.Message, "OK");
+                }
+                 
             }
             else
             {
@@ -124,7 +118,7 @@ namespace App2.View
             IList<NagElem> tmp= new List<NagElem>(); 
 
             List_AkcjeView akcjeView = new List_AkcjeView();
-            var magInfo = akcjeView.GetMagnumer();
+            var magInfo = await akcjeView.GetMagnumer();
             int magnr= magInfo.Id;
             Sklep = magInfo.MagKod;
 

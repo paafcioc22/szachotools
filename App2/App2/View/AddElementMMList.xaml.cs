@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App2.Model.ApiModel;
+using App2.OptimaAPI;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -15,62 +17,33 @@ namespace App2.View
         //public ObservableCollection<string> Items { get; set; }
        
         public Int32 gidnumer;
+        public Int32 Id;
         private bool bufor;
-        public AddElementMMList(Model.DokMM mmka)
+        ServiceDokumentyApi apiService;
+        public AddElementMMList(DokNaglowekDto mmka)
         {
             InitializeComponent();
-            
-            _magDcl.Text = mmka.mag_dcl + (mmka.nrdok == "" ? "" : " - " + mmka.nrdok);
-            _magDcl.IsEnabled = (mmka.nrdok == "" ? true : false);
-            _magDcl.TextColor = (mmka.nrdok == "" ? Color.Bisque : Color.LightCyan);
+            apiService= new ServiceDokumentyApi();  
+            _magDcl.Text = mmka.MagKod + (mmka.NumerDokumentu == "" ? "" : " - " + mmka.NumerDokumentu);
+            _magDcl.IsEnabled = (mmka.NumerDokumentu == "" ? true : false);
+            _magDcl.TextColor = (mmka.NumerDokumentu == "" ? Color.Bisque : Color.LightCyan);
             //_magDcl.InputTransparent= (mmka.nrdok == "" ? true : false);
-            _magDcl.WidthRequest = (mmka.nrdok == "" ? 70 : 300);
-            _opis.Text = mmka.opis  ;
-            _opis.IsEnabled = (mmka.nrdok == "" ? true : false);
-            _opis.TextColor= (mmka.nrdok == "" ? Color.Bisque : Color.LightCyan);
+            _magDcl.WidthRequest = (mmka.NumerDokumentu == "" ? 70 : 300);
+            _opis.Text = mmka.Opis  ;
+            _opis.IsEnabled = (mmka.NumerDokumentu == "" ? true : false);
+            _opis.TextColor= (mmka.NumerDokumentu == "" ? Color.Bisque : Color.LightCyan);
             _opis.WidthRequest = 300;
-            _btnAddElement.IsEnabled = (mmka.statuss == 0 ? true : false);
-            _btnSave.IsEnabled = (mmka.statuss == 0 ? true : false);
+            _btnAddElement.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
+            _btnSave.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
             //lbl_listatwr.Text=()
-            gidnumer = mmka.gidnumer;
-            bufor = !Convert.ToBoolean(mmka.statuss);
-            ListaElementowMM.ItemsSource = Model.DokMM.dokElementy;
-            flaga=1;
-            StartTimer(true);
-            StartCreateMmPage.flagaMM = 0;
-        }
-        private int flaga;
-            int _gidnumer;
-
-        
-
-        public void StartTimer(bool status)
-        {
-            Device.StartTimer(System.TimeSpan.FromSeconds(7), () =>
-            {
-                Device.BeginInvokeOnMainThread(UpdateUserDataAsync);
-                if (!status||flaga == 0)
-                {
-                    return false;
-                }
-                else {
-                    _gidnumer = gidnumer;
-                    return true;
-                }
-            });
-        }
+            gidnumer = mmka.GidNumerXl;
+            Id = mmka.Id;
+            bufor = !Convert.ToBoolean(mmka.IsFinish);
+            ListaElementowMM.ItemsSource = ServiceDokumentyApi.DokElementsDtos;
+       
+          
+        } 
          
-        private void UpdateUserDataAsync()
-        {
-
-            if (_gidnumer == gidnumer)
-            {
-                Model.DokMM dokMM = new Model.DokMM();
-                flaga += 1;
-                 
-                ListaElementowMM.ItemsSource = dokMM.getElementy(gidnumer); 
-            }
-        }
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -79,38 +52,39 @@ namespace App2.View
             if (bufor)
             { 
                 var odp = await  DisplayActionSheet(null, "Anuluj", "Usuń", "Edytuj","Pokaż zdjęcie");
-                var kod = e.Item as Model.DokMM;
+                var kod = e.Item as DokElementDto;
                 switch (odp)
                 {
                 case "Usuń":
-                        var action = await DisplayAlert(null, "Czy chcesz usunąć "+kod.twrkod+" z listy?", "Tak", "Nie");
+                        var action = await DisplayAlert(null, "Czy chcesz usunąć "+kod.TwrKod+" z listy?", "Tak", "Nie");
                         if (action)
                         {
-                            var usunMM =e.Item as Model.DokMM;
-                          //  var usunMM = (sender as MenuItem).CommandParameter as Model.DokMM;
-                            flaga += 1;
-                            if (flaga >= 1) { StartTimer(false); } 
-                            Model.DokMM.dokElementy.Remove(usunMM);
-                            Model.DokMM.DeleteElementMM(usunMM);
+                            var usunMM =e.Item as DokElementDto;
+
+                            ServiceDokumentyApi.DokElementsDtos.Remove(usunMM);
+                            await apiService.DeleteElement(usunMM);
                         }
                         break;
                 case "Edytuj":
-                        // await DisplayAlert(null, odp, "OK");
-                        flaga += 1;
-                        if (flaga > 1) { StartTimer(false); }
-                        var mmka = e.Item as Model.DokMM; 
+
+                        //var mmka = e.Item as Model.DokMM; 
+                        //((ListView)sender).SelectedItem = null;
+                        //Model.DokMM dokMM = new Model.DokMM();
+                        //dokMM.getElementy(mmka.gidnumer);
+                        //await Navigation.PushModalAsync(new View.AddTwrPage(mmka));
+
+                        var mmka = e.Item as DokElementDto;
                         ((ListView)sender).SelectedItem = null;
-                        Model.DokMM dokMM = new Model.DokMM();
-                        dokMM.getElementy(mmka.gidnumer);
                         await Navigation.PushModalAsync(new View.AddTwrPage(mmka));
+
                         break;
                     case "Pokaż zdjęcie":
-                        flaga += 1;
-                        if (flaga > 1) { StartTimer(false); }
-                        var mmka2 = e.Item as Model.DokMM;
+                      
+                        var mmka2 = e.Item as DokElementDto;
                         ((ListView)sender).SelectedItem = null;
-                        Model.DokMM dokMM2 = new Model.DokMM();
-                        dokMM2.getElementy(mmka2.gidnumer);
+              
+                        //todo :po co to jest?????
+                        //dokMM2.getElementy(mmka2.gidnumer);
                         await Navigation.PushModalAsync(new View.AddTwrPage(mmka2,"foto"));
                         break;
                 }
@@ -137,52 +111,54 @@ namespace App2.View
               Navigation.PushModalAsync(page);
         }
 
-        private async void Delete_Clicked(object sender, EventArgs e)
-        {
-            var action = await DisplayAlert(null, "Czy chcesz usunąć towar z listy?", "Tak", "Nie");
-            if (action)
-            {
-                var usunMM = (sender as MenuItem).CommandParameter as Model.DokMM;
+        //private async void Delete_Clicked(object sender, EventArgs e)
+        //{
+        //    var action = await DisplayAlert(null, "Czy chcesz usunąć towar z listy?", "Tak", "Nie");
+        //    if (action)
+        //    {
+        //        var usunMM = (sender as MenuItem).CommandParameter as Model.DokMM;
                  
-                Model.DokMM.dokElementy.Remove(usunMM);
-                Model.DokMM.DeleteElementMM(usunMM);
-            }
-        }
+        //        Model.DokMM.dokElementy.Remove(usunMM);
+        //        Model.DokMM.DeleteElementMM(usunMM);
+        //    }
+        //}
 
         private async void BtnAddPosition_Clicked(object sender, EventArgs e)
         {
-            flaga += 1;
-            if (flaga >= 1) { StartTimer(false); }
+           
             await Navigation.PushModalAsync(new View.AddTwrPage(gidnumer));
         }
 
-        private void BtnSave_Clicked(object sender, EventArgs e)
+        private async void BtnSave_Clicked(object sender, EventArgs e)
         {
-            Model.DokMM dokMM = new Model.DokMM();
-            dokMM.gidnumer = gidnumer;
-            dokMM.mag_dcl = _magDcl.Text;
-            dokMM.opis = _opis.Text;
-            dokMM.fl_header = 1;
-            dokMM.UpdateMM(dokMM);
-            dokMM.getMMki();
-            flaga = 0;
-            gidnumer = -1; StartTimer(false);
-            Navigation.PopModalAsync();
+         
+            DokNaglowekDto dokmm = new DokNaglowekDto()
+            {
+                GidNumerXl= gidnumer,
+                MagKod= _magDcl.Text,
+                Opis= _opis.Text,
+            };
+
+         
+            var odp = await apiService.UpdateDokMm(Id, dokmm);
+
+            await apiService.GetDokAll(GidTyp.Mm,false); 
+ 
+            await Navigation.PopModalAsync();
+
             StartCreateMmPage startCreateMmPage = new StartCreateMmPage();
-            startCreateMmPage.StartTimer(true);
-            StartCreateMmPage.flagaMM = 1;
+        
+             
 
         }
 
         protected override bool OnBackButtonPressed()
         {
-            //return base.OnBackButtonPressed();
-            flaga = 0;
-            gidnumer = -1; StartTimer(false);
+           
             Navigation.PopModalAsync();
             StartCreateMmPage startCreateMmPage = new StartCreateMmPage();
-            startCreateMmPage.StartTimer(true);
-            StartCreateMmPage.flagaMM = 1;
+       
+         
             return true;
         }
     }

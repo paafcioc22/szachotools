@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App2.Model.ApiModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -31,7 +32,7 @@ namespace App2.Model
             return soapService.InsertDataSkan(insert, magnumer, ase_operator);
         }
 
-        public Task<List<RaportListaMM>> PobierzTwrAsync(string ean)
+        public Task<TwrInfo> PobierzTwrAsync(string ean)
         {
             return soapService.PobierzTwr(ean);
         }

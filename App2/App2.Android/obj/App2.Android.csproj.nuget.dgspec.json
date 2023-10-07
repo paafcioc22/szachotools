@@ -44,7 +44,7 @@
           "dependencies": {
             "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[12.11.0, )"
+              "version": "[12.17.0, )"
             },
             "Microsoft.AppCenter.Analytics": {
               "target": "Package",
@@ -53,6 +53,10 @@
             "Microsoft.AppCenter.Crashes": {
               "target": "Package",
               "version": "[4.5.0, )"
+            },
+            "Microsoft.CSharp": {
+              "target": "Package",
+              "version": "[4.7.0, )"
             },
             "PhotoBrowser.Forms": {
               "target": "Package",
@@ -64,19 +68,15 @@
             },
             "Rg.Plugins.Popup": {
               "target": "Package",
-              "version": "[1.2.0.223, )"
-            },
-            "System.Data.SqlClient": {
-              "target": "Package",
-              "version": "[4.7.0, )"
+              "version": "[2.1.0, )"
             },
             "Xam.Plugin.Media": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[6.0.2, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
-              "version": "[1.7.2, )"
+              "version": "[1.7.7, )"
             },
             "Xamarin.FFImageLoading.Forms": {
               "target": "Package",
@@ -84,11 +84,11 @@
             },
             "Xamarin.Forms": {
               "target": "Package",
-              "version": "[5.0.0.1874, )"
+              "version": "[5.0.0.2578, )"
             },
             "Xamarin.MediaGallery": {
               "target": "Package",
-              "version": "[2.1.1, )"
+              "version": "[2.2.1, )"
             },
             "ZXing.Net.Mobile": {
               "target": "Package",
@@ -148,7 +148,7 @@
           "dependencies": {
             "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[12.11.0, )"
+              "version": "[12.17.0, )"
             },
             "Microsoft.AppCenter.Analytics": {
               "target": "Package",
@@ -157,6 +157,14 @@
             "Microsoft.AppCenter.Crashes": {
               "target": "Package",
               "version": "[4.5.0, )"
+            },
+            "Microsoft.CSharp": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "PhotoBrowser.Forms": {
               "target": "Package",
@@ -170,13 +178,13 @@
               "target": "Package",
               "version": "[1.6.2, )"
             },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[110.2.0, )"
+            },
             "Rg.Plugins.Popup": {
               "target": "Package",
-              "version": "[1.2.0.223, )"
-            },
-            "System.Data.SqlClient": {
-              "target": "Package",
-              "version": "[4.7.0, )"
+              "version": "[2.1.0, )"
             },
             "System.ServiceModel.Duplex": {
               "target": "Package",
@@ -196,11 +204,11 @@
             },
             "Xam.Plugin.Media": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[6.0.2, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
-              "version": "[1.7.2, )"
+              "version": "[1.7.7, )"
             },
             "Xamarin.FFImageLoading.Forms": {
               "target": "Package",
@@ -208,11 +216,11 @@
             },
             "Xamarin.Forms": {
               "target": "Package",
-              "version": "[5.0.0.1874, )"
+              "version": "[5.0.0.2578, )"
             },
             "Xamarin.MediaGallery": {
               "target": "Package",
-              "version": "[2.1.1, )"
+              "version": "[2.2.1, )"
             },
             "ZXing.Net.Mobile": {
               "target": "Package",

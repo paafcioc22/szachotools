@@ -30,8 +30,8 @@
             </StackLayout>
 
             <ListView x:Name="ListaElementowMM"
-                ItemsSource="{Binding Model.DokMM.dokElementy}"
-                BindingContext="{Binding Model.DokMM.dokElementy}"
+                ItemsSource="{Binding ServiceDokumentyApi.DokElementsDtos}"
+                BindingContext="{Binding ServiceDokumentyApi.DokElementsDtos}"
                 ItemTapped="Handle_ItemTapped"
                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
                 CachingStrategy="RecycleElement"
@@ -42,7 +42,7 @@
                     <DataTemplate>
                         <ViewCell >
                             <ViewCell.ContextActions>
-                                <MenuItem Text="Usuń" Clicked="Delete_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>
+                                <!--<MenuItem Text="Usuń" Clicked="Delete_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>-->
                             </ViewCell.ContextActions  >
                             <StackLayout Orientation="Horizontal" >
                                 <Label Text="{Binding opis}" FontSize="25"  TextColor="#47BFA7" FontAttributes="Bold"

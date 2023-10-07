@@ -34,29 +34,30 @@ namespace App2.View
 
             if (_towar.twrkod != null)
             {
-                var daneZkarty = daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
+                var daneZkarty = await daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
 
-                if (daneZkarty.Count == 0)
+                if (daneZkarty.IsSuccessful)
+                {
+                    img_foto.Source = daneZkarty.Data.Twr_Url;
+                    lbl_twrcena.Text = daneZkarty.Data.Twr_Cena.ToString();
+                    lbl_twrnazwa.Text = daneZkarty.Data.Twr_Nazwa;
+                    lbl_twrsymbol.Text = daneZkarty.Data.Twr_Symbol;
+                    lbl_twrean.Text = daneZkarty.Data.Twr_Ean;
+                }
+                else
                 {
                     string Webquery = "cdn.pc_pobierztwr '" + _towar.twrkod + "'";
                     var twrdane = await App.TodoManager.PobierzTwrAsync(Webquery);
 
-                    if (twrdane.Count > 0)
+                    if (twrdane !=null)
                     {
-                        img_foto.Source = twrdane[0].url;
-                        lbl_twrcena.Text = twrdane[0].cena;
-                        lbl_twrnazwa.Text = twrdane[0].nazwa;
-                        lbl_twrsymbol.Text = twrdane[0].symbol;
-                        lbl_twrean.Text = twrdane[0].ean;
+                        img_foto.Source = twrdane.Twr_Url;
+                        lbl_twrcena.Text = twrdane.Twr_Cena.ToString();
+                        lbl_twrnazwa.Text = twrdane.Twr_Nazwa;
+                        lbl_twrsymbol.Text = twrdane.Twr_Symbol;
+                        lbl_twrean.Text = twrdane.Twr_Ean;
                     }
-                }
-                else
-                {
-                    img_foto.Source = daneZkarty[0].url;
-                    lbl_twrcena.Text = daneZkarty[0].cena;
-                    lbl_twrnazwa.Text = daneZkarty[0].nazwa;
-                    lbl_twrsymbol.Text = daneZkarty[0].symbol;
-                    lbl_twrean.Text = daneZkarty[0].ean;
+                    
                 }
 
                 lbl_twr_kod.Text = _towar.twrkod;

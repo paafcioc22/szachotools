@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.SqlClient;
+ 
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,60 +25,27 @@ namespace App2.View
         {
             InitializeComponent();
 
-            var app = Application.Current as App;
-            connectionstring = $@"SERVER= {app.Serwer}
-                ;DATABASE={app.BazaProd}
-                ;TRUSTED_CONNECTION=No;UID={ app.User}
-                ;PWD={app.Password}";
+        
             GetAkcje();
 
             //StworzListe();
         }
         
-
-        public Magazynn GetMagnumer()
+         
+        public async Task<Magazynn> GetMagnumer()
         {
-            Magazynn mag= new Magazynn(); 
+             
             try
             {
-
-                if (SettingsPage.SprConn())
-                {
-
-                    using (SqlConnection connection = new SqlConnection(connectionstring))
-                    {
-                        connection.Open();
-                        string querystring = $@"SELECT  [Mag_GIDNumer], Mag_Symbol
-                                  FROM  [CDN].[Magazyny]
-                                  where mag_typ=1 
-								  and [Mag_GIDNumer] is not null
-								  and mag_nieaktywny=0";
-
-                        using (SqlCommand command2 = new SqlCommand(querystring, connection))
-                        {
-                            using (SqlDataReader rs = command2.ExecuteReader())
-                            {
-                                while (rs.Read())
-                                {
-                                    mag= new Magazynn
-                                    {
-                                        Id = System.Convert.ToInt16(rs["Mag_GIDNumer"]),
-                                        MagKod = rs["Mag_Symbol"].ToString(),
-                                    };
-                                    
-                                }
-                            }
-                        }
-                    }
-
-                }
+                var mag = await SettingsPage.GetGidnumer();
+                 
                 return mag;
             }
             catch (Exception)
             {
 
-                DisplayAlert(null, "Błąd pobierania- wejdź w ustawienia\n kliknij zapisz sprawdź połączenie", "OK");
-                return mag;
+                await DisplayAlert(null, "Błąd pobierania- wejdź w ustawienia\n kliknij zapisz sprawdź połączenie", "OK");
+                return null;
 
             }
         }
@@ -87,10 +54,13 @@ namespace App2.View
         {
             string user = LoginLista._user;
             int dodajDni = user == "ADM" ? 50 : 0;
-            int magnr = GetMagnumer().Id; 
-
+            var magInfo = await GetMagnumer();
+            int magnr = 0;
             try
             {
+                if(magInfo!=null)
+                      magnr = magInfo.Id; 
+
                 if(magnr==0)
                     throw new InvalidOperationException("Błąd pobierania danych");
 

@@ -1,4 +1,5 @@
-﻿using App2.View;
+﻿using App2.Model.ApiModel;
+using App2.View;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using System;
@@ -78,7 +79,7 @@ namespace App2.Model
 
 
 
-        public async Task<bool> PrintCommand(TwrKarty _akcja,string kolor, sbyte drukSzt=1 )
+        public async Task<bool> PrintCommand(TwrInfo _akcja,string kolor, sbyte drukSzt=1 )
         {
            // int drukSzt;
             string typCodeEan = "";
@@ -90,25 +91,25 @@ namespace App2.Model
             //    drukSzt = 1;
 
 
-
-            if(string.IsNullOrEmpty(_akcja.twr_cena1))
-            {
-                string Webquery = "cdn.pc_pobierztwr '" + _akcja.twr_ean + "'";
-                var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                _akcja.twr_cena1 = dane[0].cena1;
-            }
+            //todo : po co skoro pobieram okno wześnieej
+            //if(string.IsNullOrEmpty(_akcja.Twr_Cena1))
+            //{
+            //    string Webquery = "cdn.pc_pobierztwr '" + _akcja.Twr_Ean + "'";
+            //    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+            //    _akcja.Twr_Cena1 = dane.Twr_Cena1.ToString();
+            //}
 
             await printSemaphore.WaitAsync();
             try
             {
                 if (SettingsPage.CzyCenaPierwsza)
-                    _akcja.twr_cena = _akcja.twr_cena1;
+                    _akcja.Twr_Cena = _akcja.Twr_Cena1;
 
-                var cenaZl = _akcja.twr_cena.Substring(0, _akcja.twr_cena.IndexOf(".", 0));
-                var cenaGr = _akcja.twr_cena.Substring(_akcja.twr_cena.IndexOf(".", 0) + 1, 2);
+                int cenaZl = (int)_akcja.Twr_Cena; // część całkowita
+                int cenaGr = (int)Math.Round((_akcja.Twr_Cena - cenaZl) * 100);
 
 
-                switch (cenaZl.Length)
+                switch (cenaZl.ToString().Length)
                 {
                     case 1:
                         polozenie = 125;
@@ -131,7 +132,7 @@ namespace App2.Model
                 }
 
 
-                switch (_akcja.twr_cena1.Length)
+                switch (_akcja.Twr_Cena1.ToString().Length)
                 {
                     case 4:
 
@@ -155,12 +156,13 @@ namespace App2.Model
                 //= (_akcja.TwrCena1.Length <= 5) ? 155 : 165;
 
 
-                string twr_nazwa = (_akcja.twr_nazwa.Length > 20 ? _akcja.twr_nazwa.Substring(0, 20) : _akcja.twr_nazwa);
+                string twr_nazwa = (_akcja.Twr_Nazwa.Length > 20 ? _akcja.Twr_Nazwa.Substring(0, 20) : _akcja.Twr_Nazwa);
 
-                var cena = Double.Parse(_akcja.twr_cena.Replace(".", ","));
-                var cena1 = Double.Parse(_akcja.twr_cena1.Replace(".", ","));
+                //var cena = Double.Parse(_akcja.Twr_Cena.Replace(".", ","));
+                //var cena1 = Double.Parse(_akcja.twr_cena1.Replace(".", ","));
 
-                var prr = double.IsInfinity((cena / cena1 - 1) * 100) ? 0: (cena / cena1 - 1) * 100;
+                var prr = double.IsInfinity(((double)_akcja.Twr_Cena / (double)_akcja.Twr_Cena1 - 1) * 100) ? 0 : (_akcja.Twr_Cena / _akcja.Twr_Cena1 - 1) * 100;
+
                 //prevent from devide by 0, when cena1 dsnt exists
 
 
@@ -191,14 +193,14 @@ namespace App2.Model
                     przesuniecieDlaCode128 = 80;
                 }
 
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.twr_kod, 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.Twr_Kod, 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, twr_nazwa, 0);
                 await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, typCodeEan, 1,
-                        cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.twr_ean, 0);
+                        cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.Twr_Ean, 0);
 
                 if (kolor!="biały")
                 {
-                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.twr_cena1, 0);
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.Twr_Cena1.ToString(), 0);
                     await SettingsPage._cpclPrinter.printLine(40, 160, koniecLinii, 125, 10);
                     if (Convert.ToInt16(procent) < -15)
                     {                        
@@ -213,8 +215,8 @@ namespace App2.Model
                 else
                     YpolozenieCeny = 160;
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, YpolozenieCeny);
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr); 
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl.ToString());
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString()); 
                                                                                                    
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł");
                 await SettingsPage._cpclPrinter.resetConcat();
@@ -222,7 +224,7 @@ namespace App2.Model
 
 
                 //todo : cena ostatnie 30 dni
-                //await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"ost.30dni: {_akcja.twr_cena1}", 0);//245
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_TXT_10HEIGHT, 0, 50, 245, $"ost.30dni: {_akcja.Twr_Cena1}", 0);//245
                
                 
 

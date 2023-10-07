@@ -1,11 +1,12 @@
 ﻿
 using App2.Model;
+using App2.OptimaAPI;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.SqlClient;
+ 
 using System.IO;
  
  
@@ -21,7 +22,7 @@ namespace App2.View
     public partial class LoginLista : ContentPage
     {
         public   ObservableCollection<Pracownik> ListaLogin { get; set; }
-        SqlConnection connection;
+      
         string konfiguracyjna;
 
         static string haslo;
@@ -38,15 +39,7 @@ namespace App2.View
         {
             InitializeComponent();
             var app = Application.Current as App;
-            connection = new SqlConnection
-            {
-
-                ConnectionString = "SERVER=" + app.Serwer + ";" +
-                "DATABASE=" + app.BazaProd + ";" +
-                "TRUSTED_CONNECTION=No" +
-                ";UID=" + app.User + ";" +
-                "PWD=" + app.Password
-            };
+         
             konfiguracyjna = app.BazaConf;
             GetLogins();
 
@@ -62,7 +55,7 @@ namespace App2.View
 
         public async void SkanujIdetyfikator()
         {
-            if (SettingsPage.SprConn())
+            if (await SettingsPage.SprConn())
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
@@ -168,8 +161,8 @@ namespace App2.View
                 return;
 
             var prac = e.Item as Pracownik;
-            haslo = prac.opehaslo;
-            haslo_chk = prac.opechk;
+            //haslo = prac.opehaslo;
+            //haslo_chk = prac.opechk;
             _opeGid = prac.opegidnumer;
             _user = prac.opekod; //"Zalogowany : "
             _nazwisko = prac.openazwa;
@@ -182,44 +175,28 @@ namespace App2.View
 
          
 
-        private void GetLogins()
+        private async void GetLogins()
         {
             ListaLogin = new ObservableCollection<Pracownik>();
-            SqlCommand command = new SqlCommand();
-         
-            connection.Open();
-            command.CommandText = $@"select ope_gidnumer, ope_kod, Ope_Nazwisko,Ope_Haslo, Ope_HasloChk 
-                                  from  {konfiguracyjna}.cdn.operatorzy  
-                                  where Ope_Nieaktywny=0
-                                  order by  case left(ope_kod,1)
-								   when 'k' then 1 
-								   when 'z' then 2 
-								   when 'd' then 3
-								   when 's' then 4
-								   when 'r' then 5 else 6 end";
-            //and ope_administrator=0
+            
+            ServiceDokumentyApi serwisApi= new ServiceDokumentyApi();
+            var viewUsers= await serwisApi.GetViewUsersAsync();
 
-            SqlCommand query = new SqlCommand(command.CommandText, connection);
-            //query.Parameters.AddWithValue("@konf", konfiguracyjna);
-            SqlDataReader rs;
-            rs = query.ExecuteReader();
-
-            while (rs.Read())
+            foreach (var item in viewUsers)
             {
+
+           
                 ListaLogin.Add(new Pracownik
                 {
-                    opekod = Convert.ToString(rs["ope_kod"]),
-                    openazwa = Convert.ToString(rs["Ope_Nazwisko"]),
-                    opehaslo = Convert.ToString(rs["Ope_Haslo"]),
-                    opechk = Convert.ToString(rs["Ope_HasloChk"]),
-                    opegidnumer = Convert.ToInt32(rs["ope_gidnumer"])
-                    
+                    opekod = item.OpeKod,
+                    openazwa = item.OpeNazwa,
+                    //opehaslo = Convert.ToString(rs["Ope_Haslo"]),
+                    //opechk = Convert.ToString(rs["Ope_HasloChk"]),
+                    opegidnumer = item.OpeGidnumer                 
 
                  }); 
             }
-            rs.Close();
-            rs.Dispose();
-            connection.Close();
+         
 
             MyListView.ItemsSource = ListaLogin;
         }
@@ -419,8 +396,8 @@ namespace App2.View
     {
         public string opekod { get; set; }
         public string openazwa { get; set; }
-        public string opehaslo { get; set; }
-        public string opechk { get; set; }
+        //public string opehaslo { get; set; }
+        //public string opechk { get; set; }
         public int  opegidnumer { get; set; }
         
     }

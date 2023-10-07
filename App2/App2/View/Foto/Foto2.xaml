@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<!--<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.Foto.Foto2"
@@ -10,9 +10,9 @@
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
             <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
 
-                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Color="Green" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
+                --><!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Color="Green" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
                 <!--<Entry  Text="{Binding Sklep}" Placeholder="wpisz nazwe sklepu" HorizontalTextAlignment="Center" HorizontalOptions="Center" IsEnabled="False"/>-->
-                <!--<Button Text="wyslij do azura" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .} "--> 
+                <!--<Button Text="wyslij do azura" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .} "--><!-- 
                 
                 <CollectionView x:Name="collectionView"   
                             ItemsSource="{Binding Photos}"  
@@ -21,7 +21,7 @@
                             EmptyView="Dodaj swoje pierwsze zdjęcie" >
                     <CollectionView.ItemTemplate  >
                         <DataTemplate>
-                            <!--<SwipeView>
+                            --><!--<SwipeView>
                             <SwipeView.TopItems>
                                 <SwipeItems>
                                     <SwipeItem Text="cofnij"
@@ -51,7 +51,7 @@
                             -->
                             <!--</Grid>-->
                             <!--
-                        </SwipeView>-->
+                        </SwipeView>--><!--
 
                             <Frame BorderColor="#D8EAFA"  CornerRadius="40"    >
                                 <Image   Source="{Binding URL}" Aspect="AspectFit" />
@@ -67,12 +67,12 @@
                 </CollectionView>
 
 
-                <!--<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue" >
+                --><!--<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="AliceBlue" >
                     <Button ImageSource="ic_action_delete"   Clicked="Button_Clicked_1"  CornerRadius="20" BackgroundColor="#D8EAFA"/>
                     <Button ImageSource="ic_action_collections"  Command="{Binding GaleriaCommand}"   CornerRadius="20" BackgroundColor="#D8EAFA"/>
                     <Button ImageSource="ic_action_backup" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}" CornerRadius="20" BackgroundColor="#D8EAFA"  />
                     <Button ImageSource="ic_action_add_a_photo" Clicked="Button_Clicked"     CornerRadius="20" BackgroundColor="#D8EAFA" />                
-                </StackLayout>-->
+                </StackLayout>--><!--
                 <Grid HeightRequest="60">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -80,10 +80,10 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>                        
                     </Grid.ColumnDefinitions>
-                    <Button ImageSource="ic_action_delete"  Clicked="Button_Clicked_1"  CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="0" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_delete"   CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="0" IsEnabled="{Binding IsVisible}"/>
                     <Button ImageSource="ic_action_collections"  Command="{Binding GaleriaCommand}"   CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="1"/>
                     <Button ImageSource="ic_action_backup" Command="{Binding BindingContext.AzureCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}" CornerRadius="20" BackgroundColor="#D8EAFA"  Grid.Column="2" IsEnabled="{Binding IsVisible}"/>
-                    <Button ImageSource="ic_action_add_a_photo" Clicked="Button_Clicked"     CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="3" IsEnabled="{Binding IsVisible}"/>
+                    <Button ImageSource="ic_action_add_a_photo"    CornerRadius="20" BackgroundColor="#D8EAFA" Grid.Column="3" IsEnabled="{Binding IsVisible}"/>
                 </Grid>
                 
             </StackLayout>
@@ -104,4 +104,4 @@
         
     </ContentPage.Content>
 
-</ContentPage>
+</ContentPage>-->

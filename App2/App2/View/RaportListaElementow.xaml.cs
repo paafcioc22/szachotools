@@ -53,7 +53,7 @@ namespace App2.View
                     return;
                 var mmka = e.Item as Model.RaportListaMM;
 
-                string odpowiedz = await DisplayPromptAsync("Podaj Nową Wartość:", null, "Zatwierdź", "Anuluj", "Ilość",-1, Keyboard.Numeric);
+                string odpowiedz = await DisplayPromptAsync("Podaj Nową Wartość:", null, "Zatwierdź", "Anuluj", "Ilość",-1, Keyboard.Numeric,"");
 
                   
                 if (!String.IsNullOrEmpty(odpowiedz))

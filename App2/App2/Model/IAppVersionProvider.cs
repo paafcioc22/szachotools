@@ -8,7 +8,7 @@ namespace App2.Model
     public interface IAppVersionProvider
     {
         string AppVersion { get; }
-        int BuildVersion { get; }
+        long BuildVersion { get; }
         Task OpenAppInStore();
         void ShowLong(string message);
         void ShowShort(string message);

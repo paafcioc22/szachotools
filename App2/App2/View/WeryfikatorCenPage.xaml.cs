@@ -1,7 +1,9 @@
 ﻿using App2.Model;
+using App2.Model.ApiModel;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Collections.Generic; 
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,10 +24,11 @@ namespace App2.View
         SettingsPage settingsPage;
         private IList<CennikClass> idceny;
         private CennikClass nrcenika;
+        private RestClient _client;
         string NazwaCennika;
         int NrCennika;
-        SqlConnection connection;
-        public TwrKarty twrkarty { get; set; }
+    
+        public TwrInfo twrkarty { get; set; }
         List<string> ceny;
         private List<string> nowy;
 
@@ -34,7 +37,7 @@ namespace App2.View
         {
             InitializeComponent();
             var app = Application.Current as App;
-
+            _client = new RestClient($"http://{app.Serwer}");
             BindingContext = this;
 
             if (SettingsPage.OnAlfaNumeric)
@@ -50,13 +53,7 @@ namespace App2.View
                 lbl_cennik.Text = NazwaCennika;
                 NrCennika = nrcenika.Id;
             }
-            connection = new SqlConnection
-            {
-                ConnectionString = "SERVER=" + app.Serwer +
-                ";DATABASE=" + app.BazaProd +
-                ";TRUSTED_CONNECTION=No;UID=" + app.User +
-                ";PWD=" + app.Password
-            };
+          
 
             if (SettingsPage.SelectedDeviceType == 1)
                 SkanowanieEan(); //aparat
@@ -77,9 +74,7 @@ namespace App2.View
                     ZXing.BarcodeFormat.CODABAR,
                     ZXing.BarcodeFormat.CODE_39,
                     ZXing.BarcodeFormat.EAN_13
-                }
-
-
+                } 
 
             };
             if (SettingsPage.OnAlfaNumeric)
@@ -143,7 +138,7 @@ namespace App2.View
             {
                 scanPage.IsScanning = false;
                 scanPage.AutoFocus();
-                Device.BeginInvokeOnMainThread(() =>
+                Device.BeginInvokeOnMainThread(async() =>
                 {
 
                     Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
@@ -151,8 +146,8 @@ namespace App2.View
                         if (scanPage.IsScanning) scanPage.AutoFocus();
                         return true;
                     });
-                    Navigation.PopModalAsync();
-                    pobierztwrkod(result.Text);
+                    await Navigation.PopModalAsync();
+                    await pobierztwrkod(result.Text);
 
 
                 });
@@ -165,135 +160,58 @@ namespace App2.View
 
             //            }
         }
-        public async void pobierztwrkod(string _ean)
+
+        
+
+        public async Task pobierztwrkod(string _ean)
         {
-            string Webquery = "";
+          
             var app = Application.Current as App;
-            //SettingsPage settingsPage = new SettingsPage();
-            //var idceny = settingsPage.cennikClasses;
-            //var nrcenika = idceny[app.Cennik];
-            twrkarty = null;
+            //TwrInfo product = null;
+
+            
             try
             {
-                if (SettingsPage.SprConn())
-                {
-
+                if (await SettingsPage.SprConn())
+                { 
 
                     if (!string.IsNullOrEmpty(_ean))
                     {
-                        SqlCommand command = new SqlCommand();
+                        if (nrcenika.RodzajCeny == "OUTLET")
+                            NrCennika = 4;
+                        else NrCennika = 2;
 
-                        connection.Open();
-                        command.CommandText = $@"Select twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat twr_symbol, cast(twc_wartosc as decimal(5,2))cena  
-                            ,cast(sum(TwZ_Ilosc) as int)ilosc, twr_url,twr_ean 
-                            from cdn.towary 
-                            join cdn.TwrCeny on Twr_twrid = TwC_Twrid and TwC_TwCNumer =   {NrCennika }
-                             join cdn.TwrZasoby on Twr_twrid = TwZ_TwrId  
-                            where twr_ean='{_ean}'
-                            group by twr_gidnumer,twr_kod, twr_nazwa, Twr_NumerKat,twc_wartosc, twr_url,twr_ean";
-
-                        SqlCommand query = new SqlCommand(command.CommandText, connection);
-                        SqlDataReader rs;
-                        rs = query.ExecuteReader();
-                        if (rs.Read())
+                        var karta = new TwrKodRequest()
                         {
-                            Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
-                            var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-
-                            twrkarty = new TwrKarty
-                            {
-
-                                twr_kod = Convert.ToString(rs["twr_kod"]),
-                                twr_gidnumer = Convert.ToString(rs["twr_gidnumer"]),
-                                stan_szt = Convert.ToString(rs["ilosc"]),
-                                twr_url = Convert.ToString(rs["twr_url"]),
-                                twr_nazwa = Convert.ToString(rs["twr_nazwa"]),
-                                twr_symbol = Convert.ToString(rs["twr_symbol"]),
-                                twr_ean = Convert.ToString(rs["twr_ean"]),
-                                twr_cena = Convert.ToString(rs["cena"]).Replace(",", "."),
-                                twr_cena1 = (dane.Count > 0) ? dane[0].cena1 : ""
-                            };
-                            // DisplayAlert("Zeskanowany Kod ", twrkod, "OK");
-                        }
-                        else
-                        {
-                            // idceny = settingsPage.cennikClasses;
-                            //var nrcenika = idceny[app.Cennik];
-                            if (nrcenika.RodzajCeny == "OUTLET")
-                                NrCennika = 4;
-                            else NrCennika = 2;
-                            Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
-                            var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                            if (dane.Count > 0)
-                            {
-
-                                twrkarty = new TwrKarty
-                                {
-                                    twr_gidnumer = dane[0].TwrGidnumer.ToString(),
-                                    twr_kod = dane[0].twrkod,
-                                    twr_url = dane[0].url,
-                                    twr_nazwa = dane[0].nazwa,
-                                    twr_ean = dane[0].ean,
-                                    twr_cena = dane[0].cena,
-                                    twr_symbol = dane[0].symbol,
-                                    twr_cena1 = dane[0].cena1
-                                };
-
-                            }
-
-                            DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak stanów lub nie istnieje!");
-                        }
-                        rs.Close();
-                        rs.Dispose();
-                        connection.Close();
-                    }
-
-
-                }
-                else
-                {
-                    //await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-                    DependencyService.Get<Model.IAppVersionProvider>().ShowShort("Brak połączenia z optimą!");
-
-                    //idceny = settingsPage.cennikClasses;
-                    //var nrcenika = idceny[app.Cennik];
-                    if (nrcenika.RodzajCeny == "OUTLET")
-                        NrCennika = 4;
-                    else NrCennika = 2;
-                    Webquery = $"cdn.pc_pobierztwr '{_ean}', {NrCennika}";
-                    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                    if (dane.Count > 0)
-                    {
-
-                        twrkarty = new TwrKarty
-                        {
-                            twr_gidnumer = dane[0].TwrGidnumer.ToString(),
-                            twr_kod = dane[0].twrkod,
-                            twr_url = dane[0].url,
-                            twr_nazwa = dane[0].nazwa,
-                            twr_ean = dane[0].ean,
-                            twr_cena = dane[0].cena,
-                            twr_symbol = dane[0].symbol,
-                            twr_cena1 = dane[0].cena1
+                            Twrcenaid = NrCennika+1,
+                            Twrkod = "",
+                            Twrean = _ean
                         };
 
-                    }
-                }
+                        var request = new RestRequest("/api/gettowar")
+                              .AddJsonBody(karta);
+
+
+                        twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client); 
+
+                    }    
+
+                } 
             }
-            catch (Exception)
+            catch (Exception s)
             {
-                await DisplayAlert("Uwaga", "Nie znaleziono towaru..", "OK");
+                await DisplayAlert("Uwaga", s.Message, "OK");
             }
 
             if (twrkarty != null)
             {
-                twr_kod.Text = twrkarty.twr_kod;
-                lbl_twrkod.Text = twrkarty.twr_ean;
-                lbl_twrsymbol.Text = twrkarty.twr_symbol;
-                lbl_twrnazwa.Text = twrkarty.twr_nazwa;
-                lbl_stan.Text = twrkarty.stan_szt + " szt";
-                lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.twr_cena1 : twrkarty.twr_cena + " zł";
-                img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.twr_url,twrkarty.twr_kod,FilesHelper.OtherSize.home,true);
+                twr_kod.Text = twrkarty.Twr_Kod;
+                lbl_twrkod.Text = twrkarty.Twr_Ean;
+                lbl_twrsymbol.Text = twrkarty.Twr_Symbol;
+                lbl_twrnazwa.Text = twrkarty.Twr_Nazwa;
+                lbl_stan.Text = twrkarty.Stan_szt + " szt";
+                lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.Twr_Cena1.ToString() : twrkarty.Twr_Cena.ToString() + " zł";
+                img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.Twr_Url,twrkarty.Twr_Kod,FilesHelper.OtherSize.home,true);
             }
             else
             {
@@ -306,10 +224,7 @@ namespace App2.View
                 img_foto.Source = "";
             }
 
-
-
-
-            connection.Close();
+             
 
         }
         private void ScanTwr_Clicked(object sender, EventArgs e)
@@ -317,58 +232,52 @@ namespace App2.View
             SkanowanieEan();
         }
 
-        private void kodean_Unfocused(object sender, FocusEventArgs e)
+        private async void kodean_Unfocused(object sender, FocusEventArgs e)
         {
-            pobierztwrkod(manualEAN.Text);
+            await pobierztwrkod(manualEAN.Text);
             manualEAN.Text = "";
         }
 
         private async void BtnShowOther_Clicked(object sender, EventArgs e)
         {
             if (twrkarty != null)
-                await Navigation.PushModalAsync(new StanyTwrInnych(twrkarty.twr_gidnumer));
+                await Navigation.PushModalAsync(new StanyTwrInnych(twrkarty.Twr_Gidnumer.ToString()));
         }
-        private void ViewCell_Tapped(object sender, EventArgs e)
+        private async void ViewCell_Tapped(object sender, EventArgs e)
         {
             ceny = new List<string>(); 
 
-            connection.Open();
+          
             try
             {
-                SqlCommand command = new SqlCommand();
-
-                command.CommandText = $@"SELECT DfC_Nazwa +' : '+cast(CAST(TwC_Wartosc AS DECimal(8,2)) as varchar)+' zł' ceny FROM   cdn.towary 
-                join cdn.TwrCeny on Twr_twrid = TwC_Twrid  
-                join  CDN.DefCeny on TwC_TwCNumer=DfC_lp
-                where DfC_Nieaktywna = 0
-                 and Twr_GIDNumer={twrkarty.twr_gidnumer}";
-
-                SqlCommand query = new SqlCommand(command.CommandText, connection);
-                SqlDataReader rs;
-                rs = query.ExecuteReader();
-                while (rs.Read())
+                var request = new RestRequest($"/api/gettowarycena/{twrkarty.Twr_Gidnumer}", Method.Get);                
+                var response = await _client.ExecuteAsync(request);
+                if (response.IsSuccessful)
                 {
-                    ceny.Add(Convert.ToString(rs["ceny"]));
+                    var jsonResponse = JsonConvert.DeserializeObject<TwrCeny>(response.Content);
+                    var cenyTowarow = jsonResponse;
+              
+                    await DisplayActionSheet("Ceny:", "OK", null, cenyTowarow.Result.ToArray());
                 }
-                DisplayActionSheet("Ceny:", "OK", null, ceny.ToArray());
-
-                rs.Close();
-                rs.Dispose();
+                else
+                {
+                    await DisplayAlert("info",response.Content.ToString(),"OK");
+                }
 
 
             }
             catch (Exception ex)
             {
-                DisplayAlert("Uwaga", ex.Message, "OK");
+                await DisplayAlert("Uwaga", ex.Message, "OK");
             }
 
-            connection.Close();
+           
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             if(twrkarty!=null)
-            if(!string.IsNullOrEmpty(twrkarty.twr_url))
-            Launcher.OpenAsync(twrkarty.twr_url.Replace("Miniatury/", "").Replace("small","large"));
+            if(!string.IsNullOrEmpty(twrkarty.Twr_Url))
+            Launcher.OpenAsync(twrkarty.Twr_Url.Replace("Miniatury/", "").Replace("small","large"));
         }        
         private async void ViewCell_Tapped_1(object sender, EventArgs e)
         {
@@ -381,7 +290,7 @@ namespace App2.View
                         AkN_DataStart,AkN_DataKoniec
                         from cdn.pc_akcjeNag
                         JOIN CDN.PC_AkcjeElem ON AkN_GidNumer = Ake_AknNumer
-                        where Ake_FiltrSQL like ''%{twrkarty.twr_kod}%''  and AkN_DataKoniec>= GETDATE() - 30
+                        where Ake_FiltrSQL like ''%{twrkarty.Twr_Kod}%''  and AkN_DataKoniec>= GETDATE() - 30
                         order by AkN_DataStart desc '";
 
                 var dane = await App.TodoManager.GetGidAkcjeAsync(Webquery);
