@@ -209,22 +209,14 @@ namespace App2.View
 
         private async Task<ObservableCollection<Model.AkcjeNagElem>> GetTwrListFromWeb(int _gidNumer)
         {
-            SettingsPage settingsPage = new SettingsPage();
-            var idceny = settingsPage.cennikClasses;
-            if (idceny != null)
-            {
-                var nrcenika = idceny[app.Cennik];
-                //NazwaCennika = "cena [" + nrcenika.RodzajCeny + "]";
-                //lbl_cennik.Text = NazwaCennika;
-
-                if (nrcenika.RodzajCeny == "OUTLET")
+            var app = Application.Current as App;
+            if (!string.IsNullOrEmpty(app.Cennik))
+            { 
+                if (app.Cennik == "OUTLET")
                     NrCennika = 4;
-                else NrCennika = 2;
-
+                else NrCennika = 2; 
                
-            }
-
-         
+            } 
                 try
                 {
 

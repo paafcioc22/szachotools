@@ -8,7 +8,7 @@ namespace App2.Model.ApiModel
     {
         public int Id { get; set; }
         public GidTyp GidTyp { get; set; }
-        public int GidNumerXl { get; set; }
+        public int? GidNumerXl { get; set; }
         public string MagKod { get; set; }
         public string NumerDokumentu { get; set; }
         public bool?  IsFinish { get; set; }

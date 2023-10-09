@@ -8,10 +8,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
  
 using System.IO;
- 
- 
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebApiLib.Serwis;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -22,7 +22,9 @@ namespace App2.View
     public partial class LoginLista : ContentPage
     {
         public   ObservableCollection<Pracownik> ListaLogin { get; set; }
-      
+        public static IszachoApi Api => DependencyService.Get<IszachoApi>();
+
+
         string konfiguracyjna;
 
         static string haslo;
@@ -248,13 +250,14 @@ namespace App2.View
             {
 
 
-                var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
+                //var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
+                var haslo = await Api.ExecSQLCommandAsync<User>(query);
 
-                if (haslo.Count > 0)
+                if (haslo.Count() > 0)
                 {
-                    if (haslo[0].GID == "53")
+                    if (haslo.First().GID == "53")
                     {
-                        haslo[0].Haslo = "987654";
+                        haslo.First().Haslo = "987654";
                     }
 
                     var isNumeric = int.TryParse(entry_haslo.Text, out int n);
@@ -265,7 +268,7 @@ namespace App2.View
 
                         if (znak1 == 0 && entry_haslo.Text.Length == 8)
                         {
-                            fullPass = EAN8.CalcChechSum(haslo[0].Haslo);
+                            fullPass = EAN8.CalcChechSum(haslo.First().Haslo);
 
                             return entry_haslo.Text.Equals(fullPass);
 

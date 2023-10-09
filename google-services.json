@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "466514621461",
+    "firebase_url": "https://mynotifytest-75dca.firebaseio.com",
+    "project_id": "mynotifytest-75dca",
+    "storage_bucket": "mynotifytest-75dca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466514621461:android:c8604d7950626152fe8a1c",
+        "android_client_info": {
+          "package_name": "com.SzachoTools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466514621461-5sd1sed49tndcnifc0647tq48q9f6crr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP8lVu0VcOGoENzvcn5Dop4JmfKiN0Z1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466514621461-5sd1sed49tndcnifc0647tq48q9f6crr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

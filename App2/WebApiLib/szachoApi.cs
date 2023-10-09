@@ -43,7 +43,7 @@ namespace WebApiLib
             var options = new RestClientOptions("http://serwer.szachownica.com.pl/cdnofflinesrv/cdnofflinesrv.asmx")
             {
                 // Jeśli RestClientOptions zawiera właściwość Proxy, to:
-                Proxy = new WebProxy("http://10.0.2.2:8888")
+                //Proxy = new WebProxy("http://10.0.2.2:8888")
             };
 
             var client = new RestClient(options);

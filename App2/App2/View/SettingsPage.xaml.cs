@@ -6,7 +6,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
- 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -34,7 +34,8 @@ namespace App2.View
         private const string serverIp = "192.168.1.155:5063";
         private static RestClient _client;
         public static ObservableCollection<DrukarkaClass> listaDrukarek;
-        public IList<CennikClass> cennikClasses;
+        public static List<CennikClass> ListaCen { get; set; }
+    
 
         public static bool CzyDrukarkaOn = false;
 
@@ -63,6 +64,7 @@ namespace App2.View
             var app = Application.Current as App;
             BindingContext = Application.Current;
 
+           
 
             //if ( SprConn().Result)
             //{
@@ -78,9 +80,9 @@ namespace App2.View
 
             //}
 
-            var options = new RestClientOptions($"http://{serverIp}")
+            var options = new RestClientOptions($"http://{app.Serwer}")
             {
-                //MaxTimeout = 10000 // 10 sekund
+                MaxTimeout = 10000 // 10 sekund
             };
 
             _client = new RestClient(options);
@@ -91,6 +93,8 @@ namespace App2.View
             SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
 
+     
+
         private async void InicjalizujAsync(App app)
         {
             bool wynik = await SprConn();
@@ -100,11 +104,16 @@ namespace App2.View
                 await GetBaseName(app);
                 await GetGidnumer();
 
-                cennikClasses = (await GetCenniki());
-                if (cennikClasses != null)//cennikClasses.Count > 0 || 
+                ListaCen = (await GetCenniki());
+                if (ListaCen != null)//cennikClasses.Count > 0 || 
                 {
-                    pickerlist.ItemsSource = (await GetCenniki()).ToList();
-                    pickerlist.SelectedIndex = app.Cennik;
+                    pickerlist.ItemsSource = ListaCen;
+                    if (app.Cennik != "0")
+                    {
+                        var selected= ListaCen.FirstOrDefault(s=>s.RodzajCeny == app.Cennik);
+
+                        pickerlist.SelectedItem = selected;
+                    }
                 }
             }
 
@@ -175,32 +184,49 @@ namespace App2.View
             {
                 var app = Application.Current as App;
 
+                var options = new RestClientOptions($"http://{app.Serwer}")
+                {
+                     MaxTimeout = 10000 // 10 sekund
+                };
+                _client = new RestClient(options);  // re-inicjalizacja klienta
+
+
                 var request = new RestRequest("/api/test");
 
                 var response = await _client.GetAsync(request);
-
-                var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
-                if (dbNameHeader != null)
+                if (response.IsSuccessful)
                 {
-                    Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
-                }
+                    var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
+                    if (dbNameHeader != null)
+                    {
+                        Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
+                    }
 
-                var connOk = response.IsSuccessStatusCode;
-                if(connOk) 
-                {
-                        await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
+                    var connOk = response.IsSuccessStatusCode;
+                    if (connOk)
+                    {
+                      
                         var magInfo = await GetGidnumer();
-                        app.MagGidNumer= (short)magInfo.Id;
-                     
+                        app.MagGidNumer = (short)magInfo.Id;
+
                         app.BazaProd = dbNameHeader.Value.ToString();
                         BazaProd.Text = dbNameHeader.Value.ToString();
+                        await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
                         await Application.Current.SavePropertiesAsync();
                         await Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+                    }
                 }
                 else
                 {
-                   await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
-                } 
+                        await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+
+                }
+
+                
                 
             }
             catch (Exception ex)
@@ -216,7 +242,13 @@ namespace App2.View
         {
             try
             {
+                var app = Application.Current as App;
                 //todo : skonfiguruj ustawienia
+                var options = new RestClientOptions($"http://{app.Serwer}")
+                {
+                    MaxTimeout = 10000 // 10 sekund
+                };
+                _client = new RestClient(options);  // re-inicjalizacja klienta
 
                 var request = new RestRequest("/api/test");
                 var response = await _client.GetAsync(request); 
@@ -270,7 +302,7 @@ namespace App2.View
         }
 
      
-        private async Task<IList<CennikClass>> GetCenniki()
+        private async Task<List<CennikClass>> GetCenniki()
         {
             try
             {
@@ -301,24 +333,30 @@ namespace App2.View
             //pickerlist.ItemsSource = GetCenniki().ToList();
             var app = Application.Current as App;
 
+            var picker = (Picker)sender;
 
-            var cennik = pickerlist.Items[pickerlist.SelectedIndex];
-            var idceny = (await GetCenniki()).Single(cc => cc.RodzajCeny == cennik);
+
+
+
+            //var cennik = pickerlist.Items[pickerlist.SelectedIndex];
+            //var idceny = (await GetCenniki()).Single(cc => cc.RodzajCeny == cennik);
 
 
             int selectedIndex = pickerlist.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-                //var app = Application.Current as App;
-                // app.Cennik = idceny.Id;
-            }
+            //if (selectedIndex != -1)
+            //{
+            //    //var app = Application.Current as App;
+            //    // app.Cennik = idceny.Id;
+            //}
 
-            var picker = (Picker)sender;
+           
             //int selectedIndex = picker.SelectedIndex;
 
             if (selectedIndex != -1)
             {
-                app.Cennik = selectedIndex; //idceny.Id;
+                var selectedValue = picker.SelectedItem as CennikClass;
+                app.Cennik = selectedValue.RodzajCeny; //idceny.Id;
+                await Application.Current.SavePropertiesAsync();
             }
 
 

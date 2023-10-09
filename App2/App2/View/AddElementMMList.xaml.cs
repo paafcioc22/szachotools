@@ -36,7 +36,7 @@ namespace App2.View
             _btnAddElement.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
             _btnSave.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
             //lbl_listatwr.Text=()
-            gidnumer = mmka.GidNumerXl;
+            gidnumer = (int)mmka.GidNumerXl;
             Id = mmka.Id;
             bufor = !Convert.ToBoolean(mmka.IsFinish);
             ListaElementowMM.ItemsSource = ServiceDokumentyApi.DokElementsDtos;

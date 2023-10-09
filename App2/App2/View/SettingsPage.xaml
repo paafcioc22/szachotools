@@ -82,15 +82,12 @@
                     x:Name="SwitchStatus" 
                     />
                     <Label Text="Cennik" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
-                    <!--<Entry 
-                x:Name="Cennik" Text="{Binding Cennik}"
-                Placeholder="Baza firmowa.."  IsEnabled="False"
-                VerticalOptions="FillAndExpand" 
-                HorizontalTextAlignment="Center"/>-->
+                 
                     <Picker Title="cennik" x:Name="pickerlist" 
+                            ItemsSource="{Binding ListaCen}"
+                    ItemDisplayBinding="{Binding RodzajCeny}" 
                     SelectedIndexChanged="pickerlist_OnChanged" 
                     HorizontalOptions="Center"  
-                    ItemDisplayBinding="{Binding RodzajCeny}" 
                     WidthRequest="150" Focused="pickerlist_Focused"
                     >
                         <!--ItemsSource="{Binding cennikClasses}"-->

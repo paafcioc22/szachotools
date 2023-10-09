@@ -36,11 +36,12 @@ namespace App2.View
         public List_AkcjeElemView( int gidtyp)
         {
             InitializeComponent();
+            app = Application.Current as App;
+            _client = new RestClient($"http://{app.Serwer}");
             ListaZFiltrem = new ObservableCollection<NagElem>();
             BindingContext = this;
             GetAkcje( gidtyp);
 
-            app = Application.Current as App;
            
 
         }
@@ -78,7 +79,7 @@ namespace App2.View
                 {
                     var karta = new TwrKodRequest()
                     {
-                        Twrkody = listFromFiltr
+                        Twrkody = new List<string>(listFromFiltr)
                     };
 
                     var request = new RestRequest("/api/gettowarycnt", Method.Post)

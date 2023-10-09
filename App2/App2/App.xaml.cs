@@ -7,6 +7,8 @@ using Xamarin.Forms.Xaml;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using WebApiLib;
+using WebApiLib.Serwis;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -26,11 +28,12 @@ namespace App2
         private const string magGidnumer = "magGidnumer";
         private const string czycena1 = "czycena1";
 
-        
-        public App()
+      
+
+        public App() 
         {
             InitializeComponent();
-          
+            DependencyService.Register<IszachoApi, szachoApi>();
             MainPage = new NavigationPage( new View.SplashPage());
         }
 
@@ -100,13 +103,14 @@ namespace App2
             {
                 if (Properties.ContainsKey(serwer))
                     return Properties[serwer].ToString();
-                return "192.168.1.2\\optima"; 
+                return "192.168.1.2:8081"; 
                 //todo : popraw adres ip
                 //return "10.8.0.134\\optima";
             }
             set
             {
                 Properties[serwer] = value;
+                
             } 
         }
 
@@ -154,13 +158,13 @@ namespace App2
 
         }
 
-        public int Cennik
+        public string Cennik
         {
             get
             {
                 if (Properties.ContainsKey(cennik))
-                    return (Int32)Properties[cennik];
-                return 0;
+                    return  Properties[cennik].ToString();
+                return "";
             }
             set
             {

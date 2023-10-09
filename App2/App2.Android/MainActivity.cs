@@ -1,8 +1,11 @@
 ﻿
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 using FFImageLoading.Forms.Platform;
 using Xamarin.Forms;
 
@@ -13,7 +16,7 @@ namespace App2.Droid
     {
 
         public static MainActivity MainActivityInstance { get; private set; }
-
+        private const int yourRequestCode = 1001;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -38,6 +41,11 @@ namespace App2.Droid
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
 
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.BluetoothConnect) != Permission.Granted)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.BluetoothConnect }, yourRequestCode);
+            }
+
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
@@ -54,6 +62,18 @@ namespace App2.Droid
 
             //dodane do essential
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (requestCode == yourRequestCode) // yourRequestCode to wartość int, którą przekazałeś w powyższym kodzie
+            {
+                if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                {
+                    // Uprawnienie zostało przyznane, możesz kontynuować operacje związane z Bluetooth
+                }
+                else
+                {
+                    // Uprawnienie nie zostało przyznane. Informuj użytkownika, że niektóre funkcje mogą nie działać poprawnie.
+                }
+            }
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

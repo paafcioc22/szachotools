@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "MonoAndroid,Version=v11.0": {
+    "MonoAndroid,Version=v13.0": {
       "Azure.Core/1.33.0": {
         "type": "package",
         "dependencies": {
@@ -2513,12 +2513,12 @@
           "Java.Interop"
         ],
         "compile": {
-          "lib/monoandroid11.0/NativeMedia.dll": {
+          "lib/monoandroid13.0/NativeMedia.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/monoandroid11.0/NativeMedia.dll": {
+          "lib/monoandroid13.0/NativeMedia.dll": {
             "related": ".xml"
           }
         }
@@ -2532,12 +2532,12 @@
           "Java.Interop"
         ],
         "compile": {
-          "lib/monoandroid11.0/NativeMedia.Permision.dll": {
+          "lib/monoandroid13.0/NativeMedia.Permision.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/monoandroid11.0/NativeMedia.Permision.dll": {
+          "lib/monoandroid13.0/NativeMedia.Permision.dll": {
             "related": ".xml"
           }
         }
@@ -2592,6 +2592,7 @@
           "System.ServiceModel.Http": "4.5.3",
           "System.ServiceModel.NetTcp": "4.5.3",
           "System.ServiceModel.Security": "4.5.3",
+          "WebApiLib": "1.0.0",
           "Xam.Plugin.Media": "6.0.2",
           "Xamarin.Essentials": "1.7.7",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982",
@@ -2606,6 +2607,23 @@
         },
         "runtime": {
           "bin/placeholder/Inwentary.dll": {}
+        }
+      },
+      "WebApiLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "dependencies": {
+          "RestSharp": "110.2.0",
+          "System.ServiceModel.Duplex": "4.4.0",
+          "System.ServiceModel.Http": "4.4.0",
+          "System.ServiceModel.NetTcp": "4.4.0",
+          "System.ServiceModel.Security": "4.4.0"
+        },
+        "compile": {
+          "bin/placeholder/WebApiLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WebApiLib.dll": {}
         }
       }
     }
@@ -5688,10 +5706,15 @@
       "type": "project",
       "path": "../App2/App2.csproj",
       "msbuildProject": "../App2/App2.csproj"
+    },
+    "WebApiLib/1.0.0": {
+      "type": "project",
+      "path": "../WebApiLib/WebApiLib.csproj",
+      "msbuildProject": "../WebApiLib/WebApiLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
-    "MonoAndroid,Version=v11.0": [
+    "MonoAndroid,Version=v13.0": [
       "Azure.Storage.Blobs >= 12.17.0",
       "Inwentary >= 1.0.0",
       "Microsoft.AppCenter.Analytics >= 4.5.0",
@@ -5711,46 +5734,46 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pawel\\.nuget\\packages\\": {},
+    "C:\\Users\\pafci\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
       "projectName": "App2.Android",
-      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
-      "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\obj\\",
+      "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "monoandroid11.0"
+        "monoandroid13.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "monoandroid11.0": {
+        "monoandroid13.0": {
           "projectReferences": {
-            "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj": {
-              "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj"
+            "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj": {
+              "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj"
             }
           }
         }
       }
     },
     "frameworks": {
-      "monoandroid11.0": {
+      "monoandroid13.0": {
         "dependencies": {
           "Azure.Storage.Blobs": {
             "target": "Package",

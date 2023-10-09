@@ -22,14 +22,14 @@ namespace App2.View
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
         SettingsPage settingsPage;
-        private IList<CennikClass> idceny;
-        private CennikClass nrcenika;
+
+       
         private RestClient _client;
         string NazwaCennika;
         int NrCennika;
     
         public TwrInfo twrkarty { get; set; }
-        List<string> ceny;
+   
         private List<string> nowy;
 
 
@@ -44,14 +44,14 @@ namespace App2.View
                 manualEAN.Keyboard = Keyboard.Default;
 
             settingsPage = new SettingsPage();
-            idceny = settingsPage.cennikClasses;
-            if (idceny != null)
+            
+            if (!string.IsNullOrEmpty(app.Cennik))
             {
-                nrcenika = idceny[app.Cennik];
-                var rodzaj = (SettingsPage.CzyCenaPierwsza) ? " pierwsza" : nrcenika.RodzajCeny;
+                 
+                var rodzaj = (SettingsPage.CzyCenaPierwsza) ? " pierwsza" : app.Cennik;
                 NazwaCennika = $"cena [{rodzaj}]";
                 lbl_cennik.Text = NazwaCennika;
-                NrCennika = nrcenika.Id;
+                //NrCennika = nrcenika.Id;
             }
           
 
@@ -177,19 +177,23 @@ namespace App2.View
 
                     if (!string.IsNullOrEmpty(_ean))
                     {
-                        if (nrcenika.RodzajCeny == "OUTLET")
+                        if (app.Cennik == "OUTLET")
                             NrCennika = 4;
                         else NrCennika = 2;
 
                         var karta = new TwrKodRequest()
                         {
                             Twrcenaid = NrCennika+1,
-                            Twrkod = "",
+                           
                             Twrean = _ean
                         };
 
                         var request = new RestRequest("/api/gettowar")
                               .AddJsonBody(karta);
+
+
+                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
+            
 
 
                         twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client); 
@@ -245,7 +249,7 @@ namespace App2.View
         }
         private async void ViewCell_Tapped(object sender, EventArgs e)
         {
-            ceny = new List<string>(); 
+            //ceny = new List<string>(); 
 
           
             try

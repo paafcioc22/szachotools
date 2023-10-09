@@ -445,7 +445,7 @@ namespace App2.OptimaAPI
 
             var response = await _client.ExecuteGetAsync<List<MagazynInfo>>(request);
 
-            if(!response.IsSuccessful)
+            if(response.IsSuccessful)
             {
                 sklepy = response.Data;
             }

@@ -97,22 +97,26 @@ namespace App2.Droid
 
         public async Task<TwrInfo> PobierzTwr(string ean)
         {
-           
+
             try
             {
-                var response =   client.ExecuteSQLCommand(ean);
-
-                var twrList = DeserializeFromXml<TwrInfo>(response);
-
-                // Zakładając, że chcesz zwrócić pierwszy element z listy
-                if (twrList.Any() )
+                return await Task.Run(() =>
                 {
-                    return twrList[0];
-                }
-                else
-                {
-                    throw new Exception("Lista produktów jest pusta.");
-                }
+                    var response = client.ExecuteSQLCommand(ean);
+
+                    var twrList = DeserializeFromXml<TwrInfo>(response);
+
+                    // Zakładając, że chcesz zwrócić pierwszy element z listy
+                    if (twrList.Any())
+                    {
+                        return twrList[0];
+                    }
+                    else
+                    {
+                        throw new Exception("Lista produktów jest pusta.");
+                    }
+                });
+
             }
             catch (Exception ex)
             {
