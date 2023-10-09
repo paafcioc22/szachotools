@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using App2.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace App2.View
         public List<Model.PrzyjmijMMClass> PrzyjmijListaMM { get; set; }
         private SQLiteAsyncConnection _connection;
         private int _gidnumer;
-        public PrzyjmijMM_ListaElementowMM(string EAN_mmka, int gidnumer)
+        public PrzyjmijMM_ListaElementowMM(  int gidnumer)
         {
             InitializeComponent();
 
@@ -26,21 +27,29 @@ namespace App2.View
             Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             _gidnumer = gidnumer;
-            przyjmijMMClass.GetlistMMElements(EAN_mmka, gidnumer);
+            
             tytul.Text = przyjmijMMClass.GetNrDokMmp;// mmp; 
-            PrzypiszListe();
+           
 
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            PrzyjmijMMClass przyjmijMMClass= new PrzyjmijMMClass();
+            await przyjmijMMClass.GetlistMMElementsAsync(_gidnumer); 
+            await PrzypiszListe();
             MyListView.ItemsSource = Model.PrzyjmijMMClass.GetMmkas(); 
         }
 
-        private async void PrzypiszListe()
+        private async Task  PrzypiszListe()
         {
 
             try
             {
                 Model.PrzyjmijMMLista.przyjmijMMListas.Clear();
                // await _connection.CreateTableAsync<Model.PrzyjmijMMLista>();
-                foreach (var ss in Model.PrzyjmijMMClass.GetMmkas())
+                foreach (var ss in Model.PrzyjmijMMClass.ListOfTwrOnMM)
                 {
                     Model.PrzyjmijMMLista przyjmijMMLista = new Model.PrzyjmijMMLista();
                     przyjmijMMLista.twrkod = ss.twrkod;
@@ -53,7 +62,7 @@ namespace App2.View
                     przyjmijMMLista.XLGIDMM = ss.XLGIDMM;
                     przyjmijMMLista.Operator = View.LoginLista._user+" "+ View.LoginLista._nazwisko;
                     Model.PrzyjmijMMLista.przyjmijMMListas.Add(przyjmijMMLista);
-                   // await _connection.InsertAsync(przyjmijMMLista);
+                 
                 }
             }
             catch (Exception ex)

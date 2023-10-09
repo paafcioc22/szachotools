@@ -79,7 +79,7 @@ namespace App2.Model
 
 
 
-        public async Task getListMM(bool CzyZatwierdzone, int pastDays = 100)
+        public async Task getListMM(bool CzyZatwierdzone, int pastDays = 1000)
         {
             PrzyjmijMMClass przyjmijMM; 
 
@@ -171,15 +171,13 @@ namespace App2.Model
             return await serviceApi.GetGidNumerFromEANMM(BarCodeMM);
         }
 
-        public async Task GetlistMMElements(string KodEanMM = "", int gidnumer = 0)
-        {
+        //public async Task GetlistMMElements(string KodEanMM = "", int gidnumer = 0)
+        public async Task GetlistMMElementsAsync(  int trnId = 0)
+        { 
+            //if (!string.IsNullOrEmpty(KodEanMM))
+            //    trnId = await ReturnGidNumerFromEANMM(KodEanMM);
 
-            int trnId = 0;
-
-            if (!string.IsNullOrEmpty(KodEanMM))
-                trnId = await ReturnGidNumerFromEANMM(KodEanMM);
-
-            var dokumentWithEle = await serviceApi.GetDokMMWithElements(trnId, gidnumer);
+            var dokumentWithEle = await serviceApi.GetDokMMWithElements(trnId);
 
             try
             {

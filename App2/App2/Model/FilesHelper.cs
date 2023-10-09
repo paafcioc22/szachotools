@@ -34,7 +34,7 @@ namespace App2.Model
             string rtrnUrl = "";
             if (!string.IsNullOrEmpty(url))
             {
-                if (url.Contains("http://szachownica.com"))
+                if (url.Contains("://szachownica.com"))
                 {
                     rtrnUrl = url.Replace("large", otherSize.ToString());
                 }

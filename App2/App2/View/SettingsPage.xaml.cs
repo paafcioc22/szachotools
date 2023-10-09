@@ -225,8 +225,6 @@ namespace App2.View
                         await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
 
                 }
-
-                
                 
             }
             catch (Exception ex)
@@ -244,17 +242,26 @@ namespace App2.View
             {
                 var app = Application.Current as App;
                 //todo : skonfiguruj ustawienia
-                var options = new RestClientOptions($"http://{app.Serwer}")
+                if (!app.Serwer.Contains("/"))
                 {
-                    MaxTimeout = 10000 // 10 sekund
-                };
-                _client = new RestClient(options);  // re-inicjalizacja klienta
+                    var options = new RestClientOptions($"http://{app.Serwer}")
+                    {
+                        MaxTimeout = 10000 // 10 sekund
+                    }; 
+                    _client = new RestClient(options);  // re-inicjalizacja klienta
 
-                var request = new RestRequest("/api/test");
-                var response = await _client.GetAsync(request); 
+                    var request = new RestRequest("/api/test");
+                    var response = await _client.GetAsync(request);
 
-                var data = response.IsSuccessStatusCode;
-                return data;
+                    var data = response.IsSuccessStatusCode;
+                    return data;
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("uwaga", "zły adres serwera - zawiera '/'", "OK");
+                    return false;
+                }
+                
             }
             catch (HttpRequestException a)
             {

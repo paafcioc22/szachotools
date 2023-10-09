@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -48,12 +49,12 @@ namespace App2.View
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             //_connection.DropTableAsync<Model.AkcjeNagElem>();
             _nagElem = nagElem;
-            LoadList();
+            //LoadList();
             //GetListFromLocal( nagElem);
             //GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
         }
 
-        private async void LoadList()
+        private async Task LoadList()
         {
             IsSearching = true;
 
@@ -62,7 +63,7 @@ namespace App2.View
                 if (StartPage.CheckInternetConnection())
                 {
                     TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
-                    GetListFromLocal(_nagElem);
+                    TwrListLocal =await GetListFromLocal(_nagElem);
 
                     await _connection.CreateTableAsync<AkcjeNagElem>();
 
@@ -158,9 +159,9 @@ namespace App2.View
             ((ListView)sender).SelectedItem = null;
         }
 
-        private async void GetListFromLocal(List<Model.NagElem> lista)
+        private async Task<ObservableCollection<AkcjeNagElem>> GetListFromLocal(List<Model.NagElem> lista)
         {
-            TwrListLocal = new ObservableCollection<Model.AkcjeNagElem>();
+            var tmplista= new ObservableCollection<AkcjeNagElem>();
             //SumaList = new ObservableCollection<Model.AkcjeNagElem>();
             ServicePrzyjmijMM api = new ServicePrzyjmijMM();
 
@@ -177,7 +178,7 @@ namespace App2.View
                         {
                             foreach (var twr in twrList.Data)
                             {
-                                TwrListLocal.Add(new Model.AkcjeNagElem()
+                                tmplista.Add(new Model.AkcjeNagElem()
                                 {
                                     TwrKod = twr.Twr_Kod,
                                     TwrGidNumer = twr.Twr_Gidnumer,
@@ -186,11 +187,14 @@ namespace App2.View
                                     TwrStan = twr.Stan_szt
                                 });                                
                             }
+                           
                         }
                         else
                         {
                             await DisplayAlert("Uwaga", twrList.ErrorMessage, "OK");
                         }
+
+                        return tmplista;
 
                     }
                     catch (Exception exception)
@@ -198,13 +202,13 @@ namespace App2.View
                         await DisplayAlert("Uwaga", exception.Message, "OK");
                     }
                 }
-             
+                
             }
             else
             {
                 await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
             }
-
+            return tmplista;
         }
 
         private async Task<ObservableCollection<Model.AkcjeNagElem>> GetTwrListFromWeb(int _gidNumer)
@@ -373,7 +377,7 @@ namespace App2.View
         
         protected override async void OnAppearing()
         {
-
+            await LoadList();
             //TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
             //GetListFromLocal(_nagElem);
 

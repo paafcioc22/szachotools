@@ -101,7 +101,7 @@ namespace App2.View
 
                     _userTapped = true;
 
-                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM)); 
+                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(  mm.GIDdokumentuMM)); 
 
                     IsSearching = false;
 
@@ -188,7 +188,7 @@ namespace App2.View
                         return;
                     }
                     else {
-                        await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(EANKodMM, (int)MMgidNumer)); 
+                        await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM((int)MMgidNumer)); 
                     } 
                  
                 });
