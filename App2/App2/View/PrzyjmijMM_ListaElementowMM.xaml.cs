@@ -23,23 +23,24 @@ namespace App2.View
         {
             InitializeComponent();
 
-            Model.PrzyjmijMMClass.ListOfTwrOnMM.Clear();
             Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             _gidnumer = gidnumer;
             
-            tytul.Text = przyjmijMMClass.GetNrDokMmp;// mmp; 
+            // mmp; 
            
 
         }
 
         protected override async void OnAppearing()
         {
-            base.OnAppearing();
             PrzyjmijMMClass przyjmijMMClass= new PrzyjmijMMClass();
+            base.OnAppearing();
+            Model.PrzyjmijMMClass.ListOfTwrOnMM.Clear();
             await przyjmijMMClass.GetlistMMElementsAsync(_gidnumer); 
             await PrzypiszListe();
-            MyListView.ItemsSource = Model.PrzyjmijMMClass.GetMmkas(); 
+            MyListView.ItemsSource = PrzyjmijMMClass.GetMmkas();
+            tytul.Text = PrzyjmijMMClass.GetMmkas().First().GetNrDokMmp;
         }
 
         private async Task  PrzypiszListe()

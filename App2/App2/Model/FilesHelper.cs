@@ -60,10 +60,19 @@ namespace App2.Model
             // Pobieranie danych z pierwszego serwisu
             TwrInfo twrInfoFromOptima = new TwrInfo();
             var response = await client.ExecutePostAsync<List<TwrInfo>>(request);
+
+            var apiResponse = new ApiResponse<TwrInfo>
+            {
+                IsSuccessful = response.IsSuccessful
+            };
+
             if (response.IsSuccessful)
             {
-                twrInfoFromOptima = response.Data?.FirstOrDefault();
-
+                apiResponse.Data = response.Data?.FirstOrDefault();
+            }
+            else
+            {
+                apiResponse.ErrorMessage= string.Empty;
             }
 
             // Pobieranie danych z drugiego serwisu
@@ -71,7 +80,7 @@ namespace App2.Model
             var produkt = await Api.ExecSQLCommandAsync<TwrInfo>(Webquery);
             //var daneFromCentrala = await App.TodoManager.PobierzTwrAsync(Webquery);
 
-            if (produkt != null)
+            if (produkt.Any())
             {
                 var daneFromCentrala = produkt.First();
 
@@ -83,7 +92,7 @@ namespace App2.Model
                         Twr_Kod = twrInfoFromOptima.Twr_Kod ?? daneFromCentrala.Twr_Kod,
                         Twr_Gidnumer = twrInfoFromOptima.Twr_Gidnumer != 0 ? twrInfoFromOptima.Twr_Gidnumer : daneFromCentrala.Twr_Gidnumer,
                         Stan_szt = twrInfoFromOptima.Stan_szt,  // tutaj przyjmuję, że pierwszy serwis ma bardziej aktualne dane
-                        Twr_Url = twrInfoFromOptima.Twr_Url ?? daneFromCentrala.Twr_Url,
+                        Twr_Url = daneFromCentrala.Twr_Url ?? twrInfoFromOptima.Twr_Url,
                         Twr_Nazwa = twrInfoFromOptima.Twr_Nazwa ?? daneFromCentrala.Twr_Nazwa,
                         Twr_Symbol = twrInfoFromOptima.Twr_Symbol ?? daneFromCentrala.Twr_Symbol,
                         Twr_Ean = twrInfoFromOptima.Twr_Ean ?? daneFromCentrala.Twr_Ean,

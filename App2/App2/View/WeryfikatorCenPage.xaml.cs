@@ -191,10 +191,7 @@ namespace App2.View
                         var request = new RestRequest("/api/gettowar")
                               .AddJsonBody(karta);
 
-
-                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
-            
-
+                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);     
 
                         twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client); 
 

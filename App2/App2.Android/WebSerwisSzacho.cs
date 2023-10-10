@@ -15,10 +15,10 @@ namespace App2.Droid
 {
     public sealed class WebSerwisSzacho : IMagazynSerwis
     {
-        public ObservableCollection<Magazynn> Items { get; private set; } 
-        public List<TwrInfo> TwrkodList { get; private set; } 
-        public ObservableCollection<AkcjeNagElem> AkcjeGidNazwaList { get; private set; } 
-            
+        public ObservableCollection<Magazynn> Items { get; private set; }
+        public List<TwrInfo> TwrkodList { get; private set; }
+        public ObservableCollection<AkcjeNagElem> AkcjeGidNazwaList { get; private set; }
+
         public WebSzacho.CDNOffLineSrv client;
 
         public WebSerwisSzacho()
@@ -37,7 +37,7 @@ namespace App2.Droid
             };
         }
         #endregion
-        public async Task<ObservableCollection<Magazynn>> GetAllCustomers(string  criteria = null)
+        public async Task<ObservableCollection<Magazynn>> GetAllCustomers(string criteria = null)
         {
             return await Task.Run(() =>
             {
@@ -48,22 +48,23 @@ namespace App2.Droid
                 xmlDoc.LoadXml(respone);
 
                 TextReader reader = new StringReader(respone);
-                
-                    XmlSerializer serializer = new XmlSerializer(typeof(MagazynLista));
-                    MagazynLista maglista = (MagazynLista)serializer.Deserialize(reader);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(MagazynLista));
+                MagazynLista maglista = (MagazynLista)serializer.Deserialize(reader);
 
                 foreach (var mag in maglista.MagazynList)
                 {
-                      Items.Add(new Magazynn{
-                       Id = mag.Id,
-                       Magazyn = mag.Magazyn,
-                       Region = mag.Region,
-                       Ilosc = mag.Ilosc,
-                       MagKod=mag.MagKod
+                    Items.Add(new Magazynn
+                    {
+                        Id = mag.Id,
+                        Magazyn = mag.Magazyn,
+                        Region = mag.Region,
+                        Ilosc = mag.Ilosc,
+                        MagKod = mag.MagKod
                     });
                 }
                 return Items;
-             });
+            });
         }
 
         string odp;
@@ -76,24 +77,24 @@ namespace App2.Droid
                     var InsertString = $"cdn.PC_InsertRaportDostaw " +
                     $"{lista.XLGidMM}," +
                     $"{lista.GidMagazynu}," +
-                    $"'{lista.NrDokumentu}',"+
-                    $"'{lista.Operator}',"+
-                    $"'{lista.twrkod}',"+
-                    $"{lista.IleZMM},"+
-                    $"{lista.IleZeSkan},"+
-                    $"{lista.ilosc},"+
+                    $"'{lista.NrDokumentu}'," +
+                    $"'{lista.Operator}'," +
+                    $"'{lista.twrkod}'," +
+                    $"{lista.IleZMM}," +
+                    $"{lista.IleZeSkan}," +
+                    $"{lista.ilosc}," +
                     $"'{lista.DataDokumentu}'";
-                    
+
                     var respone = client.ExecuteSQLCommand(InsertString);
-                    
+
                     odp = respone;
-                    odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>","");
+                    odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
                 }
                 return odp;
             });
         }
 
-         
+
 
         public async Task<TwrInfo> PobierzTwr(string ean)
         {
@@ -123,13 +124,13 @@ namespace App2.Droid
                 // Obsługa błędów - możesz zalogować błąd lub zgłosić go wyżej
                 throw new Exception("Wystąpił błąd podczas pobierania informacji o produkcie.", ex);
             }
-       
+
         }
 
 
         Wersja wersja;
 
-        
+
 
 
         public string _wersja;
@@ -139,13 +140,13 @@ namespace App2.Droid
             return await Task.Run(() =>
             {
                 wersja = new Wersja();
-                var respone =   client.ExecuteSQLCommand("cdn.PC_SprawdzWersje");
+                var respone = client.ExecuteSQLCommand("cdn.PC_SprawdzWersje");
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(respone);
 
                 TextReader reader = new StringReader(respone);
 
-                XmlSerializer serializer = new XmlSerializer(typeof(AppVersionList)); 
+                XmlSerializer serializer = new XmlSerializer(typeof(AppVersionList));
 
                 AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader);
 
@@ -156,7 +157,7 @@ namespace App2.Droid
 
 
                 _wersja = odczytaj.wersja[0].VersionApp;
-                     
+
                 return _wersja;
                 //return ver;
             });
@@ -192,7 +193,7 @@ namespace App2.Droid
                         Ake_ElemLp = akcje.Ake_ElemLp,
                         Ake_FiltrSQL = akcje.Ake_FiltrSQL,
                         AkN_DataStart = datastart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                        AkN_DataKoniec = datakoniec.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), 
+                        AkN_DataKoniec = datakoniec.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                         Ake_NazwaFiltrSQL = akcje.Ake_NazwaFiltrSQL,
                         TwrKod = akcje.TwrKod,
                         TwrNazwa = akcje.TwrNazwa,
@@ -214,7 +215,7 @@ namespace App2.Droid
             });
         }
 
-        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie,Int16 magnumer,string ase_operator)
+        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magnumer, string ase_operator)
         {
 
             try
@@ -253,10 +254,10 @@ namespace App2.Droid
         {
             ObservableCollection<T> res = new ObservableCollection<T>();
             return await Task.Run(() =>
-            {                  
+            {
                 var respone = client.ExecuteSQLCommand(query);
 
-                return  DeserializeFromXml<T>(respone);
+                return DeserializeFromXml<T>(respone);
 
             });
         }
@@ -287,11 +288,11 @@ namespace App2.Droid
             public string VersionApp { get; set; }
         }
 
-       
+
         [XmlRoot("ROOT")]
         public class AppVersionList
         {
-            [XmlElement("Table", typeof(Wersja))] 
+            [XmlElement("Table", typeof(Wersja))]
             public List<Wersja> wersja { get; set; }
 
         }

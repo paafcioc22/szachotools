@@ -25,10 +25,10 @@ namespace App2.Model
         private bool _isExport { set; get; }
 
 
-        private static string _serwer;
-        private static string _database;
-        private static string _uid;
-        private static string _pwd;
+        //private static string _serwer;
+        //private static string _database;
+        //private static string _uid;
+        //private static string _pwd;
    
         public static ObservableCollection<DokMM> dokMMs = new ObservableCollection<DokMM>();
         //public static ObservableCollection<DokNaglowekDto> dokMMsDto = new ObservableCollection<DokNaglowekDto>();
@@ -88,13 +88,7 @@ namespace App2.Model
 
         public DokMM()
         {
-            var app = Application.Current as App;
-            _serwer = app.Serwer;
-            _database = app.BazaProd;
-            _uid = app.User;
-            _pwd = app.Password;
-
-             
+           
 
         }
 

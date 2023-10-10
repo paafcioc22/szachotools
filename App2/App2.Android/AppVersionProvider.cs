@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Android.App;
+﻿
+
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using App2.Droid;
 using App2.Model;
+using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Text.RegularExpressions;
+
 
 [assembly: Dependency(typeof(AppVersionProvider))]
 namespace App2.Droid
@@ -23,8 +20,9 @@ namespace App2.Droid
         {
             get
             {
+
                 var context = Android.App.Application.Context;
-                var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
+                var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
 
                 return $"{info.VersionName}";
             }
@@ -35,7 +33,7 @@ namespace App2.Droid
             get
             {
                 var context = Android.App.Application.Context;
-                var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
+                var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
 
                 return info.LongVersionCode;
             }

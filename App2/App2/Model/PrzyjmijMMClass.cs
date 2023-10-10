@@ -91,7 +91,7 @@ namespace App2.Model
 
                 if (listaMM.IsSuccessful)
                 {
-                    foreach (var item in listaMM.Data)
+                    foreach (var item in listaMM.Data.OrderByDescending(s=>s.DataMM))
                     {
                         przyjmijMM = new PrzyjmijMMClass()
                         {
@@ -107,12 +107,8 @@ namespace App2.Model
                         var tmpMM = await PobierzSatus(przyjmijMM);
 
                         ListaMMDoPrzyjcia.Add(tmpMM);
-                    }
-
-                  
-                }
-
-
+                    }  
+                } 
 
             }
             catch (Exception s)
@@ -181,7 +177,6 @@ namespace App2.Model
 
             try
             {
-
                 foreach (var ele in dokumentWithEle.Elementy)
                 {
 
@@ -200,10 +195,8 @@ namespace App2.Model
                         XLGIDMM = dokumentWithEle.Trn_Gidnumer,
                         cena = ele.Twr_Cena.ToString(),
                         ean = ele.Twr_Ean.ToString()
-                    }
-                    );
+                    });
                 }
-
 
             }
             catch (Exception)

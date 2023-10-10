@@ -65,7 +65,7 @@
             </ListView.ItemTemplate> 
         </ListView>
         <!--<Label Text="" x:Name="lbl_komunikat" HorizontalOptions="Center" VerticalOptions="Center" />-->
-        <Button Text="Wyślij raport do Centrali" Clicked="Btn_SendRaport_Clicked" HorizontalOptions="FillAndExpand"/>
+        <Button Text="Wyślij raport do Centrali" Clicked="Btn_SendRaport_Clicked" HorizontalOptions="FillAndExpand" x:Name="btn_sendraport"/>
     </StackLayout>
 
     <!--<ListView x:Name="list" 

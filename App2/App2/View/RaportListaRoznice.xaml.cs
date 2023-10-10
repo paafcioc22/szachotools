@@ -314,7 +314,8 @@ namespace App2.View
         private async void Btn_SendRaport_Clicked(object sender, EventArgs e)
         {
 
-             var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
+            btn_sendraport.IsEnabled = false;
+            var action = await DisplayAlert(null, "Czy chcesz wysłać raport?", "Tak", "Nie");
             try
             {
 
@@ -325,7 +326,8 @@ namespace App2.View
                         var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
                         if (Maglista.ToString() == "OK")
                         {
-                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+                           // btn_sendraport
+                           await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
 
                             var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
 
@@ -369,6 +371,10 @@ namespace App2.View
                             await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
                         }
                     }
+                }
+                else
+                {
+                    btn_sendraport.IsEnabled = true;
                 }
             }
             catch (Exception x)

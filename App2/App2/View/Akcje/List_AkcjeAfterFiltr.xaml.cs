@@ -15,23 +15,22 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeAfterFiltr : ContentPage
     {
-        public ObservableCollection<Model.AkcjeNagElem> Items;
+        public ObservableCollection<AkcjeNagElem> Items { get; set; }
         IList<Model.AkcjeNagElem> _listatwr;
        
 
-        public List_AkcjeAfterFiltr(IList<Model.AkcjeNagElem> nowa)
+        public List_AkcjeAfterFiltr(IList<AkcjeNagElem> nowa)
         {
-            Items = new ObservableCollection<Model.AkcjeNagElem>();
           
             InitializeComponent();
-            BindingContext = this;
+            Items = new ObservableCollection<AkcjeNagElem>();
+            //Items = Convert(nowa);
+            //BindingContext = this;
             _listatwr = nowa;
-            Items = Convert(nowa);
-
-            var app = Application.Current as App;
+             
          
             //czyscPamiec();
-            MyListView.ItemsSource = Items;
+            //MyListView.ItemsSource = Items;
             ToggleScreenLock();
         }
 
@@ -53,10 +52,22 @@ namespace App2.View
         {
             base.OnAppearing();
             BindingContext = this;
-             
-            var tmp= Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
-            MyListView.ItemsSource = Convert(tmp); 
-           
+
+            //var tmp= Items.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
+            ////MyListView.ItemsSource = Convert(tmp); 
+
+            //Items = Convert(tmp);
+
+            //Items = new ObservableCollection<AkcjeNagElem>();
+
+            var tmp = _listatwr.OrderByDescending(x => x.TwrStan - x.TwrSkan).ToList();
+
+            Items.Clear();
+            foreach (var item in tmp)
+            {
+                Items.Add(item);
+            }
+
         }
 
 
@@ -124,6 +135,24 @@ namespace App2.View
             ToggleScreenLock();
 
             return base.OnBackButtonPressed();
+        }
+
+        private void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_istapped)
+                return;
+
+            _istapped = true;
+            var currentItem = e.CurrentSelection.FirstOrDefault() as AkcjeNagElem; // Zamień TwojTyp na faktyczny typ Twojego obiektu
+
+            if (currentItem != null)
+            {
+                // Otwórz nowe okno i przekaż currentItem jako parametr
+                Navigation.PushAsync(new List_ScanPage(currentItem));
+            }
+            _istapped = false;
+
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

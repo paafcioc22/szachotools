@@ -7,27 +7,76 @@
              >
 
 
-
-
-
     <StackLayout Padding="10">
         <StackLayout  Orientation="Horizontal" BackgroundColor="DarkCyan" >
             <Label Text="Kod" TextColor="Beige" HorizontalOptions="StartAndExpand" FontSize="15" Margin="20,0,0,0"/>
             <Label Text="Skanowane/Stan" TextColor="Beige" HorizontalOptions="End" FontSize="15" Margin="0,0,80,0"/>
         </StackLayout>
 
+        <CollectionView ItemsSource="{Binding Items}"  x:Name="MyListView" SelectionMode="Single"
+                SelectionChanged="MyListView_SelectionChanged"   >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*" />
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="0.3*" />
+                        </Grid.ColumnDefinitions>
 
-        <ListView x:Name="MyListView" RowHeight="130" 
+                        <!-- Definiowanie wierszy -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.2*"/>
+                            <RowDefinition Height="0.2*"/>
+                            <RowDefinition Height="0.1*"/>
+                            <RowDefinition Height="0.1*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="{Binding TwrKod}" Grid.Column="0" Grid.Row="0" FontAttributes="Bold" />
+                        <Label Text="{Binding TwrNazwa}" Grid.Column="0" Grid.Row="1" />
+                        <Label Text="{Binding TwrEan}" Grid.Column="0" Grid.Row="2" />
+                        <Label Text="{Binding TwrSymbol}" Grid.Column="0" Grid.Row="3"  />
+                        <Label HorizontalTextAlignment="End" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"  >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TwrSkan }" 
+                                              FontSize="20" 
+                                              TextColor="Black" />
+                                    <Span Text="{Binding TwrStan,StringFormat='/{0}'}" 
+                                              FontSize="20" 
+                                              FontFamily="Arial"
+                                              TextColor="Black"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label Text="{Binding TwrCena, StringFormat='{0}zł'}"  FontSize="16"   HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" />
+
+                        <ffimageloading:CachedImage Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" VerticalOptions="FillAndExpand"
+                                Source="{Binding TwrUrl}"
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended" 
+                            
+                            Aspect="AspectFill"
+                            />
+                       
+                   
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+        <!--<ListView x:Name="MyListView" RowHeight="130" 
                 ItemsSource="{Binding Items}"
                 BindingContext="{Binding Items}"
                 ItemTapped="Handle_ItemTapped"
-                CachingStrategy="RecycleElement">
+                CachingStrategy="RetainElement">
 
-            <!--Built in Cells-->
-
-
-            <!--Custom View Cells-->
-
+       
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -57,35 +106,7 @@
                                        AbsoluteLayout.LayoutFlags="All"
                                        HorizontalTextAlignment="Start"
                                        />
-                            <!--</StackLayout>-->
-
-
-                            <!--<StackLayout Padding="0"
-                                FlexLayout.AlignSelf="Center" 
-                                         FlexLayout.Grow="0" 
-                                         FlexLayout.Basis="30%" 
-                                         Orientation="Vertical" 
-                                         VerticalOptions="Center"   
-                                         Spacing="0" >-->
-                            <!--<StackLayout Orientation="Horizontal" Spacing="0" HorizontalOptions="StartAndExpand" Padding="0"
-                                       AbsoluteLayout.LayoutBounds="0.7,0.1,.25,.5"
-                                       AbsoluteLayout.LayoutFlags="All"
-                                      >-->
-                            
-                            <!--<Label Text="{Binding TwrSkan }" FontSize="20" 
-                                       TextColor="Black"  
-                                       HorizontalTextAlignment="End" 
-                                       VerticalTextAlignment="Start"
-                                       AbsoluteLayout.LayoutBounds="0.55,0.1,.10,.5"
-                                       AbsoluteLayout.LayoutFlags="All"  
-                                />-->
-                            <!--<Label Text="{Binding TwrStan,StringFormat='/{0}'}" FontSize="20" FontFamily="Arial"
-                                       TextColor="Black"
-                                       HorizontalTextAlignment="Start" 
-                                       VerticalTextAlignment="Start" 
-                                       AbsoluteLayout.LayoutBounds="0.70,0.1,.15,.5"
-                                       AbsoluteLayout.LayoutFlags="All" Margin="0,0,5,0"
-                                 />-->
+             
                             <Label HorizontalTextAlignment="End"  
                                     VerticalTextAlignment="Start"
                                     AbsoluteLayout.LayoutBounds="0.65,0.1,.25,.5"
@@ -126,7 +147,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
 
-        </ListView>
+        </ListView>-->
         <Frame  HasShadow="true" 
                                 Margin="5" 
                                 BorderColor="DarkCyan"   

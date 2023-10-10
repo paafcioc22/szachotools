@@ -1635,7 +1635,7 @@ namespace App2.View
                             _akcja.TwrSkan = ile_zeskanowancyh;
                         if (_akcja.IsSendData)
                             SendDataSkan();
-                        await Navigation.PopModalAsync();
+                        await Navigation.PopAsync();
                     }
                     else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
                 else await DisplayAlert("Uwaga", "Błędna wartość", "OK");
