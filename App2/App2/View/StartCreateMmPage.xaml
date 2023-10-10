@@ -21,10 +21,10 @@
                 <Label Text="Opis" HorizontalOptions="CenterAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="Center"/>
                 <Label Text="Export?" HorizontalOptions="EndAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="End"/>
 
-            </StackLayout> 
-            
+            </StackLayout>
+
         </StackLayout>
-        <ListView x:Name="ListaMMek"  x:FieldModifier="public" 
+        <ListView x:Name="ListaMMek"  x:FieldModifier="public" ItemsSource="{Binding DokNaglowekDtos}"
                   ItemTapped="ListaMMek_ItemTapped" SeparatorColor="DeepSkyBlue" SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement" 
                   HasUnevenRows="True"  
@@ -36,26 +36,27 @@
                             <MenuItem Text="Usuń" Clicked="Delete_Clicked" IsDestructive="True" CommandParameter="{Binding .}"/>
                         </ViewCell.ContextActions>
                         <StackLayout Padding="10" Orientation="Horizontal">
-                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                    <Label Text="{Binding Mag_Nrdok}" TextColor="{Binding statuss, Converter={StaticResource Key=StringToColorConverter}}" Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
-                                    <Label Text="{Binding opis}" Font="14"/> 
-                                </StackLayout>
+                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label Text="{Binding NumerDokumentu}" TextColor="{Binding IsFinish, Converter={StaticResource Key=StringToColorConverter}}" FontFamily="MarkerFelt-Thin" FontAttributes="Bold" FontSize="16"/>
+                                <Label Text="{Binding Opis}" FontSize="14"/>
+                                <Label Text="{Binding MagKod}" FontSize="14"/>
+                            </StackLayout>
                             <CheckBox   x:Name="boxIsExport" HorizontalOptions="End"
                                       Color="#166B0A"   Scale="2"
                                       CheckedChanged="CheckBox_CheckedChanged"  
                                       IsChecked="{Binding IsExport}" 
                                       >
-								<!--<CheckBox.BindingContext>
+                                <!--<CheckBox.BindingContext>
 									<Model:DokMM/>
 								</CheckBox.BindingContext>-->
                             </CheckBox>
                         </StackLayout>
                     </ViewCell>
-                     
+
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" Image="add48x2.png" ContentLayout="right,10"/>
+        <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10"/>
         <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
     </StackLayout>
 </ContentPage>

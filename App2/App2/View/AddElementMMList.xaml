@@ -45,18 +45,18 @@
                                 <!--<MenuItem Text="Usuń" Clicked="Delete_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>-->
                             </ViewCell.ContextActions  >
                             <StackLayout Orientation="Horizontal" >
-                                <Label Text="{Binding opis}" FontSize="25"  TextColor="#47BFA7" FontAttributes="Bold"
+                                <Label Text="{Binding Lp}" FontSize="25"  TextColor="#47BFA7" FontAttributes="Bold"
                                        VerticalOptions="Center" WidthRequest="30" HorizontalOptions="Center"/>
                                 <StackLayout Spacing="1" Padding="5">
-                                    <Label Text="{Binding twrkod} "  TextColor="DarkCyan" FontAttributes="Bold"/>
-                                    <Label Text="{Binding twrNazwa} "  TextColor="DarkCyan" FontAttributes="Italic"/> 
+                                    <Label Text="{Binding TwrKod} "  TextColor="DarkCyan" FontAttributes="Bold"/>
+                                    <Label Text="{Binding TwrNazwa} "  TextColor="DarkCyan" FontAttributes="Italic"/> 
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding szt, StringFormat= '{0} szt'}"  
+                                        <Label Text="{Binding TwrIlosc, StringFormat= '{0} szt'}"  
                                            Style="{DynamicResource ListItemDetailTextStyle}" 
                                             FontAttributes="Italic"/>
-                                        <Label Text="{Binding symbol , StringFormat= '- {0} -'}"   
+                                        <!--<Label Text="{Binding symbol , StringFormat= '- {0} -'}"   
                                            Style="{DynamicResource ListItemDetailTextStyle}" 
-                                           FontAttributes="Italic" Margin="6,0"   />
+                                           FontAttributes="Italic" Margin="6,0"   />-->
                                     </StackLayout>
                                 </StackLayout>
                             </StackLayout>
@@ -67,13 +67,13 @@
 
         </StackLayout>
         <StackLayout  Padding="20,0,20,5">
-            <Button Text="Zapisz Zmiany" Image="save48x2.png"  
+            <Button Text="Zapisz Zmiany" ImageSource="save48x2.png"  
                 x:Name="_btnSave"
                 ContentLayout="Right,10"
                 Clicked="BtnSave_Clicked"
                 HorizontalOptions="FillAndExpand"
                 />
-            <Button Text="Dodaj pozycję" Image="add48x2.png"  
+            <Button Text="Dodaj pozycję" ImageSource="add48x2.png"  
                 x:Name="_btnAddElement"
                 ContentLayout="Right,10"
                 Clicked="BtnAddPosition_Clicked"

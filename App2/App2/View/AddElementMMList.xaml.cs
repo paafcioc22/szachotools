@@ -16,18 +16,18 @@ namespace App2.View
     {
         //public ObservableCollection<string> Items { get; set; }
        
-        public Int32 gidnumer;
-        public Int32 Id;
+        public Int32 gidnumerXl;
+        public Int32 dokumentId;
         private bool bufor;
         ServiceDokumentyApi apiService;
         public AddElementMMList(DokNaglowekDto mmka)
         {
             InitializeComponent();
             apiService= new ServiceDokumentyApi();  
-            _magDcl.Text = mmka.MagKod + (mmka.NumerDokumentu == "" ? "" : " - " + mmka.NumerDokumentu);
-            _magDcl.IsEnabled = (mmka.NumerDokumentu == "" ? true : false);
-            _magDcl.TextColor = (mmka.NumerDokumentu == "" ? Color.Bisque : Color.LightCyan);
-            //_magDcl.InputTransparent= (mmka.nrdok == "" ? true : false);
+            _magDcl.Text = mmka.MagKod + (string.IsNullOrEmpty(mmka.NumerDokumentu) ? "" : " - " + mmka.NumerDokumentu);
+            _magDcl.IsEnabled = (string.IsNullOrEmpty(mmka.NumerDokumentu)  ? true : false);
+            _magDcl.TextColor = (string.IsNullOrEmpty(mmka.NumerDokumentu) ? Color.Bisque : Color.LightCyan);
+  
             _magDcl.WidthRequest = (mmka.NumerDokumentu == "" ? 70 : 300);
             _opis.Text = mmka.Opis  ;
             _opis.IsEnabled = (mmka.NumerDokumentu == "" ? true : false);
@@ -35,9 +35,9 @@ namespace App2.View
             _opis.WidthRequest = 300;
             _btnAddElement.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
             _btnSave.IsEnabled = ((bool)!mmka.IsFinish ? true : false);
-            //lbl_listatwr.Text=()
-            gidnumer = (int)mmka.GidNumerXl;
-            Id = mmka.Id;
+    
+            gidnumerXl =  mmka.GidNumerXl==null ? 0: (int)mmka.GidNumerXl;
+            dokumentId = mmka.Id;
             bufor = !Convert.ToBoolean(mmka.IsFinish);
             ListaElementowMM.ItemsSource = ServiceDokumentyApi.DokElementsDtos;
        
@@ -75,7 +75,7 @@ namespace App2.View
 
                         var mmka = e.Item as DokElementDto;
                         ((ListView)sender).SelectedItem = null;
-                        await Navigation.PushModalAsync(new View.AddTwrPage(mmka));
+                        await Navigation.PushModalAsync(new View.AddTwrPage(mmka, dokumentId));
 
                         break;
                     case "Pokaż zdjęcie":
@@ -126,7 +126,7 @@ namespace App2.View
         private async void BtnAddPosition_Clicked(object sender, EventArgs e)
         {
            
-            await Navigation.PushModalAsync(new View.AddTwrPage(gidnumer));
+            await Navigation.PushModalAsync(new View.AddTwrPage(dokumentId));
         }
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
@@ -134,13 +134,14 @@ namespace App2.View
          
             DokNaglowekDto dokmm = new DokNaglowekDto()
             {
-                GidNumerXl= gidnumer,
+                GidNumerXl= gidnumerXl,
+
                 MagKod= _magDcl.Text,
                 Opis= _opis.Text,
             };
 
          
-            var odp = await apiService.UpdateDokMm(Id, dokmm);
+            var odp = await apiService.UpdateDokMm(dokumentId, dokmm);
 
             await apiService.GetDokAll(GidTyp.Mm,false); 
  
@@ -149,6 +150,13 @@ namespace App2.View
             StartCreateMmPage startCreateMmPage = new StartCreateMmPage();
         
              
+
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await apiService.GetDokWithElementsById(dokumentId);
 
         }
 

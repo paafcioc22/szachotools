@@ -1111,23 +1111,38 @@ namespace App2.View
 
                             //todo : cennik zmienna
                             var produkt = await FilesHelper.GetCombinedTwrInfo(_ean, 2, request, _client);
+                            if(produkt != null)
+                            {
+                                if (produkt.Twr_Ean == _ean)
+                                {
+                                    twrkod = produkt.Twr_Kod;
+                                    twr_ean = produkt.Twr_Ean;
+                                    twr_symbol = produkt.Twr_Symbol;
+                                    twr_nazwa = produkt.Twr_Nazwa;
+                                    twr_cena = produkt.Twr_Cena.ToString();
+                                    stan_szt = produkt.Stan_szt.ToString();
+                                    twr_url = produkt.Twr_Url;
 
-                            twrkod = produkt.Twr_Kod;
-                            twr_ean = produkt.Twr_Ean;
-                            twr_symbol= produkt.Twr_Symbol;
-                            twr_nazwa = produkt.Twr_Nazwa;
-                            twr_cena = produkt.Twr_Cena.ToString();
-                            stan_szt = produkt.Stan_szt.ToString();
-                            twr_url=produkt.Twr_Url;
-
-                            entry_kodean.Text = twrkod;
-                            lbl_ean.Text = twr_ean;
-                            lbl_symbol.Text = twr_symbol;
-                            lbl_nazwa.Text = twr_nazwa;
-                            lbl_cena.Text = twr_cena;
-                            lbl_stan.Text = "Stan : " + stan_szt;
-                            if (!string.IsNullOrEmpty(twr_url))
-                                img_foto.Source = twr_url.Replace("Miniatury/", "").Replace("small", "home"); //twr_url;
+                                    entry_kodean.Text = twrkod;
+                                    lbl_ean.Text = twr_ean;
+                                    lbl_symbol.Text = twr_symbol;
+                                    lbl_nazwa.Text = twr_nazwa;
+                                    lbl_cena.Text = twr_cena;
+                                    lbl_stan.Text = "Stan : " + stan_szt;
+                                    if (!string.IsNullOrEmpty(twr_url))
+                                        img_foto.Source = twr_url.Replace("Miniatury/", "").Replace("small", "home"); //twr_url;
+                                }
+                                else
+                                {
+                                    await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EAN, ale kod {twrkod} jest najblizej", "OK");
+                                }
+                                
+                            }
+                            else
+                            {
+                                await DisplayAlert(null, "Nie znaleziono towaru", "OK");
+                            }
+                            
 
                         }
                         catch (Exception)

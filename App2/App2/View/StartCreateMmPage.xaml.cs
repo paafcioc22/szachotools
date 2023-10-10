@@ -19,18 +19,30 @@ namespace App2.View
 
             dokumentyApi = new ServiceDokumentyApi();
 
-            BindingContext = ServiceDokumentyApi.DokNaglowekDtos; //DokMMViewModel.dokMMs; 
-            ListaMMek.ItemsSource = ServiceDokumentyApi.DokNaglowekDtos;// DokMMViewModel.dokMMs;           
+            BindingContext = dokumentyApi; //DokMMViewModel.dokMMs; 
+
+            
+
+            //ListaMMek.ItemsSource = ServiceDokumentyApi.DokNaglowekDtos;// DokMMViewModel.dokMMs;           
            
         }
-       
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            dokumentyApi.DokNaglowekDtos.Clear ();
+            await dokumentyApi.GetDokAll(GidTyp.Mm, false);
+
+        }
+
 
         private async void Btn_AddMm_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new View.AddMMPage());
 
         
-            ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;
+            //ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;
         }
 
         private void Button_Clicked_3(object sender, EventArgs e)
@@ -48,7 +60,7 @@ namespace App2.View
             
                 ((ListView)sender).SelectedItem = null;
 
-                await dokumentyApi.GetDokWithElementsById(mmka.Id);
+                //await dokumentyApi.GetDokWithElementsById(mmka.Id);
                 await Navigation.PushModalAsync(new View.AddElementMMList(mmka));
     
             }
@@ -60,7 +72,7 @@ namespace App2.View
             if (action)
             {
                 var usunMM = (sender as MenuItem).CommandParameter as DokNaglowekDto;
-                ServiceDokumentyApi.DokNaglowekDtos.Remove(usunMM);
+                dokumentyApi.DokNaglowekDtos.Remove(usunMM);
                 await dokumentyApi.DeleteDokument(usunMM.Id);
             }
         } 
@@ -83,7 +95,7 @@ namespace App2.View
             //model.
 
             //todo : sprawdz czy export dziala
-            //var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
+            var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
 
             //Model.DokMM dokMM = new Model.DokMM();
             //dokMM.gidnumer = model.gidnumer;

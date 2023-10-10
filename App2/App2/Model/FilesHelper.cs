@@ -1,9 +1,11 @@
 ﻿using App2.Model.ApiModel;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiLib.Serwis;
@@ -58,7 +60,7 @@ namespace App2.Model
         public static async Task<TwrInfo> GetCombinedTwrInfo(string _ean, int NrCennika, RestRequest request, IRestClient client)
         {
             // Pobieranie danych z pierwszego serwisu
-            TwrInfo twrInfoFromOptima = new TwrInfo();
+            TwrInfo twrInfoFromOptima = null;
             var response = await client.ExecutePostAsync<List<TwrInfo>>(request);
 
             var apiResponse = new ApiResponse<TwrInfo>
@@ -69,10 +71,11 @@ namespace App2.Model
             if (response.IsSuccessful)
             {
                 apiResponse.Data = response.Data?.FirstOrDefault();
+                twrInfoFromOptima = apiResponse.Data;
             }
             else
             {
-                apiResponse.ErrorMessage= string.Empty;
+                
             }
 
             // Pobieranie danych z drugiego serwisu

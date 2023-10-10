@@ -41,11 +41,12 @@ namespace App2.View
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
         ZXingScannerView zxing;
-        ServiceDokumentyApi serwisApi = new ServiceDokumentyApi();
+        ServiceDokumentyApi serwisApi; 
         private readonly DokElementDto elementDto;
 
         public AddTwrPage(int gidnumer) //dodawamoe pozycji
         {
+            serwisApi= new ServiceDokumentyApi();
             this.Title = "Dodaj MM";
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stackLayout = new StackLayout();
@@ -151,12 +152,17 @@ namespace App2.View
 
         }
 
-        public AddTwrPage(DokElementDto _elementDto) //edycja
+        public AddTwrPage(DokElementDto _elementDto, int _dokumnetId) //edycja
         {
             this.Title = "Dodaj MM";
 
-            this.elementDto = _elementDto;
+            var app = Application.Current as App;
 
+            _client = new RestClient($"http://{app.Serwer}");  
+
+            serwisApi = new ServiceDokumentyApi();
+            this.elementDto = _elementDto;
+            dokumentId = _dokumnetId;
             StackLayout stackLayout = new StackLayout();
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stack_naglowek = new StackLayout();
@@ -248,6 +254,7 @@ namespace App2.View
 
         public AddTwrPage(DokElementDto _elementDto, string CzyFoto = null)
         {
+            serwisApi = new ServiceDokumentyApi();
             this.Title = "Dodaj MM";
             StackLayout stackLayout_gl = new StackLayout();
             StackLayout stackLayout = new StackLayout();
@@ -296,10 +303,11 @@ namespace App2.View
                         DokTyp = (int)GidTyp.Mm,
                         TwrIlosc = iloscSkanowana,
                         TwrKod = twr_info.Twr_Kod,
-                        TwrNazwa = twr_info.Twr_Nazwa
+                        TwrNazwa = twr_info.Twr_Nazwa,
+                        Id = elementDto.Id
                     };
 
-                    var resposne = await serwisApi.UpadteElement(iloscSkanowana, elementDto.DokNaglowekId, elementDto.Id);
+                    var resposne = await serwisApi.UpadteElement(iloscSkanowana, dokumentId, elementDto.Id);
                     if (resposne.IsSuccessful)
                     {
                         await DisplayAlert("Dodano..", $"{iloscSkanowana} szt", "OK");
@@ -331,8 +339,7 @@ namespace App2.View
             //int iloscSkanowana = 0;
             CreateDokElementDto createElementDto;
 
-            if (!string.IsNullOrEmpty(ilosc.Text) &&
-                !string.IsNullOrEmpty(kodean.Text))
+            if (!string.IsNullOrEmpty(ilosc.Text) && !string.IsNullOrEmpty(kodean.Text))
             {
                 Int32.TryParse(ilosc.Text, out int iloscSkanowana);
 
@@ -351,9 +358,9 @@ namespace App2.View
                 else
                 {                  
 
-                    var apiResponse = await serwisApi.SaveElement(createElementDto, elementDto.DokNaglowekId);
+                    var apiResponse = await serwisApi.SaveElement(createElementDto, dokumentId);
 
-                    if (await serwisApi.ExistsOtherDocs(kodean.Text, elementDto.DokNaglowekId))
+                    if (await serwisApi.ExistsOtherDocs(kodean.Text, dokumentId))
                         await DisplayAlert("Ostrzeżenie", "Dodawany towar znajduje się już na innej MM", "OK");
 
                     //int IleIstnieje = dokMM.SaveElement(dokMM);
@@ -491,6 +498,7 @@ namespace App2.View
         {
             await ZapiszPozycje();
 
+
         }
 
 
@@ -606,7 +614,7 @@ namespace App2.View
             var karta = new TwrKodRequest()
             {
                 Twrcenaid = 3,//todo : to powinna być cena z ustawienia
-                Twrkod = "",
+            
                 Twrean = _ean
             };
 

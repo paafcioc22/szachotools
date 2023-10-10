@@ -40,5 +40,7 @@ namespace App2.Model.ApiModel
 
         [XmlElement("cena1")]
         public decimal Twr_Cena1 { get; set; }
+        [XmlElement("cena30")]
+        public decimal Twr_Cena30 { get; set; }
     }
 }

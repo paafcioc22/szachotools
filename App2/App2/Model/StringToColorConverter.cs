@@ -7,21 +7,21 @@ namespace LabelTextColorSample
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int valueAsString = (Int16)value;
+            bool valueAsString = (bool)value;
             switch (valueAsString)
             {
-                case (1):
+                case (true):
                     {
                         return Color.Black;
                     }
-                case (0):
+                case (false):
                     {
                         return Color.Green;
                     }
-                default:
-                    {
-                        return Color.Green;//FromHex(value.ToString());
-                    }
+                //default:
+                //    {
+                //        return Color.Green;//FromHex(value.ToString());
+                //    }
             }
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

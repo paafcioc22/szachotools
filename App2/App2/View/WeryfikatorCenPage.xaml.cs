@@ -195,9 +195,13 @@ namespace App2.View
 
                         twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client); 
 
-                    }    
+                    }
 
-                } 
+                }
+                else
+                {
+                    await DisplayAlert("uwaga", "brak połączenia z serwisem api", "OK");
+                }
             }
             catch (Exception s)
             {
@@ -206,16 +210,23 @@ namespace App2.View
 
             if (twrkarty != null)
             {
-                twr_kod.Text = twrkarty.Twr_Kod;
-                lbl_twrkod.Text = twrkarty.Twr_Ean;
-                lbl_twrsymbol.Text = twrkarty.Twr_Symbol;
-                lbl_twrnazwa.Text = twrkarty.Twr_Nazwa;
-                lbl_stan.Text = twrkarty.Stan_szt + " szt";
-                lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.Twr_Cena1.ToString() : twrkarty.Twr_Cena.ToString() + " zł";
-                img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.Twr_Url,twrkarty.Twr_Kod,FilesHelper.OtherSize.home,true);
+                    twr_kod.Text = twrkarty.Twr_Kod;
+                    lbl_twrkod.Text = twrkarty.Twr_Ean;
+                    lbl_twrsymbol.Text = twrkarty.Twr_Symbol;
+                    lbl_twrnazwa.Text = twrkarty.Twr_Nazwa;
+                    lbl_stan.Text = twrkarty.Stan_szt + " szt";
+                    lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.Twr_Cena1.ToString() : twrkarty.Twr_Cena.ToString() + " zł";
+                    img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.Twr_Url, twrkarty.Twr_Kod, FilesHelper.OtherSize.home, true);
+
+                if (twrkarty.Twr_Ean != _ean)
+                {
+                    await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EANu, ale kod {twrkarty.Twr_Ean} jest najblizej", "OK");
+                } 
+
             }
             else
             {
+                await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
                 twr_kod.Text = "";
                 lbl_twrkod.Text = "";
                 lbl_twrsymbol.Text = "";

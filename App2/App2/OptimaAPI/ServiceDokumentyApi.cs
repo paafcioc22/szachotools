@@ -17,7 +17,7 @@ namespace App2.OptimaAPI
     public class ServiceDokumentyApi : BaseService
     {
         private RestClient _client;
-        public static ObservableCollection<DokNaglowekDto> DokNaglowekDtos { get; set; } =
+        public ObservableCollection<DokNaglowekDto> DokNaglowekDtos { get; set; } =
             new ObservableCollection<DokNaglowekDto>();
 
 
@@ -113,7 +113,7 @@ namespace App2.OptimaAPI
 
         public async Task<ApiResponse<DokWithElementsDto>> GetDokWithElementsById(int Id)
         {
-
+            DokElementsDtos.Clear();
             var request = new RestRequest($"/api/dokument/{Id}");
 
 
