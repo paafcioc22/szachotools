@@ -28,7 +28,7 @@ namespace App2.OptimaAPI
         {
             var app = Application.Current as App;
 
-            _client = new RestClient($"http://{app.Serwer}"); //todo : pobierz adres ip z konfiguracji aplikacji
+            _client = new RestClient($"http://{app.Serwer}");
 
         }
 
