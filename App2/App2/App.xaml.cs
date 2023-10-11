@@ -164,7 +164,7 @@ namespace App2
             {
                 if (Properties.ContainsKey(cennik))
                     return  Properties[cennik].ToString();
-                return "";
+                return "BRUTTO";
             }
             set
             {

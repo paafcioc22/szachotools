@@ -3,10 +3,7 @@ using App2.Model.ApiModel;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
-using System.Collections.Generic; 
-using System.Linq;
-using System.Text;
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -183,8 +180,7 @@ namespace App2.View
 
                         var karta = new TwrKodRequest()
                         {
-                            Twrcenaid = NrCennika+1,
-                           
+                            Twrcenaid = NrCennika+1,                           
                             Twrean = _ean
                         };
 
@@ -193,7 +189,36 @@ namespace App2.View
 
                         var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);     
 
-                        twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client); 
+                        twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client);
+
+                        if (twrkarty != null)
+                        {
+                            twr_kod.Text = twrkarty.Twr_Kod;
+                            lbl_twrkod.Text = twrkarty.Twr_Ean;
+                            lbl_twrsymbol.Text = twrkarty.Twr_Symbol;
+                            lbl_twrnazwa.Text = twrkarty.Twr_Nazwa;
+                            lbl_stan.Text = twrkarty.Stan_szt + " szt";
+                            lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.Twr_Cena1.ToString() : twrkarty.Twr_Cena.ToString() + " zł";
+                            lbl_twrcena30.Text = twrkarty.Twr_Cena30.ToString() + " zł";
+                            img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.Twr_Url, twrkarty.Twr_Kod, FilesHelper.OtherSize.home, true);
+
+                            if (twrkarty.Twr_Ean != _ean)
+                            {
+                                await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EANu, ale kod {twrkarty.Twr_Ean} jest najblizej", "OK");
+                            }
+
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
+                            twr_kod.Text = "";
+                            lbl_twrkod.Text = "";
+                            lbl_twrsymbol.Text = "";
+                            lbl_twrnazwa.Text = "";
+                            lbl_stan.Text = "";
+                            lbl_twrcena.Text = "";
+                            img_foto.Source = "";
+                        }
 
                     }
 
@@ -208,33 +233,7 @@ namespace App2.View
                 await DisplayAlert("Uwaga", s.Message, "OK");
             }
 
-            if (twrkarty != null)
-            {
-                    twr_kod.Text = twrkarty.Twr_Kod;
-                    lbl_twrkod.Text = twrkarty.Twr_Ean;
-                    lbl_twrsymbol.Text = twrkarty.Twr_Symbol;
-                    lbl_twrnazwa.Text = twrkarty.Twr_Nazwa;
-                    lbl_stan.Text = twrkarty.Stan_szt + " szt";
-                    lbl_twrcena.Text = (SettingsPage.CzyCenaPierwsza) ? twrkarty.Twr_Cena1.ToString() : twrkarty.Twr_Cena.ToString() + " zł";
-                    img_foto.Source = FilesHelper.ConvertUrlToOtherSize(twrkarty.Twr_Url, twrkarty.Twr_Kod, FilesHelper.OtherSize.home, true);
-
-                if (twrkarty.Twr_Ean != _ean)
-                {
-                    await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EANu, ale kod {twrkarty.Twr_Ean} jest najblizej", "OK");
-                } 
-
-            }
-            else
-            {
-                await DisplayAlert("Uwaga", "Nie znaleziono towaru", "OK");
-                twr_kod.Text = "";
-                lbl_twrkod.Text = "";
-                lbl_twrsymbol.Text = "";
-                lbl_twrnazwa.Text = "";
-                lbl_stan.Text = "";
-                lbl_twrcena.Text = "";
-                img_foto.Source = "";
-            }
+           
 
              
 

@@ -1120,7 +1120,7 @@ namespace App2.View
                             //string ile = odpowiedz.Text.Substring(odpowiedz.Text.IndexOf(",", 0) + 1, 1);
 
                             if (CanPrint)
-                                PrintCommand();
+                                await PrintCommand();
                         }
                         else
                         {
@@ -1225,37 +1225,7 @@ namespace App2.View
             //{
             //var app = Application.Current as App;
             SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-
-            //await printSemaphore.WaitAsync();
-
-            //    var list = await SettingsPage._cpclPrinter.connectableDevice();
-
-
-            //    if (list.Count > 0 && app.Drukarka > 0)
-            //    {
-            //        drukarka = list[app.Drukarka].Address;
-            //        System.Diagnostics.Debug.WriteLine("lista pełna");
-
-            //    }
-            //    else
-            //    {
-            //        drukarka = "00:00:00:00:00:00";
-            //        System.Diagnostics.Debug.WriteLine("lista zerowa");
-            //    }
-
-            //}
-            //catch (Exception ss)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(ss.Message);
-            //    System.Diagnostics.Debug.WriteLine("coś nie pykło");
-
-            //}
-            //finally
-            //{
-            //    printSemaphore.Release();
-
-            //}
-            /////////////////////////////////////////////////////////////////////////////
+              
             try
             {
                 if (!SettingsPage.CzyDrukarkaOn)
@@ -1271,8 +1241,7 @@ namespace App2.View
                     else
                     {
                         CanPrint = false;
-                        //await DisplayAlert(null, "Drukarka Nie podłączone", "OK");
-
+               
                         ErrorStatusDisp("Błąd  drukarki", IResult);
                         SettingsPage.CzyDrukarkaOn = false;
 
@@ -1281,9 +1250,7 @@ namespace App2.View
                 }
                 else
                 {
-                    //CanPrint = true;
-                    //View.SettingsPage.CzyDrukarkaOn = true;
-
+             
                 }
             }
             catch (Exception)
