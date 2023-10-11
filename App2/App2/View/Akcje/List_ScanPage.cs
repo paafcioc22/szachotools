@@ -29,16 +29,16 @@ namespace App2.View
         private Label lbl_cena1;
         private Entry entry_skanowanaIlosc;
         private Entry entry_EanSkaner;
- 
+
 
         private SQLiteAsyncConnection _connection;
         private string skanean;
         private Model.AkcjeNagElem _akcja;
         ZXingDefaultOverlay overlay;
         ZXingScannerPage scanPage;
- 
+
         int ile_zeskanowancyh = 0;
- 
+
         CPCLConst cpclConst;
         int IResult;
         bool CanPrint;
@@ -57,11 +57,11 @@ namespace App2.View
         public List_ScanPage(AkcjeNagElem akcje) //edycja
         {
             this.Title = "Dodaj MM";
- 
-            _akcja = akcje; 
+
+            _akcja = akcje;
 
             Controls = new[] { "Dodaj mm", "Przegladaj", "Tworz" };
-            serwisAPi= new ServiceDokumentyApi();
+            serwisAPi = new ServiceDokumentyApi();
 
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
             {
@@ -71,9 +71,9 @@ namespace App2.View
             }
 
             var app = Application.Current as App;
-        
 
-             
+
+
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -87,8 +87,8 @@ namespace App2.View
                 WidokSkaner();
             }
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-            DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
-            
+                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
+
         }
 
         void WidokAparat()
@@ -141,7 +141,7 @@ namespace App2.View
                 RetryDelay = 100,
                 BitmapOptimizations = false,
                 ErrorPlaceholder = "NotSended.png",
-                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "").Replace("small","home") : _akcja.TwrUrl
+                Source = StartPage.CheckInternetConnection() ? _akcja.TwrUrl.Replace("Miniatury/", "").Replace("small", "home") : _akcja.TwrUrl
 
             };
 
@@ -191,12 +191,12 @@ namespace App2.View
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 entry_skanowanaIlosc.IsReadOnly = true;
             //    entry_skanowanaIlosc.IsReadOnly = false;
-             
-                entry_skanowanaIlosc.Focused += (object sender, FocusEventArgs e) => 
-                {
-                    if(string.IsNullOrEmpty(entry_skanowanaIlosc.Text))
-                    SprawdzEanApart(); 
-                };
+
+            entry_skanowanaIlosc.Focused += (object sender, FocusEventArgs e) =>
+            {
+                if (string.IsNullOrEmpty(entry_skanowanaIlosc.Text))
+                    SprawdzEanApart();
+            };
 
 
             lbl_symbol = new Label();
@@ -539,9 +539,10 @@ namespace App2.View
                 WidthRequest = 60,
                 Placeholder = "Ilość",
                 FontAttributes = FontAttributes.Bold,
-                TextColor = Color.Black, HorizontalTextAlignment=TextAlignment.Center
+                TextColor = Color.Black,
+                HorizontalTextAlignment = TextAlignment.Center
             };
-            if (List_AkcjeView.TypAkcji.Contains("Przecena")|| List_AkcjeView.TypAkcji.Contains("Zwrot"))
+            if (List_AkcjeView.TypAkcji.Contains("Przecena") || List_AkcjeView.TypAkcji.Contains("Zwrot"))
                 entry_skanowanaIlosc.IsReadOnly = true;
 
 
@@ -637,7 +638,7 @@ namespace App2.View
                 WidthRequest = 50,
                 HeightRequest = 50,
                 HorizontalOptions = LayoutOptions.End,
-                ImageSource= "icons8_add_property_48.9"
+                ImageSource = "icons8_add_property_48.9"
             };
             frame2.Clicked += BtnAddToMM_Clicked;
             stack2.Children.Add(label2);
@@ -722,7 +723,7 @@ namespace App2.View
             entry_EanSkaner = new Entry()
             {
                 HorizontalOptions = LayoutOptions.Center,
-                Keyboard = SettingsPage.OnAlfaNumeric? Keyboard.Default :Keyboard.Numeric,
+                Keyboard = SettingsPage.OnAlfaNumeric ? Keyboard.Default : Keyboard.Numeric,
                 WidthRequest = 180,
                 //Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
                 Placeholder = "Wpisz/zeskanuj Ean",
@@ -791,10 +792,10 @@ namespace App2.View
             //scrollView.Content = stackLayout_gl;
 
             Content = absoluteLayout;
-            
-                //Appearing += (object sender, System.EventArgs e) =>  entry_EanSkaner.Focus();
-                Appearing += List_ScanPage_Appearing;  
-            
+
+            //Appearing += (object sender, System.EventArgs e) =>  entry_EanSkaner.Focus();
+            Appearing += List_ScanPage_Appearing;
+
         }
 
         private void List_ScanPage_Appearing(object sender, EventArgs e)
@@ -811,7 +812,7 @@ namespace App2.View
             {
                 entry_skanowanaIlosc.IsReadOnly = false;
                 entry_skanowanaIlosc.Focus();
-                entry_skanowanaIlosc.CursorPosition = entry_skanowanaIlosc.Text.Length+1;
+                entry_skanowanaIlosc.CursorPosition = entry_skanowanaIlosc.Text.Length + 1;
             }
             else
                 DisplayAlert(null, "Błędny ean", "OK");
@@ -826,16 +827,16 @@ namespace App2.View
         {
             try
             {
-               // List<string> ListaMMWBuforze = new List<string>();
+                // List<string> ListaMMWBuforze = new List<string>();
                 List<string> naJakichMM = new List<string>();
-                var listmmBufor =await  serwisAPi.GetDokAll(Model.ApiModel.GidTyp.Mm, false);
+                var listmmBufor = await serwisAPi.GetDokAll(Model.ApiModel.GidTyp.Mm, false);
                 //var listaMM = dokmm.getMMki().Where(c => c.statuss == 0);
                 int gidnumerMM;
                 int totalTwrIlosc = 0;
                 //var listaMM = Model.DokMM.dokMMs.Where(c =>c.statuss ==0);
                 int iloscZeskanowana;
 
-                 
+
                 var czyPoprawnaIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out iloscZeskanowana);
                 if (czyPoprawnaIlosc && iloscZeskanowana > 0)
                 {
@@ -845,7 +846,7 @@ namespace App2.View
                         //var listaIstniejacych = dokMM.ListaIstniejacych(_akcja.TwrKod);
                         var listaIstniejacych = listaMMzKodem.Data;
 
-                        totalTwrIlosc = serwisAPi.TotalTwrIloscFromAllDoks(listaIstniejacych);        
+                        totalTwrIlosc = serwisAPi.TotalTwrIloscFromAllDoks(listaIstniejacych);
 
                         foreach (var mm in listaIstniejacych)
                         {
@@ -853,7 +854,7 @@ namespace App2.View
                         }
 
                         //jeśli skanowa > to co już jest i 
-                        if ((iloscZeskanowana + totalTwrIlosc) > (_akcja.TwrStan   ))
+                        if ((iloscZeskanowana + totalTwrIlosc) > (_akcja.TwrStan))
                         {
 
                             if (listaIstniejacych.Count > 0)
@@ -864,12 +865,12 @@ namespace App2.View
                         }
                         else
                         {
-                            if ((iloscZeskanowana + totalTwrIlosc  <=  _akcja.TwrStan)  && listaIstniejacych.Count > 0)
+                            if ((iloscZeskanowana + totalTwrIlosc <= _akcja.TwrStan) && listaIstniejacych.Count > 0)
                                 await DisplayActionSheet("Model występuje już na mmkach:", "OK", null, naJakichMM.ToArray());
 
 
                             var listaBuforNazwy = serwisAPi.ListaMMBufor(listmmBufor);
-                           
+
 
                             if (listaBuforNazwy.Count > 0)
                             {
@@ -905,19 +906,19 @@ namespace App2.View
 
         }
 
-        public async void ZapiszPozycje(int mmGidnumer, AkcjeNagElem twrInfo, int iloscSkanowana,  string opis)
+        public async void ZapiszPozycje(int mmGidnumer, AkcjeNagElem twrInfo, int iloscSkanowana, string opis)
         {
-         
+
             CreateDokElementDto elementDto = new CreateDokElementDto()
             {
-                DokTyp= (int)GidTyp.Mm,
-                TwrIlosc= iloscSkanowana,
-                TwrKod= twrInfo.TwrKod,
-                TwrNazwa= twrInfo.TwrNazwa
-            }; 
+                DokTyp = (int)GidTyp.Mm,
+                TwrIlosc = iloscSkanowana,
+                TwrKod = twrInfo.TwrKod,
+                TwrNazwa = twrInfo.TwrNazwa
+            };
 
-            var apiResponse = await serwisAPi.SaveElement(elementDto, mmGidnumer); 
-            
+            var apiResponse = await serwisAPi.SaveElement(elementDto, mmGidnumer);
+
             //todo : dodaj sprawdzenie ilosci dodanej
             if (apiResponse.ConflictInformation != null)
             {
@@ -939,7 +940,7 @@ namespace App2.View
                     // Możesz teraz wysłać updatedQuantity z powrotem do serwera do aktualizacji
                     var resposne = await serwisAPi.UpadteElement(updatedQuantity, mmGidnumer, conflictInfo.IdElement);
                     if (resposne.IsSuccessful)
-                    {                       
+                    {
                         await DisplayAlert("Dodano..", $"{conflictInfo.AttemptedToAddQuantity} szt, razem {updatedQuantity}szt", "OK");
                     }
                 }
@@ -977,7 +978,7 @@ namespace App2.View
             //            var opis2 = opis.Substring(opis.IndexOf(')') + 1);
             //            //var oooo = opis.Substring(opis.IndexOf(')') + 1, opis.Length - opis.IndexOf(')') + 2);
             //            await DisplayAlert("Dodano..", $"..{ilosc} szt do {opis2}", "OK");
-                        
+
             //        }
             //    }
             //    else
@@ -1034,7 +1035,7 @@ namespace App2.View
         async void SprawdzEanApart()
         {
 
-            string odpowiedz = await DisplayPromptAsync("Potwierdź skanowany model",null, "OK", "Skanuj", "Wprowadź Ean:");
+            string odpowiedz = await DisplayPromptAsync("Potwierdź skanowany model", null, "OK", "Skanuj", "Wprowadź Ean:");
             if (odpowiedz == null)
             {
                 overlay = new ZXingDefaultOverlay
@@ -1095,12 +1096,13 @@ namespace App2.View
                     entry_skanowanaIlosc.IsEnabled = true;
 
                 }
-                else {
+                else
+                {
                     await DisplayAlert(null, "Probujesz zeskanować inny model..", "OK");
                     entry_skanowanaIlosc.Unfocus();
                 }
             }
-            
+
         }
 
         private async void EnterEan_Clicked(object sender, EventArgs e)
@@ -1216,7 +1218,7 @@ namespace App2.View
                 {
                     System.Diagnostics.Debug.WriteLine(x.Message);
                 }
-            } 
+            }
         }
 
         private async void deviceListe()
@@ -1225,7 +1227,7 @@ namespace App2.View
             //{
             //var app = Application.Current as App;
             SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-              
+
             try
             {
                 if (!SettingsPage.CzyDrukarkaOn)
@@ -1241,7 +1243,7 @@ namespace App2.View
                     else
                     {
                         CanPrint = false;
-               
+
                         ErrorStatusDisp("Błąd  drukarki", IResult);
                         SettingsPage.CzyDrukarkaOn = false;
 
@@ -1250,7 +1252,7 @@ namespace App2.View
                 }
                 else
                 {
-             
+
                 }
             }
             catch (Exception)
@@ -1260,7 +1262,7 @@ namespace App2.View
 
 
         }
-        
+
         public async Task<bool> PrintCommand(string ile = null)
         {
             int drukSzt;
@@ -1280,25 +1282,28 @@ namespace App2.View
                 if (SettingsPage.CzyCenaPierwsza)
                     _akcja.TwrCena = _akcja.TwrCena1;
 
-            var cenaZl = _akcja.TwrCena.Substring(0, _akcja.TwrCena.IndexOf(".", 0));
-                var cenaGr = _akcja.TwrCena.Substring(_akcja.TwrCena.IndexOf(".", 0) + 1, 2);
-               
+                //var cenaZl = _akcja.TwrCena.Substring(0, _akcja.TwrCena.IndexOf(".", 0));
+                //var cenaGr = _akcja.TwrCena.Substring(_akcja.TwrCena.IndexOf(".", 0) + 1, 2);
 
-                switch (cenaZl.Length)
+                int cenaZl = (int)_akcja.TwrCena; // część całkowita
+                int cenaGr = (int)Math.Round((_akcja.TwrCena - cenaZl) * 100);
+
+
+                switch (cenaZl.ToString().Length)
                 {
                     case 1:
                         polozenie = 125;
-                        
+
                         break;
 
                     case 2:
                         polozenie = 110;
-                        
+
                         break;
 
                     case 3:
                         polozenie = 85;
-                       
+
                         break;
 
                     default:
@@ -1307,20 +1312,20 @@ namespace App2.View
                 }
 
 
-                switch (_akcja.TwrCena1.Length)
+                switch (_akcja.TwrCena1.ToString().Length)
                 {
                     case 4:
-                       
+
                         koniecLinii = 130;
                         break;
 
                     case 5:
-                       
+
                         koniecLinii = 150;
                         break;
 
                     case 6:
-                     
+
                         koniecLinii = 170;
                         break;
 
@@ -1330,11 +1335,15 @@ namespace App2.View
                 }
                 //= (_akcja.TwrCena1.Length <= 5) ? 155 : 165;
 
+                int polozeniePLN = polozenie + 52 * cenaZl.ToString().Length;
 
                 string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
 
-                string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
-               
+                //string procent = Convert.ToInt16((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100).ToString();
+                //var prr = double.IsInfinity((Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100) ? 0 : (Double.Parse(_akcja.TwrCena.Replace(".", ",")) / Double.Parse(_akcja.TwrCena1.Replace(".", ",")) - 1) * 100;
+                var prr = double.IsInfinity(((double)_akcja.TwrCena / (double)_akcja.TwrCena1 - 1) * 100) ? 0 : (_akcja.TwrCena / _akcja.TwrCena1 - 1) * 100;
+                string procent = Convert.ToInt16(prr).ToString();
+
                 if (List_AkcjeView.TypAkcji.Contains("Zmiana"))//biała przecena
                     await SettingsPage._cpclPrinter.setForm(0, 200, 200, 270, 350, drukSzt);
                 else
@@ -1362,14 +1371,14 @@ namespace App2.View
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 5, _akcja.TwrKod, 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 30, twr_nazwa, 0);
                 await SettingsPage._cpclPrinter.print1dBarCode(cpclConst.LK_CPCL_0_ROTATION, typCodeEan, 1,
-    cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.TwrEan, 0);
+                        cpclConst.LK_CPCL_BCS_0RATIO, 40, przesuniecieDlaCode128, 55, _akcja.TwrEan, 0);
 
                 if (!List_AkcjeView.TypAkcji.Contains("Zmiana"))
                 {
-                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.TwrCena1, 0);
-                    await SettingsPage._cpclPrinter.printLine(40, 160, koniecLinii, 125, 10);
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 135, _akcja.TwrCena1.ToString(), 0);
+                    await SettingsPage._cpclPrinter.printLine(40, 170, koniecLinii, 145, 10);
                     if (Convert.ToInt16(procent) < -15)
-                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);
+                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"~{procent}%", 0);
 
                 }
                 int YpolozenieCeny;
@@ -1379,17 +1388,18 @@ namespace App2.View
                 if (List_AkcjeView.TypAkcji.Contains("Zmiana"))
                     YpolozenieCeny = 115;
                 else
-                    YpolozenieCeny = 160;
+                    YpolozenieCeny = 180;
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, YpolozenieCeny);
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl);
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr);//góra grosze
-                                                                                                   //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł");
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl.ToString());
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString());//góra grosze
                 await SettingsPage._cpclPrinter.resetConcat();
+                                                                                                   //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, 240, "PLN", 0);
 
-                //todo : cena ostatnie 30 dni
-                //await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"ost.30dni: {_akcja.TwrCena1}", 0);//245
-
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
+                if (_akcja.TwrCena30 > 0 && _akcja.TwrCena30 < _akcja.TwrCena1 )
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 200, 150, $"{_akcja.TwrCena30}pln", 0);
 
                 await SettingsPage._cpclPrinter.printForm();
 
@@ -1433,7 +1443,7 @@ namespace App2.View
 
 
         }
-         
+
         async void ErrorStatusDisp(string strStatus, int errCode)
         {
             string errMsg = string.Empty;
@@ -1487,14 +1497,14 @@ namespace App2.View
                 var wpis = wynik[0];
                 wpis.TwrSkan = ile_zeskanowancyh;
                 _akcja.TwrSkan = ile_zeskanowancyh;
-        
+
                 await _connection.UpdateAsync(wpis);
-                 
+
             }
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
-           
+
                 _akcja.TwrSkan = ile_zeskanowancyh;
                 await _connection.InsertAsync(akcjeNagElem);
 
@@ -1504,10 +1514,10 @@ namespace App2.View
         protected override bool OnBackButtonPressed()
         {
             // listaToSend.Clear();
-            
 
-            if(_akcja.IsSendData)
-            SendDataSkan( );
+
+            if (_akcja.IsSendData)
+                SendDataSkan();
 
             return base.OnBackButtonPressed();
         }
@@ -1539,15 +1549,15 @@ namespace App2.View
             {
                 var magGidnumer = (Application.Current as App).MagGidNumer;
 
-                if (magGidnumer==0)
+                if (magGidnumer == 0)
                 {
                     ServicePrzyjmijMM api = new ServicePrzyjmijMM();
                     var magazyn = await api.GetSklepMagNumer();
                     magGidnumer = (short)magazyn.Id;
-                    
-                }                 
 
-                if (listaToSend[0].TwrSkan>0)
+                }
+
+                if (listaToSend[0].TwrSkan > 0)
                 {
                     string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
                     var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
@@ -1567,7 +1577,7 @@ namespace App2.View
 
                             await _connection.UpdateAsync(wpisKlasa);
                         }
-                        else 
+                        else
                         {
                             _akcja.IsUpdatedData = true;
                             await _connection.InsertAsync(_akcja);
@@ -1579,12 +1589,12 @@ namespace App2.View
         }
 
         //TODO popraw focus - po zapisaniu podnosi si e okno do entry
-    
+
 
         private async void Open_url_Clicked(object sender, EventArgs e)
         {
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-            if (SettingsPage.SelectedDeviceType != 1&& string.IsNullOrEmpty(entry_EanSkaner.Text))
+            if (SettingsPage.SelectedDeviceType != 1 && string.IsNullOrEmpty(entry_EanSkaner.Text))
                 entry_EanSkaner.Focus();
 
             if (!List_AkcjeView.TypAkcji.Contains("Przecena"))

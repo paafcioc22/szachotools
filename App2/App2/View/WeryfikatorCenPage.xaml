@@ -93,7 +93,7 @@
                     HorizontalOptions="EndAndExpand"  
                     CornerRadius="50"  
                     Clicked="btn_print_Clicked"
-                    AbsoluteLayout.LayoutBounds="1,.8,70,70"  
+                    AbsoluteLayout.LayoutBounds="1,.9,70,70"  
                     AbsoluteLayout.LayoutFlags="PositionProportional"
                     />
 
@@ -106,7 +106,7 @@
                Keyboard="Numeric"
                WidthRequest="200"
                HorizontalTextAlignment="Center"
-                AbsoluteLayout.LayoutBounds="1,.85,1,.1"
+                AbsoluteLayout.LayoutBounds="1,.92,1,.1"
                                AbsoluteLayout.LayoutFlags="All"
                />
         <!--<Button Text="Pokaż Stany Innych" Clicked="BtnShowOther_Clicked"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"/>-->

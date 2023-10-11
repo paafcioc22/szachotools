@@ -155,7 +155,7 @@ namespace App2.Model
                 }
                 //= (_akcja.TwrCena1.Length <= 5) ? 155 : 165;
 
-
+                int polozeniePLN = polozenie + 52 * cenaZl.ToString().Length;
                 string twr_nazwa = (_akcja.Twr_Nazwa.Length > 20 ? _akcja.Twr_Nazwa.Substring(0, 20) : _akcja.Twr_Nazwa);
 
                 //var cena = Double.Parse(_akcja.Twr_Cena.Replace(".", ","));
@@ -200,11 +200,11 @@ namespace App2.Model
 
                 if (kolor!="biały")
                 {
-                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 115, _akcja.Twr_Cena1.ToString(), 0);
-                    await SettingsPage._cpclPrinter.printLine(40, 160, koniecLinii, 125, 10);
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 135, _akcja.Twr_Cena1.ToString(), 0);
+                    await SettingsPage._cpclPrinter.printLine(40, 170, koniecLinii, 145, 10);
                     if (Convert.ToInt16(procent) < -15)
                     {                        
-                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"{procent}%", 0);//245  165 wyzej
+                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 245, $"~{procent}%", 0);//245  165 wyzej
                     }
 
                 }
@@ -213,20 +213,23 @@ namespace App2.Model
                 if (kolor == "biały")
                     YpolozenieCeny = 115;
                 else
-                    YpolozenieCeny = 160;
+                    YpolozenieCeny = 180;
+
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, YpolozenieCeny);
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl.ToString());
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString()); 
-                                                                                                   
-                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_7, 0, 60, "zł");
+                await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString());
                 await SettingsPage._cpclPrinter.resetConcat();
 
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, 240, "PLN", 0);
 
 
-                //todo : cena ostatnie 30 dni
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_TXT_10HEIGHT, 0, 50, 245, $"ost.30dni: {_akcja.Twr_Cena1}", 0);//245
-               
-                
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
+
+                if (_akcja.Twr_Cena30 > 0 && _akcja.Twr_Cena30 < _akcja.Twr_Cena1)
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 200, 150, $"{_akcja.Twr_Cena30}pln", 0);
+
+
 
                 await SettingsPage._cpclPrinter.printForm();
 

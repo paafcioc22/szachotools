@@ -35,8 +35,9 @@ namespace App2.Model
         public string TwrDep { get; set; }
         public string TwrUrl { get; set; }
         public string TwrSymbol { get; set; }
-        public string TwrCena { get; set; }
-        public string TwrCena1 { get; set; }
+        public decimal TwrCena { get; set; }
+        public decimal TwrCena1 { get; set; }
+        public decimal TwrCena30 { get; set; }
         public string TwrEan { get; set; }
         public string Operator { get; set; }
         public bool IsSendData { get; set; }

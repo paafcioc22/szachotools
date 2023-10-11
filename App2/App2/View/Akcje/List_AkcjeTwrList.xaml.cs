@@ -242,6 +242,7 @@ namespace App2.View
                     when 7 then ''''Buty_''''
                     end +Twg_kod as TwrDep, twg_kod TwrGrupa
                     ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
+                    ,cdn.PC_GetCena30 (Twr_GIDNumer) AS TwrCena30
                     ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
                     ,(select top 1 [IsSendData]  from [CDN].[PC_AkcjeTyp] where GidTypAkcji={_nagElem[0].AkN_GidTyp} )IsSendData 
                     from cdn.TwrKarty
@@ -416,7 +417,8 @@ namespace App2.View
                                      TwrSymbol = lWeb.TwrSymbol,
                                      TwrUrl = lWeb.TwrUrl,
                                      IsSendData = lWeb.IsSendData,
-                                     IsUpdatedData = alles.IsUpdatedData
+                                     IsUpdatedData = alles.IsUpdatedData,
+                                     TwrCena30 = lWeb.TwrCena30,
                                  }).ToList();
 
                     var isSendData = TwrListWeb[0].IsSendData;
