@@ -20,13 +20,13 @@ namespace App2.View
         ZXingScannerView zxing;
         SettingsPage settingsPage;
 
-       
+
         private RestClient _client;
         string NazwaCennika;
         int NrCennika;
-    
+
         public TwrInfo twrkarty { get; set; }
-   
+
         private List<string> nowy;
 
 
@@ -41,16 +41,16 @@ namespace App2.View
                 manualEAN.Keyboard = Keyboard.Default;
 
             settingsPage = new SettingsPage();
-            
+
             if (!string.IsNullOrEmpty(app.Cennik))
             {
-                 
+
                 var rodzaj = (SettingsPage.CzyCenaPierwsza) ? " pierwsza" : app.Cennik;
                 NazwaCennika = $"cena [{rodzaj}]";
                 lbl_cennik.Text = NazwaCennika;
                 //NrCennika = nrcenika.Id;
             }
-          
+
 
             if (SettingsPage.SelectedDeviceType == 1)
                 SkanowanieEan(); //aparat
@@ -59,118 +59,121 @@ namespace App2.View
         }
         private async void SkanowanieEan()
         {
-            //if (SettingsPage.SprConn())
-            //{
-            opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+            var testBt = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
+            if (testBt == PermissionStatus.Granted)
             {
-                AutoRotate = false,
 
-                PossibleFormats = new List<ZXing.BarcodeFormat>() {
+
+                opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+                {
+                    AutoRotate = false,
+
+                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
                     //ZXing.BarcodeFormat.CODE_128,
                     ZXing.BarcodeFormat.CODABAR,
                     ZXing.BarcodeFormat.CODE_39,
                     ZXing.BarcodeFormat.EAN_13
-                } 
+                }
 
-            };
-            if (SettingsPage.OnAlfaNumeric)
-                opts.PossibleFormats.Add(ZXing.BarcodeFormat.CODE_128);
+                };
+                if (SettingsPage.OnAlfaNumeric)
+                    opts.PossibleFormats.Add(ZXing.BarcodeFormat.CODE_128);
 
-            opts.TryHarder = true;
+                opts.TryHarder = true;
 
-            zxing = new ZXingScannerView
-            {
-
-                IsScanning = false,
-                IsTorchOn = false,
-                IsAnalyzing = false,
-                AutomationId = "zxingDefaultOverlay",//zxingScannerView
-                Opacity = 22,
-                Options = opts
-            };
-
-            var torch = new Switch
-            {
-            };
-
-            torch.Toggled += delegate
-            {
-                scanPage.ToggleTorch();
-            };
-
-            var grid = new Grid
-            {
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-            };
-
-            var Overlay = new ZXingDefaultOverlay
-            {
-                TopText = "Włącz latarkę",
-                BottomText = "Skanowanie rozpocznie się automatycznie",
-                ShowFlashButton = true,
-                AutomationId = "zxingDefaultOverlay",
-
-            };
-
-            var customOverlay = new StackLayout
-            {
-                HorizontalOptions = LayoutOptions.EndAndExpand,
-                VerticalOptions = LayoutOptions.EndAndExpand
-            };
-
-            grid.Children.Add(Overlay);
-            Overlay.Children.Add(torch);
-            Overlay.BindingContext = Overlay;
-
-            scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
-            {
-                DefaultOverlayTopText = "Zeskanuj kod ",
-                //DefaultOverlayBottomText = " Skanuj kod ";
-                DefaultOverlayShowFlashButton = true
-
-            };
-            scanPage.OnScanResult += (result) =>
-            {
-                scanPage.IsScanning = false;
-                scanPage.AutoFocus();
-                Device.BeginInvokeOnMainThread(async() =>
+                zxing = new ZXingScannerView
                 {
 
-                    Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                    IsScanning = false,
+                    IsTorchOn = false,
+                    IsAnalyzing = false,
+                    AutomationId = "zxingDefaultOverlay",//zxingScannerView
+                    Opacity = 22,
+                    Options = opts
+                };
+
+                var torch = new Switch
+                {
+                };
+
+                torch.Toggled += delegate
+                {
+                    scanPage.ToggleTorch();
+                };
+
+                var grid = new Grid
+                {
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                };
+
+                var Overlay = new ZXingDefaultOverlay
+                {
+                    TopText = "Włącz latarkę",
+                    BottomText = "Skanowanie rozpocznie się automatycznie",
+                    ShowFlashButton = true,
+                    AutomationId = "zxingDefaultOverlay",
+
+                };
+
+                var customOverlay = new StackLayout
+                {
+                    HorizontalOptions = LayoutOptions.EndAndExpand,
+                    VerticalOptions = LayoutOptions.EndAndExpand
+                };
+
+                grid.Children.Add(Overlay);
+                Overlay.Children.Add(torch);
+                Overlay.BindingContext = Overlay;
+
+                scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
+                {
+                    DefaultOverlayTopText = "Zeskanuj kod ",
+                    //DefaultOverlayBottomText = " Skanuj kod ";
+                    DefaultOverlayShowFlashButton = true
+
+                };
+                scanPage.OnScanResult += (result) =>
+                {
+                    scanPage.IsScanning = false;
+                    scanPage.AutoFocus();
+                    Device.BeginInvokeOnMainThread(async () =>
                     {
-                        if (scanPage.IsScanning) scanPage.AutoFocus();
-                        return true;
+
+                        Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                        {
+                            if (scanPage.IsScanning) scanPage.AutoFocus();
+                            return true;
+                        });
+                        await Navigation.PopModalAsync();
+                        await pobierztwrkod(result.Text);
+
+
                     });
-                    await Navigation.PopModalAsync();
-                    await pobierztwrkod(result.Text);
-
-
-                });
-            };
-            await Navigation.PushModalAsync(scanPage);
-            // }
-            //else
-            //{
-            //  await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
-
-            //            }
+                };
+                await Navigation.PushModalAsync(scanPage);
+            }
+            else
+            {
+                await DisplayAlert("uwaga", "brak uprawnień do aparatu", "OK");
+            }
+             
         }
 
-        
+
 
         public async Task pobierztwrkod(string _ean)
         {
-          
+
             var app = Application.Current as App;
             //TwrInfo product = null;
 
-            
+
             try
             {
                 if (await SettingsPage.SprConn())
-                { 
+                {
 
                     if (!string.IsNullOrEmpty(_ean))
                     {
@@ -180,16 +183,16 @@ namespace App2.View
 
                         var karta = new TwrKodRequest()
                         {
-                            Twrcenaid = NrCennika+1,                           
+                            Twrcenaid = NrCennika + 1,
                             Twrean = _ean
                         };
 
                         var request = new RestRequest("/api/gettowar")
                               .AddJsonBody(karta);
 
-                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);     
+                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
 
-                        twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean,NrCennika,request,_client);
+                        twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean, NrCennika, request, _client);
 
                         if (twrkarty != null)
                         {
@@ -233,9 +236,9 @@ namespace App2.View
                 await DisplayAlert("Uwaga", s.Message, "OK");
             }
 
-           
 
-             
+
+
 
         }
         private void ScanTwr_Clicked(object sender, EventArgs e)
@@ -258,21 +261,21 @@ namespace App2.View
         {
             //ceny = new List<string>(); 
 
-          
+
             try
             {
-                var request = new RestRequest($"/api/gettowarycena/{twrkarty.Twr_Gidnumer}", Method.Get);                
+                var request = new RestRequest($"/api/gettowarycena/{twrkarty.Twr_Gidnumer}", Method.Get);
                 var response = await _client.ExecuteAsync(request);
                 if (response.IsSuccessful)
                 {
                     var jsonResponse = JsonConvert.DeserializeObject<TwrCeny>(response.Content);
                     var cenyTowarow = jsonResponse;
-              
+
                     await DisplayActionSheet("Ceny:", "OK", null, cenyTowarow.Result.ToArray());
                 }
                 else
                 {
-                    await DisplayAlert("info",response.Content.ToString(),"OK");
+                    await DisplayAlert("info", response.Content.ToString(), "OK");
                 }
 
 
@@ -282,20 +285,20 @@ namespace App2.View
                 await DisplayAlert("Uwaga", ex.Message, "OK");
             }
 
-           
+
         }
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            if(twrkarty!=null)
-            if(!string.IsNullOrEmpty(twrkarty.Twr_Url))
-            Launcher.OpenAsync(twrkarty.Twr_Url.Replace("Miniatury/", "").Replace("small","large"));
-        }        
+            if (twrkarty != null)
+                if (!string.IsNullOrEmpty(twrkarty.Twr_Url))
+                    Launcher.OpenAsync(twrkarty.Twr_Url.Replace("Miniatury/", "").Replace("small", "large"));
+        }
         private async void ViewCell_Tapped_1(object sender, EventArgs e)
         {
 
             nowy = new List<string>();
 
-            if(twrkarty != null)
+            if (twrkarty != null)
             {
                 string Webquery = $@"cdn.PC_WykonajSelect N' select distinct   AkN_GidNazwa ,AkN_NazwaAkcji, 
                         AkN_DataStart,AkN_DataKoniec
@@ -321,8 +324,8 @@ namespace App2.View
                 {
                     await DisplayAlert(null, "Brak aktualnych akcji dla tego produktu", "OK");
                 }
-            }            
-             
+            }
+
         }
         bool IsStringCorrect(string wprowadzona, out sbyte liczba)
         {
@@ -332,7 +335,7 @@ namespace App2.View
             if (!string.IsNullOrEmpty(wprowadzona))
             {
                 var isok = sbyte.TryParse(wprowadzona, out ileMetek);
-                if (isok )
+                if (isok)
                 {
                     isCorrect = (ileMetek > 0 && ileMetek <= 20);
                     liczba = ileMetek;
@@ -354,11 +357,11 @@ namespace App2.View
         private async void btn_print_Clicked(object sender, EventArgs e)
         {
             sbyte ileMetek;
-            if (twrkarty!=null)
+            if (twrkarty != null)
             {
 
                 PrintSerwis printSerwis = new PrintSerwis();
-             
+
                 if (await printSerwis.ConnToPrinter())
                 {
                     List<string> kolory = new List<string> {
@@ -369,7 +372,7 @@ namespace App2.View
                     if (kolor != "Anuluj")
                     {
                         string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "(1-20 szt)", "OK", "Anuluj", "1", 2, Keyboard.Numeric, "1");
-                         
+
                         if (IsStringCorrect(result, out ileMetek))
                         {
                             await printSerwis.PrintCommand(twrkarty, kolor, ileMetek);

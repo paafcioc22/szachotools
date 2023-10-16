@@ -64,7 +64,7 @@ namespace App2.View
             var app = Application.Current as App;
             BindingContext = Application.Current;
 
-           
+
 
             //if ( SprConn().Result)
             //{
@@ -80,12 +80,16 @@ namespace App2.View
 
             //}
 
-            var options = new RestClientOptions($"http://{app.Serwer}")
+            if (!app.Serwer.Contains("optima"))
             {
-                MaxTimeout = 10000 // 10 sekund
-            };
+                var options = new RestClientOptions($"http://{app.Serwer}")
+                {
+                    MaxTimeout = 10000 // 10 sekund
+                };
 
-            _client = new RestClient(options);
+                _client = new RestClient(options);
+            }
+                
            
 
             InicjalizujAsync(app);
@@ -242,7 +246,7 @@ namespace App2.View
             {
                 var app = Application.Current as App;
                 //todo : skonfiguruj ustawienia
-                if (!app.Serwer.Contains("/"))
+                if (!app.Serwer.Contains("optima"))
                 {
                     var options = new RestClientOptions($"http://{app.Serwer}")
                     {
@@ -517,6 +521,17 @@ namespace App2.View
         private async void InitializeSampleUI()
         {
             //            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+
+
+            var bluetoothPermissionService = DependencyService.Get<IBluetoothPermissionService>();
+            var status= await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
+
+            if (status)
+            {
+                await DisplayAlert("info", "Nie przyznano odpowiednich uprawnień BT", "OK");
+            }
+
+
             _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
             var appp = Application.Current as App;
@@ -544,8 +559,7 @@ namespace App2.View
             }
              
             List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
-            //todo : odremuj
-            //var blueToothService = DependencyService.Get<Model.IBlueToothService>();
+         
 
             var deviceList = await _cpclPrinter.connectableDevice();
 

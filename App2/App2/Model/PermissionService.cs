@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using static Xamarin.Essentials.Permissions;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace App2.Model
 {
@@ -42,6 +44,11 @@ namespace App2.Model
                 }
             }
         }
+
+
+
+
+
 
     }
 }

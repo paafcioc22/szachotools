@@ -7,6 +7,7 @@ using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using FFImageLoading.Forms.Platform;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace App2.Droid
@@ -41,11 +42,17 @@ namespace App2.Droid
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
 
-            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.BluetoothConnect) != Permission.Granted)
-            {
-                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.BluetoothConnect }, yourRequestCode);
-            }
+          
 
+            //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S) // Android 12 
+            //{
+            //    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.BluetoothConnect) != Permission.Granted ||
+            //        ContextCompat.CheckSelfPermission(this, Manifest.Permission.BluetoothScan) != Permission.Granted)
+            //    {
+
+            //        ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.BluetoothConnect, Manifest.Permission.BluetoothScan }, yourRequestCode);
+            //    }
+            //}
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
@@ -54,26 +61,26 @@ namespace App2.Droid
             MainActivityInstance = this;
         }
          
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
+             
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
             //dodane do essential
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            if (requestCode == yourRequestCode) // yourRequestCode to wartość int, którą przekazałeś w powyższym kodzie
-            {
-                if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
-                {
-                    // Uprawnienie zostało przyznane, możesz kontynuować operacje związane z Bluetooth
-                }
-                else
-                {
-                    // Uprawnienie nie zostało przyznane. Informuj użytkownika, że niektóre funkcje mogą nie działać poprawnie.
-                }
-            }
+            //if (requestCode == yourRequestCode) // yourRequestCode to wartość int, którą przekazałeś w powyższym kodzie
+            //{
+            //    if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+            //    {
+            //        // Uprawnienie zostało przyznane, możesz kontynuować operacje związane z Bluetooth
+            //    }
+            //    else
+            //    {
+            //        // Uprawnienie nie zostało przyznane. Informuj użytkownika, że niektóre funkcje mogą nie działać poprawnie.
+            //    }
+            //}
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

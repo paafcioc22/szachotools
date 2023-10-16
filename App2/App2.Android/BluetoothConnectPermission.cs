@@ -12,7 +12,7 @@ using static Xamarin.Essentials.Permissions;
 
 namespace App2.Droid
 {
-    internal class BluetoothConnectPermission : BasePlatformPermission
+    public class BluetoothConnectPermission : BasePlatformPermission
     {
         public override (string androidPermission, bool isRuntime)[] RequiredPermissions => new List<(string androidPermission, bool isRuntime)>
     {
