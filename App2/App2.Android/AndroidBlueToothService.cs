@@ -1,14 +1,7 @@
-﻿
-using Android.Bluetooth;
-//using BlueToothPrinter.DependencyServices;
+﻿ 
 using App2.Droid;
-using Java.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using App2.Model;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AndroidBlueToothService))]

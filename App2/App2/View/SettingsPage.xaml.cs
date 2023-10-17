@@ -520,13 +520,13 @@ namespace App2.View
 
         private async void InitializeSampleUI()
         {
-            //            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
+ 
 
 
             var bluetoothPermissionService = DependencyService.Get<IBluetoothPermissionService>();
             var status= await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
 
-            if (status)
+            if (!status)
             {
                 await DisplayAlert("info", "Nie przyznano odpowiednich uprawnień BT", "OK");
             }

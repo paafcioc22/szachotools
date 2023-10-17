@@ -39,6 +39,7 @@ namespace App2.View
                     join cdn.Magazyny on MAG_GIDNumer=Fmm_MagDcl
                     where fmm_magzrd={app.MagGidNumer}
                     group by fmm_gidnumer,Fmm_MagDcl ,mag_kod
+                    having max(fmm_datazlecenia)>= GETDATE()-30 and max(Fmm_Opis)<>''Dokumenty''
                     order by Fmm_GidNumer desc, Fmm_NrListu '";//and trn_Stan = 1
 
             var zlecenia= await App.TodoManager.PobierzDaneZWeb<ListaZlecenView>(querystring);

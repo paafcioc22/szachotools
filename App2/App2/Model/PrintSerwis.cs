@@ -99,6 +99,8 @@ namespace App2.Model
             //    _akcja.Twr_Cena1 = dane.Twr_Cena1.ToString();
             //}
 
+            _akcja.Twr_Cena30 = _akcja.Twr_Cena30 < _akcja.Twr_Cena ? _akcja.Twr_Cena : _akcja.Twr_Cena30;
+
             await printSemaphore.WaitAsync();
             try
             {

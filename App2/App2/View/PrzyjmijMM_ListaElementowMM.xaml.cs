@@ -23,11 +23,11 @@ namespace App2.View
         {
             InitializeComponent();
 
-            Model.PrzyjmijMMClass przyjmijMMClass = new Model.PrzyjmijMMClass();
+            PrzyjmijMMClass przyjmijMMClass = new PrzyjmijMMClass();
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             _gidnumer = gidnumer;
             
-            // mmp; 
+          
            
 
         }

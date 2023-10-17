@@ -58,21 +58,7 @@ namespace App2.View
         }
 
 
-        //private async  void PobierzListe()
-        //{
-
-        //    try
-        //    {
-
-        //       await PrzyjmijMMClass.getListMM();
-        //    }
-        //    catch (Exception s)
-        //    {
-
-        //      await  DisplayAlert(null, s.Message, "OK");
-        //    }
-
-        //}
+    
 
         bool _userTapped;
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)

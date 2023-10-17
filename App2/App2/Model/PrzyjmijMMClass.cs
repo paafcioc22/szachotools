@@ -6,11 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-
-using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -133,12 +129,18 @@ namespace App2.Model
 
 
                 var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
-                if (wynik.Count > 0)
-                {
-                    var wpis = wynik[0].Sended;
 
-                    mMClass.StatusMM = wpis;
-                    return mMClass;
+                if (wynik !=null)
+                {
+                    if(wynik.Count > 0)
+                    {
+                        var wpis = wynik[0].Sended;
+
+                        mMClass.StatusMM = wpis;
+                        return mMClass;
+                    }
+                        return mMClass;
+                    
                 }
                 else
                 {
@@ -167,7 +169,7 @@ namespace App2.Model
             return await serviceApi.GetGidNumerFromEANMM(BarCodeMM);
         }
 
-        //public async Task GetlistMMElements(string KodEanMM = "", int gidnumer = 0)
+     
         public async Task GetlistMMElementsAsync(  int trnId = 0)
         { 
             //if (!string.IsNullOrEmpty(KodEanMM))
