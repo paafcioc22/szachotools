@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.AddElementMMList"
+             >
+    <StackLayout Orientation="Vertical" >
+        <StackLayout BackgroundColor="DarkCyan">
+            <StackLayout Orientation="Horizontal" 
+                         HorizontalOptions="CenterAndExpand">
+                <Label Text="sklep:" VerticalOptions="Center" TextColor="Bisque" HorizontalOptions="Center" />
+                <Entry Placeholder="sklep" x:Name="_magDcl" 
+                       Focused="_magDcl_Focused" HorizontalOptions="Center"
+                       x:FieldModifier="public" TextColor="Bisque"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" 
+                         HorizontalOptions="StartAndExpand">
+                <Label Text="opis:" VerticalOptions="Center" TextColor="Bisque" Margin="5,0,0,0"/>
+                <Entry Placeholder="opis" x:Name="_opis" TextColor="Bisque" />
+
+            </StackLayout >
+        </StackLayout>
+
+        <StackLayout Padding="20,0,20,0" >
+            <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="DarkCyan">
+                <Label Text="Lista Towarów" HorizontalOptions="CenterAndExpand" 
+                   x:Name="lbl_listatwr" 
+                   FontSize="15" 
+                   BackgroundColor="DarkCyan" 
+                   TextColor="Bisque" />
+            </StackLayout>
+
+            <ListView x:Name="ListaElementowMM"
+                ItemsSource="{Binding ServiceDokumentyApi.DokElementsDtos}"
+                BindingContext="{Binding ServiceDokumentyApi.DokElementsDtos}"
+                ItemTapped="Handle_ItemTapped"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+                CachingStrategy="RecycleElement"
+                HasUnevenRows="True"  
+                
+                >
+                <ListView.ItemTemplate  >
+                    <DataTemplate>
+                        <ViewCell >
+                            <ViewCell.ContextActions>
+                                <!--<MenuItem Text="Usuń" Clicked="Delete_Clicked"  IsDestructive="True" CommandParameter="{Binding .}"/>-->
+                            </ViewCell.ContextActions  >
+                            <StackLayout Orientation="Horizontal" >
+                                <Label Text="{Binding Lp}" FontSize="25"  TextColor="#47BFA7" FontAttributes="Bold"
+                                       VerticalOptions="Center" WidthRequest="30" HorizontalOptions="Center"/>
+                                <StackLayout Spacing="1" Padding="5">
+                                    <Label Text="{Binding TwrKod} "  TextColor="DarkCyan" FontAttributes="Bold"/>
+                                    <Label Text="{Binding TwrNazwa} "  TextColor="DarkCyan" FontAttributes="Italic"/> 
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding TwrIlosc, StringFormat= '{0} szt'}"  
+                                           Style="{DynamicResource ListItemDetailTextStyle}" 
+                                            FontAttributes="Italic"/>
+                                        <!--<Label Text="{Binding symbol , StringFormat= '- {0} -'}"   
+                                           Style="{DynamicResource ListItemDetailTextStyle}" 
+                                           FontAttributes="Italic" Margin="6,0"   />-->
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+        <StackLayout  Padding="20,0,20,5">
+            <Button Text="Zapisz Zmiany" ImageSource="save48x2.png"  
+                x:Name="_btnSave"
+                ContentLayout="Right,10"
+                Clicked="BtnSave_Clicked"
+                HorizontalOptions="FillAndExpand"
+                />
+            <Button Text="Dodaj pozycję" ImageSource="add48x2.png"  
+                x:Name="_btnAddElement"
+                ContentLayout="Right,10"
+                Clicked="BtnAddPosition_Clicked"
+                HorizontalOptions="FillAndExpand"
+                />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
