@@ -1,6 +1,7 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
 using App2.OptimaAPI;
+using App2.View.CreateMM;
 using App2.ViewModel;
 using System;
 using Xamarin.Forms;
@@ -39,7 +40,7 @@ namespace App2.View
 
         private async void Btn_AddMm_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new View.AddMMPage());
+            await Navigation.PushModalAsync(new AddMMPage());
 
         
             //ListaMMek.ItemsSource = Model.DokMM.dokMMs;// DokMMViewModel.dokMMs;

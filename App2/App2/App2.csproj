@@ -89,7 +89,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\AddElementMMList.xaml">
+    <EmbeddedResource Update="View\CreateMM\AddElementMMList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\ListaSklepowPage.xaml">
@@ -131,7 +131,7 @@
     <EmbeddedResource Update="View\StanyTwrInnych.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\StartCreateMmPage.xaml">
+    <EmbeddedResource Update="View\CreateMM\StartCreateMmPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\StartPage.xaml">

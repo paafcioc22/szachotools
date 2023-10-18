@@ -252,7 +252,7 @@ namespace App2.OptimaAPI
 
             var request = new RestRequest("/api/dokument/byTwrKod", Method.Get);
 
-            request.AddParameter("twrkod", "kodtwr1");
+            request.AddParameter("twrkod", twrkod);
             request.AddParameter("isFinished", isFinsished);
 
             var response = await _client.ExecuteGetAsync<List<DokNaglowekSmallDto>>(request);
@@ -283,7 +283,7 @@ namespace App2.OptimaAPI
 
         }
 
-        public async Task<bool> ExistsOtherDocs(string twrkod, int dokumentId)
+        public async Task<bool> ExistsOnOtherDocs(string twrkod, int dokumentId)
         {
             bool isFound = false;
             var response = await GetDokWithElementByTwrkod(twrkod);
@@ -293,6 +293,8 @@ namespace App2.OptimaAPI
             }
             return isFound;
         }
+
+
         public List<string> ListaMMBufor(ApiResponse<List<DokNaglowekDto>> listmmBufor)
         {
             List<string> result = new List<string>();

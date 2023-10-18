@@ -250,7 +250,7 @@ namespace App2.View
                 {
                     var options = new RestClientOptions($"http://{app.Serwer}")
                     {
-                        MaxTimeout = 7000 // 10 sekund
+                        MaxTimeout = 10000 // 10 sekund
                     }; 
                     _client = new RestClient(options);  // re-inicjalizacja klienta
 
