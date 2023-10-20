@@ -87,7 +87,7 @@ namespace App2.View
 
                     _userTapped = true;
 
-                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(  mm.GIDdokumentuMM)); 
+                    await Navigation.PushAsync(new PrzyjmijMM_ListaElementowMM(  mm.GIDdokumentuMM)); 
 
                     IsSearching = false;
 
@@ -174,12 +174,12 @@ namespace App2.View
                         return;
                     }
                     else {
-                        await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM((int)MMgidNumer)); 
+                        await Navigation.PushAsync(new PrzyjmijMM_ListaElementowMM((int)MMgidNumer)); 
                     } 
                  
                 });
             };
-            await Navigation.PushModalAsync(scanPage);
+            await Navigation.PushAsync(scanPage);
         }
     }
 }

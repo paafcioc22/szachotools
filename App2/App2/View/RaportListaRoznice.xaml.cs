@@ -324,6 +324,7 @@ namespace App2.View
                     if (lista.Count != 0)
                     {
                         var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                     
                         if (Maglista.ToString() == "OK")
                         {
                            // btn_sendraport
@@ -337,6 +338,17 @@ namespace App2.View
                             {
                                 wpis.Sended = true;
                                 await _connection.UpdateAsync(wpis);
+                            }
+
+                            var navigation = this.Navigation;
+                            if (navigation.NavigationStack.Count > 2)
+                            {
+                                var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
+                                var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
+
+                                navigation.RemovePage(pageToRemove1);
+                                navigation.RemovePage(pageToRemove2);
+                                await navigation.PopAsync();
                             }
                         }
                         else
@@ -362,9 +374,32 @@ namespace App2.View
                         });
 
                         var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+             
                         if (Maglista.ToString() == "OK")
                         {
                             await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+
+                            var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer); 
+                      
+
+                            foreach (var wpis in wynik)
+                            {
+                                wpis.Sended = true;
+                                await _connection.UpdateAsync(wpis);
+                            }
+
+
+                            var navigation = this.Navigation;
+                            if (navigation.NavigationStack.Count > 2)
+                            {
+                                var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
+                                var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
+
+                                navigation.RemovePage(pageToRemove1);
+                                navigation.RemovePage(pageToRemove2);
+                                await navigation.PopAsync();
+                            }
+
                         }
                         else
                         {

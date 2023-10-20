@@ -99,67 +99,7 @@ namespace App2.View
                 Model.ListDiffrence.listDiffrences.Clear();
                 var listaZMM = Model.PrzyjmijMMLista.przyjmijMMListas.Where(n => n.GIDdokumentuMM == _gidnumer);
 
-                //foreach (var ww in listaZMM)
-                //{
-                //    Model.ListDiffrence.listDiffrences.Add(new Model.ListDiffrence {
-                //        twrkod = ww.twrkod,
-                //        ilosc = ww.ilosc * -1,
-                //        typ = "MM",
-                //        IleZMM =ww.ilosc,
-                //        NrDokumentu = ww.nrdokumentuMM,
-                //        GidMagazynu = ww.GIDMagazynuMM,
-                //        DataDokumentu= ww.DatadokumentuMM,
-                //        TwrNazwa = ww.nazwa
-                //    }); 
-                //}
-
-
-                //var listaZskanowania = await _connection.QueryAsync<Model.RaportListaMM>(@"select RaportListaMM.twrkod, RaportListaMM.nazwa,
-                //RaportListaMM.ilosc_OK , RaportListaMM.nrdokumentuMM, RaportListaMM.DatadokumentuMM
-                //from RaportListaMM 
-                //where RaportListaMM.GIDdokumentuMM = ? ", _gidnumer);
-                ////odczy
-                //foreach (var ww in listaZskanowania)
-                //{
-                //    Model.ListDiffrence.listDiffrences.Add(new Model.ListDiffrence {
-                //        twrkod = ww.twrkod,
-                //        ilosc = ww.ilosc_OK,
-                //        typ = "Skan",
-                //        IleZeSkan =ww.ilosc_OK,
-                //        NrDokumentu = ww.nrdokumentuMM,
-                //        DataDokumentu = ww.DatadokumentuMM,
-                //        GidMagazynu = ww.GIDMagazynuMM,
-                //        TwrNazwa= ww.nazwa
-                //    });
-                //}
-
-                //var lista = Model.ListDiffrence.listDiffrences; 
-
-                //var nowa2 = lista.GroupBy(g => g.twrkod).
-                //    SelectMany(c => c.Select(
-                //        csline => new Model.ListDiffrence
-                //        {
-                //            twrkod = csline.twrkod,
-                //            IleZeSkan= c.Sum(x=>x.IleZeSkan),
-                //            IleZMM = csline.IleZMM,
-                //            ilosc = c.Sum(cc => cc.ilosc),
-                //            NrDokumentu= csline.NrDokumentu,
-                //            GidMagazynu = csline.GidMagazynu,
-                //            DataDokumentu = csline.DataDokumentu,
-                //            TwrNazwa=csline.TwrNazwa
-                //        })).ToList().GroupBy(p => new
-                //        {
-                //            p.twrkod,
-                //            p.ilosc // modyfikacja
-                //            //p.IleZMM,
-                //            //p.IleZeSkan
-                //        }).Select(g => g.First()).Where(f =>f.ilosc!=0).OrderBy(x => x.twrkod);
-
-
-
-                // await Navigation.PushModalAsync(new View.RaportListaRoznice(nowa2, listaZMM));
-
-                await Navigation.PushModalAsync(new View.RaportListaRoznice(listaZMM.ToList()[0].GIDdokumentuMM)); //!!!
+                await Navigation.PushAsync(new View.RaportListaRoznice(listaZMM.ToList()[0].GIDdokumentuMM)); //!!!
 
                 //Model.PrzyjmijMMLista.przyjmijMMListas.Clear();
                 Model.ListDiffrence.listDiffrences.Clear();

@@ -19,7 +19,7 @@
                     CornerRadius="10" 
                     BorderColor="mediumturquoise"   
                     BorderWidth="5"
-                    Image="skaner100"
+                    ImageSource="skaner100"
                     Clicked="BtnListaMMp_Clicked"   
                     ContentLayout="Top,20" x:Name="btn_przyjmijMM"
                     
@@ -32,7 +32,7 @@
                     CornerRadius="10" 
                     BorderColor="mediumturquoise" 
                     BorderWidth="5"
-                    Image="dodaj100" 
+                    ImageSource="dodaj100" 
                     ContentLayout="Top,40" 
                     Clicked="BtnCreateMm_Clicked" x:Name="btn_CreateMM"
                     />
@@ -45,15 +45,13 @@
                     CornerRadius="10" 
                     BorderColor="mediumturquoise"   
                     BorderWidth="5"
-                    Image="icons8_fedex.9"
+                    ImageSource="icons8_fedex.9"
                     Clicked="BtnCreatePaczka_Clicked"
                     ContentLayout="Top,20"  
                     
                     />
             
-            
-            <!--IsEnabled="{Binding Path=(local:Analyze.DataPresent)}"-->
-            <!--IsEnabled="{Binding Source={x:Static local:Model.Analyze.DataPresent}}"-->
+ 
             <Button Text="Weryfikator Cen" Grid.Column="0" Grid.Row="2"   
                     BackgroundColor="DarkCyan" 
                     FontSize="14" 
@@ -62,7 +60,7 @@
                     CornerRadius="10" 
                     BorderColor="mediumturquoise"
                     BorderWidth="5"
-                    Image="barcode150.png"
+                    ImageSource="barcode150.png"
                     ContentLayout="Top,0"
                     Clicked="SkanTwr_Clicked"
                     x:Name="btn_weryfikator" 
@@ -89,7 +87,7 @@
                     BorderColor="mediumturquoise" 
                     BorderWidth="5" 
                     FontAttributes="Bold" 
-                    Image="znizka100"
+                    ImageSource="znizka100"
                     ContentLayout="Top,1"
                     x:Name="btn_ListaAkcji"
                     Clicked="Btn_ListAkcje_Clicked"
@@ -97,11 +95,7 @@
             <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
         </Grid>
-        <!--<ActivityIndicator x:Name="WaitIco2" 
-                           IsRunning="False" 
-                           IsVisible="false" 
-                           HorizontalOptions="Center" 
-                           Color="Black"/>-->
+   
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
             <ImageButton Source="help100.9"  
                          Clicked="Help_Clicked"  

@@ -52,7 +52,7 @@ namespace App2.View
 
         public RaportLista_AddTwrKod(int gidnumer) : base() //dodawamoe pozycji
         {
-            
+
             if (SettingsPage.SelectedDeviceType == 1)
             {
                 WidokAparat(gidnumer);
@@ -800,13 +800,13 @@ namespace App2.View
 
         //            if (czyLiczbaOk)
         //            {
-                   
+
         //                var resposne = await serwisApi.UpadteElement(iloscSkanowana, _gidnumer, elementDto.Id);
-                   
+
         //                dokMM.getElementy(_gidnumer);
         //                await Navigation.PopModalAsync();
         //            }
-                    
+
         //        }
         //    }
         //    else
@@ -821,43 +821,54 @@ namespace App2.View
 
             if (!string.IsNullOrEmpty(entry_ilosc.Text) && !string.IsNullOrEmpty(entry_kodean.Text) && !string.IsNullOrEmpty(twr_nazwa))
             {
-
+                  
                 try
                 {
-                    Model.RaportListaMM dokMM = new Model.RaportListaMM();
-                    var listaZMM = Model.PrzyjmijMMLista.przyjmijMMListas.Where(n => n.GIDdokumentuMM == _gidnumer).ToList();
-                    dokMM.twrkod = entry_kodean.Text;
-                    dokMM.ilosc_OK = Convert.ToInt16(entry_ilosc.Text);
-                    dokMM.nazwa = lbl_nazwa.Text;
-                    dokMM.url = FilesHelper.ConvertUrlToOtherSize(twr_url, entry_kodean.Text, FilesHelper.OtherSize.small);
-                    int maxid = await _connection.ExecuteScalarAsync<int>("select ifnull(max(IdElement),0) maxid from RaportListaMM where GIDdokumentuMM =?", _gidnumer);
+                    var iloscIntTest = int.TryParse(entry_ilosc.Text, out int iloscInt);
 
-
-                    var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where GIDdokumentuMM = ? and twrkod=?", _gidnumer, entry_kodean.Text);
-                    if (wynik.Count > 0)
+                    if (iloscIntTest)
                     {
-                        var wpis = wynik[0];
+                        Model.RaportListaMM dokMM = new Model.RaportListaMM();
+                        var listaZMM = Model.PrzyjmijMMLista.przyjmijMMListas.Where(n => n.GIDdokumentuMM == _gidnumer).ToList();
+                        dokMM.twrkod = entry_kodean.Text;
 
-                        int suma = wynik[0].ilosc_OK + Convert.ToInt16(entry_ilosc.Text);
+                        dokMM.ilosc_OK = iloscInt;
+                        dokMM.nazwa = lbl_nazwa.Text;
+                        dokMM.url = FilesHelper.ConvertUrlToOtherSize(twr_url, entry_kodean.Text, FilesHelper.OtherSize.small);
+                        int maxid = await _connection.ExecuteScalarAsync<int>("select ifnull(max(IdElement),0) maxid from RaportListaMM where GIDdokumentuMM =?", _gidnumer);
 
-                        await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana, razem : {2}", dokMM.twrkod, wpis.ilosc_OK, suma), "OK");
-                        wpis.ilosc_OK = suma;
-                        await _connection.UpdateAsync(wpis);
+
+                        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where GIDdokumentuMM = ? and twrkod=?", _gidnumer, entry_kodean.Text);
+                        if (wynik.Count > 0)
+                        {
+                            var wpis = wynik[0];
+
+                            int suma = wynik[0].ilosc_OK + iloscInt;
+
+                            await DisplayAlert("Uwaga", String.Format("Kod {0} już jest na liście : {1} szt - pozycja zostanie zaktualizowana, razem : {2}", dokMM.twrkod, wpis.ilosc_OK, suma), "OK");
+                            wpis.ilosc_OK = suma;
+                            await _connection.UpdateAsync(wpis);
+                        }
+                        else
+                        {
+                            dokMM.IdElement = (maxid) + 1;
+                            dokMM.GIDdokumentuMM = _gidnumer;
+                            dokMM.DatadokumentuMM = listaZMM[0].DatadokumentuMM;
+                            dokMM.nrdokumentuMM = listaZMM[0].nrdokumentuMM;
+                            dokMM.XLGIDMM = listaZMM[0].XLGIDMM;
+
+                            //dokMM.nazwa = 
+                            // dokMM.RaportListaMMs.Add(dokMM);
+                            Model.RaportListaMM.RaportListaMMs.Add(dokMM);
+                            await _connection.InsertAsync(dokMM);
+                        }
+
+                        await Navigation.PopModalAsync();
                     }
                     else
                     {
-                        dokMM.IdElement = (maxid) + 1;
-                        dokMM.GIDdokumentuMM = _gidnumer;
-                        dokMM.DatadokumentuMM = listaZMM[0].DatadokumentuMM;
-                        dokMM.nrdokumentuMM = listaZMM[0].nrdokumentuMM;
-                        dokMM.XLGIDMM = listaZMM[0].XLGIDMM;
-
-                        //dokMM.nazwa = 
-                        // dokMM.RaportListaMMs.Add(dokMM);
-                        Model.RaportListaMM.RaportListaMMs.Add(dokMM);
-                        await _connection.InsertAsync(dokMM);
+                        await DisplayAlert("uwaga", "wartość za duża- skanujesz ean do ilości", "OK");
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -908,7 +919,7 @@ namespace App2.View
 
 
                 // OnDoPush(); 
-                await Navigation.PopModalAsync();
+                
                 // SkanowanieEan();  
             }
             else
@@ -950,32 +961,13 @@ namespace App2.View
                 //ZXing.BarcodeFormat.CODABAR,
                 ZXing.BarcodeFormat.CODE_39,
                 },
-                    // CameraResolutionSelector = availableResolutions => {
-
-                    //     foreach (var ar in availableResolutions)
-                    //     {
-                    //         Console.WriteLine("Resolution: " + ar.Width + "x" + ar.Height);
-                    //     }
-                    //     return availableResolutions[0];
-                    // },
-                    //DelayBetweenContinuousScans=3000
+            
 
                 };
 
                 opts.TryHarder = true;
 
-                //zxing = new ZXingScannerView
-                //{
-
-                //    IsScanning = false,
-                //    IsTorchOn = true,
-                //    IsAnalyzing = false,
-                //    AutomationId = "zxingDefaultOverlay",//zxingScannerView
-                //    Opacity = 22,
-                //    Options = opts
-                //};
-
-                var torch = new Switch
+                           var torch = new Switch
                 {
 
                 };
@@ -1111,7 +1103,7 @@ namespace App2.View
 
                             //todo : cennik zmienna
                             var produkt = await FilesHelper.GetCombinedTwrInfo(_ean, 2, request, _client);
-                            if(produkt != null)
+                            if (produkt != null)
                             {
                                 if (produkt.Twr_Ean == _ean)
                                 {
@@ -1136,13 +1128,13 @@ namespace App2.View
                                 {
                                     await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EAN, ale kod {twrkod} jest najblizej", "OK");
                                 }
-                                
+
                             }
                             else
                             {
                                 await DisplayAlert(null, "Nie znaleziono towaru", "OK");
                             }
-                            
+
 
                         }
                         catch (Exception)

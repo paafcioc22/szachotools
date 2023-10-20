@@ -1,5 +1,6 @@
 ﻿using App2.Model;
 using App2.OptimaAPI;
+using App2.ViewModel;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using RestSharp;
@@ -34,22 +35,20 @@ namespace App2.View
         private const string serverIp = "192.168.1.155:5063";
         private static RestClient _client;
         public static ObservableCollection<DrukarkaClass> listaDrukarek;
-        public static List<CennikClass> ListaCen { get; set; }
+        //public static List<CennikClass> ListaCen { get; set; }
     
 
         public static bool CzyDrukarkaOn = false;
 
-        private BindableProperty IsSearchingProperty =
-            BindableProperty.Create("IsSearching", typeof(bool), typeof(SettingsPage), false);
-        public bool IsSearching
-        {
-            get { return (bool)GetValue(IsSearchingProperty); }
-            set { SetValue(IsSearchingProperty, value); }
-        }
+        //private BindableProperty IsSearchingProperty =
+        //    BindableProperty.Create("IsSearching", typeof(bool), typeof(SettingsPage), false);
+        //public bool IsSearching
+        //{
+        //    get { return (bool)GetValue(IsSearchingProperty); }
+        //    set { SetValue(IsSearchingProperty, value); }
+        //}
 
-
-
-        //private string _version;
+        SettingsViewModel viewModel;
         public SettingsPage()
         {
             InitializeComponent();
@@ -57,28 +56,13 @@ namespace App2.View
 
             //  _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
             //GetDevices();
-            SelectDeviceMetod();
-
-            //  cpclConst = new CPCLConst(); 
+            SelectDeviceMetod();  
  
             var app = Application.Current as App;
-            BindingContext = Application.Current;
 
-
-
-            //if ( SprConn().Result)
-            //{
-            //    GetBaseName();
-            //    GetGidnumer();
-
-            //    cennikClasses = GetCenniki();
-            //    if (cennikClasses != null)//cennikClasses.Count > 0 || 
-            //    {
-            //        pickerlist.ItemsSource = GetCenniki().ToList();
-            //        pickerlist.SelectedIndex = app.Cennik;
-            //    }
-
-            //}
+            this.BindingContext = viewModel= new SettingsViewModel(app);
+            //BindingContext = Application.Current; 
+ 
 
             if (!app.Serwer.Contains("optima"))
             {
@@ -88,9 +72,7 @@ namespace App2.View
                 };
 
                 _client = new RestClient(options);
-            }
-                
-           
+            } 
 
             InicjalizujAsync(app);
             SwitchStatus.IsToggled = IsBuforOff;
@@ -108,20 +90,19 @@ namespace App2.View
                 await GetBaseName(app);
                 await GetGidnumer();
 
-                ListaCen = (await GetCenniki());
-                if (ListaCen != null)//cennikClasses.Count > 0 || 
+                viewModel.ListaCen = (await GetCenniki());
+                if (viewModel.ListaCen != null)//cennikClasses.Count > 0 || 
                 {
-                    pickerlist.ItemsSource = ListaCen;
+                    pickerlist.ItemsSource = viewModel.ListaCen;
                     if (app.Cennik != "0")
                     {
-                        var selected= ListaCen.FirstOrDefault(s=>s.RodzajCeny == app.Cennik);
+                        var selected= viewModel.ListaCen.FirstOrDefault(s=>s.RodzajCeny == app.Cennik);
 
                         pickerlist.SelectedItem = selected;
                     }
                 }
-            }
+            } 
 
-            //sprwersja();
         }
 
 
@@ -186,18 +167,26 @@ namespace App2.View
 
             try
             {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.CancelAfter(10000);
+
+                viewModel.IsBusy = true;
                 var app = Application.Current as App;
 
                 var options = new RestClientOptions($"http://{app.Serwer}")
                 {
-                     MaxTimeout = 10000 // 10 sekund
+                     MaxTimeout = 10 // 10 sekund
                 };
+
                 _client = new RestClient(options);  // re-inicjalizacja klienta
 
 
-                var request = new RestRequest("/api/test");
+                var request = new RestRequest("/api/test")
+                {
+                    Timeout = 10
+                };
 
-                var response = await _client.GetAsync(request);
+                var response = await _client.GetAsync(request, cancellationTokenSource.Token);
                 if (response.IsSuccessful)
                 {
                     var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
@@ -216,6 +205,7 @@ namespace App2.View
                         app.BazaProd = dbNameHeader.Value.ToString();
                         BazaProd.Text = dbNameHeader.Value.ToString();
                         await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
+                        viewModel.IsBusy = false;
                         await Application.Current.SavePropertiesAsync();
                         await Navigation.PopAsync();
                     }
@@ -229,11 +219,17 @@ namespace App2.View
                         await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
 
                 }
-                
+                viewModel.IsBusy = false;
+            }
+            catch (OperationCanceledException ex)
+            {
+                Debug.WriteLine("Żądanie zostało anulowane: " + ex.Message);
+                viewModel.IsBusy = false;
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Uwaga", ex.Message, "OK");
+                viewModel.IsBusy = false;
             }
           
         }
@@ -244,6 +240,9 @@ namespace App2.View
         {
             try
             {
+                var cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.CancelAfter(10000);
+
                 var app = Application.Current as App;
                 //todo : skonfiguruj ustawienia
                 if (!app.Serwer.Contains("optima"))
@@ -255,7 +254,7 @@ namespace App2.View
                     _client = new RestClient(options);  // re-inicjalizacja klienta
 
                     var request = new RestRequest("/api/test");
-                    var response = await _client.GetAsync(request);
+                    var response = await _client.GetAsync(request, cancellationTokenSource.Token);
 
                     var data = response.IsSuccessStatusCode;
                     return data;
@@ -411,7 +410,7 @@ namespace App2.View
         private  async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
 
-            IsSearching = true;
+            IsBusy = true;
             string wifi = "Szachownica";//JOART_WiFi Szachownica
             int versionA = DeviceInfo.Version.Major;
 
@@ -482,7 +481,7 @@ namespace App2.View
             //await DisplayAlert("Info", wifiConn.SuggestNetwork(wifi, "J0@rt11a"), "OK"); 
 
             //});
-            IsSearching = false;
+            IsBusy = false;
 
         }
 

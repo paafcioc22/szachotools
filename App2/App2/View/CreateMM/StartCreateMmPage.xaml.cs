@@ -34,6 +34,7 @@ namespace App2.View
 
             dokumentyApi.DokNaglowekDtos.Clear ();
             await dokumentyApi.GetDokAll(GidTyp.Mm, false);
+            await dokumentyApi.GetDokAll(GidTyp.Mm, true);
 
         }
 

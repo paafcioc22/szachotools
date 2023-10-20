@@ -201,7 +201,7 @@ namespace App2.View
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
-                    await Navigation.PushModalAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
+                    await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
                     //IsBusy = false;
                     WaitIco.IsRunning = false;
                     btn_przyjmijMM.IsEnabled = true;
@@ -281,39 +281,18 @@ namespace App2.View
 
         private async void ImageButton_Clicked(object sender, EventArgs e)
         {
-
-            //WaitIco.IsRunning = true;
-            //WaitIco.IsVisible = true;
-
-
-
+ 
             if (_userTapped)
                 return;
 
             _userTapped = true;
 
             //await Navigation.PushModalAsync(new PrzyjmijMM_ListaElementowMM(null, mm.GIDdokumentuMM));
-            await Navigation.PushAsync(new View.SettingsPage());
+            await Navigation.PushAsync(new SettingsPage());
 
             _userTapped = false;
 
-            //WaitIco.IsRunning = false;
-            //WaitIco.IsVisible = false;
-
-
-            //var delay = await Task.Run(async delegate
-            //{
-            //    await Task.Delay(TimeSpan.FromSeconds(0));
-            //    Device.BeginInvokeOnMainThread(async () =>
-            //    {
-
-
-
-
-
-            //    });
-            //    return 0;
-            //});
+        
         }
 
         private bool _userTapped;

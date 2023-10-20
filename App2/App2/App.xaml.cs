@@ -74,7 +74,6 @@ namespace App2
                 View.StartPage.user = "Wylogowany";
             }
 
-
             
         }
 
