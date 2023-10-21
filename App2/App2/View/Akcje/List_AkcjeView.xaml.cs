@@ -91,7 +91,7 @@ namespace App2.View
                 }
 
             }
-            catch (Exception x)
+            catch (Exception )
             {
                 MyListView.IsVisible =false;
                 notFoundFrame.IsVisible = !MyListView.IsVisible;

@@ -21,39 +21,46 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginLista : ContentPage
     {
-        public   ObservableCollection<Pracownik> ListaLogin { get; set; }
         public static IszachoApi Api => DependencyService.Get<IszachoApi>();
+        public ListView ListViewLogin { get { return MyListView; } }
+        public ObservableCollection<Pracownik> ListaLogin { get; set; }
+        public Entry enthaslo { get { return entry_haslo; } }
+
+        private BindableProperty IsSearchingProperty =
+            BindableProperty.Create("IsSearching", typeof(bool), typeof(LoginLista), false);
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
+        }
 
 
-        string konfiguracyjna;
-
-        static string haslo;
+        ZXing.Mobile.MobileBarcodeScanningOptions opts;
+        ZXingScannerPage scanPage;
+        ZXingScannerView zxing; 
+   
         static public string _user;
         static public string _nazwisko;
         static public int _opeGid;
-        static string haslo_chk;
+  
          
-
-        public ListView ListViewLogin { get { return MyListView; } }
-        public Entry enthaslo { get { return entry_haslo; } }
-
         public LoginLista()
         {
-            InitializeComponent();
-            var app = Application.Current as App;
-         
-            konfiguracyjna = app.BazaConf;
-            GetLogins();
+            InitializeComponent(); 
+           
+            this.BindingContext = this;
 
             if (SettingsPage.SelectedDeviceType == 1)
                 UseAparatButton.IsVisible = false;
         }
  
-        ZXing.Mobile.MobileBarcodeScanningOptions opts;
-        ZXingScannerPage scanPage;
-        ZXingScannerView zxing;
 
 
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            await GetLogins();
+        }
 
         public async void SkanujIdetyfikator()
         {
@@ -170,37 +177,46 @@ namespace App2.View
             _nazwisko = prac.openazwa;
             
 
-           // SkanujIdetyfikator();
-             
+           // SkanujIdetyfikator(); 
  
         }
-
          
 
-        private async void GetLogins()
+        private async Task GetLogins()
         {
             ListaLogin = new ObservableCollection<Pracownik>();
-            
-            ServiceDokumentyApi serwisApi= new ServiceDokumentyApi();
-            var viewUsers= await serwisApi.GetViewUsersAsync();
+            IsSearching = true;
 
-            foreach (var item in viewUsers)
+            try
             {
-
-           
-                ListaLogin.Add(new Pracownik
+                if(await SettingsPage.SprConn())
                 {
-                    opekod = item.OpeKod,
-                    openazwa = item.OpeNazwa,
-                    //opehaslo = Convert.ToString(rs["Ope_Haslo"]),
-                    //opechk = Convert.ToString(rs["Ope_HasloChk"]),
-                    opegidnumer = item.OpeGidnumer                 
+                    ServiceDokumentyApi serwisApi = new ServiceDokumentyApi();
+                    var viewUsers = await serwisApi.GetViewUsersAsync();
 
-                 }); 
+                    foreach (var item in viewUsers)
+                    { 
+
+                        ListaLogin.Add(new Pracownik
+                        {
+                            opekod = item.OpeKod,
+                            openazwa = item.OpeNazwa,
+                            //opehaslo = Convert.ToString(rs["Ope_Haslo"]),
+                            //opechk = Convert.ToString(rs["Ope_HasloChk"]),
+                            opegidnumer = item.OpeGidnumer
+
+                        });
+                    }
+                    IsSearching = false;
+                    MyListView.ItemsSource = ListaLogin;
+
+                }
             }
-         
-
-            MyListView.ItemsSource = ListaLogin;
+            catch (Exception s)
+            {
+                IsSearching = false;
+                await DisplayAlert("uwaga", $"{s.Message}", "OK");
+            }
         }
 
         public bool IsPassCorrect()
@@ -311,8 +327,7 @@ namespace App2.View
 
                     if (await IsPassCorrect(_opeGid))
                     {
-
-
+                         
                         View.StartPage.user = _user;
 
 
@@ -345,9 +360,7 @@ namespace App2.View
         
         private async void entry_haslo_Completed(object sender, EventArgs e)
         {
-
-
-
+             
             try
             {
                 if (await IsPassCorrect(_opeGid))

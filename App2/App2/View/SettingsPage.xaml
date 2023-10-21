@@ -72,7 +72,7 @@
                     ItemDisplayBinding="{Binding RodzajCeny}" 
                     SelectedIndexChanged="pickerlist_OnChanged" 
                     HorizontalOptions="Center"  
-                    WidthRequest="150" Focused="pickerlist_Focused"
+                    WidthRequest="150"  
                     >
                         <!--ItemsSource="{Binding cennikClasses}"-->
 

@@ -33,8 +33,8 @@
                         <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                             <StackLayout HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding nrdokumentuMM}"   Font="MarkerFelt-Thin,16" FontAttributes="Bold"/>
-                                <Label Text="{Binding DatadokumentuMM}" Font="14"/>
-                                <Label Text="{Binding OpisdokumentuMM}" Font="12"/>
+                                <Label Text="{Binding DatadokumentuMM}" FontSize="14"/>
+                                <Label Text="{Binding OpisdokumentuMM}" FontSize="12"/>
                             </StackLayout>
                             <Image Source="{Binding StatusMM, Converter={StaticResource StatusConverter}}"/>
                         </StackLayout>

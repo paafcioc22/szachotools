@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+#nullable enable
+
 namespace App2.Model.ApiModel
 {
     public class DokNaglowekSmallDto

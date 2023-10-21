@@ -7,10 +7,10 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -36,18 +36,10 @@ namespace App2.View
         private static RestClient _client;
         public static ObservableCollection<DrukarkaClass> listaDrukarek;
         //public static List<CennikClass> ListaCen { get; set; }
-    
 
-        public static bool CzyDrukarkaOn = false;
 
-        //private BindableProperty IsSearchingProperty =
-        //    BindableProperty.Create("IsSearching", typeof(bool), typeof(SettingsPage), false);
-        //public bool IsSearching
-        //{
-        //    get { return (bool)GetValue(IsSearchingProperty); }
-        //    set { SetValue(IsSearchingProperty, value); }
-        //}
-
+        public static bool CzyDrukarkaOn = false; 
+     
         SettingsViewModel viewModel;
         public SettingsPage()
         {
@@ -56,13 +48,13 @@ namespace App2.View
 
             //  _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService();
             //GetDevices();
-            SelectDeviceMetod();  
- 
+            SelectDeviceMetod();
+
             var app = Application.Current as App;
 
-            this.BindingContext = viewModel= new SettingsViewModel(app);
+            this.BindingContext = viewModel = new SettingsViewModel(app);
             //BindingContext = Application.Current; 
- 
+
 
             if (!app.Serwer.Contains("optima"))
             {
@@ -72,36 +64,54 @@ namespace App2.View
                 };
 
                 _client = new RestClient(options);
-            } 
-
-            InicjalizujAsync(app);
+            }
+             
             SwitchStatus.IsToggled = IsBuforOff;
             SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
 
-     
+
+
+        protected override void OnAppearing()
+        {
+            var app = Application.Current as App;
+
+            base.OnAppearing();
+            InicjalizujAsync(app);
+
+        }
 
         private async void InicjalizujAsync(App app)
         {
-            bool wynik = await SprConn();
-
-            if (wynik)
+            try
             {
-                await GetBaseName(app);
-                await GetGidnumer();
+                bool wynik = await SprConn();
 
-                viewModel.ListaCen = (await GetCenniki());
-                if (viewModel.ListaCen != null)//cennikClasses.Count > 0 || 
+                if (wynik)
                 {
-                    pickerlist.ItemsSource = viewModel.ListaCen;
-                    if (app.Cennik != "0")
-                    {
-                        var selected= viewModel.ListaCen.FirstOrDefault(s=>s.RodzajCeny == app.Cennik);
+                    await GetBaseName(app);
+                    await GetGidnumer();
 
-                        pickerlist.SelectedItem = selected;
+                    viewModel.ListaCen = (await GetCenniki());
+                    if (viewModel.ListaCen != null)//cennikClasses.Count > 0 || 
+                    {
+                        pickerlist.ItemsSource = viewModel.ListaCen;
+                        if (app.Cennik != "0")
+                        {
+                            var selected = viewModel.ListaCen.FirstOrDefault(s => s.RodzajCeny == app.Cennik);
+
+                            pickerlist.SelectedItem = selected;
+                        }
                     }
                 }
-            } 
+            }
+            catch (Exception s)
+            {
+                DependencyService
+                        .Get<IAppVersionProvider>()
+                        .ShowShort("Brak połączenia");
+                // await DisplayAlert("uwaga", s.Message, "OK");
+            }
 
         }
 
@@ -159,71 +169,122 @@ namespace App2.View
 
 
 
-        
 
+        async static Task<bool> SprawdzPolaczenieApi(App app)
+        {
+         
+            try
+            {
+                using var httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(20); // Ustawienie czasu wygaśnięcia na 10 sekund
+
+                var response = await httpClient.GetAsync($"http://{app.Serwer}/api/test");
+                var isOk = response.EnsureSuccessStatusCode(); // Rzuci wyjątek, jeśli status code to błąd
+                return isOk.IsSuccessStatusCode;
+            }
+            catch (OperationCanceledException ex)
+            {
+                // Przechwyć wyjątek, gdy żądanie jest anulowane z powodu przekroczenia czasu
+                Debug.WriteLine("Timeout: " + ex.Message);
+                throw new Exception("Timeout: upłynął limit czasu żądania");
+
+            }
+            catch (HttpRequestException ex)
+            {
+                // Przechwyć wyjątek, gdy wystąpi problem z żądaniem HTTP
+                Debug.WriteLine("Problem z żądaniem HTTP: " + ex.Message);
+                throw ex;
+
+            }
+            catch (Exception ex)
+            {
+                // Przechwyć inne wyjątki
+                Debug.WriteLine("Wystąpił inny błąd: " + ex.Message);
+                string newMessage = ex.Message + "\nspróbuj ponownie za chwilę";
+                throw new Exception(newMessage, ex);
+
+            }
+        }
 
         private async void SprConn_Clicked(object sender, EventArgs e)
         {
 
             try
             {
-                var cancellationTokenSource = new CancellationTokenSource();
-                cancellationTokenSource.CancelAfter(10000);
-
                 viewModel.IsBusy = true;
                 var app = Application.Current as App;
 
-                var options = new RestClientOptions($"http://{app.Serwer}")
+                Regex regex = new Regex(@"[^0-9.:]");
+  
+                if (regex.IsMatch(app.Serwer))
                 {
-                     MaxTimeout = 10 // 10 sekund
-                };
+                    // Wyświetl komunikat o błędzie, jeśli wprowadzony tekst zawiera niedozwolone znaki
+                    throw new Exception("Wprowadzono nieprawidłowy adres IP. Proszę używać tylko cyfr, kropek i dwukropków.");
 
-                _client = new RestClient(options);  // re-inicjalizacja klienta
-
-
-                var request = new RestRequest("/api/test")
-                {
-                    Timeout = 10
-                };
-
-                var response = await _client.GetAsync(request, cancellationTokenSource.Token);
-                if (response.IsSuccessful)
-                {
-                    var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
-                    if (dbNameHeader != null)
-                    {
-                        Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
-                    }
-
-                    var connOk = response.IsSuccessStatusCode;
-                    if (connOk)
-                    {
-                      
-                        var magInfo = await GetGidnumer();
-                        app.MagGidNumer = (short)magInfo.Id;
-
-                        app.BazaProd = dbNameHeader.Value.ToString();
-                        BazaProd.Text = dbNameHeader.Value.ToString();
-                        await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
-                        viewModel.IsBusy = false;
-                        await Application.Current.SavePropertiesAsync();
-                        await Navigation.PopAsync();
-                    }
-                    else
-                    {
-                        await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
-                    }
                 }
                 else
                 {
-                        await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+                                    
+                    if (await SprawdzPolaczenieApi(app))
+                    {                     
 
-                }
-                viewModel.IsBusy = false;
+                        var options = new RestClientOptions($"http://{app.Serwer}")
+                        {
+                            MaxTimeout = 10000 // 10 sekund
+                        };
+
+                        _client = new RestClient(options);  // re-inicjalizacja klienta
+
+
+                        var request = new RestRequest("/api/test")
+                        {
+                            Timeout = 10000
+                        };
+
+                        var response = await _client.GetAsync(request);
+                        if (response.IsSuccessful)
+                        {
+                            var dbNameHeader = response.Headers.FirstOrDefault(h => h.Name == "X-Database-Name");
+                            if (dbNameHeader != null)
+                            {
+                                Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
+                            }
+
+                            var connOk = response.IsSuccessStatusCode;
+                            if (connOk)
+                            {
+
+                                var magInfo = await GetGidnumer();
+                                app.MagGidNumer = (short)magInfo.Id;
+
+                                app.BazaProd = dbNameHeader.Value.ToString();
+                                BazaProd.Text = dbNameHeader.Value.ToString();
+                                await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
+                                viewModel.IsBusy = false;
+                                await Application.Current.SavePropertiesAsync();
+                                await Navigation.PopAsync();
+                            }
+                            else
+                            {
+                                await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+                            }
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Nie połączono z bazą - sprawdź urządzenia i spróbuj ponownie..", "OK");
+
+                        }
+                        viewModel.IsBusy = false;
+                    }
+                } 
+
             }
             catch (OperationCanceledException ex)
             {
                 Debug.WriteLine("Żądanie zostało anulowane: " + ex.Message);
+                //await DisplayAlert("Upłynął limit czasu połączenia", ex.Message, "OK");
+                
+
                 viewModel.IsBusy = false;
             }
             catch (Exception ex)
@@ -231,7 +292,7 @@ namespace App2.View
                 await DisplayAlert("Uwaga", ex.Message, "OK");
                 viewModel.IsBusy = false;
             }
-          
+
         }
 
 
@@ -240,44 +301,50 @@ namespace App2.View
         {
             try
             {
-                var cancellationTokenSource = new CancellationTokenSource();
-                cancellationTokenSource.CancelAfter(10000);
+
+                Regex regex = new Regex(@"[^0-9.:]");
 
                 var app = Application.Current as App;
                 //todo : skonfiguruj ustawienia
-                if (!app.Serwer.Contains("optima"))
+                if (regex.IsMatch(app.Serwer))
                 {
-                    var options = new RestClientOptions($"http://{app.Serwer}")
-                    {
-                        MaxTimeout = 10000 // 10 sekund
-                    }; 
-                    _client = new RestClient(options);  // re-inicjalizacja klienta
-
-                    var request = new RestRequest("/api/test");
-                    var response = await _client.GetAsync(request, cancellationTokenSource.Token);
-
-                    var data = response.IsSuccessStatusCode;
-                    return data;
+                    // Wyświetl komunikat o błędzie, jeśli wprowadzony tekst zawiera niedozwolone znaki
+                    throw new Exception("Wprowadzono nieprawidłowy adres IP. Proszę używać tylko cyfr, kropek i dwukropków.");
+             
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("uwaga", "zły adres serwera - zawiera '/'", "OK");
-                    return false;
-                }
-                
+                    if (await SprawdzPolaczenieApi(app))
+                    {
+                        //var options = new RestClientOptions($"http://{app.Serwer}")
+                        //{
+                        //    MaxTimeout = 10000 // 10 sekund
+                        //};
+                        //_client = new RestClient(options);  // re-inicjalizacja klienta
+
+                        //var request = new RestRequest("/api/test");
+                        //var response = await _client.GetAsync(request);
+
+                        //return response.IsSuccessStatusCode;
+                        return true;
+
+                    }
+                }                
+                return false;
+
             }
             catch (HttpRequestException a)
             {
                 var sdas = a.InnerException;
                 Console.WriteLine(sdas);
-                return false; 
+                return false;
             }
 
         }
 
 
         public static async Task<Magazynn> GetGidnumer()
-        {            
+        {
             ServicePrzyjmijMM serviceApi = new ServicePrzyjmijMM();
             return await serviceApi.GetSklepMagNumer();
 
@@ -296,34 +363,35 @@ namespace App2.View
                 if (dbNameHeader != null)
                 {
                     Console.WriteLine($"X-Database-Name: {dbNameHeader.Value}");
-                    app.BazaProd= dbNameHeader.Value.ToString();
+                    app.BazaProd = dbNameHeader.Value.ToString();
                     return true;
                 }
-                    return false;
+                return false;
 
 
             }
             catch (Exception s)
             {
-                await DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane i/lub spróbuj ponownie" , "OK");
+                await DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane i/lub spróbuj ponownie", "OK");
                 return false;
             }
 
         }
 
-     
+
         private async Task<List<CennikClass>> GetCenniki()
         {
             try
             {
                 var request = new RestRequest("/api/getCenniki");
 
-                var response = await _client.ExecuteGetAsync<List<CennikClass>>(request);                              
+                var response = await _client.ExecuteGetAsync<List<CennikClass>>(request);
 
                 if (response.IsSuccessful)
                 {
                     return response.Data;
-                }else
+                }
+                else
                     return null;
 
             }
@@ -336,7 +404,7 @@ namespace App2.View
 
         }
 
-      
+
 
         private async void pickerlist_OnChanged(object sender, EventArgs e)
         {
@@ -359,7 +427,7 @@ namespace App2.View
             //    // app.Cennik = idceny.Id;
             //}
 
-           
+
             //int selectedIndex = picker.SelectedIndex;
 
             if (selectedIndex != -1)
@@ -374,17 +442,17 @@ namespace App2.View
 
 
         public Picker PickerDrukarki { get { return pickerlist; } }
-        private async void pickerlist_Focused(object sender, FocusEventArgs e)
-        {
-            if (!await SprConn())
-            {
-                pickerlist.Title = "Brak połączenia z bazą";
-            }
-            else
-            {
-                
-            }
-        }
+        //private async void pickerlist_Focused(object sender, FocusEventArgs e)
+        //{
+        //    if (!await SprConn())
+        //    {
+        //        pickerlist.Title = "Brak połączenia z bazą";
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
 
         private void Switch_Toggled(object sender, ToggledEventArgs e)
         {
@@ -393,21 +461,21 @@ namespace App2.View
 
         private void PrinterList_SelectedIndexChanged(object sender, EventArgs e)
         {
-         //   var appp = Application.Current as App;
+            //   var appp = Application.Current as App;
             //var nazwa = PrinterList.Items[PrinterList.SelectedIndex];
             //var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki == nazwa);
 
-         //   int selectedIndex = PrinterList.SelectedIndex;
+            //   int selectedIndex = PrinterList.SelectedIndex;
             //appp.Drukarka = selectedIndex; <<<<<<<<<<<<<<<<<<<<<<<<<<<smiana aaaaa
 
-         //   var printer = PrinterList.Items[PrinterList.SelectedIndex];
-         //   var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki + "\r\n" + c.AdresDrukarki == printer);
+            //   var printer = PrinterList.Items[PrinterList.SelectedIndex];
+            //   var wybrana = listaDrukarek.Single(c => c.NazwaDrukarki + "\r\n" + c.AdresDrukarki == printer);
 
             //btnConnectClicked(wybrana);
 
         }
 
-        private  async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
+        private async void Btn_ConToWiFi_Clicked(object sender, EventArgs e)
         {
 
             IsBusy = true;
@@ -454,7 +522,7 @@ namespace App2.View
 
                 var odp = wifiConn.SuggestNetwork(wifi, "J0@rt11a");
                 if (!string.IsNullOrEmpty(odp))
-                    if(odp== "Sieć została już dodana")
+                    if (odp == "Sieć została już dodana")
                     {
                         var czyRemoveNet = await DisplayAlert("Info", "Sieć została już dodana\n Czy chcesz usunąć sugerowane sieci?", "Tak", "NIE");
                         if (czyRemoveNet)
@@ -463,15 +531,15 @@ namespace App2.View
                     else
                     {
                         await DisplayAlert("Info", odp, "OK");
-                        if (odp== "Sieć dodano - zatwierdź w ustawieniach")
+                        if (odp == "Sieć dodano - zatwierdź w ustawieniach")
                         {
                             wifiConn.OpenSettings();
-                        } 
+                        }
                     }
-                   
+
             }
 
-            
+
 
             //Device.BeginInvokeOnMainThread(async () =>
             // {
@@ -519,11 +587,11 @@ namespace App2.View
 
         private async void InitializeSampleUI()
         {
- 
+
 
 
             var bluetoothPermissionService = DependencyService.Get<IBluetoothPermissionService>();
-            var status= await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
+            var status = await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
 
             if (!status)
             {
@@ -556,9 +624,9 @@ namespace App2.View
 
 
             }
-             
+
             List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
-         
+
 
             var deviceList = await _cpclPrinter.connectableDevice();
 
@@ -570,7 +638,7 @@ namespace App2.View
 
             }
 
-            if (listdevice == null|| listdevice.Count==0)
+            if (listdevice == null || listdevice.Count == 0)
             {
                 editAddress.IsEnabled = true;
                 editAddress.Text = "00:00:00:00:00:00";
@@ -582,7 +650,7 @@ namespace App2.View
                 // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
                 // editAddress.Text = deviceList.ElementAt(0).Address;
                 if (appp.Drukarka == "00:00:00:00:00:00")
-                { 
+                {
                     editAddress.Text = "";//deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
                     btnConnect.IsEnabled = false;
                 }
@@ -606,7 +674,7 @@ namespace App2.View
             //    btnConnect.IsEnabled = true;
             //}
 
-           cpclConst = new CPCLConst();
+            cpclConst = new CPCLConst();
 
 
 

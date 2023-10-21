@@ -44,7 +44,6 @@ namespace App2.View
 
             if (!string.IsNullOrEmpty(app.Cennik))
             {
-
                 var rodzaj = (SettingsPage.CzyCenaPierwsza) ? " pierwsza" : app.Cennik;
                 NazwaCennika = $"cena [{rodzaj}]";
                 lbl_cennik.Text = NazwaCennika;

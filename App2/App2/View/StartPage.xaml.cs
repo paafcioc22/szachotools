@@ -2,9 +2,10 @@
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
- 
+
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -13,24 +14,32 @@ using Xamarin.Forms.Xaml;
 
 namespace App2.View
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StartPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StartPage : ContentPage
+    {
         private bool connected;
         public static string user;
-        public StartPage ()
-		{
-			InitializeComponent ();
+
+        //private BindableProperty IsSearchingProperty =
+        //    BindableProperty.Create("IsSearching", typeof(bool), typeof(PrzyjmijMM_ListaMMDoPrzyjecia), false);
+        //public bool IsSearching
+        //{
+        //    get { return (bool)GetValue(IsSearchingProperty); }
+        //    set { SetValue(IsSearchingProperty, value); }
+        //}
+        public StartPage()
+        {
+            InitializeComponent();
             this.BindingContext = this;
             this.IsBusy = false;
-         
-             
+
+
         }
 
         public static bool CzyPrzyciskiWlaczone;
 
 
-      
+
         public static bool CheckInternetConnection()
         {
 
@@ -60,7 +69,7 @@ namespace App2.View
 
             //    iNetResponse.Close();
 
-                
+
             //    return true;
 
             //}
@@ -104,7 +113,7 @@ namespace App2.View
                 }
                 else
                 {
-                   await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
+                    await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
                 }
             }
             catch (Exception)
@@ -116,7 +125,7 @@ namespace App2.View
         public void blokujPrzyciski()
         {
             //IsEnabled = false;
-         
+
             btn_CreateMM.IsEnabled = false;
             btn_przyjmijMM.IsEnabled = false;
             btn_ListaAkcji.IsEnabled = false;
@@ -135,47 +144,54 @@ namespace App2.View
 
 
 
-        protected   override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (!string.IsNullOrEmpty(user) && user!= "Wylogowany" )
+            if (!string.IsNullOrEmpty(user) && user != "Wylogowany")
             {
-                lbl_user.Text = "Zalogowany : "+ user; //dodałem zalogowane
+                lbl_user.Text = "Zalogowany : " + user; //dodałem zalogowane
             }
 
-            if ( user == "Wylogowany")
+            if (user == "Wylogowany")
             {
-                lbl_user.Text = "Wylogowany" ; //dodałem zalogowane
+                lbl_user.Text = "Wylogowany"; //dodałem zalogowane
             }
 
 
             //sprwersja();
-              
-                if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
-                {
-                    blokujPrzyciski();
-                }
-                else
-                {
-                    OdblokujPrzyciski();
-                }
 
-                
+            if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
+            {
+                blokujPrzyciski();
+            }
+            else
+            {
+                OdblokujPrzyciski();
+            }
+
+
         }
-        //przyjmij mm
+  
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
             btn_CreateMM.IsEnabled = false;
-            connected = await SettingsPage.SprConn();
-            if (connected)
+            try
             {
-               await Navigation.PushModalAsync(new View.StartCreateMmPage());
-                btn_CreateMM.IsEnabled = true;
+                connected = await SettingsPage.SprConn();
+                if (connected)
+                {
+                    await Navigation.PushModalAsync(new View.StartCreateMmPage());
+                    btn_CreateMM.IsEnabled = true;
 
+                }
+                else
+                    await DisplayAlert(null, "Brak połączenia z serwisem", "OK");
             }
-            else
-               await DisplayAlert(null, "Brak połączenia z serwisem", "OK");
+            catch (Exception s)
+            {
+                await DisplayAlert("Błąd", s.Message, "OK");
+            }
             btn_CreateMM.IsEnabled = true;
 
         }
@@ -183,49 +199,61 @@ namespace App2.View
         private async void SkanTwr_Clicked(object sender, EventArgs e)
         {
             btn_weryfikator.IsEnabled = false;
-                    
-            await Navigation.PushModalAsync(new View.WeryfikatorCenPage());
+            IsBusy = true;
+            try
+            {
+                if (await SettingsPage.SprConn())
+                {
+                    IsBusy = false;
+                    await Navigation.PushAsync(new View.WeryfikatorCenPage());
+                }
 
-            
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Błąd", ex.Message, "Ok");
+                IsBusy = false;
+            }
+
             btn_weryfikator.IsEnabled = true;
 
         }
         //utwórz MM
         private async void BtnListaMMp_Clicked(object sender, EventArgs e)
         {
-            //IsBusy = true;
-            //try
-            //{
+            IsBusy = true;
+            try
+            {
                 btn_przyjmijMM.IsEnabled = false;
-                WaitIco.IsRunning = true;
+                
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
+                    IsBusy = false;                  
                     await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
-                    //IsBusy = false;
-                    WaitIco.IsRunning = false;
                     btn_przyjmijMM.IsEnabled = true;
 
                 }
                 else
-                    await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+                {
+                    IsBusy = false;
+                    //await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+                }
                 btn_przyjmijMM.IsEnabled = true;
-            //}
-            //catch (Exception x)
-            //{
-            //   await DisplayAlert(null, x.Message, "OK");
-            //}
-            //Navigation.PushModalAsync(new ListaMMP("0101604002410401032"));
+            }
+            catch (Exception x)
+            {
+                IsBusy = false;
+                await DisplayAlert(null, x.Message, "OK");
+            }
+
         }
 
         private async void Btn_Login_Clicked(object sender, EventArgs e)
         {
             btn_login.IsEnabled = false;
-            connected =await SettingsPage.SprConn();
-            if (connected)
+            try
             {
-
-                // await Navigation.PushModalAsync(new LoginLista());
 
                 var page = new LoginLista();
 
@@ -236,27 +264,32 @@ namespace App2.View
                     {
                         page.SkanujIdetyfikator();
                     }
-                    else {
+                    else
+                    {
                         page.enthaslo.Focus();
                     }
 
-                    
-                    if(await page.IsPassCorrect(pracownik.opegidnumer))
+
+                    if (await page.IsPassCorrect(pracownik.opegidnumer))
                         lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
-                   // Navigation.PopModalAsync();
+                    // Navigation.PopModalAsync();
                 };
 
-               await Navigation.PushModalAsync(page);
+                await Navigation.PushModalAsync(page);
 
                 btn_login.IsEnabled = true;
 
-                 
             }
-            else
-                await DisplayAlert(null, "Brak połączenia z siecią", "OK");
+            catch (Exception ex)
+            {
+                await DisplayAlert("Błąd", ex.Message, "OK");
+
+            }
+
+
             btn_login.IsEnabled = true;
 
-              
+
         }
 
         private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
@@ -264,12 +297,12 @@ namespace App2.View
             btn_ListaAkcji.IsEnabled = false;
             connected = await SettingsPage.SprConn();
             if (connected)
-            { 
-                   
+            {
+
                 //await Navigation.PushModalAsync(new List_AkcjeView());
                 await Navigation.PushAsync(new List_AkcjeView());
 
-                btn_ListaAkcji.IsEnabled = true; 
+                btn_ListaAkcji.IsEnabled = true;
             }
             else
                 await DisplayAlert(null, "Brak połączenia z siecią", "OK");
@@ -281,7 +314,7 @@ namespace App2.View
 
         private async void ImageButton_Clicked(object sender, EventArgs e)
         {
- 
+
             if (_userTapped)
                 return;
 
@@ -292,13 +325,13 @@ namespace App2.View
 
             _userTapped = false;
 
-        
+
         }
 
         private bool _userTapped;
         private async void Btn_settings_Tapped(object sender, EventArgs e)
         {
-             
+
             if (_userTapped)
                 return;
 
@@ -330,7 +363,7 @@ namespace App2.View
 
             if (maybe_exit) return false; //QUIT
 
-            DependencyService.Get<Model.IAppVersionProvider>().ShowLong ("Wciśnij jeszcze raz by wyjść z aplikacji");
+            DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Wciśnij jeszcze raz by wyjść z aplikacji");
             maybe_exit = true;
 
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>
@@ -347,13 +380,23 @@ namespace App2.View
 
             if (_userTapped)
                 return;
-
+            IsBusy = true;
             _userTapped = true;
-            connected = await SettingsPage.SprConn();
-            if (connected)
+            try
             {
-                await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
+                connected = await SettingsPage.SprConn();
+                if (connected)
+                {
+                    IsBusy = false;
+                    await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
 
+                }
+            }
+            catch (Exception ex)
+            {
+                IsBusy = false;
+
+                await DisplayAlert("błąd", ex.Message, "OK");
             }
             _userTapped = false;
         }
@@ -362,9 +405,9 @@ namespace App2.View
         {
 
             await PopupNavigation.Instance.PushAsync(new Login());
-             
-        } 
-         
+
+        }
+
 
     }
 

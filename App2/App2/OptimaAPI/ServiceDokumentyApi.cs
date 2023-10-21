@@ -474,12 +474,13 @@ namespace App2.OptimaAPI
                 apiResponse.Data = response.Data;
 
                   posortowaniOperatorzy = response.Data.OrderBy(op =>
-                op.OpeKod.StartsWith("k") ? 1 :
-                op.OpeKod.StartsWith("z") ? 2 :
-                op.OpeKod.StartsWith("d") ? 3 :
-                op.OpeKod.StartsWith("s") ? 4 :
-                op.OpeKod.StartsWith("r") ? 5 :
-                6).ToList();
+                op.OpeKod.StartsWith("K") ? 1 :
+                op.OpeKod.StartsWith("Z") ? 2 :
+                op.OpeKod.StartsWith("D") ? 3 :
+                op.OpeKod.StartsWith("S") ? 4 :
+                op.OpeKod.StartsWith("R") ? 5 :
+                op.OpeKod.StartsWith("A") ? 6 :
+                7).ToList();
             }
 
             return posortowaniOperatorzy;

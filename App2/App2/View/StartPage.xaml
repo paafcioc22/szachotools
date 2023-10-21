@@ -7,6 +7,8 @@
              NavigationPage.HasBackButton="False"
                 
              >
+    <Grid>
+        
     <StackLayout VerticalOptions="FillAndExpand" BackgroundColor="#F5FFFF" Padding="0,50,0,0">
         <Label Text="" x:Name="lbl_user" HorizontalOptions="Center" FontSize="16" FontAttributes="Bold" TextColor="Black" />
         <Grid  Padding="20" ColumnSpacing="25" RowSpacing="25" VerticalOptions="FillAndExpand"  >
@@ -36,7 +38,7 @@
                     ContentLayout="Top,40" 
                     Clicked="BtnCreateMm_Clicked" x:Name="btn_CreateMM"
                     />
-            
+
             <Button Text="Utworz Paczke" Grid.Column="1" Grid.Row="1"  
                     BackgroundColor="DarkCyan" 
                     FontSize="10" 
@@ -50,8 +52,8 @@
                     ContentLayout="Top,20"  
                     
                     />
-            
- 
+
+
             <Button Text="Weryfikator Cen" Grid.Column="0" Grid.Row="2"   
                     BackgroundColor="DarkCyan" 
                     FontSize="14" 
@@ -65,7 +67,7 @@
                     Clicked="SkanTwr_Clicked"
                     x:Name="btn_weryfikator" 
                 />
-            
+
             <Button Text="Foto Relacja RKS" Grid.Column="0" Grid.Row="3"   
                     BackgroundColor="DarkCyan" 
                     FontSize="14" 
@@ -78,7 +80,7 @@
                     Clicked="btn_zdjecia_Clicked" 
                     x:Name="btn_zdjecia" 
                 />
-            
+
             <Button Text="Lista Akcji" Grid.Column="1" Grid.Row="2"  Grid.RowSpan="2" 
                     BackgroundColor="DarkCyan" 
                     FontSize="Medium" 
@@ -92,10 +94,10 @@
                     x:Name="btn_ListaAkcji"
                     Clicked="Btn_ListAkcje_Clicked"
                     />
-            <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" />
 
         </Grid>
-   
+
+
         <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="25" Orientation="Horizontal">
             <ImageButton Source="help100.9"  
                          Clicked="Help_Clicked"  
@@ -117,7 +119,7 @@
                           
                          BackgroundColor="#F5FFFF"/>
 
-            
+
         </StackLayout>
         <ContentView x:Name="popupLoginView"
                      BackgroundColor="#C0808080"
@@ -142,5 +144,9 @@
             </StackLayout>
         </ContentView>
     </StackLayout>
+        <ActivityIndicator x:Name="WaitIco" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                           HorizontalOptions="CenterAndExpand" 
+                           VerticalOptions="CenterAndExpand"/>
+    </Grid>
 
 </ContentPage>
