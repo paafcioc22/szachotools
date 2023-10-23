@@ -207,7 +207,8 @@ namespace App2.Droid
                         TwrCena1 = akcje.TwrCena1,
                         TwrSkan = 0,
                         TwrEan = akcje.TwrEan,
-                        IsSendData = akcje.IsSendData
+                        IsSendData = akcje.IsSendData,
+                        TwrCena30= akcje.TwrCena30
                     });
                 }
 

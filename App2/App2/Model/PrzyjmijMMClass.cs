@@ -75,7 +75,7 @@ namespace App2.Model
 
 
 
-        public async Task getListMM(bool CzyZatwierdzone, int pastDays = 1000)
+        public async Task getListMM(bool CzyZatwierdzone, int pastDays = 100)
         {
             PrzyjmijMMClass przyjmijMM; 
 

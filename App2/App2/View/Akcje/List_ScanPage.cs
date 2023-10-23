@@ -2,6 +2,7 @@
 using App2.Model;
 using App2.Model.ApiModel;
 using App2.OptimaAPI;
+using App2.Services;
 using Azure;
 using FFImageLoading.Forms;
 using Plugin.SewooXamarinSDK;
@@ -87,7 +88,7 @@ namespace App2.View
                 WidokSkaner();
             }
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
+                DependencyService.Get<IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
 
         }
 
@@ -172,7 +173,7 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Skopiowano Ean");
+                DependencyService.Get<IAppVersionProvider>().ShowLong("Skopiowano Ean");
                 //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
@@ -525,7 +526,7 @@ namespace App2.View
             tapCopyLabelEan.Tapped += async (s, e) =>
             {
                 await Clipboard.SetTextAsync(_akcja.TwrEan);
-                DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Skopiowano Ean");
+                DependencyService.Get<IAppVersionProvider>().ShowLong("Skopiowano Ean");
                 //await DisplayAlert(null, "skopiowano ean", "ok");
             };
             lbl_ean.GestureRecognizers.Add(tapCopyLabelEan);
@@ -1276,6 +1277,8 @@ namespace App2.View
                 drukSzt = 1;
 
 
+            _akcja.TwrCena30 = _akcja.TwrCena30 < _akcja.TwrCena ? _akcja.TwrCena : _akcja.TwrCena30;
+
             await printSemaphore.WaitAsync();
             try
             {
@@ -1287,7 +1290,7 @@ namespace App2.View
 
                 int cenaZl = (int)_akcja.TwrCena; // część całkowita
                 int cenaGr = (int)Math.Round((_akcja.TwrCena - cenaZl) * 100);
-
+                string cenaGrFormatted = cenaGr.ToString("00");
 
                 switch (cenaZl.ToString().Length)
                 {
@@ -1335,7 +1338,7 @@ namespace App2.View
                 }
                 //= (_akcja.TwrCena1.Length <= 5) ? 155 : 165;
 
-                int polozeniePLN = polozenie + 52 * cenaZl.ToString().Length;
+                int polozeniePLN = polozenie +1 + 52 * cenaZl.ToString().Length;
 
                 string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
 
@@ -1378,23 +1381,31 @@ namespace App2.View
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 50, 135, _akcja.TwrCena1.ToString(), 0);
                     await SettingsPage._cpclPrinter.printLine(40, 170, koniecLinii, 145, 10);
                     if (Convert.ToInt16(procent) < -15)
-                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 50, 245, $"~{procent}%", 0);
+                        await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 45, 245, $"~{procent}%", 0);
 
                 }
                 int YpolozenieCeny;
+                int YpolozeniePLN;
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 1, polozenie, 160, cenaZl, 0);
                 //await _cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_4, 0, 158, 160, cenaGr, 0);
                 //190
                 if (List_AkcjeView.TypAkcji.Contains("Zmiana"))
+                {
                     YpolozenieCeny = 115;
+                    YpolozeniePLN = 180;
+                }
                 else
-                    YpolozenieCeny = 180;
+                {
+                    YpolozenieCeny = 177;
+                    YpolozeniePLN = 240;
+                }
+
                 await SettingsPage._cpclPrinter.setConcat(cpclConst.LK_CPCL_CONCAT, polozenie, YpolozenieCeny);
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl.ToString());
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString());//góra grosze
                 await SettingsPage._cpclPrinter.resetConcat();
                                                                                                    //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, 240, "PLN", 0);
+                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, YpolozeniePLN, "PLN", 0);
 
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140

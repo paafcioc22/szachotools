@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj": {}
+    "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj": {
+    "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+        "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
         "projectName": "App2.Android",
-        "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
-        "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\obj\\",
+        "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+        "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -32,8 +32,8 @@
         "frameworks": {
           "monoandroid13.0": {
             "projectReferences": {
-              "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj": {
-                "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj"
+              "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj": {
+                "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj"
               }
             }
           }
@@ -46,19 +46,7 @@
               "target": "Package",
               "version": "[12.17.0, )"
             },
-            "Azure.Storage.Blobs": {
-              "target": "Package",
-              "version": "[12.17.0, )"
-            },
             "Microsoft.AppCenter.Analytics": {
-              "target": "Package",
-              "version": "[4.5.0, )"
-            },
-            "Microsoft.AppCenter.Analytics": {
-              "target": "Package",
-              "version": "[4.5.0, )"
-            },
-            "Microsoft.AppCenter.Crashes": {
               "target": "Package",
               "version": "[4.5.0, )"
             },
@@ -70,21 +58,9 @@
               "target": "Package",
               "version": "[4.7.0, )"
             },
-            "Microsoft.CSharp": {
-              "target": "Package",
-              "version": "[4.7.0, )"
-            },
             "PhotoBrowser.Forms": {
               "target": "Package",
               "version": "[0.1.4, )"
-            },
-            "PhotoBrowser.Forms": {
-              "target": "Package",
-              "version": "[0.1.4, )"
-            },
-            "Plugin.SewooXamarin.SDK": {
-              "target": "Package",
-              "version": "[1.0.1, )"
             },
             "Plugin.SewooXamarin.SDK": {
               "target": "Package",
@@ -94,21 +70,9 @@
               "target": "Package",
               "version": "[2.1.0, )"
             },
-            "Rg.Plugins.Popup": {
-              "target": "Package",
-              "version": "[2.1.0, )"
-            },
             "Xam.Plugin.Media": {
               "target": "Package",
               "version": "[6.0.2, )"
-            },
-            "Xam.Plugin.Media": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Xamarin.Essentials": {
-              "target": "Package",
-              "version": "[1.7.7, )"
             },
             "Xamarin.Essentials": {
               "target": "Package",
@@ -118,21 +82,9 @@
               "target": "Package",
               "version": "[2.4.11.982, )"
             },
-            "Xamarin.FFImageLoading.Forms": {
-              "target": "Package",
-              "version": "[2.4.11.982, )"
-            },
             "Xamarin.Forms": {
               "target": "Package",
               "version": "[5.0.0.2578, )"
-            },
-            "Xamarin.Forms": {
-              "target": "Package",
-              "version": "[5.0.0.2578, )"
-            },
-            "Xamarin.MediaGallery": {
-              "target": "Package",
-              "version": "[2.2.1, )"
             },
             "Xamarin.MediaGallery": {
               "target": "Package",
@@ -142,21 +94,9 @@
               "target": "Package",
               "version": "[2.4.1, )"
             },
-            "ZXing.Net.Mobile": {
-              "target": "Package",
-              "version": "[2.4.1, )"
-            },
             "ZXing.Net.Mobile.Forms": {
               "target": "Package",
               "version": "[2.4.1, )"
-            },
-            "ZXing.Net.Mobile.Forms": {
-              "target": "Package",
-              "version": "[2.4.1, )"
-            },
-            "sqlite-net-pcl": {
-              "target": "Package",
-              "version": "[1.6.292, )"
             },
             "sqlite-net-pcl": {
               "target": "Package",
@@ -166,20 +106,20 @@
         }
       }
     },
-    "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj": {
+    "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj",
+        "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
         "projectName": "Inwentary",
-        "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj",
-        "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\obj\\",
+        "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+        "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -195,8 +135,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
-                "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj"
+              "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
+                "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj"
               }
             }
           }
@@ -316,24 +256,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
+    "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj",
+        "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj",
         "projectName": "WebApiLib",
-        "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj",
-        "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\obj\\",
+        "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj",
+        "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -402,7 +342,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

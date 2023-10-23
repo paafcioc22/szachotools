@@ -1,6 +1,7 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
 using App2.OptimaAPI;
+using App2.Services;
 using Microsoft.AppCenter.Crashes;
 using RestSharp;
 using SQLite;
@@ -821,7 +822,7 @@ namespace App2.View
 
             if (!string.IsNullOrEmpty(entry_ilosc.Text) && !string.IsNullOrEmpty(entry_kodean.Text) && !string.IsNullOrEmpty(twr_nazwa))
             {
-                  
+
                 try
                 {
                     var iloscIntTest = int.TryParse(entry_ilosc.Text, out int iloscInt);
@@ -919,7 +920,7 @@ namespace App2.View
 
 
                 // OnDoPush(); 
-                
+
                 // SkanowanieEan();  
             }
             else
@@ -938,7 +939,7 @@ namespace App2.View
                     //await SkanowanieEan();
 
                     Task.Run(async () => await SkanowanieEan());//  uruchomi na innym wątku,
-                    Device.BeginInvokeOnMainThread(async () => await SkanowanieEan());
+                    //Device.BeginInvokeOnMainThread(async () => await SkanowanieEan());
                     //uruchomienia tej funkcji na głównym wątku
                 }
 
@@ -948,117 +949,126 @@ namespace App2.View
 
         private async Task SkanowanieEan()
         {
-            if (await SettingsPage.SprConn())
+            var testCamera = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
+
+            if (testCamera == PermissionStatus.Granted)
             {
-                opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+                if (await SettingsPage.SprConn())
                 {
-
-                    AutoRotate = false,
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
-                //ZXing.BarcodeFormat.EAN_8,
-                ZXing.BarcodeFormat.EAN_13,
-                //ZXing.BarcodeFormat.CODE_128,
-                //ZXing.BarcodeFormat.CODABAR,
-                ZXing.BarcodeFormat.CODE_39,
-                },
-            
-
-                };
-
-                opts.TryHarder = true;
-
-                           var torch = new Switch
-                {
-
-                };
-
-                torch.Toggled += delegate
-                {
-                    scanPage.ToggleTorch();
-
-                };
-
-                // scanPage.ToggleTorch();
-
-                var grid = new Grid
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                };
-
-                var Overlay = new ZXingDefaultOverlay
-                {
-                    TopText = "Włącz latarkę",
-                    BottomText = "Skanowanie rozpocznie się automatycznie",
-                    ShowFlashButton = true,
-                    AutomationId = "zxingDefaultOverlay",
-
-                };
-
-
-
-                var customOverlay = new StackLayout
-                {
-                    HorizontalOptions = LayoutOptions.EndAndExpand,
-                    VerticalOptions = LayoutOptions.EndAndExpand
-                };
-                //customOverlay.Children.Add(btn_Manual);
-
-                // var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-
-                grid.Children.Add(Overlay);
-                Overlay.Children.Add(torch);
-                Overlay.BindingContext = Overlay;
-
-                scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
-                {
-                    DefaultOverlayTopText = "Zeskanuj kod ",
-                    //DefaultOverlayBottomText = " Skanuj kod ";
-                    DefaultOverlayShowFlashButton = true,
-                    IsTorchOn = true,  //////dodane
-
-                };
-
-
-                scanPage.OnScanResult += (result) =>
-                {
-                    scanPage.IsScanning = false;
-                    scanPage.AutoFocus();
-                    scanPage.IsTorchOn = true; //dodane
-                    scanPage.HasTorch = true; //dodane
-                    Device.BeginInvokeOnMainThread(async () =>
+                    opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                     {
 
-                        Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                        AutoRotate = false,
+                        PossibleFormats = new List<ZXing.BarcodeFormat>() {
+                        //ZXing.BarcodeFormat.EAN_8,
+                        ZXing.BarcodeFormat.EAN_13,
+                        //ZXing.BarcodeFormat.CODE_128,
+                        //ZXing.BarcodeFormat.CODABAR,
+                        ZXing.BarcodeFormat.CODE_39,
+                            },
+
+
+                    };
+
+                    opts.TryHarder = true;
+
+                    var torch = new Switch
+                    {
+
+                    };
+
+                    torch.Toggled += delegate
+                    {
+                        scanPage.ToggleTorch();
+
+                    };
+
+                    // scanPage.ToggleTorch();
+
+                    var grid = new Grid
+                    {
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                    };
+
+                    var Overlay = new ZXingDefaultOverlay
+                    {
+                        TopText = "Włącz latarkę",
+                        BottomText = "Skanowanie rozpocznie się automatycznie",
+                        ShowFlashButton = true,
+                        AutomationId = "zxingDefaultOverlay",
+
+                    };
+
+
+
+                    var customOverlay = new StackLayout
+                    {
+                        HorizontalOptions = LayoutOptions.EndAndExpand,
+                        VerticalOptions = LayoutOptions.EndAndExpand
+                    };
+                    //customOverlay.Children.Add(btn_Manual);
+
+                    // var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+
+                    grid.Children.Add(Overlay);
+                    Overlay.Children.Add(torch);
+                    Overlay.BindingContext = Overlay;
+
+                    scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
+                    {
+                        DefaultOverlayTopText = "Zeskanuj kod ",
+                        //DefaultOverlayBottomText = " Skanuj kod ";
+                        DefaultOverlayShowFlashButton = true,
+                        IsTorchOn = true,  //////dodane
+
+                    };
+
+
+                    scanPage.OnScanResult += (result) =>
+                    {
+                        scanPage.IsScanning = false;
+                        scanPage.AutoFocus();
+                        scanPage.IsTorchOn = true; //dodane
+                        scanPage.HasTorch = true; //dodane
+                        Device.BeginInvokeOnMainThread(async () =>
                         {
-                            if (scanPage.IsScanning)
+
+                            Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
                             {
-                                scanPage.AutoFocus();
-                                scanPage.IsTorchOn = true;
-                            }
+                                if (scanPage.IsScanning)
+                                {
+                                    scanPage.AutoFocus();
+                                    scanPage.IsTorchOn = true;
+                                }
 
-                            return true;
+                                return true;
+                            });
+                            await Navigation.PopModalAsync();
+                            await pobierztwrkod(result.Text);
+                            entry_ilosc.Focus();
                         });
-                        await Navigation.PopModalAsync();
-                        await pobierztwrkod(result.Text);
-                        entry_ilosc.Focus();
+                    };
+                    await Navigation.PushModalAsync(scanPage); /////!!!!!!!
+
+
+                    Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                    {
+                        scanPage.IsTorchOn = true;
+                        torch.IsToggled = true;
+
+                        return false;
                     });
-                };
-                await Navigation.PushModalAsync(scanPage); /////!!!!!!!
-
-
-                Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                }
+                else
                 {
-                    scanPage.IsTorchOn = true;
-                    torch.IsToggled = true;
+                    await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
 
-                    return false;
-                });
+                }
             }
             else
             {
-                await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
-
+                await DisplayAlert(null, "Brak uprawnień do aparatu", "OK");
             }
         }
 

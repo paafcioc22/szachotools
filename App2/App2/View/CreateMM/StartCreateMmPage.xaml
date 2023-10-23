@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:App2="clr-namespace:LabelTextColorSample" 
+    
              xmlns:local="clr-namespace:App2"
-             xmlns:Model="clr-namespace:App2.Model"
+             xmlns:local1="clr-namespace:App2.Converter"
              x:Class="App2.View.StartCreateMmPage"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
              >
     <ContentPage.Resources>
         <ResourceDictionary>
-            <App2:StringToColorConverter x:Key="StringToColorConverter"/>
+            <local1:StringToColorConverter x:Key="StringToColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout Padding="10" Spacing="10">

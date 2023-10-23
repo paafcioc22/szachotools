@@ -1,5 +1,4 @@
-﻿using App2.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
@@ -10,6 +9,7 @@ using Microsoft.AppCenter.Crashes;
 using WebApiLib;
 using WebApiLib.Serwis;
 using App2.View;
+using App2.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -18,6 +18,8 @@ namespace App2
     {
         public static WebMenager TodoManager { get; set; }
         public static SessionManager SessionManager { get; set; }= new SessionManager();
+
+        NetworkMonitor networkMonitor;
 
 
         private const string bazaConf = "bazaConf";
@@ -38,6 +40,7 @@ namespace App2
             InitializeComponent();
             DependencyService.Register<IszachoApi, szachoApi>();
             //MainPage = new NavigationPage( new View.SplashPage());
+            networkMonitor = new NetworkMonitor();
             MainPage = new NavigationPage( new View.StartPage());
         }
 
@@ -54,7 +57,7 @@ namespace App2
         protected override void OnSleep()
         {
             SessionManager.UpdateSleepTime();
-
+            networkMonitor.StopMonitoring();
             //var pages = Application.Current.MainPage.Navigation.ModalStack;
             //if (pages.Count > 0)
             //{
@@ -67,11 +70,11 @@ namespace App2
             //        "List_ScanPage",
 
             //    };
-                
+
             //    if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())                
             //        return;
 
-                  // View.StartPage.user = "Wylogowany";               
+            // View.StartPage.user = "Wylogowany";               
 
             //}
             //else 
@@ -79,11 +82,13 @@ namespace App2
             //    View.StartPage.user = "Wylogowany";
             //}
 
-            
+
         }
 
         protected override void OnResume()
         {
+            networkMonitor.StartMonitoring();
+
             if (!SessionManager.IsValidSession())
             {
                 SessionManager.EndSession();

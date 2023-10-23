@@ -1,8 +1,9 @@
-﻿using App2.Model;
+﻿using App2.Services;
 using App2.View.Foto;
 using App2.ViewModel;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,11 +20,11 @@ namespace App2.View
         {
             InitializeComponent();
 
-            this.BindingContext = 
+            this.BindingContext =
             viewModel = new StartPageViewModel();
 
         }
-          
+
 
         public static bool CheckInternetConnection()
         {
@@ -37,49 +38,43 @@ namespace App2.View
             else
             {
                 return false;
-            } 
-             
+            }
+
         }
 
-        private async void sprwersja()
+        private async Task CheckMinVersionSzachotools()
         {
+            var version = DependencyService.Get<IAppVersionProvider>();
+
             try
             {
-                if (CheckInternetConnection())
+                var versionString = version.AppVersion;
+                var bulidVer = version.BuildVersion;
+              
+
+                var AktualnaWersja = await App.TodoManager.GetBuildVer();
+
+                if (bulidVer < Convert.ToInt16(AktualnaWersja))
                 {
+                    var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
 
-                    var version = DependencyService.Get<Model.IAppVersionProvider>();
-                    var versionString = version.AppVersion;
-                    var bulidVer = version.BuildVersion;
-                    //lbl_appVersion.Text = versionString;
-                    //_version = bulidVer;
-
-                    var AktualnaWersja = await App.TodoManager.GetBuildVer();
-
-                    if (bulidVer < Convert.ToInt16(AktualnaWersja)) 
+                    if (update)
                     {
-                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
+                        await version.OpenAppInStore();
 
-                        if (update)
-                        {
-                            await version.OpenAppInStore();
-
-                        }
-                        else
-                        {
-                            blokujPrzyciski();
-                        }
-                         
                     }
+                    else
+                    {
+                        blokujPrzyciski();
+                    }
+
                 }
-                else
-                {
-                    await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
-                }
+
             }
             catch (Exception)
             {
-                await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
+                version.ShowShort("Błąd pobierania wersji aplikacji");
+                //await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
             }
         }
 
@@ -105,29 +100,29 @@ namespace App2.View
 
 
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
-            var currentSession = App.SessionManager.CurrentSession;
-            if (currentSession != null)
-            {
-                // Ustawienie UserName w ViewModel
-                var viewModel = BindingContext as StartPageViewModel;
-                if (viewModel != null)
-                {
-                   // viewModel.UserName = currentSession.UserName;
-                    //OdblokujPrzyciski();
-                }
-            }
-            else
-            {
-                //blokujPrzyciski();
-                // Opcjonalnie: przekierowanie do strony logowania lub wyświetlenie komunikatu
-                // await Navigation.PushAsync(new LoginPage());
-            }
+            //var currentSession = App.SessionManager.CurrentSession;
+            //if (currentSession != null)
+            //{
+            //    // Ustawienie UserName w ViewModel
+            //    var viewModel = BindingContext as StartPageViewModel;
+            //    if (viewModel != null)
+            //    {
+            //        // viewModel.UserName = currentSession.UserName;
+            //        //OdblokujPrzyciski();
+            //    }
+            //}
+            //else
+            //{
+            //    //blokujPrzyciski();
+            //    // Opcjonalnie: przekierowanie do strony logowania lub wyświetlenie komunikatu
+            //    // await Navigation.PushAsync(new LoginPage());
+            //}
 
-            //sprwersja();
+            await CheckMinVersionSzachotools();
 
             //if (!string.IsNullOrEmpty(user) && user != "Wylogowany")
             //{
@@ -150,7 +145,7 @@ namespace App2.View
             //}
 
         }
-  
+
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
             btn_CreateMM.IsEnabled = false;
@@ -164,11 +159,15 @@ namespace App2.View
 
                 }
                 else
+                {
                     await DisplayAlert(null, "Brak połączenia z serwisem", "OK");
+
+                }
             }
             catch (Exception s)
             {
                 await DisplayAlert("Błąd", s.Message, "OK");
+                btn_CreateMM.IsEnabled = true;
             }
             btn_CreateMM.IsEnabled = true;
 
@@ -177,12 +176,12 @@ namespace App2.View
         private async void SkanTwr_Clicked(object sender, EventArgs e)
         {
             btn_weryfikator.IsEnabled = false;
-            IsBusy = true;
+            viewModel.IsBusy = true;
             try
             {
                 if (await SettingsPage.SprConn())
                 {
-                    IsBusy = false;
+                    viewModel.IsBusy = false;
                     await Navigation.PushAsync(new View.WeryfikatorCenPage());
                 }
 
@@ -190,7 +189,7 @@ namespace App2.View
             catch (Exception ex)
             {
                 await DisplayAlert("Błąd", ex.Message, "Ok");
-                IsBusy = false;
+                viewModel.IsBusy = false;
             }
 
             btn_weryfikator.IsEnabled = true;
@@ -199,29 +198,29 @@ namespace App2.View
         //utwórz MM
         private async void BtnListaMMp_Clicked(object sender, EventArgs e)
         {
-            IsBusy = true;
+            viewModel.IsBusy = true;
             try
             {
                 btn_przyjmijMM.IsEnabled = false;
-                
+
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
-                    IsBusy = false;                  
+                    viewModel.IsBusy = false;
                     await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
                     btn_przyjmijMM.IsEnabled = true;
 
                 }
                 else
                 {
-                    IsBusy = false;
+                    viewModel.IsBusy = false;
                     //await DisplayAlert(null, "Brak połączenia z siecią", "OK");
                 }
                 btn_przyjmijMM.IsEnabled = true;
             }
             catch (Exception x)
             {
-                IsBusy = false;
+                viewModel.IsBusy = false;
                 await DisplayAlert(null, x.Message, "OK");
             }
 
@@ -348,7 +347,7 @@ namespace App2.View
 
             if (maybe_exit) return false; //QUIT
 
-            DependencyService.Get<Model.IAppVersionProvider>().ShowLong("Wciśnij jeszcze raz by wyjść z aplikacji");
+            DependencyService.Get<IAppVersionProvider>().ShowLong("Wciśnij jeszcze raz by wyjść z aplikacji");
             maybe_exit = true;
 
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>
@@ -365,21 +364,21 @@ namespace App2.View
 
             if (_userTapped)
                 return;
-            IsBusy = true;
+            viewModel.IsBusy = true;
             _userTapped = true;
             try
             {
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
-                    IsBusy = false;
+                    viewModel.IsBusy = false;
                     await Navigation.PushAsync(new View.CreatePaczkaListaZlecen());
 
                 }
             }
             catch (Exception ex)
             {
-                IsBusy = false;
+                viewModel.IsBusy = false;
 
                 await DisplayAlert("błąd", ex.Message, "OK");
             }

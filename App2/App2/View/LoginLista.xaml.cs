@@ -2,6 +2,7 @@
 using App2.Model;
 using App2.Model.ApiModel;
 using App2.OptimaAPI;
+using App2.Services;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiLib.Serwis;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Net.Mobile.Forms;
@@ -66,9 +68,10 @@ namespace App2.View
 
         public async void SkanujIdetyfikator()
         {
-                //todo : popraw na prawdziwe
-            //if (await SettingsPage.SprConn())
-            if (1==1)
+            //todo : popraw na prawdziwe
+            var testCamera = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
+
+            if (testCamera == PermissionStatus.Granted)
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
@@ -163,7 +166,7 @@ namespace App2.View
             }
             else
             {
-                await DisplayAlert("Uwaga", "Nie połączono z serwerem", "OK");
+                await DisplayAlert("Uwaga", "Brak uprawnień do aparatu", "OK");
 
             }
         }
@@ -206,12 +209,11 @@ namespace App2.View
 
             try
             {
-                //if (await SettingsPage.SprConn())
-                if (1==1)
+                if (await SettingsPage.SprConn())              
                 {
                     ServiceDokumentyApi serwisApi = new ServiceDokumentyApi();
-                    //var viewUsers = await serwisApi.GetViewUsersAsync();
-                    var viewUsers = await serwisApi.GetTestViewUsersAsync();
+                    var viewUsers = await serwisApi.GetViewUsersAsync();
+                    //var viewUsers = await serwisApi.GetTestViewUsersAsync();
 
                     foreach (var item in viewUsers)
                     {

@@ -1,7 +1,7 @@
 ﻿using Android.Content;
 using Android.Net.Wifi;
 using App2.Droid;
-using App2.Model;
+using App2.Services;
 using System;
 using System.Linq;
 using System.Threading;

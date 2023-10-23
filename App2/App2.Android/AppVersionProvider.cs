@@ -5,7 +5,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using App2.Droid;
-using App2.Model;
+using App2.Services;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -22,8 +22,9 @@ namespace App2.Droid
             {
 
                 var context = Android.App.Application.Context;
-                var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
-
+                //var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
+                var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
+                //todo : przestarzałe ale nowe nie działą
                 return $"{info.VersionName}";
             }
         }
@@ -33,8 +34,8 @@ namespace App2.Droid
             get
             {
                 var context = Android.App.Application.Context;
-                var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
-
+                //var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
+                var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
                 return info.LongVersionCode;
             }
         }

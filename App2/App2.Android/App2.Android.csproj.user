@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SelectedDevice>HUAWEI EVA-L09</SelectedDevice>
-    <DefaultDevice>pixel_5_-_api_33</DefaultDevice>
+    <SelectedDevice>pixel_2_pie_9_0_-_api_28</SelectedDevice>
+    <DefaultDevice>pixel_2_pie_9_0_-_api_28</DefaultDevice>
     <AndroidDesignerPreferredTheme>Theme.AppCompat.Light.NoActionBar</AndroidDesignerPreferredTheme>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <ActiveDebugProfile>HUAWEI EVA-L09 %28Android 7.0 — API 24%29</ActiveDebugProfile>
-    <SelectedPlatformGroup>PhysicalDevice</SelectedPlatformGroup>
+    <ActiveDebugProfile>Pixel 2 Pie 9.0 - API 28 %28Android 9.0 — API 28%29</ActiveDebugProfile>
+    <SelectedPlatformGroup>Emulator</SelectedPlatformGroup>
   </PropertyGroup>
 </Project>

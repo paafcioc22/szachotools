@@ -1,5 +1,6 @@
 ﻿using App2.Model;
 using App2.OptimaAPI;
+using App2.Services;
 using App2.ViewModel;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
@@ -77,6 +78,7 @@ namespace App2.View
             var app = Application.Current as App;
 
             base.OnAppearing();
+            await sprwersja();
             await InicjalizujAsync(app);
 
         }
@@ -150,11 +152,12 @@ namespace App2.View
 
 
 
-        private async void sprwersja()
+        private async Task sprwersja()
         {
+            var version = DependencyService.Get<IAppVersionProvider>();
+
             try
             {
-                var version = DependencyService.Get<Model.IAppVersionProvider>();
                 var versionString = version.AppVersion;
                 var bulidVer = version.BuildVersion;
                 lbl_appVersion.Text = "Wersja " + versionString;
@@ -162,11 +165,13 @@ namespace App2.View
 
                 var AktualnaWersja = await App.TodoManager.GetBuildVer();
                 if (bulidVer < Convert.ToInt16(AktualnaWersja))
-                    await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+                    //await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+                    version.ShowShort("Używana wersja nie jest aktualna");
             }
             catch (Exception)
             {
-                await DisplayAlert(null, "Nie można sprawdzić aktualnej wersji", "OK");
+                version.ShowShort("Błąd pobierania wersji aplikacji");
+
             }
         }
 
@@ -502,7 +507,7 @@ namespace App2.View
 
 
 
-                var version = DependencyService.Get<Model.IWifiConnector>();
+                var version = DependencyService.Get<IWifiConnector>();
                 if (version.IsConnectedToWifi(wifi))//Szachownica
                 {
                     await DisplayAlert("Info", "Połączenie zostało już nawiązane..", "OK");
@@ -521,7 +526,7 @@ namespace App2.View
             }
             else
             {
-                IWifiConn10 wifiConn = DependencyService.Get<Model.IWifiConn10>(DependencyFetchTarget.GlobalInstance);
+                IWifiConn10 wifiConn = DependencyService.Get<IWifiConn10>(DependencyFetchTarget.GlobalInstance);
 
                 var odp = wifiConn.SuggestNetwork(wifi, "J0@rt11a");
                 if (!string.IsNullOrEmpty(odp))

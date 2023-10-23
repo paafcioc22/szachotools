@@ -9,7 +9,7 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 //using Android.Support.V7.App;
 using App2.Droid;
-using App2.Model;
+using App2.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,9 +64,7 @@ namespace App2.Droid
         public string SuggestNetwork(string _ssid, string _passphrase)
         {
             var version = DeviceInfo.VersionString;
-            var version2 = DeviceInfo.Version.Major;
-
-         
+            var version2 = DeviceInfo.Version.Major;  
 
             if (version2 >= 11)
             {
@@ -96,15 +94,9 @@ namespace App2.Droid
             {
                 var suggestion = new WifiNetworkSuggestion.Builder()
                     .SetSsid(_ssid)
-                    .SetWpa2Passphrase(_passphrase)
-                    //.SetIsUserInteractionRequired(true)    
+                    .SetWpa2Passphrase(_passphrase) 
                     .Build();
-
-                //var suggestion2 = new WifiNetworkSuggestion.Builder()
-                //    .SetSsid("JOART_WiFi")
-                //    .SetWpa2Passphrase(_passphrase)
-                //    //.SetIsUserInteractionRequired(true)    
-                //    .Build();
+                 
 
                 var suggestions = new[] { suggestion   };
 
@@ -117,11 +109,11 @@ namespace App2.Droid
                     NetworkStatus.SuggestionsSuccess => "Sieć dodano - zatwierdź w ustawieniach",
                     NetworkStatus.SuggestionsErrorAddDuplicate => "Sieć została już dodana",
                     NetworkStatus.SuggestionsErrorAddExceedsMaxPerApp => "Suggestion Exceeds Max Per App",
-                    NetworkStatus.SuggestionsErrorRemoveInvalid => "ErrorRemove"
+                    NetworkStatus.SuggestionsErrorRemoveInvalid => "ErrorRemove",
+                    NetworkStatus.SuggestionsErrorAddInvalid => "Dodanie nie powiodło się",
+                    NetworkStatus.SuggestionsErrorAddNotAllowed => "Dodanie nie powiodło się",
                 };
-
-
-            
+                 
                 return statusText;
 
             }
@@ -129,9 +121,7 @@ namespace App2.Droid
             {
 
             }
-
-
-
+             
             return null;
 
         }
@@ -176,7 +166,10 @@ namespace App2.Droid
                     NetworkStatus.SuggestionsSuccess => "Sieć dodano - zatwierdź w ustawieniach",
                     NetworkStatus.SuggestionsErrorAddDuplicate => "Sieć została już dodana",
                     NetworkStatus.SuggestionsErrorAddExceedsMaxPerApp => "Suggestion Exceeds Max Per App",
-                    NetworkStatus.SuggestionsErrorRemoveInvalid => "ErrorRemove"
+                    NetworkStatus.SuggestionsErrorRemoveInvalid => "ErrorRemove",
+                    NetworkStatus.SuggestionsErrorAddInvalid => "Dodanie nie powiodło się",
+                    NetworkStatus.SuggestionsErrorAddNotAllowed => "Dodanie nie powiodło się",
+
                 };
 
                 return statusText;

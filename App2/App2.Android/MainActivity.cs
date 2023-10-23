@@ -6,6 +6,7 @@ using Android.Content.PM;
 using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
+using App2.Services;
 using FFImageLoading.Forms.Platform;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -56,7 +57,7 @@ namespace App2.Droid
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
-            App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());
+            App.TodoManager = new WebMenager(new WebSerwisSzacho());
            // App.SessionManager = new Model.SessionManager();
             // Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             MainActivityInstance = this;
