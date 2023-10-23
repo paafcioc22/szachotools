@@ -447,7 +447,7 @@ namespace App2.OptimaAPI
 
             var response = await _client.ExecuteGetAsync<List<MagazynInfo>>(request);
 
-            if(response.IsSuccessful)
+            if (response.IsSuccessful)
             {
                 sklepy = response.Data;
             }
@@ -455,6 +455,19 @@ namespace App2.OptimaAPI
             return sklepy;
 
         }
+
+        public async Task<List<ViewUser>> GetTestViewUsersAsync()
+        {
+            return await Task.FromResult(new List<ViewUser>
+            {
+                new ViewUser { OpeGidnumer = 1, OpeKod = "KOD001", OpeNazwa = "Jan Kowalski" },
+                new ViewUser { OpeGidnumer = 2, OpeKod = "KOD002", OpeNazwa = "Anna Nowak" },
+                new ViewUser { OpeGidnumer = 3, OpeKod = "KOD003", OpeNazwa = "Paweł Wiśniewski" },
+                new ViewUser { OpeGidnumer = 605, OpeKod = "S3_JAK", OpeNazwa = "Ewa Dąbrowska" },
+                new ViewUser { OpeGidnumer = 5, OpeKod = "KOD005", OpeNazwa = "Tomasz Żak" },
+            });
+        }
+
 
         public async Task<List<ViewUser>> GetViewUsersAsync()
         {
@@ -473,14 +486,14 @@ namespace App2.OptimaAPI
 
                 apiResponse.Data = response.Data;
 
-                  posortowaniOperatorzy = response.Data.OrderBy(op =>
-                op.OpeKod.StartsWith("K") ? 1 :
-                op.OpeKod.StartsWith("Z") ? 2 :
-                op.OpeKod.StartsWith("D") ? 3 :
-                op.OpeKod.StartsWith("S") ? 4 :
-                op.OpeKod.StartsWith("R") ? 5 :
-                op.OpeKod.StartsWith("A") ? 6 :
-                7).ToList();
+                posortowaniOperatorzy = response.Data.OrderBy(op =>
+              op.OpeKod.StartsWith("K") ? 1 :
+              op.OpeKod.StartsWith("Z") ? 2 :
+              op.OpeKod.StartsWith("D") ? 3 :
+              op.OpeKod.StartsWith("S") ? 4 :
+              op.OpeKod.StartsWith("R") ? 5 :
+              op.OpeKod.StartsWith("A") ? 6 :
+              7).ToList();
             }
 
             return posortowaniOperatorzy;

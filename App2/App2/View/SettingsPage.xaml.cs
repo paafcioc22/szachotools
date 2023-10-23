@@ -72,16 +72,16 @@ namespace App2.View
 
 
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             var app = Application.Current as App;
 
             base.OnAppearing();
-            InicjalizujAsync(app);
+            await InicjalizujAsync(app);
 
         }
 
-        private async void InicjalizujAsync(App app)
+        private async Task InicjalizujAsync(App app)
         {
             try
             {
@@ -93,19 +93,22 @@ namespace App2.View
                     await GetGidnumer();
 
                     viewModel.ListaCen = (await GetCenniki());
-                    if (viewModel.ListaCen != null)//cennikClasses.Count > 0 || 
+                    if (viewModel.ListaCen != null)
                     {
-                        pickerlist.ItemsSource = viewModel.ListaCen;
-                        if (app.Cennik != "0")
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            var selected = viewModel.ListaCen.FirstOrDefault(s => s.RodzajCeny == app.Cennik);
-
-                            pickerlist.SelectedItem = selected;
-                        }
+                            pickerlist.ItemsSource = viewModel.ListaCen;
+                            if (app.Cennik != "0")
+                            {
+                                var selected = viewModel.ListaCen.FirstOrDefault(s => s.RodzajCeny == app.Cennik);
+                                pickerlist.SelectedItem = selected;
+                            }
+                        });
                     }
+
                 }
             }
-            catch (Exception s)
+            catch (Exception )
             {
                 DependencyService
                         .Get<IAppVersionProvider>()
@@ -370,7 +373,7 @@ namespace App2.View
 
 
             }
-            catch (Exception s)
+            catch (Exception )
             {
                 await DisplayAlert("Uwaga", "Błąd połączenia..Sprawdź dane i/lub spróbuj ponownie", "OK");
                 return false;

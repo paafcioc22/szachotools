@@ -1,12 +1,13 @@
 ﻿
 using App2.Model;
+using App2.Model.ApiModel;
 using App2.OptimaAPI;
 using Microsoft.AppCenter.Crashes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
- 
+
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,8 +24,9 @@ namespace App2.View
     {
         public static IszachoApi Api => DependencyService.Get<IszachoApi>();
         public ListView ListViewLogin { get { return MyListView; } }
-        public ObservableCollection<Pracownik> ListaLogin { get; set; }
+        public ObservableCollection<ViewUser> ListaLogin { get; set; }
         public Entry enthaslo { get { return entry_haslo; } }
+        private ViewUser _wybranyPracownik;
 
         private BindableProperty IsSearchingProperty =
             BindableProperty.Create("IsSearching", typeof(bool), typeof(LoginLista), false);
@@ -37,23 +39,23 @@ namespace App2.View
 
         ZXing.Mobile.MobileBarcodeScanningOptions opts;
         ZXingScannerPage scanPage;
-        ZXingScannerView zxing; 
-   
+        ZXingScannerView zxing;
+
         static public string _user;
         static public string _nazwisko;
         static public int _opeGid;
-  
-         
+
+
         public LoginLista()
         {
-            InitializeComponent(); 
-           
+            InitializeComponent();
+
             this.BindingContext = this;
 
             if (SettingsPage.SelectedDeviceType == 1)
                 UseAparatButton.IsVisible = false;
         }
- 
+
 
 
         protected async override void OnAppearing()
@@ -64,7 +66,9 @@ namespace App2.View
 
         public async void SkanujIdetyfikator()
         {
-            if (await SettingsPage.SprConn())
+                //todo : popraw na prawdziwe
+            //if (await SettingsPage.SprConn())
+            if (1==1)
             {
                 opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
                 {
@@ -75,7 +79,7 @@ namespace App2.View
                         //ZXing.BarcodeFormat.CODE_128,
                         ZXing.BarcodeFormat.EAN_8,
                         ZXing.BarcodeFormat.CODE_39,
-                    }, 
+                    },
 
                 };
 
@@ -164,51 +168,59 @@ namespace App2.View
             }
         }
 
-        void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
 
-            var prac = e.Item as Pracownik;
-            //haslo = prac.opehaslo;
-            //haslo_chk = prac.opechk;
-            _opeGid = prac.opegidnumer;
-            _user = prac.opekod; //"Zalogowany : "
-            _nazwisko = prac.openazwa;
-            
+            _wybranyPracownik = e.Item as ViewUser;
 
-           // SkanujIdetyfikator(); 
- 
+            _opeGid = _wybranyPracownik.OpeGidnumer;
+            _user = _wybranyPracownik.OpeKod; //"Zalogowany : "
+            _nazwisko = _wybranyPracownik.OpeNazwa;
+
+            if (SettingsPage.SelectedDeviceType == 1)
+            {
+                SkanujIdetyfikator();
+            }
+            else
+            {
+                enthaslo.Focus();
+            }
+
+            if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+            {
+
+                App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+
+            }
+
+
         }
-         
+
 
         private async Task GetLogins()
         {
-            ListaLogin = new ObservableCollection<Pracownik>();
+            ListaLogin = new ObservableCollection<ViewUser>();
             IsSearching = true;
 
             try
             {
-                if(await SettingsPage.SprConn())
+                //if (await SettingsPage.SprConn())
+                if (1==1)
                 {
                     ServiceDokumentyApi serwisApi = new ServiceDokumentyApi();
-                    var viewUsers = await serwisApi.GetViewUsersAsync();
+                    //var viewUsers = await serwisApi.GetViewUsersAsync();
+                    var viewUsers = await serwisApi.GetTestViewUsersAsync();
 
                     foreach (var item in viewUsers)
-                    { 
+                    {
 
-                        ListaLogin.Add(new Pracownik
-                        {
-                            opekod = item.OpeKod,
-                            openazwa = item.OpeNazwa,
-                            //opehaslo = Convert.ToString(rs["Ope_Haslo"]),
-                            //opechk = Convert.ToString(rs["Ope_HasloChk"]),
-                            opegidnumer = item.OpeGidnumer
-
-                        });
+                        ListaLogin.Add(item);
                     }
                     IsSearching = false;
-                    MyListView.ItemsSource = ListaLogin;
+
+                    MyListView.ItemsSource = ListaLogin; 
 
                 }
             }
@@ -219,18 +231,19 @@ namespace App2.View
             }
         }
 
+
         public bool IsPassCorrect()
         {
 
             var isNumeric = int.TryParse(entry_haslo.Text, out int n);
 
-            if (isNumeric&& entry_haslo.Text.Length>=6)
+            if (isNumeric && entry_haslo.Text.Length >= 6)
             {
                 int znak1 = Convert.ToInt32(entry_haslo.Text.Substring(0, 1));
                 int znak24 = Convert.ToInt32(entry_haslo.Text.Substring(1, 3));
                 if (znak1 == 0 && entry_haslo.Text.Length == 8)
                 {
-                    if (znak24 == _opeGid)
+                    if (znak24 == _wybranyPracownik.OpeGidnumer)
                     {
                         return true;
                     }
@@ -247,7 +260,7 @@ namespace App2.View
                 }
             }
             return false;
-             
+
         }
 
 
@@ -324,16 +337,9 @@ namespace App2.View
                 if (entry_haslo.Text != null) //entry_haslo.Text!=""
                 {
 
-
-                    if (await IsPassCorrect(_opeGid))
+                    if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
                     {
-                         
-                        View.StartPage.user = _user;
-
-
-                        View.StartPage startPage = new StartPage();
-                        startPage.OdblokujPrzyciski();
-
+                        App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
                         await Navigation.PopModalAsync();
                     }
                     else
@@ -349,7 +355,7 @@ namespace App2.View
             }
         }
 
-       
+
 
         protected override bool OnBackButtonPressed()
         {
@@ -357,21 +363,16 @@ namespace App2.View
         }
 
 
-        
+
         private async void entry_haslo_Completed(object sender, EventArgs e)
         {
-             
+
             try
             {
-                if (await IsPassCorrect(_opeGid))
+                if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
                 {
 
-                    View.StartPage.user = _user;
-
-                    View.StartPage startPage = new StartPage();
-                    startPage.OdblokujPrzyciski();
-
-
+                    App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
                     await Navigation.PopModalAsync();
                 }
                 else
@@ -384,8 +385,8 @@ namespace App2.View
 
                 var properties = new Dictionary<string, string>
                 {
-                    { "user", _user},
-                    { "gid", _opeGid.ToString()},
+                    { "user", _wybranyPracownik.OpeNazwa},
+                    { "gid", _wybranyPracownik.OpeGidnumer.ToString()},
                     { "haslo", entry_haslo.Text}
                 };
                 Crashes.TrackError(exception, properties);
@@ -398,23 +399,22 @@ namespace App2.View
             DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
             ListViewLogin.ItemSelected += (source, args) =>
             {
-                var pracownik = args.SelectedItem as Pracownik;
+                var pracownik = args.SelectedItem as ViewUser;
 
                 SkanujIdetyfikator();
 
             };
         }
 
-        
+
     }
 
-    public  class Pracownik
-    {
-        public string opekod { get; set; }
-        public string openazwa { get; set; }
-        //public string opehaslo { get; set; }
-        //public string opechk { get; set; }
-        public int  opegidnumer { get; set; }
-        
-    }
+   // public class Pracownik
+    //{
+    //    public string OpeKod { get; set; }
+    //    public string OpeNazwa { get; set; }
+     
+    //    public int OpeGidnumer { get; set; }
+
+    //}
 }

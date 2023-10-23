@@ -1,13 +1,8 @@
-﻿using App2.View.Foto;
+﻿using App2.Model;
+using App2.View.Foto;
+using App2.ViewModel;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,26 +14,16 @@ namespace App2.View
     {
         private bool connected;
         public static string user;
-
-        //private BindableProperty IsSearchingProperty =
-        //    BindableProperty.Create("IsSearching", typeof(bool), typeof(PrzyjmijMM_ListaMMDoPrzyjecia), false);
-        //public bool IsSearching
-        //{
-        //    get { return (bool)GetValue(IsSearchingProperty); }
-        //    set { SetValue(IsSearchingProperty, value); }
-        //}
+        StartPageViewModel viewModel;
         public StartPage()
         {
             InitializeComponent();
-            this.BindingContext = this;
-            this.IsBusy = false;
 
+            this.BindingContext = 
+            viewModel = new StartPageViewModel();
 
         }
-
-        public static bool CzyPrzyciskiWlaczone;
-
-
+          
 
         public static bool CheckInternetConnection()
         {
@@ -52,31 +37,8 @@ namespace App2.View
             else
             {
                 return false;
-            }
-
-
-
-
-            //string CheckUrl = "http://google.com";
-
-            //try
-            //{
-            //    HttpWebRequest iNetRequest = (HttpWebRequest)WebRequest.Create(CheckUrl);
-
-            //    iNetRequest.Timeout = 4000;
-
-            //    WebResponse iNetResponse = iNetRequest.GetResponse();
-
-            //    iNetResponse.Close();
-
-
-            //    return true;
-
-            //}
-            //catch (WebException )
-            //{
-            //      return false;
-            //}
+            } 
+             
         }
 
         private async void sprwersja()
@@ -94,8 +56,7 @@ namespace App2.View
 
                     var AktualnaWersja = await App.TodoManager.GetBuildVer();
 
-                    if (bulidVer < Convert.ToInt16(AktualnaWersja))
-                    // await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+                    if (bulidVer < Convert.ToInt16(AktualnaWersja)) 
                     {
                         var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
 
@@ -108,7 +69,7 @@ namespace App2.View
                         {
                             blokujPrzyciski();
                         }
-                        // blokujPrzyciski();
+                         
                     }
                 }
                 else
@@ -148,28 +109,45 @@ namespace App2.View
         {
             base.OnAppearing();
 
-            if (!string.IsNullOrEmpty(user) && user != "Wylogowany")
+            var currentSession = App.SessionManager.CurrentSession;
+            if (currentSession != null)
             {
-                lbl_user.Text = "Zalogowany : " + user; //dodałem zalogowane
-            }
-
-            if (user == "Wylogowany")
-            {
-                lbl_user.Text = "Wylogowany"; //dodałem zalogowane
-            }
-
-
-            //sprwersja();
-
-            if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
-            {
-                blokujPrzyciski();
+                // Ustawienie UserName w ViewModel
+                var viewModel = BindingContext as StartPageViewModel;
+                if (viewModel != null)
+                {
+                   // viewModel.UserName = currentSession.UserName;
+                    //OdblokujPrzyciski();
+                }
             }
             else
             {
-                OdblokujPrzyciski();
+                //blokujPrzyciski();
+                // Opcjonalnie: przekierowanie do strony logowania lub wyświetlenie komunikatu
+                // await Navigation.PushAsync(new LoginPage());
             }
 
+            //sprwersja();
+
+            //if (!string.IsNullOrEmpty(user) && user != "Wylogowany")
+            //{
+            //    lbl_user.Text = "Zalogowany : " + user; //dodałem zalogowane
+            //}
+
+            //if (user == "Wylogowany")
+            //{
+            //    lbl_user.Text = "Wylogowany"; //dodałem zalogowane
+            //}
+
+
+            //if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
+            //{
+            //    blokujPrzyciski();
+            //}
+            //else
+            //{
+            //    OdblokujPrzyciski();
+            //}
 
         }
   
@@ -254,26 +232,35 @@ namespace App2.View
             btn_login.IsEnabled = false;
             try
             {
-
                 var page = new LoginLista();
 
-                page.ListViewLogin.ItemSelected += async (source, args) =>
-                {
-                    var pracownik = args.SelectedItem as Pracownik;
-                    if (SettingsPage.SelectedDeviceType == 1)
-                    {
-                        page.SkanujIdetyfikator();
-                    }
-                    else
-                    {
-                        page.enthaslo.Focus();
-                    }
+                //page.ListViewLogin.ItemSelected += async (source, args) =>
+                //{
+                //    var pracownik = args.SelectedItem as Pracownik;
+                //    if (pracownik == null) throw new Exception("Pracownik jest null!");
 
 
-                    if (await page.IsPassCorrect(pracownik.opegidnumer))
-                        lbl_user.Text = "Zalogowany : " + pracownik.opekod; ;
-                    // Navigation.PopModalAsync();
-                };
+                //    if (SettingsPage.SelectedDeviceType == 1)
+                //    {
+                //        page.SkanujIdetyfikator();
+                //    }
+                //    else
+                //    {
+                //        page.enthaslo.Focus();
+                //    }
+
+                //    if (await page.IsPassCorrect(pracownik.opegidnumer))
+                //    {
+                //        //Device.BeginInvokeOnMainThread(() =>
+                //        //{
+                //            //lbl_user.Text = "Zalogowany : " + pracownik.opekod;
+                //            //App.SessionManager.CreateSession(pracownik.opekod);
+                //        //});
+                //    }
+                //    //if (await page.IsPassCorrect(pracownik.opegidnumer))
+                //       // lbl_user.Text = "Zalogowany : " + pracownik.opekod;
+
+                //};
 
                 await Navigation.PushModalAsync(page);
 
@@ -286,9 +273,7 @@ namespace App2.View
 
             }
 
-
             btn_login.IsEnabled = true;
-
 
         }
 
@@ -408,7 +393,14 @@ namespace App2.View
 
         }
 
-
+        private async void logoutbutton_Clicked(object sender, EventArgs e)
+        {
+            var wantsToLogout = await DisplayAlert(null, "Czy chcesz się wylogować?", "Tak", "Nie");
+            if (wantsToLogout)
+            {
+                App.SessionManager.EndSession();
+            }
+        }
     }
 
 }

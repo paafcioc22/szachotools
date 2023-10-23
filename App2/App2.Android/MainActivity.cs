@@ -57,6 +57,7 @@ namespace App2.Droid
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));
             App.TodoManager = new Model.WebMenager(new WebSerwisSzacho());
+           // App.SessionManager = new Model.SessionManager();
             // Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
             MainActivityInstance = this;
         }

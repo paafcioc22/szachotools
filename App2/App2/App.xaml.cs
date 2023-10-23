@@ -9,6 +9,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using WebApiLib;
 using WebApiLib.Serwis;
+using App2.View;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -16,6 +17,8 @@ namespace App2
     public partial class App : Application
     {
         public static WebMenager TodoManager { get; set; }
+        public static SessionManager SessionManager { get; set; }= new SessionManager();
+
 
         private const string bazaConf = "bazaConf";
         private const string serwer = "serwer!";
@@ -34,7 +37,8 @@ namespace App2
         {
             InitializeComponent();
             DependencyService.Register<IszachoApi, szachoApi>();
-            MainPage = new NavigationPage( new View.SplashPage());
+            //MainPage = new NavigationPage( new View.SplashPage());
+            MainPage = new NavigationPage( new View.StartPage());
         }
 
 
@@ -49,37 +53,42 @@ namespace App2
 
         protected override void OnSleep()
         {
+            SessionManager.UpdateSleepTime();
 
-            var pages = Application.Current.MainPage.Navigation.ModalStack;
-            if (pages.Count > 0)
-            {
-                var nazwa = pages[pages.Count - 1].GetType().Name;
-                List<string> listaOkienNoLogOff = new List<string>()
-                {
-                    "RaportLista_AddTwrKod",
-                    "WeryfikatorCenPage",
-                    "AddTwrPage",
-                    "List_ScanPage",
+            //var pages = Application.Current.MainPage.Navigation.ModalStack;
+            //if (pages.Count > 0)
+            //{
+            //    var nazwa = pages[pages.Count - 1].GetType().Name;
+            //    List<string> listaOkienNoLogOff = new List<string>()
+            //    {
+            //        "RaportLista_AddTwrKod",
+            //        "WeryfikatorCenPage",
+            //        "AddTwrPage",
+            //        "List_ScanPage",
 
-                };
+            //    };
                 
-                if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())                
-                    return;
+            //    if(listaOkienNoLogOff.Where(c=>c.Contains(nazwa)).Any())                
+            //        return;
 
-                   View.StartPage.user = "Wylogowany";               
+                  // View.StartPage.user = "Wylogowany";               
 
-            }
-            else 
-            {
-                View.StartPage.user = "Wylogowany";
-            }
+            //}
+            //else 
+            //{
+            //    View.StartPage.user = "Wylogowany";
+            //}
 
             
         }
 
         protected override void OnResume()
         {
-           
+            if (!SessionManager.IsValidSession())
+            {
+                SessionManager.EndSession();
+                MainPage = new NavigationPage(new View.StartPage()); // Przenieś użytkownika do ekranu logowania
+            }
         }
 
         public string BazaConf

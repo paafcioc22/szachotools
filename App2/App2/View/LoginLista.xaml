@@ -19,9 +19,9 @@
                         <DataTemplate >
                             <ViewCell  >
                                 <StackLayout Spacing="0"   Padding="4" VerticalOptions="CenterAndExpand" >
-                                    <Label Text="{Binding opekod}"
+                                    <Label Text="{Binding OpeKod}"
                        FontSize="18" TextColor="DarkCyan" FontAttributes="Italic" />
-                                    <Label Text="{Binding openazwa}" 
+                                    <Label Text="{Binding OpeNazwa}" 
                        FontSize="15" TextColor="Black"/>
                                 </StackLayout>
                             </ViewCell>
