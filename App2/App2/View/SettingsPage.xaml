@@ -44,7 +44,7 @@
                 HorizontalTextAlignment="Center"/>
 
        
-                    <Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
+                    <!--<Label Text="Haslo" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center" />
 
 
 
@@ -55,7 +55,7 @@
                 HorizontalTextAlignment="Center"
                 IsPassword="True" Margin="0,0,25,0">
           
-                    </Entry>
+                    </Entry>-->
                     <Label Text="Pokaż na liście również zatwierdzone MM (100 dni)" 
                    HorizontalOptions="FillAndExpand" 
                    BackgroundColor="Silver" 

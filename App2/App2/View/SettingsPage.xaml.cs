@@ -69,6 +69,7 @@ namespace App2.View
             else
             {
                 app.Serwer = app.Serwer.Replace(@"\optima", ":8081");
+                viewModel.Serwer = app.Serwer;
             }
 
             SwitchStatus.IsToggled = IsBuforOff;

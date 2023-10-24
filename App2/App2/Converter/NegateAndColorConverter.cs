@@ -15,7 +15,7 @@ namespace App2.Converter
                 booleanValue = !booleanValue; // Negacja wartości
 
                 // Konwersja na kolor
-                return booleanValue ? Color.Black : Color.Green;
+                return booleanValue ? Color.Black : Color.DarkCyan;
             }
 
             return Color.Black;

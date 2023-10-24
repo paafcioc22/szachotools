@@ -19,7 +19,11 @@ namespace App2.ViewModel
         public string Serwer
         {
             get => _app.Serwer;
-            set => _app.Serwer = value;
+            set
+            {
+                _app.Serwer = value;
+                OnPropertyChanged();
+            }
         }
         public string BazaConf
         {

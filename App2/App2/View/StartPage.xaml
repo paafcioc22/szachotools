@@ -110,7 +110,7 @@
                     Clicked="BtnCreateMm_Clicked" x:Name="btn_CreateMM"
                    />
 
-                <Button Text="Utworz Paczke" Grid.Column="1" Grid.Row="1"   
+                <Button Text="Utwórz Paczkę" Grid.Column="1" Grid.Row="1"   
                     Style="{StaticResource GradientButtonStyleDefault}"   
                     ImageSource="icons8_fedexv.9" 
                     Clicked="BtnCreatePaczka_Clicked"
