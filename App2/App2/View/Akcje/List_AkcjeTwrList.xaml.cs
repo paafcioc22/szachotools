@@ -384,7 +384,17 @@ namespace App2.View
             var cmd = connection.CreateCommand(cmdText, typeof(T).Name); 
             return cmd.ExecuteScalar<string>() != null; 
         }
-        
+
+        public static async Task<bool> TableExistsAsync<T>(SQLiteAsyncConnection connection)
+        {
+            var query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
+            var name = typeof(T).Name;
+            var result = await connection.ExecuteScalarAsync<string>(query, name);
+            return result != null;
+        }
+
+
+
         protected override async void OnAppearing()
         {
             await LoadList();
@@ -530,37 +540,59 @@ namespace App2.View
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await _connection.DropTableAsync<Model.AkcjeNagElem>();
+            await _connection.DropTableAsync<AkcjeNagElem>();
         }
-        private void ImportSkanFromOther_Clicked(object sender, EventArgs e)
+        private async void ImportSkanFromOther_Clicked(object sender, EventArgs e)
         {
             var magGidnumer = (Application.Current as App).MagGidNumer;
             if (magGidnumer > 0)
             {
-                ImportZeskanowychZCentrali(_nagElem[0].AkN_GidNumer, magGidnumer);
+                await ImportZeskanowychZCentrali(_nagElem[0].AkN_GidNumer, magGidnumer);
             }
         }
         
 
-        private async void ImportZeskanowychZCentrali(int asn_gidnumer, int magnumer)
+        private async Task ImportZeskanowychZCentrali(int asn_gidnumer, int magnumer)
         {
-            var query = @$"cdn.PC_WykonajSelect N'
-                    select ASE_AknNumer as AkN_GidNumer, ASE_AknMagNumer as Ake_ElemLp 
-                    ,ASE_Grupa  as TwrGrupa                        
-                    ,ASE_TwrDep as TwrDep
-                    ,ASE_TwrNumer as  TwrGidNumer
-                    ,ASE_TwrStan as TwrStan ,ASE_TwrSkan as TwrSkan 
-                    FROM CDN.PC_AkcjeSkanElem
-              where ASE_AknNumer = {asn_gidnumer} and ASE_AknMagNumer = {magnumer} and ASE_TwrSkan> 0'";
+            var odp = await DisplayAlert("UWAGA!", "Dotychczasowa realizacja zostanie utracona\nCzy chcesz kontynuować", "Tak","Nie");
 
-            var zbazy= await App.TodoManager.PobierzDaneZWeb<AkcjeNagElem> (query);
+            if (odp)
+            {
+                var isExists = await TableExistsAsync<AkcjeNagElem>(_connection);
+                if (isExists)
+                {
+                    var wyniki = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+                    //await _connection.DropTableAsync<Model.AkcjeNagElem>();
+                    await _connection.ExecuteAsync("DELETE FROM AkcjeNagElem WHERE AkN_GidNumer = ?", _nagElem[0].AkN_GidNumer);
+
+                    var sdas = wyniki.ToList();
+
+                   // await _connection.CreateTableAsync<AkcjeNagElem>();
+                }
+
+                var query = @$"cdn.PC_WykonajSelect N'
+                        select ASE_AknNumer as AkN_GidNumer, ASE_AknMagNumer as Ake_ElemLp 
+                        ,ASE_Grupa  as TwrGrupa                        
+                        ,ASE_TwrDep as TwrDep
+                        ,ASE_TwrNumer as  TwrGidNumer
+                        ,ASE_TwrStan as TwrStan ,ASE_TwrSkan as TwrSkan 
+                        FROM CDN.PC_AkcjeSkanElem
+                  where ASE_AknNumer = {asn_gidnumer} and ASE_AknMagNumer = {magnumer} and ASE_TwrSkan> 0'";
+
+                var zbazy= await App.TodoManager.PobierzDaneZWeb<AkcjeNagElem> (query);
 
 
-            var test= await _connection.InsertAllAsync(zbazy, true);
+                var test= await _connection.InsertAllAsync(zbazy, true); 
 
+                var wynik = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
 
-            var wynik = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+                if (wynik.Any())
+                {
+                    await DisplayAlert("sukces", "Dane z centrali zostały zaczytane\nZostaniesz cofnięty do poprzedniego okna", "OK");
+                    await Navigation.PopAsync();
+                }
 
+            }
         }
     }
 
