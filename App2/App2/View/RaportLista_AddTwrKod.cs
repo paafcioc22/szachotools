@@ -758,6 +758,8 @@ namespace App2.View
 
 
         int ile = 0;
+        private int NrCennika;
+
         private void Open_url_Clicked(object sender, EventArgs e)
         {
             //Device.OpenUri(new Uri(_MMElement.url.Replace("Miniatury/", "")));
@@ -932,19 +934,19 @@ namespace App2.View
         {
 
             await Zapisz();
-            Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
-            {
-                if (SettingsPage.SelectedDeviceType == 1)
-                {
-                    //await SkanowanieEan();
+            //Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+            //{
+            //    if (SettingsPage.SelectedDeviceType == 1)
+            //    {
+            //        //await SkanowanieEan();
 
-                    Task.Run(async () => await SkanowanieEan());//  uruchomi na innym wątku,
-                    //Device.BeginInvokeOnMainThread(async () => await SkanowanieEan());
-                    //uruchomienia tej funkcji na głównym wątku
-                }
+            //        Task.Run(async () => await SkanowanieEan());//  uruchomi na innym wątku,
+            //        //Device.BeginInvokeOnMainThread(async () => await SkanowanieEan());
+            //        //uruchomienia tej funkcji na głównym wątku
+            //    }
 
-                return false;
-            });
+            //    return false;
+            //});
         }
 
         private async Task SkanowanieEan()
@@ -1099,12 +1101,14 @@ namespace App2.View
                     if (!string.IsNullOrEmpty(_ean) || _ean != "201000")
                         try
                         {
-
+                            if (app.Cennik == "OUTLET")
+                                NrCennika = 4;
+                            else NrCennika = 2;
 
                             var karta = new TwrKodRequest()
                             {
-                                Twrcenaid = 3,
-                                Twrkod = "",
+                                Twrcenaid = NrCennika+1,
+                        
                                 Twrean = _ean
                             };
 
@@ -1112,7 +1116,7 @@ namespace App2.View
                                   .AddJsonBody(karta);
 
                             //todo : cennik zmienna
-                            var produkt = await FilesHelper.GetCombinedTwrInfo(_ean, 2, request, _client);
+                            var produkt = await FilesHelper.GetCombinedTwrInfo(_ean, NrCennika, request, _client);
                             if (produkt != null)
                             {
                                 if (produkt.Twr_Ean == _ean)

@@ -338,78 +338,88 @@ namespace App2.View.CreateMM
 
             if (!string.IsNullOrEmpty(ilosc.Text) && !string.IsNullOrEmpty(kodean.Text))
             {
-                int.TryParse(ilosc.Text, out int iloscSkanowana);
-
-                createElementDto = new CreateDokElementDto()
+                if (string.IsNullOrEmpty(stan_szt))
                 {
-                    DokTyp = (int)GidTyp.Mm,
-                    TwrIlosc = iloscSkanowana,
-                    TwrKod = twr_info.Twr_Kod,
-                    TwrNazwa = twr_info.Twr_Nazwa
-                };
-
-                if (iloscSkanowana > int.Parse(stan_szt) || iloscSkanowana == 0)
-                {
-                    await DisplayAlert(null, "Wpisana ilość przekracza stan lub jest 0 ", "OK");
+                    await DisplayAlert(null, "Akcja przerwana - brak na stanie", "OK");
                 }
                 else
                 {
 
-                    var apiResponse = await serwisApi.SaveElement(createElementDto, dokumentId);
 
-                    if (await serwisApi.ExistsOnOtherDocs(kodean.Text, dokumentId))
-                        await DisplayAlert("Ostrzeżenie", "Dodawany towar znajduje się już na innej MM", "OK");
- 
-                    var listaMMzKodem = await serwisApi.GetDokWithElementByTwrkod(kodean.Text);
 
-                    if (listaMMzKodem.IsSuccessful || listaMMzKodem.HttpStatusCode == HttpStatusCode.NotFound)
+                    int.TryParse(ilosc.Text, out int iloscSkanowana);
+
+                    createElementDto = new CreateDokElementDto()
                     {
-                        var listaIstniejacych = listaMMzKodem.Data;
+                        DokTyp = (int)GidTyp.Mm,
+                        TwrIlosc = iloscSkanowana,
+                        TwrKod = twr_info.Twr_Kod,
+                        TwrNazwa = twr_info.Twr_Nazwa
+                    };
 
-                        totalTwrIlosc = serwisApi.TotalTwrIloscFromAllDoks(listaIstniejacych);
+                    if (iloscSkanowana > int.Parse(stan_szt) || iloscSkanowana == 0)
+                    {
+                        await DisplayAlert(null, "Wpisana ilość przekracza stan lub jest 0 ", "OK");
                     }
-
-                    if (apiResponse.ConflictInformation != null)
+                    else
                     {
-                        var conflictInfo = apiResponse.ConflictInformation;
 
-                        var updatedQuantity = conflictInfo.ExistingQuantity + conflictInfo.AttemptedToAddQuantity;
+                        var apiResponse = await serwisApi.SaveElement(createElementDto, dokumentId);
 
-                        if (updatedQuantity > twr_info.Stan_szt)
+                        if (await serwisApi.ExistsOnOtherDocs(kodean.Text, dokumentId))
+                            await DisplayAlert("Ostrzeżenie", "Dodawany towar znajduje się już na innej MM", "OK");
+
+                        var listaMMzKodem = await serwisApi.GetDokWithElementByTwrkod(kodean.Text);
+
+                        if (listaMMzKodem.IsSuccessful || listaMMzKodem.HttpStatusCode == HttpStatusCode.NotFound)
                         {
-                            await DisplayAlert("Uwaga", "Sumowana ilość przekracza stan towaru", "OK");
+                            var listaIstniejacych = listaMMzKodem.Data;
+
+                            totalTwrIlosc = serwisApi.TotalTwrIloscFromAllDoks(listaIstniejacych);
                         }
-                        else
-                        {
-                            var isAddMore = await DisplayAlert(
-                                "Konflikt",
-                                $"Towar {conflictInfo.TwrKod} znajduje się już na liście : {conflictInfo.ExistingQuantity} sztuk. Czy chcesz zsumoawć ilości?",
-                                "Tak",
-                                "Nie");
 
-                            if (isAddMore)
+                        if (apiResponse.ConflictInformation != null)
+                        {
+                            var conflictInfo = apiResponse.ConflictInformation;
+
+                            var updatedQuantity = conflictInfo.ExistingQuantity + conflictInfo.AttemptedToAddQuantity;
+
+                            if (updatedQuantity > twr_info.Stan_szt)
                             {
-                                // Wykonaj dodatkowe akcje, na przykład dodaj więcej towaru
-                                var resposne = await serwisApi.UpadteElement(updatedQuantity, dokumentId, conflictInfo.IdElement);
-                                if (resposne.IsSuccessful)
+                                await DisplayAlert("Uwaga", "Sumowana ilość przekracza stan towaru", "OK");
+                            }
+                            else
+                            {
+                                var isAddMore = await DisplayAlert(
+                                    "Konflikt",
+                                    $"Towar {conflictInfo.TwrKod} znajduje się już na liście : {conflictInfo.ExistingQuantity} sztuk. Czy chcesz zsumoawć ilości?",
+                                    "Tak",
+                                    "Nie");
+
+                                if (isAddMore)
                                 {
-                                    await DisplayAlert("Dodano..", $"{conflictInfo.AttemptedToAddQuantity} szt, razem {updatedQuantity}szt", "OK");
+                                    // Wykonaj dodatkowe akcje, na przykład dodaj więcej towaru
+                                    var resposne = await serwisApi.UpadteElement(updatedQuantity, dokumentId, conflictInfo.IdElement);
+                                    if (resposne.IsSuccessful)
+                                    {
+                                        await DisplayAlert("Dodano..", $"{conflictInfo.AttemptedToAddQuantity} szt, razem {updatedQuantity}szt", "OK");
+                                    }
                                 }
+
                             }
 
                         }
-                        
+                        else if (!apiResponse.IsSuccessful)
+                        {
+                            // Obsługa innych błędów
+                            if (apiResponse.ErrorMessage != null)
+                                await DisplayAlert("Błąd", apiResponse.ErrorMessage, "OK");
+                            else
+                                await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
+                        }
+
+                        await Navigation.PopModalAsync();
                     }
-                    else if (!apiResponse.IsSuccessful)
-                    {
-                        // Obsługa innych błędów
-                        if (apiResponse.ErrorMessage != null)
-                            await DisplayAlert("Błąd", apiResponse.ErrorMessage, "OK");
-                        else
-                            await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
-                    }
-                
-                    await Navigation.PopModalAsync();
                 }
             }
             else
@@ -581,76 +591,80 @@ namespace App2.View.CreateMM
         {
             TwrInfo product = null;
 
-            var karta = new TwrKodRequest()
-            {
-                Twrcenaid = 3,//todo : to powinna być cena z ustawienia
-
-                Twrean = _ean
-            };
-
-            var request = new RestRequest("/api/gettowar")
-                  .AddJsonBody(karta);
-
-            try
+            if (!string.IsNullOrEmpty(_ean))
             {
 
-                var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
 
-                if (response.IsSuccessful)
+                var karta = new TwrKodRequest()
                 {
-                    product = response.Data.FirstOrDefault();
+                    Twrcenaid = 3,//todo : to powinna być cena z ustawienia
 
-                    twrkod = product.Twr_Kod;
-                    stan_szt = product.Stan_szt.ToString();
-                    twr_url = product.Twr_Url;
-                    twr_nazwa = product.Twr_Nazwa;
-                    twr_symbol = product.Twr_Symbol;
-                    twr_ean = product.Twr_Ean;
+                    Twrean = _ean
+                };
 
-                }
-                else
+                var request = new RestRequest("/api/gettowar")
+                      .AddJsonBody(karta);
+
+                try
                 {
 
-                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
+
+                    if (response.IsSuccessful)
                     {
-                        string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
-                        var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-                        if (dane != null)
+                        product = response.Data.FirstOrDefault();
+
+                        twrkod = product.Twr_Kod;
+                        stan_szt = product.Stan_szt.ToString();
+                        twr_url = product.Twr_Url;
+                        twr_nazwa = product.Twr_Nazwa;
+                        twr_symbol = product.Twr_Symbol;
+                        twr_ean = product.Twr_Ean;
+
+                    }
+                    else
+                    {
+
+                        if (response.StatusCode == HttpStatusCode.NotFound)
                         {
-                            twrkod = dane.Twr_Kod;
-                            twr_url = dane.Twr_Url;
-                            twr_nazwa = dane.Twr_Nazwa;
-                            twr_ean = dane.Twr_Ean;
-                            //twr_cena = dane[0].cena;
+                            string Webquery = "cdn.pc_pobierztwr '" + _ean + "'";
+                            var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                            if (dane != null)
+                            {
+                                twrkod = dane.Twr_Kod;
+                                twr_url = dane.Twr_Url;
+                                twr_nazwa = dane.Twr_Nazwa;
+                                twr_ean = dane.Twr_Ean;
+                                //twr_cena = dane[0].cena;
+                            }
+
+                            var mess = $"{response.StatusCode} : {response.Content}";
+                            await DisplayAlert("", mess, "OK");
+                        }
+                        else if (response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            var error = JsonConvert.DeserializeObject<List<ErrorApi>>(response.Content);
+
+                            var mess = $"{response.StatusCode} : {error[0].PropertyName}-{error[0].ErrorMessage} ";
+                            await DisplayAlert("", mess, "OK");
                         }
 
-                        var mess = $"{response.StatusCode} : {response.Content}";
-                        //await DisplayAlert("", mess, "OK");
                     }
-                    else if (response.StatusCode == HttpStatusCode.BadRequest)
-                    {
-                        var error = JsonConvert.DeserializeObject<List<ErrorApi>>(response.Content);
-
-                        var mess = $"{response.StatusCode} : {error[0].PropertyName}-{error[0].ErrorMessage} ";
-                        await DisplayAlert("", mess, "OK");
-                    }
-
                 }
+                catch (Exception ex)
+                {
+                    // Obsłuż błędy żądania HTTP
+                    var dsa = ex.Message;
+                }
+
+
+                kodean.Text = twrkod;
+                ean.Text = twr_ean;
+                symbol.Text = twr_symbol;
+                nazwa.Text = twr_nazwa;
+                stan.Text = "Stan : " + stan_szt;
+                foto.Source = twr_url;
             }
-            catch (Exception ex)
-            {
-                // Obsłuż błędy żądania HTTP
-                var dsa = ex.Message;
-            }
-
-
-            kodean.Text = twrkod;
-            ean.Text = twr_ean;
-            symbol.Text = twr_symbol;
-            nazwa.Text = twr_nazwa;
-            stan.Text = "Stan : " + stan_szt;
-            foto.Source = twr_url;
-
             return product;
         }
 

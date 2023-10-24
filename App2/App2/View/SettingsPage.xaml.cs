@@ -66,7 +66,11 @@ namespace App2.View
 
                 _client = new RestClient(options);
             }
-             
+            else
+            {
+                app.Serwer = app.Serwer.Replace(@"\optima", ":8081");
+            }
+
             SwitchStatus.IsToggled = IsBuforOff;
             SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
@@ -268,9 +272,13 @@ namespace App2.View
                                 app.BazaProd = dbNameHeader.Value.ToString();
                                 BazaProd.Text = dbNameHeader.Value.ToString();
                                 await DisplayAlert("Sukces..", $"Połączono z bazą {dbNameHeader.Value}", "OK");
+                                await UzupełnijCennik();
                                 viewModel.IsBusy = false;
                                 await Application.Current.SavePropertiesAsync();
-                                await Navigation.PopAsync();
+                                if (pickerlist.SelectedItem != null)
+                                    await Navigation.PopAsync();
+                                else
+                                    await DisplayAlert(null, "Nie uzupełniono cennika", "OK");
                             }
                             else
                             {
@@ -303,7 +311,31 @@ namespace App2.View
 
         }
 
+        async Task UzupełnijCennik()
+        {
+            try
+            {
+                var app = Application.Current as App;
+                viewModel.ListaCen = (await GetCenniki());
+                if (viewModel.ListaCen != null)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        pickerlist.ItemsSource = viewModel.ListaCen;
+                        if (app.Cennik != "0")
+                        {
+                            var selected = viewModel.ListaCen.FirstOrDefault(s => s.RodzajCeny == app.Cennik);
+                            pickerlist.SelectedItem = selected;
+                        }
+                    });
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
         public static async Task<bool> SprConn() //Third way, slightly slower than Method 1
         {
@@ -313,7 +345,7 @@ namespace App2.View
                 Regex regex = new Regex(@"[^0-9.:]");
 
                 var app = Application.Current as App;
-                //todo : skonfiguruj ustawienia
+            
                 if (regex.IsMatch(app.Serwer))
                 {
                     // Wyświetl komunikat o błędzie, jeśli wprowadzony tekst zawiera niedozwolone znaki

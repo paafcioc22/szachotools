@@ -68,7 +68,7 @@ namespace App2.View
 
         public async void SkanujIdetyfikator()
         {
-            //todo : popraw na prawdziwe
+        
             var testCamera = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
 
             if (testCamera == PermissionStatus.Granted)
@@ -233,6 +233,7 @@ namespace App2.View
             }
         }
 
+        #region Old IsPassOK Function
 
         public bool IsPassCorrect()
         {
@@ -263,7 +264,8 @@ namespace App2.View
             }
             return false;
 
-        }
+        } 
+        #endregion
 
 
         public async Task<bool> IsPassCorrect(int gidnumer)
@@ -338,17 +340,24 @@ namespace App2.View
             {
                 if (entry_haslo.Text != null) //entry_haslo.Text!=""
                 {
-
-                    if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+                    if (_wybranyPracownik != null)
                     {
-                        App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
-                        await Navigation.PopModalAsync();
+                        if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+                        {
+                            App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+                            await Navigation.PopModalAsync();
+                        }
+                        else
+                        {
+                            await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+
+                        }
                     }
                     else
                     {
-                        await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
-
+                        await DisplayAlert(null, "Nie wybrano pracownika z listy", "OK");
                     }
+                    
                 }
             }
             catch (Exception s)
@@ -371,15 +380,22 @@ namespace App2.View
 
             try
             {
-                if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+                if (_wybranyPracownik != null)
                 {
+                    if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+                    {
 
-                    App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
-                    await Navigation.PopModalAsync();
+                        App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+                        await Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+                    }
                 }
                 else
                 {
-                    await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+                    await DisplayAlert(null, "Nie wybrano pracownika z listy", "OK");
                 }
             }
             catch (Exception exception)

@@ -90,6 +90,9 @@ namespace App2.View
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 DependencyService.Get<IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
 
+            if (akcje.TwrCena == 0)
+                DisplayAlert("Uwaga", "sprawdź konfigurację ceny w ustawieniach", "OK");
+
         }
 
         void WidokAparat()

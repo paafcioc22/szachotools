@@ -89,7 +89,7 @@ namespace App2.View
                 }
                 else
                 {
-                    await DisplayAlert(null, "Wpisana ilość nie jest liczbą", "OK");
+                    await DisplayAlert(null, "Wpisana ilość nie jest liczbą lub przekracza zakres", "OK");
                 }
                
             }

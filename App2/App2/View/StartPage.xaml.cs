@@ -65,7 +65,7 @@ namespace App2.View
                     }
                     else
                     {
-                        blokujPrzyciski();
+                        viewModel.IsButtonsEnabled=false;
                     }
 
                 }
@@ -78,23 +78,23 @@ namespace App2.View
             }
         }
 
-        public void blokujPrzyciski()
-        {
-            //IsEnabled = false;
+        //public void blokujPrzyciski()
+        //{
+        //    //IsEnabled = false;
 
-            btn_CreateMM.IsEnabled = false;
-            btn_przyjmijMM.IsEnabled = false;
-            btn_ListaAkcji.IsEnabled = false;
-        }
+        //    btn_CreateMM.IsEnabled = false;
+        //    btn_przyjmijMM.IsEnabled = false;
+        //    btn_ListaAkcji.IsEnabled = false;
+        //}
 
-        public void OdblokujPrzyciski()
-        {
+        //public void OdblokujPrzyciski()
+        //{
 
-            btn_CreateMM.IsEnabled = true;
-            btn_przyjmijMM.IsEnabled = true;
-            btn_ListaAkcji.IsEnabled = true;
+        //    btn_CreateMM.IsEnabled = true;
+        //    btn_przyjmijMM.IsEnabled = true;
+        //    btn_ListaAkcji.IsEnabled = true;
 
-        }
+        //}
 
 
 
@@ -148,28 +148,29 @@ namespace App2.View
 
         private async void BtnCreateMm_Clicked(object sender, EventArgs e)
         {
-            btn_CreateMM.IsEnabled = false;
+            if (isClicked) // Jeśli przycisk został już kliknięty, nie wykonuj żadnych działań.
+                return;
+
+            isClicked=true;
             try
             {
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
-                    await Navigation.PushModalAsync(new View.StartCreateMmPage());
-                    btn_CreateMM.IsEnabled = true;
+                    await Navigation.PushModalAsync(new View.StartCreateMmPage()); 
 
-                }
-                else
-                {
-                    await DisplayAlert(null, "Brak połączenia z serwisem", "OK");
-
-                }
+                } 
             }
             catch (Exception s)
             {
                 await DisplayAlert("Błąd", s.Message, "OK");
-                btn_CreateMM.IsEnabled = true;
+
             }
-            btn_CreateMM.IsEnabled = true;
+            finally
+            {
+                isClicked=false;
+            }
+         
 
         }
         //weryfikator
@@ -196,19 +197,24 @@ namespace App2.View
 
         }
         //utwórz MM
+        private bool isClicked = false;
         private async void BtnListaMMp_Clicked(object sender, EventArgs e)
         {
+
+            if (isClicked) // Jeśli przycisk został już kliknięty, nie wykonuj żadnych działań.
+                return;
+
+            isClicked = true; // Ustaw flagę na true, ponieważ przycisk został kliknięty.
             viewModel.IsBusy = true;
+
             try
             {
-                btn_przyjmijMM.IsEnabled = false;
 
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
                     viewModel.IsBusy = false;
-                    await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia());
-                    btn_przyjmijMM.IsEnabled = true;
+                    await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia()); 
 
                 }
                 else
@@ -216,12 +222,18 @@ namespace App2.View
                     viewModel.IsBusy = false;
                     //await DisplayAlert(null, "Brak połączenia z siecią", "OK");
                 }
-                btn_przyjmijMM.IsEnabled = true;
+                 
             }
             catch (Exception x)
             {
-                viewModel.IsBusy = false;
+           
                 await DisplayAlert(null, x.Message, "OK");
+            }
+            finally
+            {
+                viewModel.IsBusy = false;
+                isClicked = false;
+
             }
 
         }
@@ -271,6 +283,10 @@ namespace App2.View
                 await DisplayAlert("Błąd", ex.Message, "OK");
 
             }
+            finally
+            {         
+                isClicked = false;
+            }
 
             btn_login.IsEnabled = true;
 
@@ -278,19 +294,30 @@ namespace App2.View
 
         private async void Btn_ListAkcje_Clicked(object sender, EventArgs e)
         {
-            btn_ListaAkcji.IsEnabled = false;
-            connected = await SettingsPage.SprConn();
-            if (connected)
+            if (isClicked) // Jeśli przycisk został już kliknięty, nie wykonuj żadnych działań.
+                return;
+
+            isClicked = true;
+            try
             {
-
-                //await Navigation.PushModalAsync(new List_AkcjeView());
-                await Navigation.PushAsync(new List_AkcjeView());
-
-                btn_ListaAkcji.IsEnabled = true;
+                connected = await SettingsPage.SprConn();
+                if (connected)
+                {
+                    //await Navigation.PushModalAsync(new List_AkcjeView());
+                    await Navigation.PushAsync(new List_AkcjeView());
+                  
+                }
+                else
+                    await DisplayAlert(null, "Brak połączenia z siecią", "OK");
             }
-            else
-                await DisplayAlert(null, "Brak połączenia z siecią", "OK");
-            btn_ListaAkcji.IsEnabled = true;
+            catch (Exception ex)
+            {
+                await DisplayAlert("Błąd", ex.Message, "OK");
+            }
+            finally
+            {
+                isClicked = false;
+            }
 
 
         }
@@ -364,6 +391,7 @@ namespace App2.View
 
             if (_userTapped)
                 return;
+
             viewModel.IsBusy = true;
             _userTapped = true;
             try
@@ -377,12 +405,13 @@ namespace App2.View
                 }
             }
             catch (Exception ex)
-            {
-                viewModel.IsBusy = false;
-
+            {   
                 await DisplayAlert("błąd", ex.Message, "OK");
-            }
-            _userTapped = false;
+            }finally
+            { 
+                _userTapped = false; 
+                viewModel.IsBusy = false;
+            } 
         }
 
         private async void btn_zdjecia_Clicked(object sender, EventArgs e)

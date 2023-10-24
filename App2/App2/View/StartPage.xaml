@@ -92,7 +92,8 @@
             </Grid>
             <Grid  Padding="15" ColumnSpacing="20" RowSpacing="20" VerticalOptions="FillAndExpand"  >
 
-                <Button Text="Przyjmij MM"  IsEnabled="{Binding IsButtonsEnabled}" Grid.Column="0" Grid.Row="0"  Grid.RowSpan="2" 
+                <Button Text="Przyjmij MM"  
+                        IsEnabled="{Binding IsButtonsEnabled}" Grid.Column="0" Grid.Row="0"  Grid.RowSpan="2" 
                     Style="{StaticResource GradientButtonStyle}"  
                     FontSize="Medium"  
                     ImageSource="skaner100"

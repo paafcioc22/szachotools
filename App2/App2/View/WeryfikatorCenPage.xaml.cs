@@ -210,6 +210,8 @@ namespace App2.View
                                 await DisplayAlert("Uwaga", $"nie znaleziono dokładnie tego EANu, ale kod {twrkarty.Twr_Ean} jest najblizej", "OK");
                             }
 
+                            if (twrkarty.Twr_Cena == 0)
+                                await DisplayAlert("Uwaga", "sprawdź konfigurację ceny w ustawieniach", "OK");
                         }
                         else
                         {

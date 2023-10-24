@@ -87,25 +87,17 @@ namespace App2.View
 
             var model = cell.BindingContext as DokNaglowekDto;
 
-            //DokNaglowekDto dokmm = new DokNaglowekDto()
-            //{
-            //    GidNumerXl = gidnumer,
-            //    MagKod = _magDcl.Text,
-            //    Opis = _opis.Text,
-            //};
 
-            //model.
+            try
+            {
+                var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
+            }
+            catch (Exception s)
+            {
+                await DisplayAlert("Błąd:", s.Message, "OK");
+            }
 
-            //todo : sprawdz czy export dziala
-            var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
-
-            //Model.DokMM dokMM = new Model.DokMM();
-            //dokMM.gidnumer = model.gidnumer;
-            //dokMM.mag_dcl = model.mag_dcl;
-            //dokMM.opis = model.opis;
-            //dokMM.IsExport = model.IsExport;
-            //dokMM.fl_header = 1;
-            //dokMM.UpdateMM(dokMM); 
+    
 
         }
     }
