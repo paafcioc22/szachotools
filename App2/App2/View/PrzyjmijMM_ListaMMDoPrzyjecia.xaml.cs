@@ -37,6 +37,7 @@ namespace App2.View
         protected async override void OnAppearing()
         {
 
+            base.OnAppearing();
             PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
             await PrzyjmijMMClass.getListMM(View.SettingsPage.IsBuforOff);
@@ -45,7 +46,15 @@ namespace App2.View
             BindingContext = this;
             ListaMMek.ItemsSource = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
 
-            base.OnAppearing();
+            if (ListaMMek.ItemsSource == null || !ListaMMek.ItemsSource.GetEnumerator().MoveNext())
+            {
+                EmptyListLabel.IsVisible = true;
+            }
+            else
+            {
+                EmptyListLabel.IsVisible = false;
+            }
+
 
         }
 

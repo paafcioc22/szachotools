@@ -1,6 +1,7 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
 using App2.Services;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -358,41 +359,57 @@ namespace App2.View
         }
         private async void btn_print_Clicked(object sender, EventArgs e)
         {
-            sbyte ileMetek;
-            if (twrkarty != null)
+            sbyte ileMetek=1;
+            string kolor="";
+            try
             {
-
-                PrintSerwis printSerwis = new PrintSerwis();
-
-                if (await printSerwis.ConnToPrinter())
+                if (twrkarty != null)
                 {
-                    List<string> kolory = new List<string> {
+
+                    PrintSerwis printSerwis = new PrintSerwis();
+
+                    if (await printSerwis.ConnToPrinter())
+                    {
+                        List<string> kolory = new List<string> {
                     "biały", "pomarańczowy"
                 };
 
-                    var kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
-                    if (kolor != "Anuluj")
-                    {
-                        string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "(1-20 szt)", "OK", "Anuluj", "1", 2, Keyboard.Numeric, "1");
+                        kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
+                        if (kolor != "Anuluj")
+                        {
+                            string result = await DisplayPromptAsync("Ile metek chcesz wydrukować?", "(1-20 szt)", "OK", "Anuluj", "1", 2, Keyboard.Numeric, "1");
 
-                        if (IsStringCorrect(result, out ileMetek))
-                        {
-                            await printSerwis.PrintCommand(twrkarty, kolor, ileMetek);
+                            if (IsStringCorrect(result, out ileMetek))
+                            {
+                                await printSerwis.PrintCommand(twrkarty, kolor, ileMetek);
+                            }
+                            else
+                            {
+                                await DisplayAlert(null, "Wprowadzono błędną wartość", "OK");
+                            }
                         }
-                        else
-                        {
-                            await DisplayAlert(null, "Wprowadzono błędną wartość", "OK");
-                        }
+                    }
+                    else
+                    {
+                        await DisplayAlert(null, "Błąd drukarki", "OK");
                     }
                 }
                 else
                 {
-                    await DisplayAlert(null, "Błąd drukarki", "OK");
+                    await DisplayAlert("uwaga", "Nie pobrano karty towaru", "OK");
                 }
             }
-            else
+            catch (Exception s)
             {
-                await DisplayAlert("uwaga", "Nie pobrano karty towaru", "OK");
+                var properties = new Dictionary<string, string>
+                    {
+                        { "ean", twrkarty.Twr_Ean},
+                        { "kod", twrkarty.Twr_Kod},
+                        { "kolor", kolor},
+                        { "ile", ileMetek.ToString()}
+                    };
+                Crashes.TrackError(s, properties);
+                await DisplayAlert("błąd", s.Message, "OK");
             }
         }
     }

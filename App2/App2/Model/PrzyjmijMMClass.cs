@@ -87,32 +87,39 @@ namespace App2.Model
 
                 if (listaMM.IsSuccessful)
                 {
-                    foreach (var item in listaMM.Data.OrderByDescending(s=>s.DataMM))
+                    if (listaMM.Data != null)
                     {
-                        przyjmijMM = new PrzyjmijMMClass()
+                        foreach (var item in listaMM.Data.OrderByDescending(s => s.DataMM))
                         {
-                            GIDdokumentuMM = item.Trn_Trnid,
-                            DatadokumentuMM = item.DataMM,
-                            nrdokumentuMM = item.TrN_DokumentObcy,
-                            OpisdokumentuMM = item.TrN_Opis,
-                            GIDMagazynuMM = item.Trn_MagZrdId,
-                            XLGIDMM = item.Trn_Gidnumer,
+                            przyjmijMM = new PrzyjmijMMClass()
+                            {
+                                GIDdokumentuMM = item.Trn_Trnid,
+                                DatadokumentuMM = item.DataMM,
+                                nrdokumentuMM = item.TrN_DokumentObcy,
+                                OpisdokumentuMM = item.TrN_Opis,
+                                GIDMagazynuMM = item.Trn_MagZrdId,
+                                XLGIDMM = item.Trn_Gidnumer,
 
-                        };
+                            };
 
-                        var tmpMM = await PobierzSatus(przyjmijMM);
+                            var tmpMM = await PobierzSatus(przyjmijMM);
 
-                        ListaMMDoPrzyjcia.Add(tmpMM);
-                    }  
+                            ListaMMDoPrzyjcia.Add(tmpMM);
+                        }
+                    } 
+                    
                 } 
 
             }
             catch (Exception s)
             {
+                var app = Application.Current as App;
                 var properties = new Dictionary<string, string>
                 {
                     { "conn", "/api/przyjmijMM/GetMmListNag" },
-                    { "query", listaMM.ErrorMessage}
+                    { "query", listaMM.ErrorMessage},
+                    {"magkod",app.BazaProd },
+                    {"user", App.SessionManager.CurrentSession.UserName }
                 };
 
                 Crashes.TrackError(s, properties);

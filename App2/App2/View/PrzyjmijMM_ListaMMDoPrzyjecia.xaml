@@ -24,9 +24,9 @@
         <ListView x:Name="ListaMMek"  x:FieldModifier="public"   ItemsSource="{x:Static local:Model.PrzyjmijMMClass.ListaMMDoPrzyjcia}" 
                   ItemTapped="Handle_ItemTapped" SeparatorColor="DarkCyan" SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement" 
-                  HasUnevenRows="True" 
-                  
+                  HasUnevenRows="True"                   
                   VerticalOptions="FillAndExpand">
+        
             <ListView.ItemTemplate>
                 <DataTemplate  >
                     <ViewCell>
@@ -43,7 +43,12 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-                            <!--<ActivityIndicator x:Name="waiticon" IsRunning="{Binding IsBusy}" />-->
+        <Label x:Name="EmptyListLabel" 
+           Text="Lista jest pusta!" 
+           IsVisible="False" 
+           HorizontalOptions="CenterAndExpand" 
+           VerticalOptions="CenterAndExpand" />
+        <!--<ActivityIndicator x:Name="waiticon" IsRunning="{Binding IsBusy}" />-->
         <Button Text="Zeskanuj dokument MM" Clicked="Btn_Skanuj_Clicked"  Image="scan48x2.png" ContentLayout="right,10"/>
         <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
     </StackLayout>
