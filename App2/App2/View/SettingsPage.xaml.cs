@@ -83,11 +83,19 @@ namespace App2.View
             var app = Application.Current as App;
 
             base.OnAppearing();
+            isPageActive = true;
             await sprwersja();
             await InicjalizujAsync(app);
 
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            isPageActive = false;
+        }
+
+        private bool isPageActive = false;
         private async Task InicjalizujAsync(App app)
         {
             try
@@ -117,10 +125,12 @@ namespace App2.View
             }
             catch (Exception )
             {
-                DependencyService
-                        .Get<IAppVersionProvider>()
-                        .ShowShort("Brak połączenia");
-                // await DisplayAlert("uwaga", s.Message, "OK");
+                if (isPageActive)
+                {
+                    DependencyService
+                            .Get<IAppVersionProvider>()
+                            .ShowShort("Brak połączenia");
+                }
             }
 
         }

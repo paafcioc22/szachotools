@@ -576,7 +576,9 @@ namespace App2.View
                         ,ASE_TwrDep as TwrDep
                         ,ASE_TwrNumer as  TwrGidNumer
                         ,ASE_TwrStan as TwrStan ,ASE_TwrSkan as TwrSkan 
+                        ,Twr_Kod AS TwrKod
                         FROM CDN.PC_AkcjeSkanElem
+                    join cdn.TwrKarty on Twr_GIDNumer= ASE_TwrNumer
                   where ASE_AknNumer = {asn_gidnumer} and ASE_AknMagNumer = {magnumer} and ASE_TwrSkan> 0'";
 
                 var zbazy= await App.TodoManager.PobierzDaneZWeb<AkcjeNagElem> (query);
