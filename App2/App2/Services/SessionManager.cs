@@ -36,7 +36,7 @@ namespace App2.Services
         public bool IsValidSession()
         {
             if (CurrentSession == null || CurrentSession.LastActivity == null)
-                return false;
+                return true;//todo : zmiana
 
             return (DateTime.Now - CurrentSession.LastActivity.Value).TotalMinutes <= SessionTimeoutMinutes;
         }

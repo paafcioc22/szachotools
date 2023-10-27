@@ -97,10 +97,10 @@ namespace App2.Model
                         Twr_Gidnumer = twrInfoFromOptima.Twr_Gidnumer != 0 ? twrInfoFromOptima.Twr_Gidnumer : daneFromCentrala.Twr_Gidnumer,
                         Stan_szt = twrInfoFromOptima.Stan_szt,  // tutaj przyjmuję, że pierwszy serwis ma bardziej aktualne dane
                         Twr_Url = daneFromCentrala.Twr_Url ?? twrInfoFromOptima.Twr_Url,
-                        Twr_Nazwa = twrInfoFromOptima.Twr_Nazwa ?? daneFromCentrala.Twr_Nazwa,
-                        Twr_Symbol = twrInfoFromOptima.Twr_Symbol ?? daneFromCentrala.Twr_Symbol,
+                        Twr_Nazwa = daneFromCentrala.Twr_Nazwa,
+                        Twr_Symbol =  daneFromCentrala.Twr_Symbol,
                         Twr_Ean = twrInfoFromOptima.Twr_Ean ?? daneFromCentrala.Twr_Ean,
-                        Twr_Cena = twrInfoFromOptima.Twr_Cena != 0 ? twrInfoFromOptima.Twr_Cena : daneFromCentrala.Twr_Cena,
+                        Twr_Cena = daneFromCentrala.Twr_Cena,
                         Twr_Cena1 = daneFromCentrala.Twr_Cena1,  // przyjmuję, że drugi serwis dostarcza tę wartość
                         Twr_Cena30= daneFromCentrala.Twr_Cena30
                     };

@@ -77,9 +77,9 @@ namespace App2.Model
 
         public async Task getListMM(bool CzyZatwierdzone, int pastDays = 100)
         {
-            PrzyjmijMMClass przyjmijMM; 
+            PrzyjmijMMClass przyjmijMM;
 
-            var listaMM = await serviceApi.GetDokMmList(CzyZatwierdzone, pastDays); 
+            var listaMM = await serviceApi.GetDokMmList(CzyZatwierdzone, pastDays);
 
             try
             {
@@ -106,9 +106,9 @@ namespace App2.Model
 
                             ListaMMDoPrzyjcia.Add(tmpMM);
                         }
-                    } 
-                    
-                } 
+                    }
+
+                }
 
             }
             catch (Exception s)
@@ -137,17 +137,17 @@ namespace App2.Model
 
                 var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", mMClass.XLGIDMM);
 
-                if (wynik !=null)
+                if (wynik != null)
                 {
-                    if(wynik.Count > 0)
+                    if (wynik.Count > 0)
                     {
                         var wpis = wynik[0].Sended;
 
                         mMClass.StatusMM = wpis;
                         return mMClass;
                     }
-                        return mMClass;
-                    
+                    return mMClass;
+
                 }
                 else
                 {
@@ -176,16 +176,16 @@ namespace App2.Model
             return await serviceApi.GetGidNumerFromEANMM(BarCodeMM);
         }
 
-     
-        public async Task GetlistMMElementsAsync(  int trnId = 0)
-        { 
+
+        public async Task GetlistMMElementsAsync(int trnId = 0)
+        {
             //if (!string.IsNullOrEmpty(KodEanMM))
             //    trnId = await ReturnGidNumerFromEANMM(KodEanMM);
-
-            var dokumentWithEle = await serviceApi.GetDokMMWithElements(trnId);
-
             try
             {
+                var dokumentWithEle = await serviceApi.GetDokMMWithElements(trnId);
+
+
                 foreach (var ele in dokumentWithEle.Elementy)
                 {
 

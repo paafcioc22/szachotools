@@ -23,6 +23,7 @@ namespace App2.View
         }
         protected override async void OnAppearing()
         {
+            base.OnAppearing();
             await _connection.CreateTableAsync<Model.RaportListaMM>();
             await _connection.CreateTableAsync<Model.PrzyjmijMMLista>();
 
@@ -31,7 +32,6 @@ namespace App2.View
 
               
 
-            base.OnAppearing();
         }
 
         public RaportListaElementow(Model.RaportListaMM raportListaMM)
@@ -43,9 +43,8 @@ namespace App2.View
         }
 
          private async  void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
+         {
            
-
 
             try
             {

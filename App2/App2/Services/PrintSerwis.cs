@@ -32,8 +32,11 @@ namespace App2.Services
         }
 
 
-        public async Task<bool> ConnToPrinter()
+        public async Task<bool> ConnToPrinter(bool trueForTest=false)
         {
+            if(trueForTest ) 
+                return true;
+
             bool connected = false;
             SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
@@ -85,25 +88,13 @@ namespace App2.Services
             string typCodeEan = "";
             int przesuniecieDlaCode128 = 0;
 
-            //if (!string.IsNullOrEmpty(ile))
-            //    drukSzt = Convert.ToInt16(ile);
-            //else
-            //    drukSzt = 1;
-
-
-            //todo : po co skoro pobieram okno wześnieej
-            //if(string.IsNullOrEmpty(_akcja.Twr_Cena1))
-            //{
-            //    string Webquery = "cdn.pc_pobierztwr '" + _akcja.Twr_Ean + "'";
-            //    var dane = await App.TodoManager.PobierzTwrAsync(Webquery);
-            //    _akcja.Twr_Cena1 = dane.Twr_Cena1.ToString();
-            //}
-
+          
+            try
+            {
             _akcja.Twr_Cena30 = _akcja.Twr_Cena30 < _akcja.Twr_Cena ? _akcja.Twr_Cena : _akcja.Twr_Cena30;
 
             await printSemaphore.WaitAsync();
-            try
-            {
+           
                 if (SettingsPage.CzyCenaPierwsza)
                     _akcja.Twr_Cena = _akcja.Twr_Cena1;
 
@@ -238,7 +229,7 @@ namespace App2.Services
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
 
-                    if (_akcja.Twr_Cena30 > 0 && _akcja.Twr_Cena30 < _akcja.Twr_Cena1)
+                    if (_akcja.Twr_Cena30 > 0 && _akcja.Twr_Cena30 < _akcja.Twr_Cena1 )
                         await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 200, 150, $"{_akcja.Twr_Cena30}pln", 0);
 
                 }

@@ -60,16 +60,18 @@ namespace App2.View
         }
         private async void SkanowanieEan()
         {
-            var testBt = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
-            if (testBt == PermissionStatus.Granted)
+            try
             {
-
-
-                opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+                var testBt = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
+                if (testBt == PermissionStatus.Granted)
                 {
-                    AutoRotate = false,
 
-                    PossibleFormats = new List<ZXing.BarcodeFormat>() {
+
+                    opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
+                    {
+                        AutoRotate = false,
+
+                        PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
                     //ZXing.BarcodeFormat.CODE_128,
                     ZXing.BarcodeFormat.CODABAR,
@@ -77,87 +79,93 @@ namespace App2.View
                     ZXing.BarcodeFormat.EAN_13
                 }
 
-                };
-                if (SettingsPage.OnAlfaNumeric)
-                    opts.PossibleFormats.Add(ZXing.BarcodeFormat.CODE_128);
+                    };
+                    if (SettingsPage.OnAlfaNumeric)
+                        opts.PossibleFormats.Add(ZXing.BarcodeFormat.CODE_128);
 
-                opts.TryHarder = true;
+                    opts.TryHarder = true;
 
-                zxing = new ZXingScannerView
-                {
-
-                    IsScanning = false,
-                    IsTorchOn = false,
-                    IsAnalyzing = false,
-                    AutomationId = "zxingDefaultOverlay",//zxingScannerView
-                    Opacity = 22,
-                    Options = opts
-                };
-
-                var torch = new Switch
-                {
-                };
-
-                torch.Toggled += delegate
-                {
-                    scanPage.ToggleTorch();
-                };
-
-                var grid = new Grid
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                };
-
-                var Overlay = new ZXingDefaultOverlay
-                {
-                    TopText = "Włącz latarkę",
-                    BottomText = "Skanowanie rozpocznie się automatycznie",
-                    ShowFlashButton = true,
-                    AutomationId = "zxingDefaultOverlay",
-
-                };
-
-                var customOverlay = new StackLayout
-                {
-                    HorizontalOptions = LayoutOptions.EndAndExpand,
-                    VerticalOptions = LayoutOptions.EndAndExpand
-                };
-
-                grid.Children.Add(Overlay);
-                Overlay.Children.Add(torch);
-                Overlay.BindingContext = Overlay;
-
-                scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
-                {
-                    DefaultOverlayTopText = "Zeskanuj kod ",
-                    //DefaultOverlayBottomText = " Skanuj kod ";
-                    DefaultOverlayShowFlashButton = true
-
-                };
-                scanPage.OnScanResult += (result) =>
-                {
-                    scanPage.IsScanning = false;
-                    scanPage.AutoFocus();
-                    Device.BeginInvokeOnMainThread(async () =>
+                    zxing = new ZXingScannerView
                     {
 
-                        Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                        IsScanning = false,
+                        IsTorchOn = false,
+                        IsAnalyzing = false,
+                        AutomationId = "zxingDefaultOverlay",//zxingScannerView
+                        Opacity = 22,
+                        Options = opts
+                    };
+
+                    var torch = new Switch
+                    {
+                    };
+
+                    torch.Toggled += delegate
+                    {
+                        scanPage.ToggleTorch();
+                    };
+
+                    var grid = new Grid
+                    {
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                    };
+
+                    var Overlay = new ZXingDefaultOverlay
+                    {
+                        TopText = "Włącz latarkę",
+                        BottomText = "Skanowanie rozpocznie się automatycznie",
+                        ShowFlashButton = true,
+                        AutomationId = "zxingDefaultOverlay",
+
+                    };
+
+                    var customOverlay = new StackLayout
+                    {
+                        HorizontalOptions = LayoutOptions.EndAndExpand,
+                        VerticalOptions = LayoutOptions.EndAndExpand
+                    };
+
+                    grid.Children.Add(Overlay);
+                    Overlay.Children.Add(torch);
+                    Overlay.BindingContext = Overlay;
+
+                    scanPage = new ZXingScannerPage(opts, customOverlay: Overlay)
+                    {
+                        DefaultOverlayTopText = "Zeskanuj kod ",
+                        //DefaultOverlayBottomText = " Skanuj kod ";
+                        DefaultOverlayShowFlashButton = true
+
+                    };
+                    scanPage.OnScanResult += (result) =>
+                    {
+                        scanPage.IsScanning = false;
+                        scanPage.AutoFocus();
+                        Device.BeginInvokeOnMainThread(async () =>
                         {
-                            if (scanPage.IsScanning) scanPage.AutoFocus();
-                            return true;
+
+                            Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
+                            {
+                                if (scanPage.IsScanning) scanPage.AutoFocus();
+                                return true;
+                            });
+                            await Navigation.PopModalAsync();
+                            await pobierztwrkod(result.Text);
+
+
                         });
-                        await Navigation.PopModalAsync();
-                        await pobierztwrkod(result.Text);
-
-
-                    });
-                };
-                await Navigation.PushModalAsync(scanPage);
+                    };
+                    await Navigation.PushModalAsync(scanPage);
+                }
+                else
+                {
+                    await DisplayAlert("uwaga", "brak uprawnień do aparatu", "OK");
+                }
             }
-            else
+            catch (Exception s)
             {
-                await DisplayAlert("uwaga", "brak uprawnień do aparatu", "OK");
+
+                await DisplayAlert("błąd", s.Message, "OK");
             }
              
         }
@@ -368,11 +376,12 @@ namespace App2.View
 
                     PrintSerwis printSerwis = new PrintSerwis();
 
-                    if (await printSerwis.ConnToPrinter())
+                    if (await printSerwis.ConnToPrinter())//todo : zmień po teście
                     {
                         List<string> kolory = new List<string> {
-                    "biały", "pomarańczowy"
-                };
+                                "biały", 
+                                "pomarańczowy"
+                        };
 
                         kolor = await DisplayActionSheet("Wybierz kolor Etykiety..:", "Anuluj", null, kolory.ToArray());
                         if (kolor != "Anuluj")

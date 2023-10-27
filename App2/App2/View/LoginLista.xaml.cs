@@ -403,7 +403,7 @@ namespace App2.View
 
                 var properties = new Dictionary<string, string>
                 {
-                    { "user", _wybranyPracownik.OpeNazwa},
+                    { "user", $"{_wybranyPracownik.OpeKod}_{_wybranyPracownik.OpeNazwa}"},
                     { "gid", _wybranyPracownik.OpeGidnumer.ToString()},
                     { "haslo", entry_haslo.Text}
                 };

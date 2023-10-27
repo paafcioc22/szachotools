@@ -18,7 +18,7 @@ namespace App2.View
         public ObservableCollection<AkcjeNagElem> Items { get; set; }
         IList<Model.AkcjeNagElem> _listatwr;
        
-
+        //to jest lista ostatnia z towarami po kliku przechodzi do skanowania
         public List_AkcjeAfterFiltr(IList<AkcjeNagElem> nowa)
         {
           

@@ -38,6 +38,8 @@ namespace App2.Model
 
         public string Ake_FiltrSQL { get; set; }
         public bool IsSendData { get; set; }
+        [XmlIgnore]
+        public List<string> Ake_FiltrSQLList { get; set; } = new List<string>();
 
     }
 

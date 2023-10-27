@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AppCenter.Analytics;
+using System;
 using System.Collections.Generic;
 
 using System.Threading.Tasks;
@@ -49,10 +50,12 @@ namespace App2.View
             if (ListaMMek.ItemsSource == null || !ListaMMek.ItemsSource.GetEnumerator().MoveNext())
             {
                 EmptyListLabel.IsVisible = true;
+                ListaMMek.IsVisible = false;
             }
             else
             {
                 EmptyListLabel.IsVisible = false;
+                ListaMMek.IsVisible = true;
             }
 
 
@@ -115,6 +118,8 @@ namespace App2.View
 
         private async void Btn_Skanuj_Clicked(object sender, EventArgs e)
         {
+
+            Analytics.TrackEvent("wybranie skanowanie MM");
             opts = new ZXing.Mobile.MobileBarcodeScanningOptions()
             {
                 AutoRotate = false,

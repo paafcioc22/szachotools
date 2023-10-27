@@ -25,10 +25,7 @@ namespace App2.View
 
             PrzyjmijMMClass przyjmijMMClass = new PrzyjmijMMClass();
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
-            _gidnumer = gidnumer;
-            
-          
-           
+            _gidnumer = gidnumer; 
 
         }
 
@@ -110,8 +107,8 @@ namespace App2.View
 
                 var ile = await _connection.Table<Model.RaportListaMM>().Where(c => c.GIDdokumentuMM == _gidnumer).ToListAsync();
 
-                if (ile.Count == 0)
-                    await Navigation.PushModalAsync(new RaportLista_AddTwrKod(_gidnumer));
+                //if (ile.Count == 0)
+                  //  await Navigation.PushModalAsync(new RaportLista_AddTwrKod(_gidnumer));
             }
             catch (Exception ex)
             {

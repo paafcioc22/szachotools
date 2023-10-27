@@ -17,7 +17,7 @@ namespace App2.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_AkcjeElemView : ContentPage
     {
-        public ObservableCollection<NagElem> ListaZFiltrem  { get; set; }
+        public ObservableCollection<NagElem> ListaZFiltrem { get; set; }
         private static RestClient _client;
         public IList<NagElem> Items2 { get; set; }
         App app;
@@ -31,18 +31,18 @@ namespace App2.View
         }
 
         bool _istapped;
- 
+
         static string Sklep;
-        public List_AkcjeElemView( int gidtyp)
+        public List_AkcjeElemView(int gidtyp)
         {
             InitializeComponent();
             app = Application.Current as App;
             _client = new RestClient($"http://{app.Serwer}");
             ListaZFiltrem = new ObservableCollection<NagElem>();
             BindingContext = this;
-            GetAkcje( gidtyp);
+            GetAkcje(gidtyp);
 
-           
+
 
         }
 
@@ -59,75 +59,111 @@ namespace App2.View
 
             if (filtrLista.Count > 0)
             {
-                return filtrLista[0].FiltrSQL.Substring(0,filtrLista[0].FiltrSQL.Length-3);
+                return filtrLista[0].FiltrSQL.Substring(0, filtrLista[0].FiltrSQL.Length - 3);
             }
             return "";
 
         }
 
-        private async Task<bool> IsAnyItemFromLocal(string filtrSQL)
+        private async Task<bool> IsAnyItemFromLocal(List<string> ake_FiltrSQLList)
         {
-            var listFromFiltr= ExtractCode.ExtractCodes(filtrSQL);
-            
-            int ileKodow = 0;
-          
+            bool wasTrue = false;
 
-            if (await SettingsPage.SprConn())
+            foreach (var item in ake_FiltrSQLList)
             {
-                
-                try
+                var listFromFiltr = ExtractCode.ExtractCodes(item);
+
+                int ileKodow = 0;
+
+
+                if (await SettingsPage.SprConn())
                 {
-                    var karta = new TwrKodRequest()
-                    {
-                        Twrkody = new List<string>(listFromFiltr)
-                    };
 
-                    var request = new RestRequest("/api/gettowarycnt", Method.Post)
-                                        .AddJsonBody(karta);
-
-                    var response = await _client.ExecuteAsync(request);
-                    if (response.IsSuccessful)
+                    try
                     {
-                        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-                        ileKodow = jsonResponse.result;
-                        return true;
+                        var karta = new TwrKodRequest()
+                        {
+                            Twrkody = new List<string>(listFromFiltr)
+                        };
+
+                        var request = new RestRequest("/api/gettowarycnt", Method.Post)
+                                            .AddJsonBody(karta);
+
+                        var response = await _client.ExecuteAsync(request);
+                        if (response.IsSuccessful)
+                        {
+                            dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                            ileKodow = jsonResponse.result;
+                            wasTrue = true;
+                            break; // Jeśli chcesz przerwać pętlę od razu po znalezieniu pierwszego wystąpienia true
+
+                        }
+                        else
+                        {
+                            return wasTrue;
+                        }
 
                     }
-                    else
+                    catch (Exception exception)
                     {
-                        return false;
+                        await DisplayAlert("Uwaga", exception.Message, "OK");
                     }
 
                 }
-                catch (Exception exception)
+                else
                 {
-                    await DisplayAlert("Uwaga", exception.Message, "OK");
-                }
-                 
-            }
-            else
-            {
-                await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-            }
-            return false;
+                    await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
 
+                }
+
+            }
+            return wasTrue;
+
+        }
+
+        List<NagElem> PogrupujWListeFiltrSQL(ObservableCollection<NagElem> lista)
+        {
+
+            var pogrupowaneAkcje = lista
+                        .GroupBy(a => new
+                        {
+                            a.AkN_GidNumer,
+                            a.AkN_GidTyp,
+                            a.AkN_GidNazwa,
+                            a.AkN_NazwaAkcji,
+                            a.AkN_DataStart,
+                            a.AkN_DataKoniec,
+                            a.IsSendData
+                        })
+                        .Select(g => new NagElem
+                        {
+                            AkN_GidNumer = g.Key.AkN_GidNumer,
+                            AkN_GidTyp = g.Key.AkN_GidTyp,
+                            AkN_GidNazwa = g.Key.AkN_GidNazwa,
+                            AkN_NazwaAkcji = g.Key.AkN_NazwaAkcji,
+                            AkN_DataStart = g.Key.AkN_DataStart,
+                            AkN_DataKoniec = g.Key.AkN_DataKoniec,
+                            Ake_FiltrSQLList = g.Select(x => x.Ake_FiltrSQL).Distinct().ToList(),
+                            IsSendData = g.Key.IsSendData
+                        }).ToList();
+            return pogrupowaneAkcje;
         }
 
         private async void GetAkcje(int _gidtyp)
         {
             IsSearching = true;
-            IList<NagElem> tmp= new List<NagElem>(); 
+            IList<NagElem> tmp = new List<NagElem>();
 
-            List_AkcjeView akcjeView = new List_AkcjeView();
-            var magInfo = await akcjeView.GetMagnumer();
-            int magnr= magInfo.Id;
-            Sklep = magInfo.MagKod;
-
-            if (magnr != 0)
+            try
             {
-                 
-                try
+                List_AkcjeView akcjeView = new List_AkcjeView();
+                var magInfo = await akcjeView.GetMagnumer();
+                int magnr = magInfo.Id;
+                Sklep = magInfo.MagKod;
+
+                if (magnr != 0)
                 {
+
                     if (StartPage.CheckInternetConnection())
                     {
                         string user = LoginLista._user;
@@ -146,6 +182,7 @@ namespace App2.View
 
                         //var AkcjeElemLista = await App.TodoManager.GetGidAkcjeAsync<NagElem>(Webquery2);
                         var AkcjeElemLista = await App.TodoManager.PobierzDaneZWeb<NagElem>(Webquery2);
+
                         Items2 = AkcjeElemLista;
 
                         //Items2 = AkcjeElemLista.GroupBy(dd => dd.AkN_GidNumer).Select(a => a.FirstOrDefault()).ToList();
@@ -153,25 +190,37 @@ namespace App2.View
 
                         //ListaZFiltrem = AkcjeElemLista;
 
-                        foreach (var item in AkcjeElemLista)
+                        var akcjeFiltrLista = PogrupujWListeFiltrSQL(AkcjeElemLista);
+
+
+                        foreach (var item in akcjeFiltrLista)
                         {
                             if (item.AkN_GidNazwa != "Foto Relacja")
                             {
-                                var have = await IsAnyItemFromLocal(item.Ake_FiltrSQL);
+                                var have = await IsAnyItemFromLocal(item.Ake_FiltrSQLList);
                                 if (have)
                                 {
                                     tmp.Add(item);
                                 }
+
                             }
-                            else 
+                            else
                             {
                                 tmp.Add(item);
                             }
-                        }  
+                        }
 
-                        foreach (var i in tmp.GroupBy(dd => dd.AkN_GidNumer).Select(g => g.OrderBy(x => x.AkN_GidNumer).Where(s => s.AkN_GidNumer != 0).FirstOrDefault()))
+
+                        var tmpgrouoby = tmp.GroupBy(dd => dd.AkN_GidNumer)
+                            .Select(g => g.OrderBy(x => x.AkN_GidNumer)
+                            .Where(s => s.AkN_GidNumer != 0)
+                            .FirstOrDefault());
+
+                        foreach (var i in tmpgrouoby)
                         {
+
                             ListaZFiltrem.Add(i);
+
                         }
 
                         if (ListaZFiltrem.Count == 0)
@@ -183,47 +232,46 @@ namespace App2.View
                         //MyListView2.ItemsSource = tmp; 
                     }
                 }
-                catch (Exception x)
-                {
-                    await DisplayAlert(null, x.Message, "OK");
-                }
+            }
+            catch (Exception x)
+            {
+                await DisplayAlert(null, x.Message, "OK");
             }
 
             IsSearching = false;
         }
 
-        async void  Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
 
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (_istapped)
+                    return;
 
-            if (_istapped)
-                return;
-
-            _istapped = true;
+                _istapped = true;
 
                 // pozycja = e.Item as Model.AkcjeNagElem;
                 var pozycja = e.Item as Model.NagElem;
 
-                var nowa =Items2.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
+                var nowa = Items2.Where(x => x.AkN_GidNumer == pozycja.AkN_GidNumer).ToList();
 
-            if(pozycja.AkN_GidNazwa!="Foto Relacja")
-            {
-                await    Navigation.PushAsync(new List_AkcjeTwrList(nowa));
-            }
-            else
-            {
-                //await Navigation.PushAsync(new Foto.Foto2(nowa.FirstOrDefault(),Sklep, true));
-                await Navigation.PushAsync(new Foto.FotoTest(nowa.FirstOrDefault(),Sklep, true));
-            }
+                if (pozycja.AkN_GidNazwa != "Foto Relacja")
+                {
+                    await Navigation.PushAsync(new List_AkcjeTwrList(nowa));
+                }
+                else
+                {
+                    await Navigation.PushAsync(new Foto.FotoTest(nowa.FirstOrDefault(), Sklep, true));
+                }
 
-            _istapped = false;
+                _istapped = false; 
 
-            // await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
+                //Deselect Item
+                ((ListView)sender).SelectedItem = null;
+            });
         }
     }
 }

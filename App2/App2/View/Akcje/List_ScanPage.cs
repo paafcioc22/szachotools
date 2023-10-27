@@ -1557,48 +1557,54 @@ namespace App2.View
                 }
 
             };
-
-
-            if (await SettingsPage.SprConn())
+            try
             {
-                var magGidnumer = (Application.Current as App).MagGidNumer;
 
-                if (magGidnumer == 0)
+                if (await SettingsPage.SprConn())
                 {
-                    ServicePrzyjmijMM api = new ServicePrzyjmijMM();
-                    var magazyn = await api.GetSklepMagNumer();
-                    magGidnumer = (short)magazyn.Id;
+                    var magGidnumer = (Application.Current as App).MagGidNumer;
 
-                }
-
-                if (listaToSend[0].TwrSkan > 0)
-                {
-                    string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                    var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
-                    if (odp != "OK")
+                    if (magGidnumer == 0)
                     {
-                        await DisplayAlert(null, odp, "OK");
+                        ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                        var magazyn = await api.GetSklepMagNumer();
+                        magGidnumer = (short)magazyn.Id;
+
                     }
-                    else
+
+                    if (listaToSend[0].TwrSkan > 0)
                     {
-                        var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
-
-                        if (wynikList.Count > 0)
+                        string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+                        var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
+                        if (odp != "OK")
                         {
-
-                            var wpisKlasa = wynikList[0];
-                            wpisKlasa.IsUpdatedData = true;
-
-                            await _connection.UpdateAsync(wpisKlasa);
+                            await DisplayAlert(null, odp, "OK");
                         }
                         else
                         {
-                            _akcja.IsUpdatedData = true;
-                            await _connection.InsertAsync(_akcja);
-                        }
+                            var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
 
+                            if (wynikList.Count > 0)
+                            {
+
+                                var wpisKlasa = wynikList[0];
+                                wpisKlasa.IsUpdatedData = true;
+
+                                await _connection.UpdateAsync(wpisKlasa);
+                            }
+                            else
+                            {
+                                _akcja.IsUpdatedData = true;
+                                await _connection.InsertAsync(_akcja);
+                            }
+
+                        }
                     }
                 }
+            }
+            catch (Exception s)
+            {
+                await DisplayAlert("błąd", s.Message, "OK");
             }
         }
 
@@ -1641,7 +1647,11 @@ namespace App2.View
                     //  if (Object.ReferenceEquals(null,   SettingsPage._cpclPrinter))
                     if (View.SettingsPage.CzyDrukarkaOn)
                     {
-                        iResult = await SettingsPage._cpclPrinter.printerCheck();
+                        PrintSerwis printSerwis = new PrintSerwis();
+
+                        await printSerwis.ConnToPrinter();
+
+                            iResult = await SettingsPage._cpclPrinter.printerCheck();
 
                         if (iResult != cpclConst.LK_SUCCESS)
                         {
