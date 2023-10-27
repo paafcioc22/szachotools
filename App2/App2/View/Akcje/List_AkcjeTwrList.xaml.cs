@@ -97,11 +97,13 @@ namespace App2.View
                          }).ToList();
 
 
-                        var isSendData = TwrListWeb[0].IsSendData; //to oznacza ze akcja ma być synchronizowana
 
-                        if (isSendData && View.LoginLista._user != "ADM")
-                            //  if (StartPage.CheckInternetConnection())
-                            SendDataSkan(SumaList);///wysyłka z listy z grupowania 
+                        var isSendData = TwrListWeb[0].IsSendData;
+
+                        var sendOnlyToUpdate = SumaList.Where(c => c.SyncRequired == true && c.TwrSkan > 0).ToList();
+                        //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+                        if (isSendData && LoginLista._user != "ADM")
+                            await SendDataSkan(sendOnlyToUpdate);
 
                         var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
                         {
@@ -185,9 +187,9 @@ namespace App2.View
 
                         Debug.WriteLine("strzał do bazy");
                         Debug.WriteLine(_lista.Ake_FiltrSQL);
-                        
+
                         var twrList = await api.GetTowaryGrupyListAsync(_lista.Ake_FiltrSQL);
-                        
+
                         Debug.WriteLine($"lista ma :{twrList.Data.Count}");
                         if (twrList.IsSuccessful)
                         {
@@ -201,12 +203,12 @@ namespace App2.View
                                     TwrGrupa = twr.Twr_Grupa,
                                     TwrStan = twr.Stan_szt
                                 });
-                            } 
+                            }
                         }
                         else
                         {
                             await DisplayAlert("Uwaga", twrList.ErrorMessage, "OK");
-                        } 
+                        }
                     }
 
                 }
@@ -239,29 +241,66 @@ namespace App2.View
                 {
                     TwrListWeb = new ObservableCollection<Model.AkcjeNagElem>();
 
-                    string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
-                    set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
-                    where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
+                    //string Webquery3 = $@"cdn.PC_WykonajSelect N'declare @filtrSQL varchar(max), @query nvarchar(max)
+                    //       set @filtrSQL =(select (select   Ake_filtrsql+ '' or '' from cdn.pc_akcjeelem 
+                    //       where ake_aknnumer={_gidNumer}  For XML PATH ('''')) )
 
-                    set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,CDN.PC_GetTwrUrl(twr_kod)
-											  as TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
-                    when 2 then ''''Meski_''''  
-                    when 3 then ''''Dzieciak_''''
-                    when 4 then ''''Dzieciak_''''
-                    when 5 then ''''Akcesoria_'''' 
-                    when 6 then ''''Bielizna_''''
-                    when 7 then ''''Buty_''''
-                    end +Twg_kod as TwrDep, twg_kod TwrGrupa
-                    ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
-                    ,isnull(cdn.PC_GetCena30 (Twr_GIDNumer),0) AS TwrCena30
-                    ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
-                    ,(select top 1 [IsSendData]  from [CDN].[PC_AkcjeTyp] where GidTypAkcji={_nagElem[0].AkN_GidTyp} )IsSendData 
-                    from cdn.TwrKarty
-                    INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
-                    INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
-                    join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   {NrCennika} -- 2  
-                    left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
-                    where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
+                    //       set @query=''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,Twr_GidNumer TwrGidNumer,CDN.PC_GetTwrUrl(twr_kod)
+                    //as TwrUrl,  twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) when 1 then ''''Damski_'''' 
+                    //       when 2 then ''''Meski_''''  
+                    //       when 3 then ''''Dzieciak_''''
+                    //       when 4 then ''''Dzieciak_''''
+                    //       when 5 then ''''Akcesoria_'''' 
+                    //       when 6 then ''''Bielizna_''''
+                    //       when 7 then ''''Buty_''''
+                    //       end +Twg_kod as TwrDep, twg_kod TwrGrupa
+                    //       ,cast(cd.twc_wartosc as decimal(5,2))TwrCena
+                    //       ,isnull(cdn.PC_GetCena30 (Twr_GIDNumer),0) AS TwrCena30
+                    //       ,cast(c1.twc_wartosc as decimal(5,2))TwrCena1 
+                    //       ,(select top 1 ake_aknnumer from cdn.pc_akcjeelem where ake_aknnumer={_gidNumer} )AkN_GidNumer 
+                    //       ,(select top 1 [IsSendData]  from [CDN].[PC_AkcjeTyp] where GidTypAkcji={_nagElem[0].AkN_GidTyp} )IsSendData 
+                    //       from cdn.TwrKarty
+                    //       INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer 
+                    //       INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer
+                    //       join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   {NrCennika} -- 2  
+                    //       left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
+                    //       where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
+
+                    string Webquery3 = $@"
+                              cdn.PC_WykonajSelect N'
+                             DECLARE @DynamicFilter NVARCHAR(MAX), @DynamicSQL NVARCHAR(MAX) 
+                            -- Getting the filter
+                            SELECT @DynamicFilter = COALESCE(@DynamicFilter + '' OR '', '''') + Ake_filtrsql
+                            FROM cdn.pc_akcjeelem
+                            WHERE   ake_aknnumer={_gidNumer}
+
+                            -- Building the dynamic query
+                            SET @DynamicSQL  = ''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,TwrKarty.Twr_GidNumer As TwrGidNumer,CDN.PC_GetTwrUrl(twr_kod) as TwrUrl,  
+					                            twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) 
+					                            when 1 then ''''Damski_''''                     
+					                            when 2 then ''''Meski_''''                      
+					                            when 3 then ''''Dzieciak_''''                    
+					                            when 4 then ''''Dzieciak_''''                  
+					                            when 5 then ''''Akcesoria_''''                     
+					                            when 6 then ''''Bielizna_''''                    
+					                            when 7 then ''''Buty_''''                    
+					                            end +Twg_kod as TwrDep, twg_kod AS TwrGrupa                    
+					                            ,cast(cd.twc_wartosc as decimal(5,2)) as TwrCena                    
+					                            --,isnull(cdn.PC_GetCena30dec (Twr_GIDNumer),0) AS TwrCena30 
+					                            ,vw.cena as TwrCena30
+					                            ,cast(c1.twc_wartosc as decimal(5,2)) AS TwrCena1  
+					                             , {_gidNumer} as AkN_GidNumer                     
+					                             ,(select top 1 [IsSendData]  from [CDN].[PC_AkcjeTyp] where GidTypAkcji={_nagElem[0].AkN_GidTyp})IsSendData                     
+					                            from cdn.TwrKarty                    
+					                            INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer                     
+					                            INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer                    
+					                            join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   {NrCennika}
+					                            left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3 
+					                            left join cdn.pc_vw_cena30 vw on TwrKarty.Twr_GIDNumer = vw.Twr_GIDNumer 
+					                            where ('' + @DynamicFilter + '')''  
+                            -- Executing the dynamic query
+                            EXEC sp_executesql @DynamicSQL'
+";
 
                     _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
 
@@ -497,7 +536,7 @@ namespace App2.View
 
         }
 
-        private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
+        private async Task SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
 
             try
@@ -514,7 +553,7 @@ namespace App2.View
                     }
 
 
-                    string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+                    string ase_operator = $"{View.LoginLista._user} {View.LoginLista._nazwisko}";
                     var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
                     if (odp != "OK")
                         await DisplayAlert(null, odp, "OK");

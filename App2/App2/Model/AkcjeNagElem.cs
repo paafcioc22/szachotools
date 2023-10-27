@@ -41,7 +41,7 @@ namespace App2.Model
         public string TwrEan { get; set; }
         public string Operator { get; set; }
         public bool IsSendData { get; set; }
-        public bool IsUpdatedData{ get; set; }
+        public bool SyncRequired{ get; set; }
 
         public string AkN_ZakresDat
         {

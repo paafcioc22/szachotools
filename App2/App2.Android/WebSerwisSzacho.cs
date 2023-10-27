@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -216,39 +217,74 @@ namespace App2.Droid
             });
         }
 
+        //public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magnumer, string ase_operator)
+        //{
+
+        //    try
+        //    {
+        //        return await Task.Run(() =>
+        //            {
+        //                foreach (var lista in polecenie)
+        //                {
+        //                    var InsertString = $@"cdn.PC_InsertAkcjeSkan
+        //                        {lista.AkN_GidNumer},
+        //                        {magnumer},
+        //                        '{lista.TwrGrupa}',
+        //                        '{lista.TwrDep}',
+        //                        {lista.TwrGidNumer},
+        //                        {lista.TwrStan},
+        //                        {lista.TwrSkan},
+        //                        '{ase_operator}'";
+
+        //                    var respone = client.ExecuteSQLCommand(InsertString);
+
+        //                    odp = respone;
+        //                    odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
+        //                }
+        //                return odp;
+        //            });
+        //    }
+        //    catch (Exception s)
+        //    {
+
+        //        odp = s.Message;
+        //        return odp;
+        //    }
+        //}
         public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magnumer, string ase_operator)
         {
+            string odp = "";
 
             try
             {
-                return await Task.Run(() =>
+                await Task.Run(() =>
+                {
+                    foreach (var lista in polecenie)
                     {
-                        foreach (var lista in polecenie)
-                        {
-                            var InsertString = $@"cdn.PC_InsertAkcjeSkan
-                                {lista.AkN_GidNumer},
-                                {magnumer},
-                                '{lista.TwrGrupa}',
-                                '{lista.TwrDep}',
-                                {lista.TwrGidNumer},
-                                {lista.TwrStan},
-                                {lista.TwrSkan},
-                                '{ase_operator}'";
+                        StringBuilder commandText = new StringBuilder();
+                        commandText.AppendLine("cdn.PC_InsertAkcjeSkan2");
+                        commandText.AppendLine($"@ASN_AknNumer = {lista.AkN_GidNumer},");
+                        commandText.AppendLine($"@ASN_MagNumer = {magnumer},");
+                        commandText.AppendLine($"@ASE_Grupa = '{lista.TwrGrupa}',");
+                        commandText.AppendLine($"@ASE_TwrDep = '{lista.TwrDep}',");
+                        commandText.AppendLine($"@ASE_TwrNumer = {lista.TwrGidNumer},");
+                        commandText.AppendLine($"@ASE_TwrStan = {lista.TwrStan},");
+                        commandText.AppendLine($"@ASE_TwrSkan = {lista.TwrSkan},");
+                        commandText.AppendLine($"@operator = '{ase_operator}';");
 
-                            var respone = client.ExecuteSQLCommand(InsertString);
+                        var response = client.ExecuteSQLCommand(commandText.ToString());
 
-                            odp = respone;
-                            odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
-                        }
-                        return odp;
-                    });
+                        odp = response; // You might want to process the response further
+                        odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
+                    }
+                });
             }
             catch (Exception s)
             {
-
                 odp = s.Message;
-                return odp;
             }
+
+            return odp;
         }
 
         public async Task<ObservableCollection<T>> PobierzDaneZWeb<T>(string query)

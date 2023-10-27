@@ -16,13 +16,17 @@ namespace App2.View
     public partial class ListaSklepowPage : ContentPage
     {
         private string opcja;
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            // Upewnij się, że listaSklepows jest pusta przed ładowaniem danych
+            listaSklepows.Clear();
+            await Getsklepy();
             szukaj.Focus();
         }
 
-        
+
         public static ObservableCollection<Model.ListaSklepow> listaSklepows;
 
         public ListaSklepowPage(string param)
@@ -30,34 +34,26 @@ namespace App2.View
             InitializeComponent();
             listaSklepows = new ObservableCollection<Model.ListaSklepow>();
             opcja = param;
-            var app = Application.Current as App;
-
-            Getsklepy();
+       
             MyListView.ItemsSource = listaSklepows;
-            szukaj.Focus();
         }
 
-        async void Getsklepy()
+        private async Task Getsklepy()
         {
             try
             {
                 ServiceDokumentyApi api = new ServiceDokumentyApi();
-                var sklepy= await api.GetSklepyInfo();
-              
+                var sklepy = await api.GetSklepyInfo();
 
-                foreach(var item in sklepy) 
+                foreach (var item in sklepy)
                 {
-
                     listaSklepows.Add(new Model.ListaSklepow
                     {
                         mag_kod = item.MagKod,
                         mag_nazwa = item.Magazyn,
                         mag_gidnumer = item.Id.ToString()
-
                     });
-
                 }
-
             }
             catch (Exception ex)
             {

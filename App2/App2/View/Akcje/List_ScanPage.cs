@@ -1528,15 +1528,20 @@ namespace App2.View
         protected override bool OnBackButtonPressed()
         {
             // listaToSend.Clear();
-
-
             if (_akcja.IsSendData)
-                SendDataSkan();
+            {
+                // Wyświetl wskaźnik postępu 
 
+                // Rozpocznij operację SendDataSkan asynchronicznie
+                Task.Run(async () => await SendDataSkan());
+
+                // Pozwól użytkownikowi wrócić
+                return false;
+            }
             return base.OnBackButtonPressed();
         }
 
-        private async void SendDataSkan()
+        private async Task SendDataSkan()
         {
 
             listaToSend = new List<AkcjeNagElem>()
@@ -1557,9 +1562,28 @@ namespace App2.View
                 }
 
             };
+
+
             try
             {
+                var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
 
+                AkcjeNagElem wpisKlasa = null;
+
+                if (wynikList.Count > 0)
+                {
+                    wpisKlasa = wynikList[0];
+                    wpisKlasa.SyncRequired = true;
+                    await _connection.UpdateAsync(wpisKlasa);
+                }
+                else
+                {
+                    _akcja.SyncRequired = true;
+                    await _connection.InsertAsync(_akcja);
+                    wpisKlasa = _akcja;
+                }
+
+                // Jeśli jest połączenie, próbuj wysłać dane:
                 if (await SettingsPage.SprConn())
                 {
                     var magGidnumer = (Application.Current as App).MagGidNumer;
@@ -1569,42 +1593,29 @@ namespace App2.View
                         ServicePrzyjmijMM api = new ServicePrzyjmijMM();
                         var magazyn = await api.GetSklepMagNumer();
                         magGidnumer = (short)magazyn.Id;
-
                     }
 
                     if (listaToSend[0].TwrSkan > 0)
                     {
                         string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
                         var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
-                        if (odp != "OK")
+
+                        if (odp == "OK")
                         {
-                            await DisplayAlert(null, odp, "OK");
+                            // Jeśli dane zostały pomyślnie wysłane, oznacz je jako "wysłane" w SQLite.
+                            wpisKlasa.SyncRequired = false;
+                            await _connection.UpdateAsync(wpisKlasa);
                         }
                         else
                         {
-                            var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
-
-                            if (wynikList.Count > 0)
-                            {
-
-                                var wpisKlasa = wynikList[0];
-                                wpisKlasa.IsUpdatedData = true;
-
-                                await _connection.UpdateAsync(wpisKlasa);
-                            }
-                            else
-                            {
-                                _akcja.IsUpdatedData = true;
-                                await _connection.InsertAsync(_akcja);
-                            }
-
+                            await DisplayAlert(null, odp, "OK");
                         }
                     }
                 }
             }
-            catch (Exception s)
+            catch (Exception ex)
             {
-                await DisplayAlert("błąd", s.Message, "OK");
+                await DisplayAlert("Błąd", ex.Message, "OK");
             }
         }
 
