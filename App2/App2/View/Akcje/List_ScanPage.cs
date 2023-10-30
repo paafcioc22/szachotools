@@ -1573,8 +1573,11 @@ namespace App2.View
                 if (wynikList.Count > 0)
                 {
                     wpisKlasa = wynikList[0];
-                    wpisKlasa.SyncRequired = true;
-                    await _connection.UpdateAsync(wpisKlasa);
+                    if (_akcja.TwrSkan != wpisKlasa.TwrSkan)
+                    {
+                        wpisKlasa.SyncRequired = true;
+                        await _connection.UpdateAsync(wpisKlasa);
+                    }
                 }
                 else
                 {
@@ -1600,7 +1603,7 @@ namespace App2.View
                         string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
                         var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
 
-                        if (odp == "OK")
+                        if (odp.Any())
                         {
                             // Jeśli dane zostały pomyślnie wysłane, oznacz je jako "wysłane" w SQLite.
                             wpisKlasa.SyncRequired = false;
@@ -1608,7 +1611,7 @@ namespace App2.View
                         }
                         else
                         {
-                            await DisplayAlert(null, odp, "OK");
+                            await DisplayAlert(null, "Błąd synchronizacji z centrala", "OK");
                         }
                     }
                 }

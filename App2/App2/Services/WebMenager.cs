@@ -28,7 +28,7 @@ namespace App2.Services
             return soapService.InsertDataNiezgodnosci(insert);
         }
 
-        public Task<string> InsertDataSkan(IList<AkcjeNagElem> insert, short magnumer, string ase_operator)
+        public Task<List<StatusTable>> InsertDataSkan(IList<AkcjeNagElem> insert, short magnumer, string ase_operator)
         {
             return soapService.InsertDataSkan(insert, magnumer, ase_operator);
         }
@@ -43,9 +43,9 @@ namespace App2.Services
             return soapService.GetGidAkcje(query);
         }
 
-        public Task<string> GetBuildVer()
+        public Task<SzachoSettings> GetSzachoSettings()
         {
-            return soapService.PobierzWersjeApki();
+            return soapService.GetSzachoSettings();
         }
 
 

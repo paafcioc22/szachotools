@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SelectedDevice>Xiaomi Redmi 7A</SelectedDevice>
-    <DefaultDevice>pixel_2_pie_9_0_-_api_28</DefaultDevice>
+    <SelectedDevice>Samsung SM-A528B</SelectedDevice>
+    <DefaultDevice>pixel_5_-_api_33</DefaultDevice>
     <AndroidDesignerPreferredTheme>Theme.AppCompat.Light.NoActionBar</AndroidDesignerPreferredTheme>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <ActiveDebugProfile>Xiaomi Redmi 7A %28Android 9.0 — API 28%29</ActiveDebugProfile>
+    <ActiveDebugProfile>Samsung SM-A528B %28Android 13.0 — API 33%29</ActiveDebugProfile>
     <SelectedPlatformGroup>PhysicalDevice</SelectedPlatformGroup>
   </PropertyGroup>
 </Project>

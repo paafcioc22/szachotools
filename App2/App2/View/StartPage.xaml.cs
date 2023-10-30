@@ -1,8 +1,12 @@
-﻿using App2.Services;
+﻿using App2.Model;
+using App2.Services;
 using App2.View.Foto;
 using App2.ViewModel;
+using Microsoft.AppCenter.Crashes;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -44,17 +48,18 @@ namespace App2.View
 
         private async Task CheckMinVersionSzachotools()
         {
+            long bulidVer=0;
             var version = DependencyService.Get<IAppVersionProvider>();
-
+            SzachoSettings settings = new SzachoSettings();
             try
             {
                 var versionString = version.AppVersion;
-                var bulidVer = version.BuildVersion;
-              
+                bulidVer = version.BuildVersion;
 
-                var AktualnaWersja = await App.TodoManager.GetBuildVer();
 
-                if (bulidVer < Convert.ToInt16(AktualnaWersja))
+                settings = await App.TodoManager.GetSzachoSettings();
+
+                if (bulidVer < Convert.ToInt16(settings.VersionApp))
                 {
                     var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
 
@@ -71,9 +76,15 @@ namespace App2.View
                 }
 
             }
-            catch (Exception)
+            catch (Exception s)
             {
                 version.ShowShort("Błąd pobierania wersji aplikacji");
+                var properties = new Dictionary<string, string>
+                {
+                    { "wersjabaza", $"{settings.VersionApp}"},
+                    { "wersjaApp", $"{bulidVer}"} 
+                };
+                Crashes.TrackError(s, properties);
                 //await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
             }
         }

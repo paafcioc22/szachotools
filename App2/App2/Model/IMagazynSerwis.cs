@@ -11,10 +11,10 @@ namespace App2.Model
     {
         Task<ObservableCollection<Magazynn>> GetAllCustomers(string criteria = null);
         Task <string>InsertDataNiezgodnosci (ObservableCollection<Model.ListDiffrence> polecenie);
-        Task <string>InsertDataSkan (IList<Model.AkcjeNagElem> polecenie, Int16 magNumer,string ase_operaotr);
+        Task<List<StatusTable>> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magNumer, string ase_operaotr);
         Task<TwrInfo> PobierzTwr (string ean);
         Task<ObservableCollection<AkcjeNagElem>> GetGidAkcje (string query);
-        Task <string>PobierzWersjeApki();
+        Task <SzachoSettings> GetSzachoSettings();
         Task<ObservableCollection<T>> PobierzDaneZWeb<T> (string query);
 
     }

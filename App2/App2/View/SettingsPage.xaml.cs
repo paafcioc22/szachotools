@@ -178,8 +178,22 @@ namespace App2.View
                 lbl_appVersion.Text = "Wersja " + versionString;
                 //_version = bulidVer;
 
-                var AktualnaWersja = await App.TodoManager.GetBuildVer();
-                if (bulidVer < Convert.ToInt16(AktualnaWersja))
+                var settings = await App.TodoManager.GetSzachoSettings();
+
+                if (settings.IsCena1Enabled)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        viewModel.IsEnabled = true;
+                    });
+                }
+                else
+                {
+                    viewModel.IsEnabled = false;
+                    viewModel.CzyCena1 = false;
+                }
+
+                if (bulidVer < Convert.ToInt16(settings.VersionApp))
                     //await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
                     version.ShowShort("Używana wersja nie jest aktualna");
             }
@@ -952,6 +966,16 @@ namespace App2.View
         private void SwitchKlawiatura_Toggled(object sender, ToggledEventArgs e)
         {
             OnAlfaNumeric = SwitchKlawiatura.IsToggled;
+        }
+
+       
+
+        private void OnContainerTapped(object sender, EventArgs e)
+        {
+            if (!viewModel.IsEnabled)
+            { 
+                DisplayAlert(null, "Akcja zablokowana warunkowo przez IT", "OK");            
+            }
         }
     }
 

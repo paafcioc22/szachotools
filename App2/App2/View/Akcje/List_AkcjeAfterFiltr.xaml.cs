@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -72,7 +73,7 @@ namespace App2.View
 
 
          
-        private async void SendDataSkan(IList<AkcjeNagElem> sumaList)
+        private async Task SendDataSkan(IList<AkcjeNagElem> sumaList)
         {
             if (await SettingsPage.SprConn())
             {
@@ -81,9 +82,9 @@ namespace App2.View
                 var magGidnumer = (short)magazyn.Id;
 
                 string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
-                if (odp != "OK")
-                    await DisplayAlert(null, odp, "OK"); 
+                var responsStatus = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
+                if (!responsStatus.Any())
+                    await DisplayAlert(null, "Błąd synchronizacji danych z cetralą", "OK"); 
             }
         }
 

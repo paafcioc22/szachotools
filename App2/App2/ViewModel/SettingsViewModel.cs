@@ -70,7 +70,22 @@ namespace App2.ViewModel
         public bool CzyCena1
         {
             get => _app.CzyCena1;
-            set => _app.CzyCena1 = value;
+            set
+            {
+                _app.CzyCena1 = value;
+                OnPropertyChanged(); // Jeśli korzystasz z INotifyPropertyChanged
+            }
+        }
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged(); // Jeśli korzystasz z INotifyPropertyChanged
+            }
         }
 
 

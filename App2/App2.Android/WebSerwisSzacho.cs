@@ -1,5 +1,6 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
+using Azure;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 //[assembly: Dependency(typeof(App1.Droid.WebSerwisSzacho))]
@@ -128,39 +130,28 @@ namespace App2.Droid
 
         }
 
-
-        Wersja wersja;
-
-
-
-
-        public string _wersja;
-        public async Task<string> PobierzWersjeApki()
+         
+        
+        public async Task<SzachoSettings> GetSzachoSettings()
         {
 
             return await Task.Run(() =>
             {
-                wersja = new Wersja();
-                var respone = client.ExecuteSQLCommand("cdn.PC_SprawdzWersje");
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(respone);
+              
+                var response = client.ExecuteSQLCommand("cdn.PC_SprawdzWersje");
 
-                TextReader reader = new StringReader(respone);
+                var sttings = DeserializeFromXml<SzachoSettings>(response);
 
-                XmlSerializer serializer = new XmlSerializer(typeof(AppVersionList));
+                // Zakładając, że chcesz zwrócić pierwszy element z listy
+                if (sttings.Any())
+                {
+                    return sttings[0];
+                }
+                else
+                {
+                    throw new Exception("Lista produktów jest pusta.");
+                } 
 
-                AppVersionList odczytaj = (AppVersionList)serializer.Deserialize(reader);
-
-
-                //XmlSerializer serializer = new XmlSerializer(typeof(List<Magazyn>), new XmlRootAttribute("ROOT"));
-                //StringReader reader = new StringReader(result);
-                //List<Magazyn> magazyny = (List<Magazyn>)serializer.Deserialize(reader); 
-
-
-                _wersja = odczytaj.wersja[0].VersionApp;
-
-                return _wersja;
-                //return ver;
             });
         }
 
@@ -209,7 +200,7 @@ namespace App2.Droid
                         TwrSkan = 0,
                         TwrEan = akcje.TwrEan,
                         IsSendData = akcje.IsSendData,
-                        TwrCena30= akcje.TwrCena30
+                        TwrCena30 = akcje.TwrCena30
                     });
                 }
 
@@ -251,18 +242,19 @@ namespace App2.Droid
         //        return odp;
         //    }
         //}
-        public async Task<string> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magnumer, string ase_operator)
+        public async Task<List<StatusTable>> InsertDataSkan(IList<AkcjeNagElem> polecenie, Int16 magnumer, string ase_operator)
         {
-            string odp = "";
+           List<StatusTable> list = new List<StatusTable>();
 
-            try
-            {
-                await Task.Run(() =>
+           return await Task.Run(() =>
+           {
+                try
                 {
+                    StringBuilder commandText = new StringBuilder();
+
                     foreach (var lista in polecenie)
                     {
-                        StringBuilder commandText = new StringBuilder();
-                        commandText.AppendLine("cdn.PC_InsertAkcjeSkan2");
+                        commandText.AppendLine(" cdn.PC_InsertAkcjeSkan2");
                         commandText.AppendLine($"@ASN_AknNumer = {lista.AkN_GidNumer},");
                         commandText.AppendLine($"@ASN_MagNumer = {magnumer},");
                         commandText.AppendLine($"@ASE_Grupa = '{lista.TwrGrupa}',");
@@ -272,19 +264,25 @@ namespace App2.Droid
                         commandText.AppendLine($"@ASE_TwrSkan = {lista.TwrSkan},");
                         commandText.AppendLine($"@operator = '{ase_operator}';");
 
-                        var response = client.ExecuteSQLCommand(commandText.ToString());
+                        if (lista != polecenie.Last())
+                        {
+                            commandText.AppendLine("EXEC");
+                        }
 
-                        odp = response; // You might want to process the response further
-                        odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
                     }
-                });
-            }
-            catch (Exception s)
-            {
-                odp = s.Message;
-            }
+                    var response = client.ExecuteSQLCommand(commandText.ToString());
 
-            return odp;
+                    List<StatusTable> odp  = DeserializeFromXmlStatus(response);
+                    //List<StatusTable> result = odp.Cast<StatusTable>().ToList();
+                    return odp;
+                }
+                catch (Exception s)
+                {
+                    odp = s.Message;
+                    return null;
+                }
+            });
+
         }
 
         public async Task<ObservableCollection<T>> PobierzDaneZWeb<T>(string query)
@@ -298,6 +296,28 @@ namespace App2.Droid
 
             });
         }
+
+        public static List<StatusTable> DeserializeFromXmlStatus(string xmlContent)
+        {
+            XDocument xdoc = XDocument.Parse(xmlContent);
+            var tableItems = new List<StatusTable>();
+
+            foreach (var element in xdoc.Root.Elements())
+            {
+                var tableItem = new StatusTable
+                {
+                    AknNumer = (int)element.Element("AknNumer"),
+                    MagNumer = (int)element.Element("MagNumer"),
+                    TwrNumer = (int)element.Element("TwrNumer"),
+                    Statuss = (string)element.Element("Statuss")
+                };
+
+                tableItems.Add(tableItem);
+            }
+
+            return tableItems;
+        }
+
         public static T DeserializeXml<T>(string xmlString)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T), new XmlRootAttribute("ROOT"));
@@ -319,6 +339,7 @@ namespace App2.Droid
             }
             return result;
         }
+
 
         public class Wersja
         {
@@ -354,5 +375,6 @@ namespace App2.Droid
             [XmlElement("Table", typeof(RaportListaMM))]
             public List<RaportListaMM> TwrList { get; set; }
         }
+         
     }
 }

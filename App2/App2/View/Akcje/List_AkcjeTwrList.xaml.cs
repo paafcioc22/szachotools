@@ -60,7 +60,8 @@ namespace App2.View
 
             await _connection.CreateTableAsync<AkcjeNagElem>();
 
-            var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
+            //var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
+            var SavedList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
             try
             {
                 if (StartPage.CheckInternetConnection())
@@ -94,16 +95,26 @@ namespace App2.View
                              TwrUrl = lWeb.TwrUrl,
                              IsSendData = lWeb.IsSendData,
                              TwrCena30 = lWeb.TwrCena30,
+                             SyncRequired= alles.SyncRequired
                          }).ToList();
 
 
+                        var toSendData = TwrListWeb[0].IsSendData;
 
-                        var isSendData = TwrListWeb[0].IsSendData;
 
-                        var sendOnlyToUpdate = SumaList.Where(c => c.SyncRequired == true && c.TwrSkan > 0).ToList();
-                        //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-                        if (isSendData && LoginLista._user != "ADM")
-                            await SendDataSkan(sendOnlyToUpdate);
+                        if (!SavedList.Any(s=>s.AkN_GidNumer== _nagElem[0].AkN_GidNumer))
+                        {
+                            // Kod do wykonania, gdy SavedList jest pusta
+                            if (toSendData && LoginLista._user != "ADM")
+                                await SendDataSkan(SumaList);
+                        }
+                        else
+                        {
+                            var sendOnlyToUpdate = SumaList.Where(c => c.SyncRequired == true && c.TwrSkan > 0).ToList();
+                            if (toSendData && LoginLista._user != "ADM" && sendOnlyToUpdate.Count>0)
+                                await SendDataSkan(sendOnlyToUpdate);
+
+                        }
 
                         var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
                         {
@@ -266,15 +277,12 @@ namespace App2.View
                     //       left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3  
                     //       where ''+  left(replace(@filtrSQL,''&#x0D;'',''''),len(replace(@filtrSQL,''&#x0D;'',''''))-3) exec sp_executesql @query'";
 
-                    string Webquery3 = $@"
-                              cdn.PC_WykonajSelect N'
-                             DECLARE @DynamicFilter NVARCHAR(MAX), @DynamicSQL NVARCHAR(MAX) 
-                            -- Getting the filter
-                            SELECT @DynamicFilter = COALESCE(@DynamicFilter + '' OR '', '''') + Ake_filtrsql
+                    string Webquery3 = $@" 
+                            cdn.PC_WykonajSelect N'
+                            DECLARE @DynamicFilter NVARCHAR(MAX), @DynamicSQL NVARCHAR(MAX)                         
+                            select @DynamicFilter =COALESCE(@DynamicFilter + '' OR '', '''') + Ake_filtrsql
                             FROM cdn.pc_akcjeelem
                             WHERE   ake_aknnumer={_gidNumer}
-
-                            -- Building the dynamic query
                             SET @DynamicSQL  = ''select twr_kod TwrKod, twr_ean TwrEan ,twr_katalog TwrSymbol,TwrKarty.Twr_GidNumer As TwrGidNumer,CDN.PC_GetTwrUrl(twr_kod) as TwrUrl,  
 					                            twr_nazwa TwrNazwa ,case left(twr_wartosc2,1) 
 					                            when 1 then ''''Damski_''''                     
@@ -286,7 +294,7 @@ namespace App2.View
 					                            when 7 then ''''Buty_''''                    
 					                            end +Twg_kod as TwrDep, twg_kod AS TwrGrupa                    
 					                            ,cast(cd.twc_wartosc as decimal(5,2)) as TwrCena                    
-					                            --,isnull(cdn.PC_GetCena30dec (Twr_GIDNumer),0) AS TwrCena30 
+					                            
 					                            ,vw.cena as TwrCena30
 					                            ,cast(c1.twc_wartosc as decimal(5,2)) AS TwrCena1  
 					                             , {_gidNumer} as AkN_GidNumer                     
@@ -294,12 +302,13 @@ namespace App2.View
 					                            from cdn.TwrKarty                    
 					                            INNER JOIN  CDN.TwrGrupyDom ON Twr_GIDTyp = TGD_GIDTyp AND Twr_GIDNumer = TGD_GIDNumer                     
 					                            INNER JOIN  CDN.TwrGrupy ON TGD_GrOTyp = TwG_GIDTyp AND TGD_GrONumer = TwG_GIDNumer                    
-					                            join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   {NrCennika}
+					                            join cdn.TwrCeny cd on Twr_gidnumer = cd.TwC_Twrnumer and cd.TwC_TwrLp =   2
 					                            left join cdn.TwrCeny c1 on Twr_gidnumer = c1.TwC_Twrnumer and c1.TwC_TwrLp = 3 
 					                            left join cdn.pc_vw_cena30 vw on TwrKarty.Twr_GIDNumer = vw.Twr_GIDNumer 
 					                            where ('' + @DynamicFilter + '')''  
-                            -- Executing the dynamic query
                             EXEC sp_executesql @DynamicSQL'
+
+
 ";
 
                     _fromWeb = await App.TodoManager.GetGidAkcjeAsync(Webquery3);
@@ -554,9 +563,20 @@ namespace App2.View
 
 
                     string ase_operator = $"{View.LoginLista._user} {View.LoginLista._nazwisko}";
-                    var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
-                    if (odp != "OK")
-                        await DisplayAlert(null, odp, "OK");
+                    if(sumaList.Count > 0) 
+                    { 
+                    
+                        var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
+                        if (!odp.Any())
+                        {
+                            await DisplayAlert(null, "bład synchro z centrala", "OK");//todo : poporaw komuikat
+                        }
+                        else
+                        {
+                            
+                            var test = await _connection.InsertAllAsync(sumaList, true);
+                        }
+                    }
                 }
             }
             catch (Exception x)
