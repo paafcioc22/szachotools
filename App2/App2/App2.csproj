@@ -39,7 +39,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PhotoBrowser.Forms" Version="0.1.4" />
-    <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.1" />
+    <PackageReference Include="Plugin.SewooXamarin.SDK" Version="1.0.5" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />

@@ -39,7 +39,7 @@ namespace App2.Droid
             CachedImageRenderer.Init(true);
             CachedImageRenderer.InitImageViewHandler();
 
-          
+
 
             //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S) // Android 12 
             //{
@@ -50,6 +50,7 @@ namespace App2.Droid
             //        ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.BluetoothConnect, Manifest.Permission.BluetoothScan }, yourRequestCode);
             //    }
             //}
+         
 
             LoadApplication(new App());
            // Window.SetStatusBarColor(Android.Graphics.Color.Argb(255, 0, 0, 0));

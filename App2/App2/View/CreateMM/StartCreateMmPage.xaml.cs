@@ -56,15 +56,23 @@ namespace App2.View
 
         private async void ListaMMek_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (await SettingsPage.SprConn())
+            try
             {
-                var mmka = e.Item as DokNaglowekDto;
-            
-                ((ListView)sender).SelectedItem = null;
+                if (await SettingsPage.SprConn())
+                {
+                    var mmka = e.Item as DokNaglowekDto;
 
-                //await dokumentyApi.GetDokWithElementsById(mmka.Id);
-                await Navigation.PushModalAsync(new View.AddElementMMList(mmka));
-    
+                    ((ListView)sender).SelectedItem = null;
+
+                    //await dokumentyApi.GetDokWithElementsById(mmka.Id);
+                    await Navigation.PushModalAsync(new View.AddElementMMList(mmka));
+
+                }
+            }
+            catch (Exception s)
+            {
+
+                await DisplayAlert("Błąd",s.Message,"OK");
             }
         }
 

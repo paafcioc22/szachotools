@@ -5,6 +5,7 @@ using App2.OptimaAPI;
 using App2.Services;
 using Azure;
 using FFImageLoading.Forms;
+using Microsoft.AppCenter.Analytics;
 using Plugin.SewooXamarinSDK;
 using Plugin.SewooXamarinSDK.Abstractions;
 using SQLite;
@@ -41,6 +42,7 @@ namespace App2.View
         int ile_zeskanowancyh = 0;
 
         CPCLConst cpclConst;
+         
         int IResult;
         bool CanPrint;
 
@@ -64,24 +66,23 @@ namespace App2.View
             Controls = new[] { "Dodaj mm", "Przegladaj", "Tworz" };
             serwisAPi = new ServiceDokumentyApi();
 
-            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
-            {
-                cpclConst = SettingsPage.cpclConst;
-                deviceListe();
-                CanPrint = SettingsPage.CzyDrukarkaOn;
-            }
-
-            var app = Application.Current as App;
-
-
-
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
 
+
+
+        }
+
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing(); 
+           
+
             if (SettingsPage.SelectedDeviceType == 1)
             {
                 WidokAparat();
+                Analytics.TrackEvent("przecena tryb aparat");
             }
             else
             {
@@ -90,8 +91,16 @@ namespace App2.View
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 DependencyService.Get<IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
 
-            if (akcje.TwrCena == 0)
-                DisplayAlert("Uwaga", "sprawdź konfigurację ceny w ustawieniach", "OK");
+            if (_akcja.TwrCena == 0)
+                await DisplayAlert("Uwaga", "sprawdź konfigurację ceny w ustawieniach", "OK");
+
+            if (List_AkcjeView.TypAkcji.Contains("Przecena"))
+            {
+                //cpclConst = SettingsPage.cpclConst;
+                cpclConst = new CPCLConst();
+                await ConnectPrinter();
+                CanPrint = SettingsPage.CzyDrukarkaOn;
+            }
 
         }
 
@@ -101,7 +110,7 @@ namespace App2.View
             //if (List_AkcjeView.TypAkcji.Contains("Przecena"))
             //deviceListe();
 
-            cpclConst = new CPCLConst();
+            //cpclConst = new CPCLConst();
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -373,29 +382,7 @@ namespace App2.View
             AbsoluteLayout.SetLayoutBounds(enterEanButton, new Rectangle(1, .82, .25, 50));
             AbsoluteLayout.SetLayoutFlags(enterEanButton, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
-
-            //entry_EanSkaner = new Entry()
-            //{
-            //    HorizontalOptions = LayoutOptions.Center,
-            //    Keyboard = Keyboard.Numeric,
-            //    WidthRequest = 180,
-            //    //Placeholder = View.SettingsPage.CzyDrukarkaOn ? "Wpisz/zeskanuj Ean" : "Drukarka nie połączona",
-            //    Placeholder = "Wpisz/zeskanuj Ean",
-            //    TextColor = Color.Black,
-
-            //};
-
-            //if (List_AkcjeView.TypAkcji.Contains("Przerzuty") || List_AkcjeView.TypAkcji.Contains("Zwrot"))
-            //{
-            //    entry_EanSkaner.ReturnCommand = new Command(() => setFocusEntryIlosc(entry_EanSkaner.Text));
-            //}
-            //else
-            //{
-            //    entry_EanSkaner.IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true;
-            //    entry_EanSkaner.ReturnCommand = new Command(() => zapiszdrukuj());
-
-            //}
-
+ 
             Button addToMM = new Button()
             {
                 Text = "Dodaj do MMki",
@@ -438,12 +425,7 @@ namespace App2.View
                 absoluteLayout.Children.Add(grid);
             }
 
-
-
-
-
-
-            //scrollView.Content = stackLayout_gl;
+             
 
             Content = absoluteLayout;
 
@@ -454,7 +436,7 @@ namespace App2.View
 
             //var scrollView = new ScrollView();
 
-            cpclConst = new CPCLConst();
+            //cpclConst = new CPCLConst();
             ile_zeskanowancyh = _akcja.TwrSkan > 0 ? _akcja.TwrSkan : ile_zeskanowancyh;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -741,8 +723,8 @@ namespace App2.View
             }
             else
             {
-                entry_EanSkaner.IsReadOnly = View.SettingsPage.CzyDrukarkaOn ? false : true;
-                entry_EanSkaner.ReturnCommand = new Command(() => zapiszdrukuj());
+                entry_EanSkaner.IsReadOnly = !View.SettingsPage.CzyDrukarkaOn;
+                entry_EanSkaner.ReturnCommand = new Command(async () => await zapiszdrukuj());
 
             }
 
@@ -999,7 +981,7 @@ namespace App2.View
 
         }
 
-        async void zapiszdrukuj()
+        async Task zapiszdrukuj()
         {
             if (_akcja.TwrEan == entry_EanSkaner.Text)
             {
@@ -1012,7 +994,7 @@ namespace App2.View
                         if (await PrintCommand())
                         {
                             //ile_zeskanowancyh += 1;
-                            Zapisz();
+                            await ZapiszDoSQLite();
                             entry_skanowanaIlosc.Text = ile_zeskanowancyh.ToString();
                             entry_EanSkaner.Text = "";
                             if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh + 1))
@@ -1191,7 +1173,7 @@ namespace App2.View
                                         if (await PrintCommand())
                                         {
                                             //ile_zeskanowancyh += 1;
-                                            Zapisz();
+                                            await ZapiszDoSQLite();
                                             entry_skanowanaIlosc.Text = ile_zeskanowancyh.ToString();
 
 
@@ -1225,24 +1207,27 @@ namespace App2.View
             }
         }
 
-        private async void deviceListe()
+        private async Task ConnectPrinter()
         {
             //try
             //{
-            //var app = Application.Current as App;
+            var app = Application.Current as App;
             SettingsPage._cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
 
             try
             {
                 if (!SettingsPage.CzyDrukarkaOn)
                 {
-                    string adresDrukarki = string.IsNullOrEmpty(SettingsPage.editAddress.Text) ? "00:00:00:00" : SettingsPage.editAddress.Text;
+                    //string adresDrukarki = string.IsNullOrEmpty(SettingsPage.editAddress.Text) ? "00:00:00:00" : SettingsPage.editAddress.Text;
+                    string adresDrukarki = string.IsNullOrEmpty(app.Drukarka) ? "00:00:00:00" : app.Drukarka;
                     IResult = await SettingsPage._cpclPrinter.connect(adresDrukarki);
                     if (IResult == cpclConst.LK_SUCCESS)
                     {
                         SettingsPage.CzyDrukarkaOn = true;
                         CanPrint = true;
                         await DisplayAlert(null, "Połączono z drukarką", "OK");
+                        entry_EanSkaner.IsReadOnly = false;
+
                     }
                     else
                     {
@@ -1259,8 +1244,9 @@ namespace App2.View
 
                 }
             }
-            catch (Exception)
+            catch (Exception s)
             {
+                var tst = s.Message;
                 await DisplayAlert(null, "Błąd połączenia z drukarką", "OK");
             }
 
@@ -1341,7 +1327,7 @@ namespace App2.View
                 }
                 //= (_akcja.TwrCena1.Length <= 5) ? 155 : 165;
 
-                int polozeniePLN = polozenie +1 + 52 * cenaZl.ToString().Length;
+                int polozeniePLN = polozenie + 1 + 52 * cenaZl.ToString().Length;
 
                 string twr_nazwa = (_akcja.TwrNazwa.Length > 20 ? _akcja.TwrNazwa.Substring(0, 20) : _akcja.TwrNazwa);
 
@@ -1407,12 +1393,12 @@ namespace App2.View
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 3, 0, cenaZl.ToString());
                 await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 0, cenaGr.ToString());//góra grosze
                 await SettingsPage._cpclPrinter.resetConcat();
-                                                                                                   //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
+                //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, YpolozeniePLN, "PLN", 0);
 
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
-                if (_akcja.TwrCena30 > 0 && _akcja.TwrCena30 < _akcja.TwrCena1 )
+                if (_akcja.TwrCena30 > 0 && _akcja.TwrCena30 < _akcja.TwrCena1)
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 200, 150, $"{_akcja.TwrCena30}pln", 0);
 
                 await SettingsPage._cpclPrinter.printForm();
@@ -1492,7 +1478,7 @@ namespace App2.View
             else return false;
         }
 
-        public async void Zapisz()
+        public async Task ZapiszDoSQLite()
         {
             AkcjeNagElem akcjeNagElem = new AkcjeNagElem();
             akcjeNagElem.AkN_GidNumer = _akcja.AkN_GidNumer;
@@ -1511,14 +1497,14 @@ namespace App2.View
                 var wpis = wynik[0];
                 wpis.TwrSkan = ile_zeskanowancyh;
                 _akcja.TwrSkan = ile_zeskanowancyh;
-
+                wpis.SyncRequired = true;
                 await _connection.UpdateAsync(wpis);
 
             }
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
-
+                akcjeNagElem.SyncRequired=true;
                 _akcja.TwrSkan = ile_zeskanowancyh;
                 await _connection.InsertAsync(akcjeNagElem);
 
@@ -1532,8 +1518,20 @@ namespace App2.View
             {
                 // Wyświetl wskaźnik postępu 
 
-                // Rozpocznij operację SendDataSkan asynchronicznie
-                Task.Run(async () => await SendDataSkan());
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await SendDataSkan();
+                    }
+                    catch (Exception ex)
+                    {
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            await DisplayAlert("Błąd", $"Błąd połączenia - nie wysłano danych do centrali\nZrób to na oknie z podsumowaniem", "OK");
+                        });
+                    }
+                });
 
                 // Pozwól użytkownikowi wrócić
                 return false;
@@ -1564,62 +1562,56 @@ namespace App2.View
             };
 
 
-            try
+
+            var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
+
+            AkcjeNagElem wpisKlasa = null;
+
+            if (wynikList.Count > 0)
             {
-                var wynikList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? and TwrKod=?", _akcja.AkN_GidNumer, _akcja.TwrKod);
+                wpisKlasa = wynikList[0];
 
-                AkcjeNagElem wpisKlasa = null;
+                wpisKlasa.SyncRequired = true;
+                await _connection.UpdateAsync(wpisKlasa);
 
-                if (wynikList.Count > 0)
+            }
+            else
+            {
+                _akcja.SyncRequired = true;
+                await _connection.InsertAsync(_akcja);
+                wpisKlasa = _akcja;
+            }
+
+            // Jeśli jest połączenie, próbuj wysłać dane:
+            if (await SettingsPage.SprConn())
+            {
+                var magGidnumer = (Application.Current as App).MagGidNumer;
+
+                if (magGidnumer == 0)
                 {
-                    wpisKlasa = wynikList[0];
-                    if (_akcja.TwrSkan != wpisKlasa.TwrSkan)
+                    ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                    var magazyn = await api.GetSklepMagNumer();
+                    magGidnumer = (short)magazyn.Id;
+                }
+
+                if (listaToSend[0].TwrSkan > 0)
+                {
+                    string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
+                    var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
+
+                    if (odp.Any())
                     {
-                        wpisKlasa.SyncRequired = true;
+                        // Jeśli dane zostały pomyślnie wysłane, oznacz je jako "wysłane" w SQLite.
+                        wpisKlasa.SyncRequired = false;
                         await _connection.UpdateAsync(wpisKlasa);
                     }
-                }
-                else
-                {
-                    _akcja.SyncRequired = true;
-                    await _connection.InsertAsync(_akcja);
-                    wpisKlasa = _akcja;
-                }
-
-                // Jeśli jest połączenie, próbuj wysłać dane:
-                if (await SettingsPage.SprConn())
-                {
-                    var magGidnumer = (Application.Current as App).MagGidNumer;
-
-                    if (magGidnumer == 0)
+                    else
                     {
-                        ServicePrzyjmijMM api = new ServicePrzyjmijMM();
-                        var magazyn = await api.GetSklepMagNumer();
-                        magGidnumer = (short)magazyn.Id;
-                    }
-
-                    if (listaToSend[0].TwrSkan > 0)
-                    {
-                        string ase_operator = View.LoginLista._user + " " + View.LoginLista._nazwisko;
-                        var odp = await App.TodoManager.InsertDataSkan(listaToSend, magGidnumer, ase_operator);
-
-                        if (odp.Any())
-                        {
-                            // Jeśli dane zostały pomyślnie wysłane, oznacz je jako "wysłane" w SQLite.
-                            wpisKlasa.SyncRequired = false;
-                            await _connection.UpdateAsync(wpisKlasa);
-                        }
-                        else
-                        {
-                            await DisplayAlert(null, "Błąd synchronizacji z centrala", "OK");
-                        }
+                        await DisplayAlert(null, "Błąd synchronizacji z centrala", "OK");
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Błąd", ex.Message, "OK");
-            }
+
         }
 
         //TODO popraw focus - po zapisaniu podnosi si e okno do entry
@@ -1630,66 +1622,48 @@ namespace App2.View
             //cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
             if (SettingsPage.SelectedDeviceType != 1 && string.IsNullOrEmpty(entry_EanSkaner.Text))
                 entry_EanSkaner.Focus();
-
-            if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
+            try
             {
-
-                bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
-
-                //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
-
-                if (CzyWpisanoIlosc)
-                    if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
-                    {
-                        Zapisz();
-                        if (ile_zeskanowancyh > 0)
-                            _akcja.TwrSkan = ile_zeskanowancyh;
-                        if (_akcja.IsSendData)
-                            SendDataSkan();
-                        await Navigation.PopAsync();
-                    }
-                    else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
-                else await DisplayAlert("Uwaga", "Błędna wartość", "OK");
-
-
-            }
-            else
-            {
-                try
+                if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
                 {
 
-                    //  if (Object.ReferenceEquals(null,   SettingsPage._cpclPrinter))
-                    if (View.SettingsPage.CzyDrukarkaOn)
-                    {
-                        PrintSerwis printSerwis = new PrintSerwis();
+                    bool CzyWpisanoIlosc = Int32.TryParse(entry_skanowanaIlosc.Text, out ile_zeskanowancyh);
 
-                        await printSerwis.ConnToPrinter();
+                    //ile_zeskanowancyh = Convert.ToInt32(entry_kodean.Text);
 
-                            iResult = await SettingsPage._cpclPrinter.printerCheck();
-
-                        if (iResult != cpclConst.LK_SUCCESS)
+                    if (CzyWpisanoIlosc)
+                        if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                         {
-                            ErrorStatusDisp("Printer error", iResult);
-
-                            CanPrint = false;
-                            return;
+                            await ZapiszDoSQLite();
+                            if (ile_zeskanowancyh > 0)
+                                _akcja.TwrSkan = ile_zeskanowancyh;
+                            if (_akcja.IsSendData)
+                                await SendDataSkan();
+                            await Navigation.PopAsync();
                         }
-                    }
+                        else await DisplayAlert("Uwaga", "Wartość większa niż stan", "OK");
+                    else await DisplayAlert("Uwaga", "Błędna wartość", "OK");
+
+
+                }
+                else
+                {
+ 
+
                     if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
                         SkanujAparat(SettingsPage.SelectedDeviceType);
                     else if (List_AkcjeView.TypAkcji.Contains("Przecena") && CanPrint == false)
                         await DisplayAlert(null, "Do przeceny wymagana drukarka", "OK");
                     else
                         SkanujAparat(SettingsPage.SelectedDeviceType);
+
                 }
-                catch (Exception s)
-                {
-                    await DisplayAlert(null, s.Message, "OK");
-                }
-                // Navigation.PushModalAsync(new Drukowanie(_akcja));
             }
-            //_akcja.TwrSkan = Convert.ToInt32(entry_kodean.Text);
-            //Navigation.PopModalAsync();
+            catch (Exception s)
+            {
+                await DisplayAlert(null, s.Message, "OK");
+            }
+
         }
 
 

@@ -176,26 +176,37 @@ namespace App2.View
             if (e.Item == null)
                 return;
 
-            _wybranyPracownik = e.Item as ViewUser;
-
-            _opeGid = _wybranyPracownik.OpeGidnumer;
-            _user = _wybranyPracownik.OpeKod; //"Zalogowany : "
-            _nazwisko = _wybranyPracownik.OpeNazwa;
-
-            if (SettingsPage.SelectedDeviceType == 1)
+            try
             {
-                SkanujIdetyfikator();
+                _wybranyPracownik = e.Item as ViewUser;
+
+                if (_wybranyPracownik != null)
+                {
+                    _opeGid = _wybranyPracownik.OpeGidnumer;
+                    _user = _wybranyPracownik.OpeKod; //"Zalogowany : "
+                    _nazwisko = _wybranyPracownik.OpeNazwa;
+
+                    if (SettingsPage.SelectedDeviceType == 1)
+                    {
+                        SkanujIdetyfikator();
+                    }
+                    else
+                    {
+                        enthaslo.Focus();
+                    }
+
+                    if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+                    {
+
+                        App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+
+                    }
+
+                }
             }
-            else
+            catch (Exception s)
             {
-                enthaslo.Focus();
-            }
-
-            if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
-            {
-
-                App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
-
+                await DisplayAlert("błąd",s.Message,"OK");
             }
 
 
@@ -230,7 +241,7 @@ namespace App2.View
             {
                 IsSearching = false;
                 await DisplayAlert("uwaga", $"{s.Message}", "OK");
-            }
+            }finally { IsSearching = false; }
         }
 
         #region Old IsPassOK Function

@@ -82,7 +82,7 @@ namespace App2.ViewModel
         async Task<List<PathSplitter>> GetIleFotek()
         {
 
-            //todo : try catch
+          
             await photoView.ListBlobsHierarchicalListing(photoView.containerClient, photoView.Title, 1);
             var lista = photoView.fotki;
             List<PathSplitter> ps = new List<PathSplitter>();

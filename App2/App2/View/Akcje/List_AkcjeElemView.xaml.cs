@@ -68,19 +68,19 @@ namespace App2.View
         private async Task<bool> IsAnyItemFromLocal(List<string> ake_FiltrSQLList)
         {
             bool wasTrue = false;
-
-            foreach (var item in ake_FiltrSQLList)
+            try
             {
-                var listFromFiltr = ExtractCode.ExtractCodes(item);
 
-                int ileKodow = 0;
-
-
-                if (await SettingsPage.SprConn())
+                foreach (var item in ake_FiltrSQLList)
                 {
+                    var listFromFiltr = ExtractCode.ExtractCodes(item);
 
-                    try
+                    int ileKodow = 0;
+
+
+                    if (await SettingsPage.SprConn())
                     {
+
                         var karta = new TwrKodRequest()
                         {
                             Twrkody = new List<string>(listFromFiltr)
@@ -103,19 +103,19 @@ namespace App2.View
                             return wasTrue;
                         }
 
+
                     }
-                    catch (Exception exception)
+                    else
                     {
-                        await DisplayAlert("Uwaga", exception.Message, "OK");
+                        await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
+
                     }
 
                 }
-                else
-                {
-                    await DisplayAlert("Uwaga", "Nie ma połączenia z serwerem", "OK");
-
-                }
-
+            }
+            catch (Exception exception)
+            {
+                await DisplayAlert("Uwaga", exception.Message, "OK");
             }
             return wasTrue;
 
@@ -267,7 +267,7 @@ namespace App2.View
                     await Navigation.PushAsync(new Foto.FotoTest(nowa.FirstOrDefault(), Sklep, true));
                 }
 
-                _istapped = false; 
+                _istapped = false;
 
                 //Deselect Item
                 ((ListView)sender).SelectedItem = null;

@@ -1,10 +1,12 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
 using App2.OptimaAPI;
+using App2.Services;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -52,6 +54,27 @@ namespace App2.View
             //LoadList();
             //GetListFromLocal( nagElem);
             //GetTwrListFromWeb(nagElem[0].AkN_GidNumer);
+
+
+        }
+
+        async Task SprCzyDaneDoSynchro(List<AkcjeNagElem> listDoSync)
+        {
+            var isAnyToDo = listDoSync.Any(s => s.SyncRequired == true);
+
+            if (isAnyToDo)
+            {
+                await DisplayAlert("uwaga", "Istnieją nie zsynchronizowane wpisy\nPoczekaj na zakończenie akcji", "OK");
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (IsSearching)
+            {
+                return true; // Zatrzymaj domyślne działanie przycisku Wstecz
+            }
+            return base.OnBackButtonPressed();
         }
 
         private async Task LoadList()
@@ -61,15 +84,20 @@ namespace App2.View
             await _connection.CreateTableAsync<AkcjeNagElem>();
 
             //var SavedList = await _connection.Table<AkcjeNagElem>().ToListAsync();
-            var SavedList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
             try
             {
+             
+
+                var SavedList = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+
+
                 if (StartPage.CheckInternetConnection())
                 {
+                    await SprCzyDaneDoSynchro(SavedList);
                     TwrListWeb = await GetTwrListFromWeb(_nagElem[0].AkN_GidNumer);
                     TwrListLocal = await GetListFromLocal(_nagElem);
 
-                    if (TwrListWeb.Count > 0)
+                    if (TwrListWeb.Count > 0 && TwrListLocal.Count>0)
                     {
 
                         SumaList = (
@@ -95,53 +123,60 @@ namespace App2.View
                              TwrUrl = lWeb.TwrUrl,
                              IsSendData = lWeb.IsSendData,
                              TwrCena30 = lWeb.TwrCena30,
-                             SyncRequired= alles.SyncRequired
+                             SyncRequired = alles.SyncRequired
                          }).ToList();
 
-
-                        var toSendData = TwrListWeb[0].IsSendData;
-
-
-                        if (!SavedList.Any(s=>s.AkN_GidNumer== _nagElem[0].AkN_GidNumer))
+                        if (SumaList.Any())
                         {
-                            // Kod do wykonania, gdy SavedList jest pusta
-                            if (toSendData && LoginLista._user != "ADM")
-                                await SendDataSkan(SumaList);
-                        }
-                        else
-                        {
-                            var sendOnlyToUpdate = SumaList.Where(c => c.SyncRequired == true && c.TwrSkan > 0).ToList();
-                            if (toSendData && LoginLista._user != "ADM" && sendOnlyToUpdate.Count>0)
-                                await SendDataSkan(sendOnlyToUpdate);
 
-                        }
-
-                        var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
-                        {
-                            TwrGrupa = cs.TwrGrupa,
-                            TwrSkan = s.Sum(cc => cc.TwrSkan),
-                            TwrStan = s.Sum(cc => cc.TwrStan),
-                            TwrStanVsSKan = cs.TwrStanVsSKan,
-                            TwrDep = cs.TwrDep,
-                            IsSendData = cs.IsSendData
-                        })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
+                            var toSendData = TwrListWeb[0].IsSendData;
 
 
-                        if (nowa != null)
-                        {
-                            var sorted = from towar in nowa
-                                         orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
-                                         group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
-                                         select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
+                            if (!SavedList.Any(s => s.AkN_GidNumer == _nagElem[0].AkN_GidNumer))
+                            {
+                                // Kod do wykonania, gdy SavedList jest pusta
+                                if (toSendData && LoginLista._user != "ADM")
+                                    await SendDataSkan(SumaList, true);
+                            }
+                            else
+                            {
+                                var sendOnlyToUpdate = SavedList.Where(c => c.SyncRequired == true && c.TwrSkan > 0).ToList();
+                                if (toSendData && LoginLista._user != "ADM" && sendOnlyToUpdate.Count > 0)
+                                    await SendDataSkan(sendOnlyToUpdate);
+                                //sendOnlyToUpdate również daje 16 pozycji
+                            }
 
-                            MyListView3.ItemsSource = sorted;
+                            var nowa = SumaList.GroupBy(g => g.TwrDep).SelectMany(s => s.Select(cs => new Model.AkcjeNagElem
+                            {
+                                TwrGrupa = cs.TwrGrupa,
+                                TwrSkan = s.Sum(cc => cc.TwrSkan),
+                                TwrStan = s.Sum(cc => cc.TwrStan),
+                                TwrStanVsSKan = cs.TwrStanVsSKan,
+                                TwrDep = cs.TwrDep,
+                                IsSendData = cs.IsSendData
+                            })).GroupBy(p => new { p.TwrDep }).Select(f => f.First()).OrderByDescending(x => x.TwrStan);
+
+
+                            if (nowa != null)
+                            {
+                                var sorted = from towar in nowa
+                                             orderby towar.TwrDep.Replace(towar.TwrGrupa, "")
+                                             group towar by towar.TwrDep.Replace(towar.TwrGrupa, "") into monkeyGroup
+                                             select new Model.AkcjeGrupy<string, Model.AkcjeNagElem>(monkeyGroup.Key, monkeyGroup);
+
+                                MyListView3.ItemsSource = sorted;
+                            }
                         }
                     }
                     else
                     {
-                        await DisplayAlert(null, "Nie udało pobrać się danych z centrali", "OK");
+                        await DisplayAlert(null, "Nie udało pobrać się danych z centrali lub optimy", "OK");
                     }
 
+                }
+                else
+                {
+                    await DisplayAlert("uwaga", "brak wifi lub internetu", "OK");
                 }
 
 
@@ -196,12 +231,8 @@ namespace App2.View
                     //var _lista = lista[1];
                     {
 
-                        Debug.WriteLine("strzał do bazy");
-                        Debug.WriteLine(_lista.Ake_FiltrSQL);
-
                         var twrList = await api.GetTowaryGrupyListAsync(_lista.Ake_FiltrSQL);
 
-                        Debug.WriteLine($"lista ma :{twrList.Data.Count}");
                         if (twrList.IsSuccessful)
                         {
                             foreach (var twr in twrList.Data)
@@ -448,17 +479,19 @@ namespace App2.View
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            try
-            {
 
-                await LoadList();
+            //var databaseExporter = DependencyService.Get<IDatabaseExporter>();
 
-            }
-            catch (Exception)
-            {
+            //// Poproś użytkownika o uprawnienia
+            //databaseExporter.RequestStoragePermission();
 
-                throw;
-            }
+            //// Po uzyskaniu uprawnień eksportuj bazę danych
+            //await databaseExporter.ExportDatabaseAsync();
+
+
+            await LoadList();
+
+            #region oldMethod
 
             //await _connection.CreateTableAsync<AkcjeNagElem>();
 
@@ -537,15 +570,13 @@ namespace App2.View
             //}
             //else {
             //    await DisplayAlert(null, "Błąd pobierania danych", "OK");
-            //}
-
-
-
+            //} 
+            #endregion
 
 
         }
-
-        private async Task SendDataSkan(IList<AkcjeNagElem> sumaList)
+        private static readonly object databaseLock = new object();
+        private async Task SendDataSkan(IList<AkcjeNagElem> sumaList, bool isFirsRun = false)
         {
 
             try
@@ -563,9 +594,9 @@ namespace App2.View
 
 
                     string ase_operator = $"{View.LoginLista._user} {View.LoginLista._nazwisko}";
-                    if(sumaList.Count > 0) 
-                    { 
-                    
+                    if (sumaList.Count > 0)
+                    {
+
                         var odp = await App.TodoManager.InsertDataSkan(sumaList, magGidnumer, ase_operator);
                         if (!odp.Any())
                         {
@@ -573,8 +604,31 @@ namespace App2.View
                         }
                         else
                         {
-                            
-                            var test = await _connection.InsertAllAsync(sumaList, true);
+                            DependencyService.Get<IAppVersionProvider>().ShowShort($"Zsynchronizowano {odp.Count} elementów");
+                            if (isFirsRun)
+                            {
+                                var test = await _connection.InsertAllAsync(sumaList, true);
+                            }
+                            else
+                            {
+                              
+                                await _connection.RunInTransactionAsync(tran =>
+                                {
+                                    foreach (var updatedItem in odp)
+                                    {                                         
+                                        var matchingItem = sumaList.FirstOrDefault(s =>
+                                        s.AkN_GidNumer == updatedItem.AknNumer &&
+                                        s.TwrGidNumer == updatedItem.TwrNumer &&updatedItem.Statuss=="OK");
+
+                                        if (matchingItem != null)
+                                        {
+                                            matchingItem.SyncRequired = false;
+                                            tran.Update(matchingItem);
+                                        }
+                                    }
+                                });                                 
+
+                            }
                         }
                     }
                 }
@@ -631,11 +685,11 @@ namespace App2.View
                 var isExists = await TableExistsAsync<AkcjeNagElem>(_connection);
                 if (isExists)
                 {
-                    var wyniki = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
+                    //var wyniki = await _connection.QueryAsync<AkcjeNagElem>("select * from AkcjeNagElem where AkN_GidNumer = ? ", _nagElem[0].AkN_GidNumer);
                     //await _connection.DropTableAsync<Model.AkcjeNagElem>();
                     await _connection.ExecuteAsync("DELETE FROM AkcjeNagElem WHERE AkN_GidNumer = ?", _nagElem[0].AkN_GidNumer);
 
-                    var sdas = wyniki.ToList();
+                    //var sdas = wyniki.ToList();
 
                     // await _connection.CreateTableAsync<AkcjeNagElem>();
                 }

@@ -362,49 +362,20 @@ namespace App2.View
             }
         }
 
-        public static async Task<bool> SprConn() //Third way, slightly slower than Method 1
+        public static async Task<bool> SprConn()  
         {
-            try
+            var app = Application.Current as App;
+
+            Regex regex = new Regex(@"[^0-9.:]");
+            if (regex.IsMatch(app.Serwer))
             {
-
-                Regex regex = new Regex(@"[^0-9.:]");
-
-                var app = Application.Current as App;
-            
-                if (regex.IsMatch(app.Serwer))
-                {
-                    // Wyświetl komunikat o błędzie, jeśli wprowadzony tekst zawiera niedozwolone znaki
-                    throw new Exception("Wprowadzono nieprawidłowy adres IP. Proszę używać tylko cyfr, kropek i dwukropków.");
-             
-                }
-                else
-                {
-                    if (await SprawdzPolaczenieApi(app))
-                    {
-                        //var options = new RestClientOptions($"http://{app.Serwer}")
-                        //{
-                        //    MaxTimeout = 10000 // 10 sekund
-                        //};
-                        //_client = new RestClient(options);  // re-inicjalizacja klienta
-
-                        //var request = new RestRequest("/api/test");
-                        //var response = await _client.GetAsync(request);
-
-                        //return response.IsSuccessStatusCode;
-                        return true;
-
-                    }
-                }                
-                return false;
-
+                // Wyświetl komunikat o błędzie, jeśli wprowadzony tekst zawiera niedozwolone znaki
+                throw new Exception("Wprowadzono nieprawidłowy adres IP. Proszę używać tylko cyfr, kropek i dwukropków.");
             }
-            catch (HttpRequestException a)
+            else
             {
-                var sdas = a.InnerException;
-                Console.WriteLine(sdas);
-                return false;
+                return await SprawdzPolaczenieApi(app);
             }
-
         }
 
 

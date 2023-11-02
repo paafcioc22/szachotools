@@ -238,7 +238,7 @@
           "lib/netstandard2.0/Stormlion.PhotoBrowser.dll": {}
         }
       },
-      "Plugin.SewooXamarin.SDK/1.0.1": {
+      "Plugin.SewooXamarin.SDK/1.0.5": {
         "type": "package",
         "compile": {
           "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.Abstractions.dll": {},
@@ -2395,10 +2395,10 @@
         "photobrowser.forms.nuspec"
       ]
     },
-    "Plugin.SewooXamarin.SDK/1.0.1": {
-      "sha512": "R68INz8JyA8cDpV7G60YIxf6abPxTy+jnv3tEQW4zLCi9L25RW3FaNEuTmK5pCqeud9IGBAM1cTO1SruM4hXEg==",
+    "Plugin.SewooXamarin.SDK/1.0.5": {
+      "sha512": "PEUq9cDOnkGg3OBJvd/dq9nxHL4uLLdVWYqsu3WI/+6/X6XqayLnfmt9CjyoowJCIrq6LvA2sxtjC2XX5wCR9g==",
       "type": "package",
-      "path": "plugin.sewooxamarin.sdk/1.0.1",
+      "path": "plugin.sewooxamarin.sdk/1.0.5",
       "files": [
         ".nupkg.metadata",
         "lib/MonoAndroid10/Plugin.SewooXamarinSDK.Abstractions.dll",
@@ -2412,7 +2412,7 @@
         "lib/Xamarin.iOS10/Xamarin.Sewoo.iOSSDK.dll",
         "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.Abstractions.dll",
         "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.dll",
-        "plugin.sewooxamarin.sdk.1.0.1.nupkg.sha512",
+        "plugin.sewooxamarin.sdk.1.0.5.nupkg.sha512",
         "plugin.sewooxamarin.sdk.nuspec"
       ]
     },
@@ -6953,7 +6953,7 @@
       "Microsoft.CSharp >= 4.7.0",
       "Newtonsoft.Json >= 13.0.3",
       "PhotoBrowser.Forms >= 0.1.4",
-      "Plugin.SewooXamarin.SDK >= 1.0.1",
+      "Plugin.SewooXamarin.SDK >= 1.0.5",
       "Refractored.MvvmHelpers >= 1.6.2",
       "RestSharp >= 110.2.0",
       "Rg.Plugins.Popup >= 2.1.0",
@@ -6973,23 +6973,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pafci\\.nuget\\packages\\": {},
+    "C:\\Users\\pawel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
       "projectName": "Inwentary",
-      "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj",
-      "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\obj\\",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
+      "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7005,8 +7005,8 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "projectReferences": {
-            "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
-              "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj"
+            "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj": {
+              "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\WebApiLib\\WebApiLib.csproj"
             }
           }
         }
@@ -7047,7 +7047,7 @@
           },
           "Plugin.SewooXamarin.SDK": {
             "target": "Package",
-            "version": "[1.0.1, )"
+            "version": "[1.0.5, )"
           },
           "Refractored.MvvmHelpers": {
             "target": "Package",
@@ -7126,7 +7126,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -7135,7 +7135,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Pakiet „Plugin.SewooXamarin.SDK 1.0.1” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1” zamiast platformy docelowej projektu „.NETStandard,Version=v2.1”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
+      "message": "Pakiet „Plugin.SewooXamarin.SDK 1.0.5” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1” zamiast platformy docelowej projektu „.NETStandard,Version=v2.1”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
       "libraryId": "Plugin.SewooXamarin.SDK",
       "targetGraphs": [
         ".NETStandard,Version=v2.1"

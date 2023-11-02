@@ -248,7 +248,7 @@
           "lib/MonoAndroid/Stormlion.PhotoDraweeView.dll": {}
         }
       },
-      "Plugin.SewooXamarin.SDK/1.0.1": {
+      "Plugin.SewooXamarin.SDK/1.0.5": {
         "type": "package",
         "compile": {
           "lib/MonoAndroid10/Plugin.SewooXamarinSDK.Abstractions.dll": {},
@@ -2584,7 +2584,7 @@
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.3",
           "PhotoBrowser.Forms": "0.1.4",
-          "Plugin.SewooXamarin.SDK": "1.0.1",
+          "Plugin.SewooXamarin.SDK": "1.0.5",
           "Refractored.MvvmHelpers": "1.6.2",
           "RestSharp": "110.2.0",
           "Rg.Plugins.Popup": "2.1.0",
@@ -3021,10 +3021,10 @@
         "photobrowser.forms.nuspec"
       ]
     },
-    "Plugin.SewooXamarin.SDK/1.0.1": {
-      "sha512": "R68INz8JyA8cDpV7G60YIxf6abPxTy+jnv3tEQW4zLCi9L25RW3FaNEuTmK5pCqeud9IGBAM1cTO1SruM4hXEg==",
+    "Plugin.SewooXamarin.SDK/1.0.5": {
+      "sha512": "PEUq9cDOnkGg3OBJvd/dq9nxHL4uLLdVWYqsu3WI/+6/X6XqayLnfmt9CjyoowJCIrq6LvA2sxtjC2XX5wCR9g==",
       "type": "package",
-      "path": "plugin.sewooxamarin.sdk/1.0.1",
+      "path": "plugin.sewooxamarin.sdk/1.0.5",
       "files": [
         ".nupkg.metadata",
         "lib/MonoAndroid10/Plugin.SewooXamarinSDK.Abstractions.dll",
@@ -3038,7 +3038,7 @@
         "lib/Xamarin.iOS10/Xamarin.Sewoo.iOSSDK.dll",
         "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.Abstractions.dll",
         "lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10/Plugin.SewooXamarinSDK.dll",
-        "plugin.sewooxamarin.sdk.1.0.1.nupkg.sha512",
+        "plugin.sewooxamarin.sdk.1.0.5.nupkg.sha512",
         "plugin.sewooxamarin.sdk.nuspec"
       ]
     },
@@ -5722,7 +5722,7 @@
       "Microsoft.AppCenter.Crashes >= 4.5.0",
       "Microsoft.CSharp >= 4.7.0",
       "PhotoBrowser.Forms >= 0.1.4",
-      "Plugin.SewooXamarin.SDK >= 1.0.1",
+      "Plugin.SewooXamarin.SDK >= 1.0.5",
       "Rg.Plugins.Popup >= 2.1.0",
       "Xam.Plugin.Media >= 6.0.2",
       "Xamarin.Essentials >= 1.7.7",
@@ -5735,24 +5735,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pafci\\.nuget\\packages\\": {},
+    "C:\\Users\\pawel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "projectUniqueName": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
       "projectName": "App2.Android",
-      "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
-      "packagesPath": "C:\\Users\\pafci\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2.Android\\obj\\",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+      "packagesPath": "C:\\Users\\pawel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pafci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pawel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5766,8 +5766,8 @@
       "frameworks": {
         "monoandroid13.0": {
           "projectReferences": {
-            "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj": {
-              "projectPath": "C:\\Users\\pafci\\source\\repos\\szachotools\\App2\\App2\\App2.csproj"
+            "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj": {
+              "projectPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj"
             }
           }
         }
@@ -5798,7 +5798,7 @@
           },
           "Plugin.SewooXamarin.SDK": {
             "target": "Package",
-            "version": "[1.0.1, )"
+            "version": "[1.0.5, )"
           },
           "Rg.Plugins.Popup": {
             "target": "Package",

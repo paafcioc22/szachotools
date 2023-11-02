@@ -124,7 +124,7 @@
       <Version>0.1.4</Version>
     </PackageReference>
     <PackageReference Include="Plugin.SewooXamarin.SDK">
-      <Version>1.0.1</Version>
+      <Version>1.0.5</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.1.0</Version>
@@ -158,6 +158,7 @@
     <Compile Include="AndroidBlueToothService.cs" />
     <Compile Include="AppVersionProvider.cs" />
     <Compile Include="BluetoothConnectPermission.cs" />
+    <Compile Include="DatabaseExporter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
