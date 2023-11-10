@@ -234,8 +234,12 @@ namespace App2.View
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
-            AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.5, .99, .9, 50));
+            AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.5, .99, .8, 50));
             AbsoluteLayout.SetLayoutFlags(open_url, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
+        
+
+
 
             Grid grid = new Grid()
             {
@@ -431,6 +435,15 @@ namespace App2.View
 
         }
 
+        private void backAction_Clicked(object sender, EventArgs e)
+        {
+            if (entry_EanSkaner.IsFocused)
+                entry_EanSkaner.Unfocus();
+
+             Navigation.PopAsync();
+
+        }
+
         void WidokSkaner()
         {
 
@@ -557,8 +570,19 @@ namespace App2.View
             open_url.CornerRadius = 15;
             open_url.Clicked += Open_url_Clicked;
             open_url.VerticalOptions = LayoutOptions.EndAndExpand;
-            AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.5, .99, .9, 50));
+            AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.3, .99, .8, 50));
             AbsoluteLayout.SetLayoutFlags(open_url, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
+
+
+            Button back = new Button();
+            back.CornerRadius = 20; 
+            back.BorderColor= Color.Black;
+            back.Text = "<<<";
+            back.CornerRadius = 15;
+            back.Clicked += backAction_Clicked;
+            back.VerticalOptions = LayoutOptions.EndAndExpand;
+            AbsoluteLayout.SetLayoutBounds(back, new Rectangle(1, .99, .15, 50));
+            AbsoluteLayout.SetLayoutFlags(back, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
             Grid grid = new Grid()
             {
@@ -761,6 +785,7 @@ namespace App2.View
             absoluteLayout.Children.Add(lbl_naglowek);
             absoluteLayout.Children.Add(stack_dane);
             absoluteLayout.Children.Add(open_url);
+            absoluteLayout.Children.Add(back);
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 absoluteLayout.Children.Add(enterEanButton);
             //absoluteLayout.Children.Add(addToMM);
@@ -1511,9 +1536,11 @@ namespace App2.View
             }
         }
 
-        protected override bool OnBackButtonPressed()
+
+        protected override void OnDisappearing()
         {
-            // listaToSend.Clear();
+            base.OnDisappearing();
+
             if (_akcja.IsSendData)
             {
                 // Wyświetl wskaźnik postępu 
@@ -1534,10 +1561,38 @@ namespace App2.View
                 });
 
                 // Pozwól użytkownikowi wrócić
-                return false;
+      
             }
-            return base.OnBackButtonPressed();
         }
+
+        //protected override bool OnBackButtonPressed()
+        //{
+          
+        //    // listaToSend.Clear();
+        //    if (_akcja.IsSendData)
+        //    {
+        //        // Wyświetl wskaźnik postępu 
+
+        //        Task.Run(async () =>
+        //        {
+        //            try
+        //            {
+        //                await SendDataSkan();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Device.BeginInvokeOnMainThread(async () =>
+        //                {
+        //                    await DisplayAlert("Błąd", $"Błąd połączenia - nie wysłano danych do centrali\nZrób to na oknie z podsumowaniem", "OK");
+        //                });
+        //            }
+        //        });
+
+        //        // Pozwól użytkownikowi wrócić
+        //        return false;
+        //    }
+        //    return base.OnBackButtonPressed();
+        //}
 
         private async Task SendDataSkan()
         {

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM.MMDetailPage"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             NavigationPage.HasBackButton="False" Title="{Binding Title}">
+
+    <StackLayout Padding="10"  VerticalOptions="FillAndExpand">
+        
+    <ListView x:Name="ElementsOnMM"
+            ItemsSource="{Binding MMElements}"   
+                      HasUnevenRows="True"    
+            CachingStrategy="RecycleElement">
+        <!--Custom View Cells-->
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid Padding="10" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="0.55*" />
+                            <ColumnDefinition Width="0.3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Definiowanie wierszy -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="{Binding Tre_Lp}" FontAttributes="Bold" FontSize="22" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" TextColor="Black" />
+                        <Label Text="{Binding Twr_Kod}" Grid.Column="1" Grid.Row="1" FontAttributes="Bold" />
+                        <Label Text="{Binding Twr_Nazwa}" Grid.Column="1" Grid.Row="2" />
+                        <Label Text="{Binding Twr_Symbol}" Grid.Column="1" Grid.Row="3"  />
+                        <Label Text="{Binding Twr_Cena}" Grid.Column="1" Grid.Row="4" />
+                        <Label Text="{Binding Stan_szt, StringFormat='{0} szt'}" Grid.Column="1" Grid.Row="5"  />
+
+                        <ffimageloading:CachedImage Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" VerticalOptions="FillAndExpand"
+                                Source="{Binding Twr_UrlImage}"
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended"
+                                Aspect="AspectFill"
+                            />
+
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>        
+    </ListView>
+        
+        <Button Text="Rozpocznij skanowanie dostawy" Command="{Binding StartSkanDostawyCommand}"
+                 VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" CornerRadius="20"/>
+    </StackLayout>
+</ContentPage>

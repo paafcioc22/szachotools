@@ -73,11 +73,11 @@ namespace App2.View
 
                         PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
-                    //ZXing.BarcodeFormat.CODE_128,
-                    ZXing.BarcodeFormat.CODABAR,
-                    ZXing.BarcodeFormat.CODE_39,
-                    ZXing.BarcodeFormat.EAN_13
-                }
+                        //ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.CODABAR,
+                        ZXing.BarcodeFormat.CODE_39,
+                        ZXing.BarcodeFormat.EAN_13
+                    }
 
                     };
                     if (SettingsPage.OnAlfaNumeric)
@@ -175,9 +175,7 @@ namespace App2.View
         public async Task pobierztwrkod(string _ean)
         {
 
-            var app = Application.Current as App;
-            //TwrInfo product = null;
-
+            var app = Application.Current as App; 
 
             try
             {
@@ -199,7 +197,7 @@ namespace App2.View
                         var request = new RestRequest("/api/gettowar")
                               .AddJsonBody(karta);
 
-                        var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
+                        //var response = await _client.ExecutePostAsync<List<TwrInfo>>(request);
 
                         twrkarty = await FilesHelper.GetCombinedTwrInfo(_ean, NrCennika, request, _client);
 

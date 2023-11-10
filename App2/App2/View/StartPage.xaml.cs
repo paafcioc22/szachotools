@@ -1,6 +1,7 @@
 ﻿using App2.Model;
 using App2.Services;
 using App2.View.Foto;
+using App2.View.PrzyjmijMM;
 using App2.ViewModel;
 using Microsoft.AppCenter.Crashes;
 using Rg.Plugins.Popup.Services;
@@ -20,6 +21,7 @@ namespace App2.View
         private bool connected;
         public static string user;
         StartPageViewModel viewModel;
+        private IAppVersionProvider version;
         public StartPage()
         {
             InitializeComponent();
@@ -49,10 +51,10 @@ namespace App2.View
         private async Task CheckMinVersionSzachotools()
         {
             long bulidVer=0;
-            var version = DependencyService.Get<IAppVersionProvider>();
             SzachoSettings settings = new SzachoSettings();
             try
             {
+                version = DependencyService.Get<IAppVersionProvider>();
                 var versionString = version.AppVersion;
                 bulidVer = version.BuildVersion;
 
@@ -170,6 +172,7 @@ namespace App2.View
                 {
                     await Navigation.PushModalAsync(new View.StartCreateMmPage()); 
 
+
                 } 
             }
             catch (Exception s)
@@ -225,7 +228,8 @@ namespace App2.View
                 if (connected)
                 {
                     viewModel.IsBusy = false;
-                    await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia()); 
+                    //await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia()); 
+                    await Navigation.PushAsync(new PMM_NaglowekAndMenuView()); 
 
                 }
                 else

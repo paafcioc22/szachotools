@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM.PMM_NaglowekAndMenuViewDetail"
+             Title="Lista MM do przyjęcia" NavigationPage.HasNavigationBar="True"     >
+
+    <Grid>
+
+        <StackLayout Padding="10" Spacing="3">
+
+            <ListView x:Name="ListaMMek"  RefreshCommand="{Binding LoadMMNaglowkiCommand}" ItemsSource="{Binding DokumentMMs}"
+              CachingStrategy="RecycleElement"  IsPullToRefreshEnabled="True"
+              HasUnevenRows="True"           
+              VerticalOptions="FillAndExpand" 
+           
+                      >
+
+                <ListView.ItemTemplate >
+                    <DataTemplate  >
+                        <ViewCell >
+                            <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <StackLayout HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding TrN_DokumentObcy}"   FontSize="16" FontAttributes="Bold"/>
+                                    <Label Text="{Binding DataMM}" FontSize="14"/>
+                                    <Label Text="{Binding TrN_Opis, StringFormat='opis :{0}'}" FontSize="12"/>
+                                </StackLayout>
+                                <!--<Image Source="{Binding StatusMM, Converter={StaticResource StatusConverter}}"/>-->
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.ItemTappedCommand, Source={x:Reference ListaMMek}}" CommandParameter="{Binding .}" />
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </ViewCell> 
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label x:Name="EmptyListLabel" 
+               Text="Lista jest pusta!" 
+               IsVisible="False" 
+               HorizontalOptions="CenterAndExpand" 
+               VerticalOptions="CenterAndExpand" />
+
+            <Button Text="Zeskanuj dokument MM"  ImageSource="scan48x2.png" ContentLayout="right,10"/>
+
+        </StackLayout>
+        <ActivityIndicator HorizontalOptions="CenterAndExpand" 
+                           VerticalOptions="CenterAndExpand" 
+                           IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"   />
+    </Grid>
+</ContentPage>

@@ -17,7 +17,8 @@ namespace App2.ViewModel
         public bool IsVisible 
         { 
             get => isVisible; 
-            set => isVisible =  SetProperty(ref isVisible, value); }
+            set => isVisible =  SetProperty(ref isVisible, value); 
+        }
 
     }
 }

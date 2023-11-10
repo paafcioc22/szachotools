@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM.PMM_NaglowekAndMenuViewFlyout"
+             Title="Menu">
+    
+    <StackLayout Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/> 
+                <RowDefinition Height="auto"/> 
+                <RowDefinition Height="50"/> 
+                <RowDefinition Height="auto"/> 
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Text="Ustawienia" FontAttributes="Bold" FontSize="Large" />
+ 
+            <Label Text="{Binding Source={x:Reference stepper}, Path=Value, StringFormat='Wyświetl mm z ostatnich {0:F0} dni'}" Grid.Row="1" 
+                   HorizontalOptions="CenterAndExpand" Grid.ColumnSpan="2"/>
+
+            <Stepper Grid.ColumnSpan="2" Grid.Row="2" x:Name="stepper" HorizontalOptions="CenterAndExpand"
+                     Minimum="10" Maximum="1000" Increment="50" Value="{Binding PastDays}"/>
+            <Label Text="zatwierdzone dok. MM" Grid.Row="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
+            <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding CzyZatwierdzone}" VerticalOptions="Center" />
+            <Label Text="Domyślnie pokazane są tylko nie zatwierdzone mm w optimie z 10 dni" Grid.Row="5" Grid.ColumnSpan="2" FontAttributes="Italic"/>
+
+        </Grid>
+    </StackLayout>
+</ContentPage>
