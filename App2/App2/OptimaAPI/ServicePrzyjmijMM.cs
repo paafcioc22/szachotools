@@ -254,5 +254,19 @@ namespace App2.OptimaAPI
 
         }
 
+        public async Task<List<MmZCentrali>> GetRaportyZCentrali(int magNumer)
+        {
+            string Webquery2 = $@"cdn.PC_WykonajSelect N'select distinct RrD_MMGidNumer 
+                                    from cdn.PC_RaportRoznicowyDostaw
+                                    where RrD_MagGidNumer={magNumer}
+                                    and RrD_DataDokumentu>=GETDATE()-30
+                         '";
+
+
+            var items = await App.TodoManager.PobierzDaneZWeb<MmZCentrali>(Webquery2);
+
+            return items.ToList();
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using App2.OptimaAPI;
 using App2.View.CreateMM;
 using App2.ViewModel;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -95,7 +96,6 @@ namespace App2.View
 
             var model = cell.BindingContext as DokNaglowekDto;
 
-
             try
             {
                 var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
@@ -103,10 +103,10 @@ namespace App2.View
             catch (Exception s)
             {
                 await DisplayAlert("Błąd:", s.Message, "OK");
-            }
-
-    
+            }   
 
         }
+
+        
     }
 }

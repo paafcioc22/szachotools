@@ -25,8 +25,7 @@ namespace App2.View
 
     public partial class SettingsPage : TabbedPage
     {
-
-        public static bool IsBuforOff;
+         
         public static bool CzyCenaPierwsza;
         public static bool OnAlfaNumeric;
         public static SByte SelectedDeviceType;
@@ -70,9 +69,8 @@ namespace App2.View
             {
                 app.Serwer = app.Serwer.Replace(@"\optima", ":8081");
                 viewModel.Serwer = app.Serwer;
-            }
-
-            SwitchStatus.IsToggled = IsBuforOff;
+            } 
+ 
             SwitchKlawiatura.IsToggled = OnAlfaNumeric;
         }
 
@@ -176,26 +174,29 @@ namespace App2.View
                 var versionString = version.AppVersion;
                 var bulidVer = version.BuildVersion;
                 lbl_appVersion.Text = "Wersja " + versionString;
-                //_version = bulidVer;
+               
 
                 var settings = await App.TodoManager.GetSzachoSettings();
 
-                if (settings.IsCena1Enabled)
+                if (settings.Any())
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    if (settings.FirstOrDefault().IsCena1Enabled)
                     {
-                        viewModel.IsEnabled = true;
-                    });
-                }
-                else
-                {
-                    viewModel.IsEnabled = false;
-                    viewModel.CzyCena1 = false;
-                }
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            viewModel.IsEnabled = true;
+                        });
+                    }
+                    else
+                    {
+                        viewModel.IsEnabled = false;
+                        viewModel.CzyCena1 = false;
+                    }
 
-                if (bulidVer < Convert.ToInt16(settings.VersionApp))
-                    //await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
-                    version.ShowShort("Używana wersja nie jest aktualna");
+                    if (bulidVer < Convert.ToInt16(settings.FirstOrDefault().VersionApp))
+                        //await DisplayAlert(null, "Używana wersja nie jest aktualna", "OK");
+                        version.ShowShort("Używana wersja nie jest aktualna"); 
+                }
             }
             catch (Exception)
             {
@@ -490,10 +491,7 @@ namespace App2.View
         //    }
         //}
 
-        private void Switch_Toggled(object sender, ToggledEventArgs e)
-        {
-            IsBuforOff = e.Value;
-        }
+       
 
         private void PrinterList_SelectedIndexChanged(object sender, EventArgs e)
         {

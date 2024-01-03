@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App2.View.PrzyjmijMM.DiffrenceRaportPage"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:local="clr-namespace:App2.Converter"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+        <StackLayout  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Grid.Row="0">
+
+            <ListView IsGroupingEnabled="True" x:Name="diffRaportList"
+          ItemsSource="{Binding GroupedDifferences}"
+          IsVisible="{Binding IsRaportZgodny, Converter={StaticResource InverseBooleanConverter}}"
+           HasUnevenRows="True" >
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="35">
+                            <StackLayout BackgroundColor="{Binding BackgroundColor}">
+                                <Label Text="{Binding Key}" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <!--<TextCell Text="{Binding Key}" />-->
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid  Padding="10,5,10,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="0.3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Definiowanie wierszy -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <!--<RowDefinition Height="auto"/>-->
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding Twr_Kod}" FontAttributes="Bold" FontSize="18" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" TextColor="Black"  />
+                                <Label Text="{Binding Twr_Nazwa}" Grid.Column="1" Grid.Row="1"  />
+                                <!--<Label Text="{Binding Twr_Ean}" Grid.Column="1" Grid.Row="2" />-->
+                                <Label Text="{Binding Difference, StringFormat='{0} szt'}" Grid.Column="1" Grid.Row="2" FontAttributes="Bold"/>
+                                <ffimageloading:CachedImage Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" VerticalOptions="FillAndExpand"
+                                Source="{Binding Twr_Url}"
+                                CacheDuration= "50"
+                                RetryCount="2"
+                                RetryDelay="10"
+                                ErrorPlaceholder= "NotSended"
+                                Aspect="AspectFill"  />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.OpenSelctedItemCommand, Source={x:Reference diffRaportList}}" CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Frame BorderColor="Black" IsVisible="{Binding IsRaportZgodny}">
+                <Label Text="Raport jest zgodny"  
+               FontSize="18"
+               TextColor="Green"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+
+            </Frame>
+        </StackLayout>
+        <Button Text="Wyślij raport" Grid.Row="1"
+                Visual="Material" Margin="5" CornerRadius="20"
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="EndAndExpand"  HeightRequest="50"
+                x:Name="btn_SendRaportMM"
+                Clicked="btn_SendRaportMM_Clicked"
+         />
+    </Grid>
+</ContentPage>

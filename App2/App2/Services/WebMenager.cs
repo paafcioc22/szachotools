@@ -23,7 +23,11 @@ namespace App2.Services
             return soapService.GetAllCustomers(query);
         }
 
-        public Task<string> InsertDataNiezgodnosci(ObservableCollection<ListDiffrence> insert)
+        public Task<string> InsertDataNiezgodnosci(List<ListDiffrence> insert)
+        {
+            return soapService.InsertDataNiezgodnosci(insert);
+        }
+        public Task<string> InsertDataNiezgodnosci(List<PMM_RaportElement> insert)
         {
             return soapService.InsertDataNiezgodnosci(insert);
         }
@@ -43,7 +47,7 @@ namespace App2.Services
             return soapService.GetGidAkcje(query);
         }
 
-        public Task<SzachoSettings> GetSzachoSettings()
+        public Task<List<SzachoSettings>> GetSzachoSettings()
         {
             return soapService.GetSzachoSettings();
         }

@@ -321,91 +321,91 @@ namespace App2.View
 
                 if (action)
                 {
-                    if (lista.Count != 0)
-                    {
-                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                    //if (lista.Count != 0)
+                    //{
+                    //    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
                      
-                        if (Maglista.ToString() == "OK")
-                        {
-                           // btn_sendraport
-                           await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+                    //    if (Maglista.ToString() == "OK")
+                    //    {
+                    //       // btn_sendraport
+                    //       await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
 
-                            var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
+                    //        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer);
 
-                            //var wpis = wynik[0];
+                    //        //var wpis = wynik[0];
 
-                            foreach (var wpis in wynik)
-                            {
-                                wpis.Sended = true;
-                                await _connection.UpdateAsync(wpis);
-                            }
+                    //        foreach (var wpis in wynik)
+                    //        {
+                    //            wpis.Sended = true;
+                    //            await _connection.UpdateAsync(wpis);
+                    //        }
 
-                            var navigation = this.Navigation;
-                            if (navigation.NavigationStack.Count > 2)
-                            {
-                                var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
-                                var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
+                    //        var navigation = this.Navigation;
+                    //        if (navigation.NavigationStack.Count > 2)
+                    //        {
+                    //            var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
+                    //            var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
 
-                                navigation.RemovePage(pageToRemove1);
-                                navigation.RemovePage(pageToRemove2);
-                                await navigation.PopAsync();
-                            }
-                        }
-                        else
-                        {
-                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                            //await Navigation.PopToRootAsync();
+                    //            navigation.RemovePage(pageToRemove1);
+                    //            navigation.RemovePage(pageToRemove2);
+                    //            await navigation.PopAsync();
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                    //        //await Navigation.PopToRootAsync();
 
-                        }
-                    }
-                    else
-                    {
-                        lista.Add(new Model.ListDiffrence
-                        {
-                            twrkod = "Lista zgodna",
-                            IleZeSkan = 0,
-                            IleZMM = 0,
-                            ilosc = 0,
-                            NrDokumentu = _nrdokumentu,
-                            GidMagazynu = _MagGidnumer,
-                            DataDokumentu = _DataDokumentu,
-                            Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
-                            XLGidMM = _XLgidnumer
-                        });
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    lista.Add(new Model.ListDiffrence
+                    //    {
+                    //        twrkod = "Lista zgodna",
+                    //        IleZeSkan = 0,
+                    //        IleZMM = 0,
+                    //        ilosc = 0,
+                    //        NrDokumentu = _nrdokumentu,
+                    //        GidMagazynu = _MagGidnumer,
+                    //        DataDokumentu = _DataDokumentu,
+                    //        Operator = View.LoginLista._user + " " + View.LoginLista._nazwisko,
+                    //        XLGidMM = _XLgidnumer
+                    //    });
 
-                        var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                    //    var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
              
-                        if (Maglista.ToString() == "OK")
-                        {
-                            await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
+                    //    if (Maglista.ToString() == "OK")
+                    //    {
+                    //        await DisplayAlert("Info", "Raport został wysłany pomyślnie.", "OK");
 
-                            var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer); 
+                    //        var wynik = await _connection.QueryAsync<Model.RaportListaMM>("select * from RaportListaMM where XLGIDMM = ? ", _XLgidnumer); 
                       
 
-                            foreach (var wpis in wynik)
-                            {
-                                wpis.Sended = true;
-                                await _connection.UpdateAsync(wpis);
-                            }
+                    //        foreach (var wpis in wynik)
+                    //        {
+                    //            wpis.Sended = true;
+                    //            await _connection.UpdateAsync(wpis);
+                    //        }
 
 
-                            var navigation = this.Navigation;
-                            if (navigation.NavigationStack.Count > 2)
-                            {
-                                var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
-                                var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
+                    //        var navigation = this.Navigation;
+                    //        if (navigation.NavigationStack.Count > 2)
+                    //        {
+                    //            var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
+                    //            var pageToRemove2 = navigation.NavigationStack[navigation.NavigationStack.Count - 3];
 
-                                navigation.RemovePage(pageToRemove1);
-                                navigation.RemovePage(pageToRemove2);
-                                await navigation.PopAsync();
-                            }
+                    //            navigation.RemovePage(pageToRemove1);
+                    //            navigation.RemovePage(pageToRemove2);
+                    //            await navigation.PopAsync();
+                    //        }
 
-                        }
-                        else
-                        {
-                            await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
-                        }
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        await DisplayAlert("Uwaga", "Raport został już wysłany.", "OK");
+                    //    }
+                   // }
                 }
                 else
                 {

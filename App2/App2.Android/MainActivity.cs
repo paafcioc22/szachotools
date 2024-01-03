@@ -8,6 +8,8 @@ using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using App2.Services;
 using FFImageLoading.Forms.Platform;
+using Plugin.CurrentActivity;
+using Plugin.Permissions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -28,9 +30,10 @@ namespace App2.Droid
             base.OnCreate(savedInstanceState);
             NativeMedia.Platform.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);  // dodane do essential
-     
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             Stormlion.PhotoBrowser.Droid.Platform.Init(this);
 
             Rg.Plugins.Popup.Popup.Init( this);
@@ -67,6 +70,8 @@ namespace App2.Droid
             //global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+         
+            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             for (int i = 0; i < permissions.Length; i++)
             {
                 if (permissions[i].Equals("android.permission.CAMERA") && grantResults[i] == Permission.Granted)

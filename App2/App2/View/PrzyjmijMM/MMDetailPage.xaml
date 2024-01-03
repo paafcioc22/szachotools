@@ -3,13 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.PrzyjmijMM.MMDetailPage"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             NavigationPage.HasBackButton="False" Title="{Binding Title}">
+             Title="{Binding Title}">
+
+
+
+ 
 
     <StackLayout Padding="10"  VerticalOptions="FillAndExpand">
+       
         
     <ListView x:Name="ElementsOnMM"
             ItemsSource="{Binding MMElements}"   
-                      HasUnevenRows="True"    
+            HasUnevenRows="True"    
             CachingStrategy="RecycleElement">
         <!--Custom View Cells-->
 
@@ -36,7 +41,7 @@
                         <Label Text="{Binding Tre_Lp}" FontAttributes="Bold" FontSize="22" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" TextColor="Black" />
                         <Label Text="{Binding Twr_Kod}" Grid.Column="1" Grid.Row="1" FontAttributes="Bold" />
                         <Label Text="{Binding Twr_Nazwa}" Grid.Column="1" Grid.Row="2" />
-                        <Label Text="{Binding Twr_Symbol}" Grid.Column="1" Grid.Row="3"  />
+                        <Label Text="{Binding Twr_Ean}" Grid.Column="1" Grid.Row="3"  />
                         <Label Text="{Binding Twr_Cena}" Grid.Column="1" Grid.Row="4" />
                         <Label Text="{Binding Stan_szt, StringFormat='{0} szt'}" Grid.Column="1" Grid.Row="5"  />
 
@@ -48,14 +53,17 @@
                                 ErrorPlaceholder= "NotSended"
                                 Aspect="AspectFill"
                             />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.CopyEanCommand, Source={x:Reference ElementsOnMM}}" CommandParameter="{Binding Twr_Ean}"/>
+                            </Grid.GestureRecognizers>
 
-                    </Grid>
+                        </Grid>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>        
     </ListView>
-        
-        <Button Text="Rozpocznij skanowanie dostawy" Command="{Binding StartSkanDostawyCommand}"
+
+        <Button Text="Rozpocznij skanowanie dostawy" Command="{Binding StartSkanDostawyCommand}" Visual="Material"
                  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" CornerRadius="20"/>
     </StackLayout>
 </ContentPage>

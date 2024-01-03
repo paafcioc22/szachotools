@@ -16,10 +16,9 @@
                     <ViewCell>
 
                         <Frame  HasShadow="true" 
-                                Margin="5" 
-                                BorderColor="DarkCyan"   
+                                Margin="5"  
                                 CornerRadius="10" 
-                                OutlineColor="Cyan" Padding="3" 
+                                BorderColor="Cyan" Padding="3" 
                                 >
                             <!--<Frame.Content> Orientation="Vertical"-->
 

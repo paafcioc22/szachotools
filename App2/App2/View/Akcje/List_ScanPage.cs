@@ -42,7 +42,7 @@ namespace App2.View
         int ile_zeskanowancyh = 0;
 
         CPCLConst cpclConst;
-         
+
         int IResult;
         bool CanPrint;
 
@@ -76,8 +76,8 @@ namespace App2.View
 
         protected async override void OnAppearing()
         {
-            base.OnAppearing(); 
-           
+            base.OnAppearing();
+
 
             if (SettingsPage.SelectedDeviceType == 1)
             {
@@ -237,7 +237,7 @@ namespace App2.View
             AbsoluteLayout.SetLayoutBounds(open_url, new Rectangle(0.5, .99, .8, 50));
             AbsoluteLayout.SetLayoutFlags(open_url, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
-        
+
 
 
 
@@ -386,7 +386,7 @@ namespace App2.View
             AbsoluteLayout.SetLayoutBounds(enterEanButton, new Rectangle(1, .82, .25, 50));
             AbsoluteLayout.SetLayoutFlags(enterEanButton, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
- 
+
             Button addToMM = new Button()
             {
                 Text = "Dodaj do MMki",
@@ -429,7 +429,7 @@ namespace App2.View
                 absoluteLayout.Children.Add(grid);
             }
 
-             
+
 
             Content = absoluteLayout;
 
@@ -440,7 +440,7 @@ namespace App2.View
             if (entry_EanSkaner.IsFocused)
                 entry_EanSkaner.Unfocus();
 
-             Navigation.PopAsync();
+            Navigation.PopAsync();
 
         }
 
@@ -575,8 +575,8 @@ namespace App2.View
 
 
             Button back = new Button();
-            back.CornerRadius = 20; 
-            back.BorderColor= Color.Black;
+            back.CornerRadius = 20;
+            back.BorderColor = Color.Black;
             back.Text = "<<<";
             back.CornerRadius = 15;
             back.Clicked += backAction_Clicked;
@@ -859,6 +859,7 @@ namespace App2.View
 
                         totalTwrIlosc = serwisAPi.TotalTwrIloscFromAllDoks(listaIstniejacych);
 
+
                         foreach (var mm in listaIstniejacych)
                         {
                             naJakichMM.Add(string.Format($"{mm.MagKod} - {mm.Opis.Replace("Pakował(a):", "")} : {mm.DokElements.First().TwrIlosc} szt"));
@@ -869,7 +870,7 @@ namespace App2.View
                         {
 
                             if (listaIstniejacych.Count > 0)
-                                await DisplayActionSheet("Ilość przekracza stan- występuje już :", "OK", null, naJakichMM.ToArray());
+                                await DisplayActionSheet("Ilość przekracza stan- występuje już na:", "OK", null, naJakichMM.ToArray());
                             else
                                 await DisplayAlert("Uwaga", "Wpisana Ilość przekracza stan", "OK");
 
@@ -892,8 +893,8 @@ namespace App2.View
                                     var cutNrmmki = odp.Substring(0, gdzieCut);
                                     Int32.TryParse(cutNrmmki, out gidnumerMM);
 
-                                    ZapiszPozycje(gidnumerMM, _akcja, iloscZeskanowana, odp);
-                                    entry_skanowanaIlosc.Text = (totalTwrIlosc + iloscZeskanowana).ToString();
+                                    if(await ZapiszPozycje(gidnumerMM, _akcja, iloscZeskanowana, odp))
+                                        entry_skanowanaIlosc.Text = (totalTwrIlosc + iloscZeskanowana).ToString();
                                 }
 
                             }
@@ -909,15 +910,16 @@ namespace App2.View
                 else
                     await DisplayAlert(null, "Błędna ilosc", "OK");
             }
-            catch (Exception)
+            catch (Exception s)
             {
+                var dsa = s.Message;
                 await DisplayAlert(null, "Coś poszło nie tak..Spróbuj ponownie", "OK");
             }
 
 
         }
 
-        public async void ZapiszPozycje(int mmGidnumer, AkcjeNagElem twrInfo, int iloscSkanowana, string opis)
+        public async Task<bool> ZapiszPozycje(int mmGidnumer, AkcjeNagElem twrInfo, int iloscSkanowana, string opis)
         {
 
             CreateDokElementDto elementDto = new CreateDokElementDto()
@@ -931,13 +933,14 @@ namespace App2.View
             var apiResponse = await serwisAPi.SaveElement(elementDto, mmGidnumer);
 
             //todo : dodaj sprawdzenie ilosci dodanej
+
             if (apiResponse.ConflictInformation != null)
             {
                 var conflictInfo = apiResponse.ConflictInformation;
 
                 var isAddMore = await DisplayAlert(
                     "Konflikt",
-                    $"Towar {conflictInfo.TwrKod} znajduje się już na liście : {conflictInfo.ExistingQuantity} sztuk. Czy chcesz zsumoawć ilości?",
+                    $"Towar {conflictInfo.TwrKod} znajduje się już na liście : {conflictInfo.ExistingQuantity} sztuk. Czy chcesz zsumować ilości?",
                     "Tak",
                     "Nie"
                 );
@@ -953,6 +956,7 @@ namespace App2.View
                     if (resposne.IsSuccessful)
                     {
                         await DisplayAlert("Dodano..", $"{conflictInfo.AttemptedToAddQuantity} szt, razem {updatedQuantity}szt", "OK");
+                        return true;
                     }
                 }
                 else
@@ -960,49 +964,18 @@ namespace App2.View
                     // Anuluj operację lub zareaguj w inny sposób na decyzję użytkownika
                 }
             }
+            else if (apiResponse.IsSuccessful)
+            {
+                // Obsługa innych błędów
+                await DisplayAlert("Dodano",$"{ iloscSkanowana} szt", "OK");
+            }
             else if (!apiResponse.IsSuccessful)
             {
                 // Obsługa innych błędów
                 await DisplayAlert("Błąd", apiResponse.ErrorMessage, "OK");
             }
 
-
-            //if (IleIstnieje > 0)
-            //{
-            //    var odp = await DisplayAlert("UWAGA!", "Dodawany kod już znajduje się na liście. Chcesz zsumować ilości?", "TAK", "NIE");
-            //    if (odp)
-            //    {
-            //        int suma = (ilosc) + IleIstnieje;
-            //        if (suma > (stan_szt))
-            //        {
-            //            await DisplayAlert(null, "Łączna ilość przekracza stan ", "OK");
-            //            return;
-            //        }
-            //        else
-            //        {
-            //            //Model.DokMM dokMM = new Model.DokMM();
-            //            dokMM.gidnumer = mmGidnumer;
-            //            dokMM.twrkod = twrKod;
-            //            dokMM.szt = suma;// Convert.ToInt32(ilosc.Text);
-            //            dokMM.UpdateElement(dokMM);
-            //            dokMM.getElementy(mmGidnumer);
-            //            var opis2 = opis.Substring(opis.IndexOf(')') + 1);
-            //            //var oooo = opis.Substring(opis.IndexOf(')') + 1, opis.Length - opis.IndexOf(')') + 2);
-            //            await DisplayAlert("Dodano..", $"..{ilosc} szt do {opis2}", "OK");
-
-            //        }
-            //    }
-            //    else
-            //    {
-            //        await DisplayAlert("Uwaga", "Dodanie towaru odrzucone", "OK");
-            //    }
-
-            //}
-            //else
-            //{
-            //    var opis2 = opis.Substring(opis.IndexOf(')') + 1);
-            //    await DisplayAlert("Dodano..", $"..{dokMM.szt} szt do {opis2}", "OK");
-            //}
+            return false; 
 
         }
 
@@ -1529,7 +1502,7 @@ namespace App2.View
             else
             {
                 akcjeNagElem.TwrSkan = ile_zeskanowancyh;
-                akcjeNagElem.SyncRequired=true;
+                akcjeNagElem.SyncRequired = true;
                 _akcja.TwrSkan = ile_zeskanowancyh;
                 await _connection.InsertAsync(akcjeNagElem);
 
@@ -1561,13 +1534,13 @@ namespace App2.View
                 });
 
                 // Pozwól użytkownikowi wrócić
-      
+
             }
         }
 
         //protected override bool OnBackButtonPressed()
         //{
-          
+
         //    // listaToSend.Clear();
         //    if (_akcja.IsSendData)
         //    {
@@ -1690,8 +1663,10 @@ namespace App2.View
                         if (CzyMniejszeNStan(_akcja.TwrStan, ile_zeskanowancyh))
                         {
                             await ZapiszDoSQLite();
+
                             if (ile_zeskanowancyh > 0)
                                 _akcja.TwrSkan = ile_zeskanowancyh;
+
                             if (_akcja.IsSendData)
                                 await SendDataSkan();
                             await Navigation.PopAsync();
@@ -1703,7 +1678,7 @@ namespace App2.View
                 }
                 else
                 {
- 
+
 
                     if (!List_AkcjeView.TypAkcji.Contains("Przecena"))
                         SkanujAparat(SettingsPage.SelectedDeviceType);

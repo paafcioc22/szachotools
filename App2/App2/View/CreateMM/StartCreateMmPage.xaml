@@ -39,7 +39,8 @@
                             <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding NumerDokumentu}" TextColor="{Binding IsFinish, Converter={StaticResource Key=StringToColorConverter}}" FontFamily="MarkerFelt-Thin" FontAttributes="Bold" FontSize="16"/>
                                 <Label Text="{Binding Opis}" FontSize="14"/>
-                                <Label Text="{Binding MagKod}" FontSize="14"/>
+                                <Label Text="{Binding MagKod, StringFormat='do : {0}'}" FontSize="14"/>
+                                <Label Text="{Binding CreateDokDate}" FontSize="12"/>
                             </StackLayout>
                             <CheckBox   x:Name="boxIsExport" HorizontalOptions="End"
                                       Color="#166B0A"   Scale="2"

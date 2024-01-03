@@ -56,21 +56,21 @@ namespace App2.View
             Content = stackLayout;
 		}
 
-        private   void _magDcl_Focused(object sender, FocusEventArgs e)
+        private  async void _magDcl_Focused(object sender, FocusEventArgs e)
         {
            // _magDcl.Unfocus();
             //  Navigation.PushModalAsync(new ListaSklepowPage("zapisz"));
             var page = new ListaSklepowPage("zapisz");
-            page.ListViewSklepy.ItemSelected += (source, args) =>
+            page.ListViewSklepy.ItemSelected += async (source, args) =>
             {
                 var sklep = args.SelectedItem as Model.ListaSklepow;
 
                 _magDcl.Text = sklep.mag_kod;
                 MagDcl = sklep.mag_gidnumer;
-                Navigation.PopModalAsync();
+                await Navigation.PopModalAsync();
             };
 
-            Navigation.PushModalAsync(page);
+           await Navigation.PushModalAsync(page);
 
         }
 

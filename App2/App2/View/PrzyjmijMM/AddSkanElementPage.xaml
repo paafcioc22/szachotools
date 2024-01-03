@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:App2.Converter"
+             x:Class="App2.View.PrzyjmijMM.AddSkanElementPage" >
+    <ContentPage.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </ContentPage.Resources>
+    <Grid>
+        <!-- Definicja dwóch wierszy: jeden dla obrazu, drugi dla treści -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Górny wiersz dla obrazu -->
+        <Image Grid.Row="0"
+               Source="{Binding SelectedTwrInfo.Twr_Url}"
+               Aspect="AspectFill" />
+
+        <!-- Dolny wiersz dla danych i Entry -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Spacing="10" Padding="10">
+
+                <!-- Tu umieścisz swoje kontrolki z danymi produktu -->
+                <Label Text="{Binding SelectedTwrInfo.Twr_Kod}" FontAttributes="Bold" />
+                <Label Text="{Binding SelectedTwrInfo.Twr_Nazwa}" />
+                <Label Text="{Binding SelectedTwrInfo.Twr_Ean}" />
+                <Label Text="{Binding SelectedTwrInfo.Twr_Cena, StringFormat='{0} zł'}" />
+                <Label Text="{Binding ValueFromDok, StringFormat='{0} szt na MM'}" IsVisible="{Binding IsValueFromDokPositive}"/>
+                <!-- ... reszta danych ... -->
+
+                <!-- Entry dla inwentaryzowanej ilości -->
+                <Grid>
+                    <Entry Placeholder="Wpisz ilość"
+                       x:Name="entryIlosc"
+                       HorizontalOptions="Center"
+                       Text="{Binding InventoriedQuantity}"
+                       Keyboard="Numeric"
+                       ReturnCommand="{Binding SaveCommand}"
+                       ReturnCommandParameter="{Binding Text, Source={RelativeSource Self}}" 
+                       IsReadOnly="{Binding IsEntryIloscEnabled,Converter={StaticResource InverseBooleanConverter}}"/>
+                    <Frame BackgroundColor="Transparent"
+                       IsVisible="{Binding IsWarrningEnable}"
+                       InputTransparent="{Binding IsEntryIloscEnabled }">
+                        <!-- domyslnie false-->
+                       
+                            <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </Grid>
+                <!--, Mode=TwoWay}-->
+                <!-- Przycisk do skanowania -->
+
+                <!-- Możesz też dodać przycisk do manualnego wprowadzania EAN -->
+                <Entry Placeholder="Wpisz/skanuj kod" x:Name="entrySkanEan"
+                       Keyboard="Numeric"
+                       Text="{Binding ScannedEan}"
+                       HorizontalOptions="Center" IsReadOnly="{Binding IsEditMode}"
+                       ReturnCommand="{Binding ScanCommand}"         
+                       ReturnCommandParameter="{Binding Text, Source={RelativeSource Self}}" />
+
+
+                <Button Text="Skanuj kod (aparat)"  CornerRadius="20"/>
+                <Button Text="Zapisz" Command="{Binding SaveCommand}" CornerRadius="20" x:Name="savebtn"/>
+
+                <!-- ... więcej kontrolek, jeśli potrzebujesz ... -->
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

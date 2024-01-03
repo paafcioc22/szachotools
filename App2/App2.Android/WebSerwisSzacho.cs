@@ -71,7 +71,7 @@ namespace App2.Droid
         }
 
         string odp;
-        public async Task<string> InsertDataNiezgodnosci(ObservableCollection<Model.ListDiffrence> polecenie)
+        public async Task<string> InsertDataNiezgodnosci(List<Model.ListDiffrence> polecenie)
         {
             return await Task.Run(() =>
             {
@@ -97,6 +97,31 @@ namespace App2.Droid
             });
         }
 
+        public async Task<string> InsertDataNiezgodnosci(List<PMM_RaportElement> polecenie)
+        {
+            return await Task.Run(() =>
+            {
+                foreach (var lista in polecenie)
+                {
+                    var InsertString = $"cdn.PC_InsertRaportDostaw " +
+                    $"{lista.TrnGidNumer}," +
+                    $"{lista.MagNumer}," +
+                    $"'{lista.TrnDokumentObcy}'," +
+                    $"'{lista.Operator}'," +
+                    $"'{lista.Twr_Kod}'," +
+                    $"{lista.OczekiwanaIlosc}," +
+                    $"{lista.RzeczywistaIlosc}," +
+                    $"{lista.Difference}," +
+                    $"'{lista.DataMM}'";
+
+                    var respone = client.ExecuteSQLCommand(InsertString);
+
+                    odp = respone;
+                    odp = odp.Replace("<ROOT>\r\n  <Table>\r\n    <statuss>", "").Replace("</statuss>\r\n  </Table>\r\n</ROOT>", "");
+                }
+                return odp;
+            });
+        }
 
 
         public async Task<TwrInfo> PobierzTwr(string ean)
@@ -132,7 +157,7 @@ namespace App2.Droid
 
          
         
-        public async Task<SzachoSettings> GetSzachoSettings()
+        public async Task<List<SzachoSettings>> GetSzachoSettings()
         {
 
             return await Task.Run(() =>
@@ -145,11 +170,11 @@ namespace App2.Droid
                 // Zakładając, że chcesz zwrócić pierwszy element z listy
                 if (sttings.Any())
                 {
-                    return sttings[0];
+                    return sttings.ToList();
                 }
                 else
                 {
-                    throw new Exception("Lista produktów jest pusta.");
+                    throw new Exception("nie można sprawidzić wersji");
                 } 
 
             });

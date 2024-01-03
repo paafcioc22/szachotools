@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.PrzyjmijMM.PMM_NaglowekAndMenuViewFlyout"
-             Title="Menu">
+             Title="Menu" Visual="Material">
     
     <StackLayout Padding="20">
         <Grid>
@@ -20,15 +20,27 @@
             </Grid.ColumnDefinitions>
             
             <Label Text="Ustawienia" FontAttributes="Bold" FontSize="Large" />
- 
-            <Label Text="{Binding Source={x:Reference stepper}, Path=Value, StringFormat='Wyświetl mm z ostatnich {0:F0} dni'}" Grid.Row="1" 
-                   HorizontalOptions="CenterAndExpand" Grid.ColumnSpan="2"/>
+
+            <Label  Grid.Row="1" HorizontalOptions="CenterAndExpand" Grid.ColumnSpan="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Wyświetl zatwierdzone mm z ostatnich " />
+                        <Span Text="{Binding Source={x:Reference stepper}, Path=Value, StringFormat='{0:F0}'}"
+                              FontAttributes="Bold"
+                              TextColor="Black" />
+                        <Span Text=" dni" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
             <Stepper Grid.ColumnSpan="2" Grid.Row="2" x:Name="stepper" HorizontalOptions="CenterAndExpand"
-                     Minimum="10" Maximum="1000" Increment="50" Value="{Binding PastDays}"/>
-            <Label Text="zatwierdzone dok. MM" Grid.Row="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
-            <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding CzyZatwierdzone}" VerticalOptions="Center" />
-            <Label Text="Domyślnie pokazane są tylko nie zatwierdzone mm w optimie z 10 dni" Grid.Row="5" Grid.ColumnSpan="2" FontAttributes="Italic"/>
+                     Minimum="10" Maximum="1000" Increment="50" Value="{Binding PastDays}" Scale="1.5"/>
+            <Grid  Grid.Row="4" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"  Grid.ColumnSpan="2">
+                <Label Text="Pokaż zatwierdzone dokumenty MM" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                <Switch Grid.Column="1"  IsToggled="{Binding CzyZatwierdzone}" VerticalOptions="Center" HorizontalOptions="End" ThumbColor="Black" Scale="1.5"/>
+                
+            </Grid>
+            <Label Text="Domyślnie pokazane są tylko MM, które w optimie są w buforze, jeśli chcesz zobaczyć inne- dostosuj filtr" Grid.Row="6" Grid.ColumnSpan="2" FontAttributes="Italic"/>
 
         </Grid>
     </StackLayout>

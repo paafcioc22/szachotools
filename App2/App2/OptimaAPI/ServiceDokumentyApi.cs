@@ -88,7 +88,15 @@ namespace App2.OptimaAPI
 
                 foreach (var item in response.Data)
                 {
-                    DokNaglowekDtos.Add(item);
+                    if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
+                    {
+                       await DeleteDokument(item.Id);
+                    }
+                    else
+                    {
+                        DokNaglowekDtos.Add(item);
+                    }
+
                 }
             }
             else
@@ -275,6 +283,7 @@ namespace App2.OptimaAPI
             }
             else
             {
+                apiResponse.Data = new List<DokNaglowekSmallDto>();
                 apiResponse.ErrorMessage = response.Content;
             }
 

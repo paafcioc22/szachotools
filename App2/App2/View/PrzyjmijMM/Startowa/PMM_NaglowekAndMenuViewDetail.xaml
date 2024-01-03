@@ -1,14 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:converter="clr-namespace:App2.Converter"
              x:Class="App2.View.PrzyjmijMM.PMM_NaglowekAndMenuViewDetail"
-             Title="Lista MM do przyjęcia" NavigationPage.HasNavigationBar="True"     >
-
+             Title="Lista MM do przyjęcia"   
+             NavigationPage.HasNavigationBar="True" Visual="Material"    >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:StatusConverter x:Key="StatusConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_action_search.png" Command="{Binding ToggleSearchCommand}" />
+    </ContentPage.ToolbarItems>
     <Grid>
 
         <StackLayout Padding="10" Spacing="3">
-
-            <ListView x:Name="ListaMMek"  RefreshCommand="{Binding LoadMMNaglowkiCommand}" ItemsSource="{Binding DokumentMMs}"
+            <SearchBar IsVisible="{Binding IsSearchVisible}" 
+                       Text="{Binding SearchQuery, Mode=TwoWay}" 
+                       SearchCommand="{Binding FilterCommand}" Placeholder="wpisz nr mm"  />
+            
+            <!--<ListView x:Name="ListaMMek"  RefreshCommand="{Binding LoadMMNaglowkiCommand}" ItemsSource="{Binding DokumentMMs}"
               CachingStrategy="RecycleElement"  IsPullToRefreshEnabled="True"
               HasUnevenRows="True"           
               VerticalOptions="FillAndExpand" 
@@ -24,7 +36,7 @@
                                     <Label Text="{Binding DataMM}" FontSize="14"/>
                                     <Label Text="{Binding TrN_Opis, StringFormat='opis :{0}'}" FontSize="12"/>
                                 </StackLayout>
-                                <!--<Image Source="{Binding StatusMM, Converter={StaticResource StatusConverter}}"/>-->
+                                --><!--<Image Source="{Binding StatusMM, Converter={StaticResource StatusConverter}}"/>--><!--
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Path=BindingContext.ItemTappedCommand, Source={x:Reference ListaMMek}}" CommandParameter="{Binding .}" />
                                 </StackLayout.GestureRecognizers>
@@ -37,9 +49,33 @@
                Text="Lista jest pusta!" 
                IsVisible="False" 
                HorizontalOptions="CenterAndExpand" 
-               VerticalOptions="CenterAndExpand" />
+               VerticalOptions="CenterAndExpand" />-->
 
-            <Button Text="Zeskanuj dokument MM"  ImageSource="scan48x2.png" ContentLayout="right,10"/>
+            <CollectionView x:Name="ListaMMek"
+                ItemsSource="{Binding DokumentMMs}"
+                SelectionMode="None" 
+                VerticalOptions="FillAndExpand"
+                            EmptyView="Nie znaleziono żadnych dokumentów"> 
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="5" Spacing="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <Label Text="{Binding TrN_DokumentObcy}" FontSize="16" FontAttributes="Bold"/>
+                                <Label Text="{Binding DataMM}" FontSize="14"/>
+                                <Label Text="{Binding TrN_Opis, StringFormat='opis :{0}'}" FontSize="12"/>
+                            </StackLayout>
+                            <Image Source="{Binding IsPrzyjetaMM, Converter={StaticResource StatusConverter}}"/>
+                            <!-- Tutaj możesz umieścić obraz, jeśli potrzebujesz -->
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ItemTappedCommand, Source={x:Reference ListaMMek}}" CommandParameter="{Binding .}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!--<Button Text="Zeskanuj dokument MM" CornerRadius="20"  Command="{Binding InitiateScanCommand}"/>-->
 
         </StackLayout>
         <ActivityIndicator HorizontalOptions="CenterAndExpand" 

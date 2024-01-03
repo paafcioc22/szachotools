@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App2.View.LoginLista">
+             x:Class="App2.View.LoginLista" >
 
     <Grid>
 
@@ -32,10 +32,10 @@
             </StackLayout>
 
             <Entry Placeholder="hasło" x:Name="entry_haslo"  IsPassword="True" Margin="50,0,50,0" Completed="entry_haslo_Completed" ReturnType="Go" />
-            <Button Text="Zaloguj" Clicked="Button_Clicked" HorizontalOptions="FillAndExpand" />
-            <Button Text="Użyj Aparatu" Clicked="UseAparatToScan_Clicked_1" x:Name="UseAparatButton"   HorizontalOptions="FillAndExpand" />
+            <Button Text="Zaloguj" Clicked="Button_Clicked" HorizontalOptions="FillAndExpand" Visual="Material" CornerRadius="20"/>
+            <Button Text="Użyj Aparatu" Clicked="UseAparatToScan_Clicked_1" x:Name="UseAparatButton"   HorizontalOptions="FillAndExpand" Visual="Material" CornerRadius="20"/>
         </StackLayout>
         <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" HorizontalOptions="CenterAndExpand" 
-                           VerticalOptions="CenterAndExpand" />
+                           VerticalOptions="CenterAndExpand" Color="Black" />
     </Grid>
 </ContentPage>

@@ -39,7 +39,10 @@ namespace App2.Model
             {
                 if (url.Contains("://szachownica.com"))
                 {
-                    rtrnUrl = url.Replace("large", otherSize.ToString());
+                    rtrnUrl = url
+                        .Replace("large", otherSize.ToString())
+                        .Replace("home", otherSize.ToString())
+                        .Replace("small", otherSize.ToString());
                 }
                 else
                 {
@@ -50,12 +53,63 @@ namespace App2.Model
                     }
                     else
                     {
-                        rtrnUrl = url.Replace(twrkod.Replace('/', '-') + ".JPG", "") + string.Concat("Miniatury/", twrkod.Replace('/', '-'), ".JPG");
+                        switch (otherSize)
+                        {
+                            case OtherSize.large:
+                                rtrnUrl = GetOriginalUrl(url);
+                                break;
+                            case OtherSize.home:
+                                rtrnUrl = GetOriginalUrl(url);
+                                break;
+                            case OtherSize.small:
+                                 rtrnUrl = GetThumbnailUrl(url, twrkod);
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
                 }
             }
 
             return rtrnUrl;
+        }
+        static string GetThumbnailUrl(string originalUrl, string productCode)
+        {
+            try
+            {
+                // Parsowanie oryginalnego URL
+                var uri = new Uri(originalUrl);
+
+                // Tworzenie segmentów ścieżki
+                var segments = uri.Segments;
+                if (segments.Length < 2) return originalUrl; // Nieprawidłowy format URL
+
+                // Dodanie 'Miniatury' do ścieżki
+                var newPath = Path.Combine(uri.Scheme + "://", uri.Host, segments[1].TrimEnd('/'), "Miniatury", WebUtility.UrlEncode(productCode) + ".JPG");
+
+                return newPath;
+            }
+            catch
+            {
+                // W przypadku błędu, zwróć oryginalny URL
+                return originalUrl;
+            }
+        }
+
+        static string GetOriginalUrl(string thumbnailUrl)
+        {
+            try
+            {
+                 var newPath = thumbnailUrl.Replace("Miniatury/","");
+
+                return newPath;
+            }
+            catch
+            {
+                // W przypadku błędu, zwróć URL miniatury
+                return thumbnailUrl;
+            }
         }
 
         public static async Task<TwrInfo> GetCombinedTwrInfo(string _ean, int NrCennika, RestRequest request, IRestClient client)

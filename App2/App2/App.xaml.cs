@@ -10,6 +10,8 @@ using WebApiLib;
 using WebApiLib.Serwis;
 using App2.View;
 using App2.Services;
+using System.IO;
+using Plugin.Media;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -20,6 +22,20 @@ namespace App2
         public static SessionManager SessionManager { get; set; }= new SessionManager();
 
         NetworkMonitor networkMonitor;
+
+        static SQLiteRepository database;
+
+        public static SQLiteRepository Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new SQLiteRepository(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "InventoriedItems.db3"));
+                }
+                return database;
+            }
+        }
 
 
         private const string bazaConf = "bazaConf";
@@ -37,10 +53,12 @@ namespace App2
 
         public App() 
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF5cXmVCf1JpRGRGfV5yd0VCalhQTnNXUj0eQnxTdEZiWH5ecXJRR2VUU0ZxXQ==");
             InitializeComponent();
             DependencyService.Register<IszachoApi, szachoApi>();
             //MainPage = new NavigationPage( new View.SplashPage());
             networkMonitor = new NetworkMonitor();
+            Plugin.Media.CrossMedia.Current.Initialize();
             MainPage = new NavigationPage( new View.StartPage());
         }
 

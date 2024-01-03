@@ -294,14 +294,14 @@ namespace App2.View
             {
 
 
-                //var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
-                var haslo = await Api.ExecSQLCommandAsync<User>(query);
+                var haslo = await App.TodoManager.PobierzDaneZWeb<User>(query);
+                //var haslo = await Api.ExecSQLCommandAsync<User>(query);
 
-                if (haslo.Count() > 0)
+                if (haslo.Any())
                 {
-                    if (haslo.First().GID == "53")
+                    if (haslo.FirstOrDefault().GID == "53")
                     {
-                        haslo.First().Haslo = "987654";
+                        haslo.FirstOrDefault().Haslo = "987654";
                     }
 
                     var isNumeric = int.TryParse(entry_haslo.Text, out int n);
@@ -335,7 +335,7 @@ namespace App2.View
                 }
                 else
                 {
-                    throw new ArgumentException("Nie udało się pobrać hasła ");
+                    throw new ArgumentException("Nie udało się sprawdzić hasła");
                 }
             }
             catch (Exception s)

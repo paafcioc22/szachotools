@@ -56,15 +56,7 @@
                 IsPassword="True" Margin="0,0,25,0">
           
                     </Entry>-->
-                    <Label Text="Pokaż na liście również zatwierdzone MM (100 dni)" 
-                   HorizontalOptions="FillAndExpand" 
-                   BackgroundColor="Silver" 
-                   HorizontalTextAlignment="Center"/>
-                    <Switch HorizontalOptions="CenterAndExpand"   
-                    IsToggled="False" 
-                    Toggled="Switch_Toggled"
-                    x:Name="SwitchStatus" 
-                    />
+                  
                     <Label Text="Cennik" HorizontalOptions="FillAndExpand" BackgroundColor="Silver" HorizontalTextAlignment="Center"/>
 
                     <Picker Title="cennik" x:Name="pickerlist" 

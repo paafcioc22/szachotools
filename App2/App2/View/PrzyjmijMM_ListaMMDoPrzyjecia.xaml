@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:App2" 
              NavigationPage.HasNavigationBar="false"
              
-             xmlns:App2="clr-namespace:App2.Model">
+             xmlns:App2="clr-namespace:App2.Converter">
               
 
 

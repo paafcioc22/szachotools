@@ -41,7 +41,7 @@ namespace App2.View
             base.OnAppearing();
             PrzyjmijMMClass = new Model.PrzyjmijMMClass();
             //PobierzListe();
-            await PrzyjmijMMClass.getListMM(View.SettingsPage.IsBuforOff);
+            await PrzyjmijMMClass.getListMM(false);
 
             //BindingContext = Model.PrzyjmijMMClass.ListaMMDoPrzyjcia;
             BindingContext = this;

@@ -1,32 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App2.View.PrzyjmijMM.ScanningResultListPage">
-  <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
-    <!--Built in Cells-->
-    <ListView.ItemTemplate>
-        <DataTemplate>
-            <TextCell Text="{Binding .}" />
-        </DataTemplate>
-    </ListView.ItemTemplate>
+             x:Class="App2.View.PrzyjmijMM.ScanningResultListPage" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             Title="Lista zeskanowanych produktów" Visual="Material">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+
+        <!-- ListView zajmuje całą dostępną przestrzeń -->
+        <ListView x:Name="SkanyList" 
+        ItemsSource="{Binding SkanElements}"  
+        HasUnevenRows="False"      
+        RowHeight="125"
+        CachingStrategy="RecycleElement">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        
+                    <SwipeView>
+                        <SwipeView.LeftItems>
+                            <SwipeItems >
+                                <SwipeItem Text="Usuń" 
+                                   IconImageSource="ic_action_delete.png"
+                                   BackgroundColor="Red"
+                                   Command="{Binding BindingContext.DeleteItemCommand, Source={x:Reference SkanyList}}"
+                                   CommandParameter="{Binding .}" 
+                                           />
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <Grid  Padding="10,5,10,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="0.3*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Definiowanie wierszy -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Text="{Binding ItemOrder}" FontAttributes="Bold" FontSize="22" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" TextColor="Black"  />
+                            <Label Text="{Binding Twr_Kod}" Grid.Column="1" Grid.Row="1" FontAttributes="Bold"  />
+                            <Label Text="{Binding Twr_Nazwa}" Grid.Column="1" Grid.Row="2" />
+                            <Label Text="{Binding ActualQuantity, StringFormat='{0} szt'}" Grid.Column="1" Grid.Row="3" FontAttributes="Bold"/>
+                            <ffimageloading:CachedImage Grid.Column="2" Grid.Row="0" Grid.RowSpan="4" VerticalOptions="FillAndExpand"
+                                            Source="{Binding ImageUrl}"
+                                            CacheDuration= "50"
+                                            RetryCount="2"
+                                            RetryDelay="10"
+                                            ErrorPlaceholder= "NotSended"
+                                            Aspect="AspectFill"  />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.OpenSelctedItemCommand, Source={x:Reference SkanyList}}" CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </SwipeView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Przycisk "Generuj Raport Różnic" umieszczony na dole strony -->
+        <Button Grid.Row="1" Text="Generuj Raport Różnic" CornerRadius="20"
+            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Visual="Material"
+            Margin="5" Command="{Binding CreateDiffReportCommand}" />
+
+        <!-- Floating Action Button zastosowany w Grid -->
+        <Button Grid.Row="0" Text="+ Dodaj" Visual="Material"
+            Style="{StaticResource FloatingButton}" 
+            HorizontalOptions="End" VerticalOptions="End" 
+            Margin="0,0,20,20" 
+            Command="{Binding OpenAddElementPageCommand}" />
+    </Grid>
+
+    <!-- Style dla przycisku FAB -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="FloatingButton" TargetType="Button">
+                <Setter Property="WidthRequest" Value="120" />
+                <Setter Property="HeightRequest" Value="60" />
+                <Setter Property="CornerRadius" Value="30" />
+                <Setter Property="BackgroundColor" Value="DarkCyan" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="BorderColor" Value="LightCyan" />
+                <Setter Property="BorderWidth" Value="3" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     
-    <!--Custom View Cells-->
-    <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
-  </ListView>
+ 
 </ContentPage>

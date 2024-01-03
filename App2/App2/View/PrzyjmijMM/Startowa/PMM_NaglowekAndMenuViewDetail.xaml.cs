@@ -19,22 +19,12 @@ namespace App2.View.PrzyjmijMM
             InitializeComponent();
         }
 
-
-
-        private void Initialize()
-        {           
-
-            if (Parent is NavigationPage navigationPage)
-            {
-                navigationPage.BarBackgroundColor = Color.DarkCyan; // Ustaw kolor tła
-                navigationPage.BarTextColor = Color.White; // Ustaw kolor tekstu
-            }
-        }
+         
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            Initialize();
+       
             var viewModel = BindingContext as PMM_NaglowekViewModel;
             if (viewModel != null && viewModel.LoadMMNaglowkiCommand.CanExecute(null))
             {

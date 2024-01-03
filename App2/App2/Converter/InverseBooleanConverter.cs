@@ -4,19 +4,26 @@ using System.Globalization;
 using System.Text;
 using Xamarin.Forms;
 
-namespace App2.Model
+namespace App2.Converter
 {
-    public class StatusConverter : IValueConverter
+    public class InverseBooleanConverter : IValueConverter
     {
-         
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? "Sended.png" : "NotSended.png" ;
+            if (value is bool boolValue)
+            {
+                return !boolValue;
+            }
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return false; 
+            if (value is bool boolValue)
+            {
+                return !boolValue;
+            }
+            return value;
         }
     }
 }

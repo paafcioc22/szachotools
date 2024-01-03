@@ -7,8 +7,10 @@ using Microsoft.AppCenter.Crashes;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using WebApiLib.Serwis;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -22,6 +24,7 @@ namespace App2.View
         public static string user;
         StartPageViewModel viewModel;
         private IAppVersionProvider version;
+        public static IszachoApi Api => DependencyService.Get<IszachoApi>();
         public StartPage()
         {
             InitializeComponent();
@@ -59,32 +62,41 @@ namespace App2.View
                 bulidVer = version.BuildVersion;
 
 
-                settings = await App.TodoManager.GetSzachoSettings();
+                var settingslist = await App.TodoManager.GetSzachoSettings();
+                //var settingslist = await Api.ExecSQLCommandAsync<SzachoSettings>("cdn.PC_SprawdzWersje");
 
-                if (bulidVer < Convert.ToInt16(settings.VersionApp))
+                if(settingslist.Any())
                 {
-                    var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
+                    settings = settingslist.FirstOrDefault();
 
-                    if (update)
+                    if (bulidVer < Convert.ToInt16(settings.VersionApp))
                     {
-                        await version.OpenAppInStore();
+                        var update = await DisplayAlert("Nowa wersja", "Dostępna nowa wersja..Chcesz pobrać(zalecane)??", "Tak", "Nie");
+
+                        if (update)
+                        {
+                            await version.OpenAppInStore(); 
+                        }
+                        else
+                        {
+                            viewModel.IsButtonsEnabled = false;
+                        }
 
                     }
-                    else
-                    {
-                        viewModel.IsButtonsEnabled=false;
-                    }
-
                 }
+                
 
             }
             catch (Exception s)
             {
                 version.ShowShort("Błąd pobierania wersji aplikacji");
+                var app= Application.Current as App ;
                 var properties = new Dictionary<string, string>
                 {
-                    { "wersjabaza", $"{settings.VersionApp}"},
-                    { "wersjaApp", $"{bulidVer}"} 
+                    { "wersjabaza", $"{app.BazaProd}"},
+                    { "wersjaApp", $"{bulidVer}"}, 
+                    { "serwer", $"{app.Serwer}"}, 
+
                 };
                 Crashes.TrackError(s, properties);
                 //await DisplayAlert("Uwaga", "Brak połączenia z internetem", "OK");
@@ -117,45 +129,7 @@ namespace App2.View
         {
             base.OnAppearing();
 
-            //var currentSession = App.SessionManager.CurrentSession;
-            //if (currentSession != null)
-            //{
-            //    // Ustawienie UserName w ViewModel
-            //    var viewModel = BindingContext as StartPageViewModel;
-            //    if (viewModel != null)
-            //    {
-            //        // viewModel.UserName = currentSession.UserName;
-            //        //OdblokujPrzyciski();
-            //    }
-            //}
-            //else
-            //{
-            //    //blokujPrzyciski();
-            //    // Opcjonalnie: przekierowanie do strony logowania lub wyświetlenie komunikatu
-            //    // await Navigation.PushAsync(new LoginPage());
-            //}
-
-            await CheckMinVersionSzachotools();
-
-            //if (!string.IsNullOrEmpty(user) && user != "Wylogowany")
-            //{
-            //    lbl_user.Text = "Zalogowany : " + user; //dodałem zalogowane
-            //}
-
-            //if (user == "Wylogowany")
-            //{
-            //    lbl_user.Text = "Wylogowany"; //dodałem zalogowane
-            //}
-
-
-            //if (string.IsNullOrEmpty(lbl_user.Text) || (lbl_user.Text == "Wylogowany"))
-            //{
-            //    blokujPrzyciski();
-            //}
-            //else
-            //{
-            //    OdblokujPrzyciski();
-            //}
+            await CheckMinVersionSzachotools();            
 
         }
 

@@ -24,46 +24,57 @@ namespace App2.View
             _towar = dane;
             _connection = DependencyService.Get<SQLite.ISQLiteDb>().GetConnection();
             _connection.CreateTableAsync<Model.RaportListaMM>();
-            pobierzdane();
         }
 
-
-        private async void pobierzdane()
+        protected async override void OnAppearing()
         {
-            Model.PrzyjmijMMClass daneZkartylista = new Model.PrzyjmijMMClass();
+            base.OnAppearing();
+            await pobierzdane();
+        }
 
-            if (_towar.twrkod != null)
+        private async Task pobierzdane()
+        {
+            try
             {
-                var daneZkarty = await daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
+                Model.PrzyjmijMMClass daneZkartylista = new Model.PrzyjmijMMClass();
 
-                if (daneZkarty.IsSuccessful)
+                if (_towar.twrkod != null)
                 {
-                    img_foto.Source = daneZkarty.Data.Twr_Url;
-                    lbl_twrcena.Text = daneZkarty.Data.Twr_Cena.ToString();
-                    lbl_twrnazwa.Text = daneZkarty.Data.Twr_Nazwa;
-                    lbl_twrsymbol.Text = daneZkarty.Data.Twr_Symbol;
-                    lbl_twrean.Text = daneZkarty.Data.Twr_Ean;
-                }
-                else
-                {
-                    string Webquery = "cdn.pc_pobierztwr '" + _towar.twrkod + "'";
-                    var twrdane = await App.TodoManager.PobierzTwrAsync(Webquery);
+                    var daneZkarty = await daneZkartylista.PobierzDaneZKarty(_towar.twrkod);
 
-                    if (twrdane !=null)
+                    if (daneZkarty.IsSuccessful)
                     {
-                        img_foto.Source = twrdane.Twr_Url;
-                        lbl_twrcena.Text = twrdane.Twr_Cena.ToString();
-                        lbl_twrnazwa.Text = twrdane.Twr_Nazwa;
-                        lbl_twrsymbol.Text = twrdane.Twr_Symbol;
-                        lbl_twrean.Text = twrdane.Twr_Ean;
+                        img_foto.Source = daneZkarty.Data.Twr_Url;
+                        lbl_twrcena.Text = daneZkarty.Data.Twr_Cena.ToString();
+                        lbl_twrnazwa.Text = daneZkarty.Data.Twr_Nazwa;
+                        lbl_twrsymbol.Text = daneZkarty.Data.Twr_Symbol;
+                        lbl_twrean.Text = daneZkarty.Data.Twr_Ean;
                     }
-                    
+                    else
+                    {
+                        string Webquery = "cdn.pc_pobierztwr '" + _towar.twrkod + "'";
+                        var twrdane = await App.TodoManager.PobierzTwrAsync(Webquery);
+
+                        if (twrdane != null)
+                        {
+                            img_foto.Source = twrdane.Twr_Url;
+                            lbl_twrcena.Text = twrdane.Twr_Cena.ToString();
+                            lbl_twrnazwa.Text = twrdane.Twr_Nazwa;
+                            lbl_twrsymbol.Text = twrdane.Twr_Symbol;
+                            lbl_twrean.Text = twrdane.Twr_Ean;
+                        }
+
+                    }
+
+                    lbl_twr_kod.Text = _towar.twrkod;
+
+                    lbl_ileZMM.Text = _towar.IleZMM.ToString();
+                    entry_ileZeSkan.Text = _towar.IleZeSkan.ToString();
                 }
-
-                lbl_twr_kod.Text = _towar.twrkod;
-
-                lbl_ileZMM.Text = _towar.IleZMM.ToString();
-                entry_ileZeSkan.Text = _towar.IleZeSkan.ToString();
+            }
+            catch (Exception s)
+            {
+                await DisplayAlert("Błąd", s.Message, "OK");
             }
 
            

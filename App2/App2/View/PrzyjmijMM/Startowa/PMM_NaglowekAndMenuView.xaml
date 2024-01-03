@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App2.View.PrzyjmijMM.PMM_NaglowekAndMenuView"
             xmlns:pages="clr-namespace:App2.View.PrzyjmijMM" 
-            NavigationPage.HasNavigationBar="False">
+            NavigationPage.HasNavigationBar="False" Visual="Material">
     
   <FlyoutPage.Flyout>
     <pages:PMM_NaglowekAndMenuViewFlyout x:Name="FlyoutPage" />
