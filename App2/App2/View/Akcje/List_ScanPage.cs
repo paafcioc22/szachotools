@@ -1038,15 +1038,16 @@ namespace App2.View
                     scanPage.ToggleTorch();
                 };
 
-
-
                 try
                 {
 
                     overlay.Children.Add(torch);
 
-                    scanPage = new ZXingScannerPage(
-                        new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay);
+                    scanPage = new ZXingScannerPage
+                               (
+                                 new ZXing.Mobile.MobileBarcodeScanningOptions { DelayBetweenContinuousScans = 3000 }, overlay
+                               );
+
                     scanPage.DefaultOverlayShowFlashButton = true;
                     scanPage.OnScanResult += (result) =>
                         Device.BeginInvokeOnMainThread(() =>

@@ -32,7 +32,7 @@ namespace App2.ViewModel
             serviceApi = new ServicePrzyjmijMM();
             LoadMmElementsCommand = new Command(async () => await ExecuteLoadElementsCommand(dokument.Trn_Trnid));
             StartSkanDostawyCommand = new Command(async () => await OpenScanningProcessWindow());
-            CopyEanCommand = new Command<string>(async (ean) => await ExecuteCopyEanCommand(ean));
+            //CopyEanCommand = new Command<string>(async (ean) => await ExecuteCopyEanCommand(ean));
             Title = dokument.TrN_DokumentObcy;
             this.dokument = dokument;
         }
@@ -47,7 +47,7 @@ namespace App2.ViewModel
         {
             if (!string.IsNullOrWhiteSpace(ean))
             {
-                await Clipboard.SetTextAsync(ean);
+               // await Clipboard.SetTextAsync(ean);
                 Debug.WriteLine($"kopiuje ean: {ean}");
                 // Możesz tu również dodać powiadomienie dla użytkownika
             }
