@@ -862,7 +862,7 @@ namespace App2.View
 
                         foreach (var mm in listaIstniejacych)
                         {
-                            naJakichMM.Add(string.Format($"{mm.MagKod} - {mm.Opis.Replace("Pakował(a):", "")} : {mm.DokElements.First().TwrIlosc} szt"));
+                            naJakichMM.Add(string.Format($"{mm.Id}-{mm.MagKod} - {mm.Opis.Replace("Pakował(a):", "")} : {mm.DokElements.First().TwrIlosc} szt"));
                         }
 
                         //jeśli skanowa > to co już jest i 

@@ -65,16 +65,17 @@ namespace App2.ViewModel
                 ImageUrl= element.Twr_Url,
                 DokumentId=dokument.Trn_Trnid,
                 ActualQuantity= element.RzeczywistaIlosc,
-                 
+                ID=element.Id,
+                ItemOrder=element.Lp 
             };
 
-            var addItemViewModel = new PMM_AddItemViewModel(_repository, dokument, item);
+            var addItemViewModel = new PMM_AddItemViewModel(_repository, dokument, item,element, GroupedDifferences);
             var addItemPage = new AddSkanElementPage
             {
                 BindingContext = addItemViewModel
             };
 
-            await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
+            await Application.Current.MainPage.Navigation.PushAsync(addItemPage);
 
         }
 
@@ -115,7 +116,10 @@ namespace App2.ViewModel
                             MagNumer= magGidnumer,
                             TrnDokumentObcy=dokument.TrN_DokumentObcy,
                             TrnGidNumer=dokument.Trn_Gidnumer,
-                            Operator= ase_operator
+                            Operator= ase_operator,
+                            Id=scannedItem.ID,
+                            Lp= scannedItem.ItemOrder
+
                             
                         });
                     }
@@ -135,7 +139,9 @@ namespace App2.ViewModel
                         MagNumer = magGidnumer,
                         TrnDokumentObcy = dokument.TrN_DokumentObcy,
                         TrnGidNumer = dokument.Trn_Gidnumer,
-                        Operator = ase_operator
+                        Operator = ase_operator,
+                        Id = scannedItem.ID,
+                        Lp = scannedItem.ItemOrder
                     });
                 }
             }
@@ -166,8 +172,18 @@ namespace App2.ViewModel
             }
 
             // Grupowanie różnic
-            var braki = differences.Where(x => x.Difference < 0).OrderBy(x=>x.Difference);
-            var nadstan = differences.Where(x => x.Difference > 0).OrderByDescending(x => x.Difference);
+            //var braki = differences.Where(x => x.Difference < 0).OrderBy(x=>x.Difference);
+            //var nadstan = differences.Where(x => x.Difference > 0).OrderByDescending(x => x.Difference);
+
+            var braki = differences
+                .Where(x => x.Difference < 0)
+                .OrderBy(x => x.Difference)
+                .Select(x => { x.GroupName = "Braki"; return x; });
+
+            var nadstan = differences
+                .Where(x => x.Difference > 0)
+                .OrderByDescending(x => x.Difference)
+                .Select(x => { x.GroupName = "Nadstany"; return x; });
 
             GroupedDifferences.Clear();
             if (braki.Any())

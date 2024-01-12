@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,17 @@ namespace App2.View
         private void OnTorchToggled(object sender, ToggledEventArgs e)
         {
             scannerView.ToggleTorch();
+            //scannerView.IsTorchOn = e.Value;
         }
+
+        //protected override async void OnDisappearing()
+        //{
+        //    base.OnDisappearing();
+        //    await Task.Delay(100);
+        //    if (BindingContext is ZXingViewModel viewModel)
+        //    {
+        //        viewModel.StopScanning();
+        //    }
+        //}
     }
 }

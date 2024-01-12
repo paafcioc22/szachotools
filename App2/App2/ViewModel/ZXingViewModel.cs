@@ -13,9 +13,9 @@ namespace App2.ViewModel
     public  class ZXingViewModel : ViewModelBase
     {
         
-        public AsyncCommand<ZXing.Result> ScanCommand { get; }
+        public Xamarin.Forms.Command<ZXing.Result> ScanCommand { get; }
         public ZXing.Mobile.MobileBarcodeScanningOptions ScannerOptions { get; private set; }
-
+        public event EventHandler<string> ScanCompleted;
 
 
         public bool IsScanning { get; set; }
@@ -24,10 +24,10 @@ namespace App2.ViewModel
 
         public ZXingViewModel()
         {
-            ScanCommand = new AsyncCommand<ZXing.Result>(HandleScanResult);
+            ScanCommand = new Xamarin.Forms.Command<ZXing.Result>(HandleScanResult);
             ScannerOptions = new ZXing.Mobile.MobileBarcodeScanningOptions
             {
-                PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.CODE_128 }
+                PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.EAN_13 }
             };
             IsScanning = true;
             IsAnalyzing = true;
@@ -48,13 +48,18 @@ namespace App2.ViewModel
             }
         }
 
+        public void StopScanning()
+        {
+            IsScanning = false;
+            IsAnalyzing = false;
+        }
 
-        private async Task HandleScanResult(ZXing.Result result)
+
+        private  void HandleScanResult(ZXing.Result result)
         {
             // Logika obsługi zeskanowanego kodu
-            ServicePrzyjmijMM serviceApi = new ServicePrzyjmijMM();
-            var nrMM=  await serviceApi.GetGidNumerFromEANMM(result.Text);
 
+            ScanCompleted?.Invoke(this, result.Text);
         }
 
         private async Task<bool> CheckCameraPermissionAsync()

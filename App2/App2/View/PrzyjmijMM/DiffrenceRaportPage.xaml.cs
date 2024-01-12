@@ -52,9 +52,6 @@ namespace App2.View.PrzyjmijMM
             }
         }
 
-
-
-
         private async void btn_SendRaportMM_Clicked(object sender, EventArgs e)
         {
             btn_SendRaportMM.IsEnabled = false;
@@ -97,7 +94,7 @@ namespace App2.View.PrzyjmijMM
                         else
                         {
                             var magGidnumer = (Application.Current as App).MagGidNumer;
-                            var lista = new List<ListDiffrence>()
+                            var lista2 = new List<ListDiffrence>()
                             {
                                 new ListDiffrence
                                 {
@@ -114,7 +111,7 @@ namespace App2.View.PrzyjmijMM
                             };
 
 
-                            var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista);
+                            var Maglista = await App.TodoManager.InsertDataNiezgodnosci(lista2);
 
                             if (Maglista.ToString() == "OK")
                             {

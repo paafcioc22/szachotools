@@ -1,5 +1,6 @@
 ﻿using App2.Model;
 using App2.ViewModel;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,21 @@ namespace App2.View.PrzyjmijMM
 
         public AddSkanElementPage()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+
+        }
+
+        public enum UserDecision
+        {
+            AddQuantity,
+            ReplaceQuantity,
+            Cancel
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
             MessagingCenter.Subscribe<PMM_AddItemViewModel, InventoriedItem>(this, "AskUserDecision", async (sender, args) =>
             {
 
@@ -51,28 +66,61 @@ namespace App2.View.PrzyjmijMM
                 MessagingCenter.Send(this, "UserDecisionMade", odp);
             });
 
-
-        }
-
-        public enum UserDecision
-        {
-            AddQuantity,
-            ReplaceQuantity,
-            Cancel
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
             if (BindingContext is PMM_AddItemViewModel viewModel)
             {
+                viewModel.RequestDelete += ViewModel_RequestDelete;
+
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
-                if (!viewModel.IsEntryIloscEnabled)
-                    entrySkanEan.Focus();
+
+                var app = Application.Current as App; 
+
+                if (app.Skanowanie == 0)
+                {
+                    if (!viewModel.IsEntryIloscEnabled)
+                        entrySkanEan.Focus();
+                }
             }
 
         }
+
+        private async void ViewModel_RequestDelete(object sender, InventoriedItem e)
+        {
+            if (e.ActualQuantity > 0)
+            {
+
+                var answer = await DisplayAlert("Potwierdzenie", "Czy na pewno chcesz usunąć ten element?", "Tak", "Nie");
+                if (answer)
+                {
+                    // Wywołaj metodę usunięcia w ViewModel
+                    await ((PMM_AddItemViewModel)BindingContext).DeleteExceute(e);
+
+                    var navigation = this.Navigation;
+                    //{App2.View.PrzyjmijMM.AddSkanElementPage}
+                    if (navigation.NavigationStack.Count > 0  )
+                    {
+                        var last = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
+
+                        if (last.GetType().Name == "DiffrenceRaportPage")
+                        {
+                            var pageToRemove1 = navigation.NavigationStack[navigation.NavigationStack.Count - 1];
+
+                            navigation.RemovePage(pageToRemove1);
+
+                        }
+
+                        await navigation.PopAsync();
+                    }
+
+                    //await Navigation.PopModalAsync();
+                    //await Navigation.PopModalAsync();
+                }
+            }
+            else
+            {
+                await DisplayAlert("Ostrzeżenie", "Produkt nie był skanowany - nie możesz go usunąć", "OK");
+            }
+        }
+
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
@@ -91,7 +139,7 @@ namespace App2.View.PrzyjmijMM
             MessagingCenter.Unsubscribe<PMM_AddItemViewModel, InventoriedItem>(this, "AskUserDecision");
 
         }
-              
+
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

@@ -25,11 +25,21 @@
           
         </zxing:ZXingScannerView>
         <zxing:ZXingDefaultOverlay TopText="Rozpocznij skanowanie" 
-                                   ShowFlashButton="True"
+                                   ShowFlashButton="False"
                                    AutomationId="zxingDefaultOverlay">
-            <Switch IsToggled="{Binding IsTorchOn}"
-                    Toggled="OnTorchToggled" />
+            <!--<Switch IsToggled="{Binding IsTorchOn}"
+                    Toggled="OnTorchToggled" />-->
+                                   <!--VerticalOptions="Start"-->
+                                    <!--BackgroundColor="Transparent"--> 
         </zxing:ZXingDefaultOverlay>
+        <StackLayout VerticalOptions="End" HorizontalOptions="FillAndExpand"
+                        BackgroundColor="#AA000000" Padding="12">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="Latarka" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Switch IsToggled="{Binding IsTorchOn}" Toggled="OnTorchToggled" HorizontalOptions="Center"/>
+            </StackLayout>
+        </StackLayout>
+
     </Grid>
 
 </ContentPage>

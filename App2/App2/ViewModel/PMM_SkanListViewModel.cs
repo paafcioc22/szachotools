@@ -67,7 +67,7 @@ namespace App2.ViewModel
                 BindingContext = addItemViewModel
             };
 
-            await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
+            await Application.Current.MainPage.Navigation.PushAsync(addItemPage);
         }
 
         private async Task OpenDiffRaportPage()
@@ -90,7 +90,7 @@ namespace App2.ViewModel
                 BindingContext = addItemViewModel
             };
 
-            await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
+            await Application.Current.MainPage.Navigation.PushAsync(addItemPage);
 
         }
 

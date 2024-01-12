@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     
              xmlns:local="clr-namespace:App2"
-             xmlns:local1="clr-namespace:App2.Converter"
+             xmlns:local1="clr-namespace:App2.Converter" 
+             xmlns:local2="clr-namespace:App2.Effects"
              x:Class="App2.View.StartCreateMmPage"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
@@ -13,51 +14,65 @@
             <local1:StringToColorConverter x:Key="StringToColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <StackLayout Padding="10" Spacing="10">
-        <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand" Orientation="Vertical">
-            <Label Text="Lista MMek do wygenerowania" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
-                <Label Text="Oddział" HorizontalOptions="StartAndExpand" FontSize="15" TextColor="Bisque"/>
-                <Label Text="Opis" HorizontalOptions="CenterAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="Center"/>
-                <Label Text="Export?" HorizontalOptions="EndAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="End"/>
+    <Grid>
+
+        <StackLayout Padding="10" Spacing="10">
+            <StackLayout BackgroundColor="DarkCyan" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                <Label Text="Lista MMek do wygenerowania" HorizontalOptions="Center" FontSize="20" TextColor="Bisque"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                    <Label Text="Oddział" HorizontalOptions="StartAndExpand" FontSize="15" TextColor="Bisque"/>
+                    <Label Text="Opis" HorizontalOptions="CenterAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="Center"/>
+                    <Label Text="Export?" HorizontalOptions="EndAndExpand" FontSize="15" TextColor="Bisque" HorizontalTextAlignment="End"/>
+
+                </StackLayout>
 
             </StackLayout>
-
-        </StackLayout>
-        <ListView x:Name="ListaMMek"  x:FieldModifier="public" ItemsSource="{Binding DokNaglowekDtos}"
+            <ListView x:Name="ListaMMek"  x:FieldModifier="public" ItemsSource="{Binding DokNaglowekDtos}"
                   ItemTapped="ListaMMek_ItemTapped" SeparatorColor="DeepSkyBlue" SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement" 
                   HasUnevenRows="True"  
-                  VerticalOptions="FillAndExpand">
-            <ListView.ItemTemplate>
-                <DataTemplate  >
-                    <ViewCell>
-                        <ViewCell.ContextActions>
-                            <MenuItem Text="Usuń" Clicked="Delete_Clicked" IsDestructive="True" CommandParameter="{Binding .}"/>
-                        </ViewCell.ContextActions>
-                        <StackLayout Padding="10" Orientation="Horizontal">
-                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label Text="{Binding NumerDokumentu}" TextColor="{Binding IsFinish, Converter={StaticResource Key=StringToColorConverter}}" FontFamily="MarkerFelt-Thin" FontAttributes="Bold" FontSize="16"/>
-                                <Label Text="{Binding Opis}" FontSize="14"/>
-                                <Label Text="{Binding MagKod, StringFormat='do : {0}'}" FontSize="14"/>
-                                <Label Text="{Binding CreateDokDate}" FontSize="12"/>
-                            </StackLayout>
-                            <CheckBox   x:Name="boxIsExport" HorizontalOptions="End"
+                  VerticalOptions="FillAndExpand"
+                  RefreshCommand="{Binding LoadMMCommand}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsBusy}">
+                <ListView.ItemTemplate>
+                    <DataTemplate  >
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Usuń" Clicked="Delete_Clicked" IsDestructive="True" CommandParameter="{Binding .}"/>
+                            </ViewCell.ContextActions>
+                            <StackLayout Padding="10" Orientation="Horizontal">
+                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Id, StringFormat='Id : {0}'}" FontAttributes="Bold" FontSize="16"/>
+                                    <Label Text="{Binding NumerDokumentu}" TextColor="{Binding IsFinish, Converter={StaticResource Key=StringToColorConverter}}" FontFamily="MarkerFelt-Thin" FontAttributes="Bold" FontSize="16"/>
+                                    <Label Text="{Binding Opis}" FontSize="14"/>
+                                    <Label Text="{Binding MagKod, StringFormat='do : {0}'}" FontSize="14"/>
+                                    <Label Text="{Binding CreateDokDate}" FontSize="12"/>
+                                </StackLayout>
+                                <CheckBox   x:Name="boxIsExport" HorizontalOptions="End"
                                       Color="#166B0A"   Scale="2"
                                       CheckedChanged="CheckBox_CheckedChanged"  
                                       IsChecked="{Binding IsExport}" 
                                       >
-                                <!--<CheckBox.BindingContext>
+                                    <!--<CheckBox.BindingContext>
 									<Model:DokMM/>
 								</CheckBox.BindingContext>-->
-                            </CheckBox>
-                        </StackLayout>
-                    </ViewCell>
+                                </CheckBox>
+                            </StackLayout>
+                        </ViewCell>
 
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10"/>
-        <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
-    </StackLayout>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Wyświetl mmki już wyeksportowane do optimy"/>
+                <Switch IsToggled="{Binding FinishedToo}" >
+                   
+                </Switch>
+            </StackLayout>
+            <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
+        </StackLayout>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"  IsRunning="{Binding IsBusy}"  
+                           HorizontalOptions="CenterAndExpand" Color="DarkCyan"
+                           VerticalOptions="CenterAndExpand"/>
+    </Grid>
 </ContentPage>

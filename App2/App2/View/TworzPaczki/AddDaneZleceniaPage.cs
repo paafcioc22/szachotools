@@ -86,8 +86,17 @@ namespace App2.View
         private async void Button_Clicked(object sender, EventArgs e) //zapisz mm
         {
             var app = Application.Current as App;
+
+
             try
             {
+                if(app.MagGidNumer == 0)
+                {
+                    var magid = await SettingsPage.GetGidnumer();
+                    app.MagGidNumer = (short)magid.Id;
+
+                }
+
                 if (_magDcl.Text == null || _opis.Text == null)
                 {
                     await DisplayAlert(null, "Nie wypełeniono wszystkich danych..", "OK");

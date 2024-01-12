@@ -1,31 +1,24 @@
-﻿using System;
+﻿using App2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
 namespace App2.OptimaAPI
 {
-    public class BaseService : INotifyPropertyChanged
+    public class BaseService : ViewModelBase //INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private bool _isExport { set; get; }
-        public Boolean IsExport
+
+     
+        private bool _isExport;
+        public bool IsExport
         {
-            get { return _isExport; }
-            set
-            {
-                _isExport = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExport)));
-            }
+            get => _isExport;
+            set => _isExport = SetProperty(ref _isExport, value);
         }
 
-        protected void OnPropertyChanged(String name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
+
+        
+
     }
 }

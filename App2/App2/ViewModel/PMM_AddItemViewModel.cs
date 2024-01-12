@@ -1,7 +1,9 @@
 ﻿using App2.Model;
 using App2.Model.ApiModel;
 using App2.Services;
+using App2.View;
 using App2.View.PrzyjmijMM;
+using MvvmHelpers;
 using MvvmHelpers.Commands;
 using System;
 using System.Diagnostics;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WebApiLib.Serwis;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using static App2.View.PrzyjmijMM.AddSkanElementPage;
 
@@ -20,6 +23,21 @@ namespace App2.ViewModel
         private PMM_DokNaglowek _dokument;
         private TwrInfo _selectedTwrInfo;
         private InventoriedItem _existingItem;
+        //private readonly PMM_RaportElement element;
+
+        private PMM_RaportElement _element;
+        public PMM_RaportElement Element
+        {
+            get => _element;
+            set
+            {
+                SetProperty(ref _element, value);
+                OnPropertyChanged(nameof(IsDeleteButtonVisible)); // Powiadom o zmianie widoczności przycisku
+            }
+        }
+
+
+        private readonly ObservableRangeCollection<PMM_DiffRaportViewModel.Grouping<string, PMM_RaportElement>> groupedDifferences;
         private string? _scannedEan;
         private int? _inventoriedQuantity;
         private int _itemOrder;
@@ -27,7 +45,7 @@ namespace App2.ViewModel
         private int _valueFromDok;
         private bool _isEntryIloscEnabled;
         private UserDecision userDecision;
-
+        private InventoriedItem item;
 
         public bool IsWarrningEnable => !_isEntryIloscEnabled && _isEditMode; 
 
@@ -72,9 +90,23 @@ namespace App2.ViewModel
 
         public AsyncCommand SaveCommand { get; private set; }
         public ICommand ScanCommand { get; private set; }
+        public ICommand DeleteCommand { get; private set; }
+        public ICommand StartCameraCommand { get; private set; }
         public static IszachoApi Api => DependencyService.Get<IszachoApi>();
 
-        public bool IsEditMode { get => _isEditMode; set => SetProperty(ref _isEditMode, value); }
+        public bool IsEditMode 
+        { 
+            get => _isEditMode; 
+            set
+            {
+                SetProperty(ref _isEditMode, value);
+                OnPropertyChanged(nameof(IsDeleteButtonVisible)); // Powiadom o zmianie widoczności przycisku
+            }
+        }
+        public bool IsDeleteButtonVisible => IsEditMode && (Element?.GroupName == "Nadstany" ||Element == null);
+
+
+        public event EventHandler<InventoriedItem> RequestDelete;
 
         public PMM_AddItemViewModel(SQLiteRepository repository, PMM_DokNaglowek dokument)
         {
@@ -86,6 +118,7 @@ namespace App2.ViewModel
             SaveCommand = new AsyncCommand(Save, _ => CanSave());
             //CheckAndSaveItemCommand = new Command<InventoriedItem>(async item => await CheckAndSaveItem(item));
             ScanCommand = new Xamarin.Forms.Command<string>(async (ean) => await ScanForProduct(ean));
+            StartCameraCommand = new Xamarin.Forms.Command(async () => await InitiateScan());
 
             MessagingCenter.Subscribe<AddSkanElementPage, UserDecision>(this, "UserDecisionMade", (sender, decision) =>
             {
@@ -96,12 +129,17 @@ namespace App2.ViewModel
             });
         }
 
-        public PMM_AddItemViewModel(SQLiteRepository repository, PMM_DokNaglowek dokument, InventoriedItem item)
+        public PMM_AddItemViewModel(SQLiteRepository repository, PMM_DokNaglowek dokument, InventoriedItem item
+            , PMM_RaportElement element = null
+            , MvvmHelpers.ObservableRangeCollection<PMM_DiffRaportViewModel.Grouping<string, PMM_RaportElement>> groupedDifferences = null)
         {
             _repository = repository;
             _dokument = dokument;
             _existingItem = item;
+            this.Element = element;
+            this.groupedDifferences = groupedDifferences;
             SaveCommand = new AsyncCommand(Save, _ => CanSave());
+            DeleteCommand = new Xamarin.Forms.Command(() => OnDeleteRequested(item));
 
             SelectedTwrInfo = new TwrInfo()
             {
@@ -125,6 +163,71 @@ namespace App2.ViewModel
             InventoriedQuantity = item.ActualQuantity;
 
         }
+
+        private async Task InitiateScan()
+        {
+            if (await CheckCameraPermissionAsync())
+            {
+                var zxingiewModel = new ZXingViewModel();
+                var addItemPage = new ZxingScannerPage
+                {
+                    BindingContext = zxingiewModel
+                };
+
+                await Task.Delay(100);
+                await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
+
+                zxingiewModel.ScanCompleted +=async (sender, result) =>
+                {
+                    // Logika obsługi wyniku skanowania
+                     ScannedEan=result;
+                     await Task.Delay(100);
+                     await Application.Current.MainPage.Navigation.PopModalAsync();
+                     await ScanForProduct(ScannedEan);
+                     zxingiewModel.StopScanning();
+                };
+
+            }
+            else
+            {
+                // Uprawnienia nie przyznane, pokaż komunikat
+                await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
+            }
+        }
+
+        private void OnDeleteRequested(InventoriedItem item)
+        {
+            // Przekaż prośbę o usunięcie do widoku
+            RequestDelete?.Invoke(this, item);
+        }
+        public async Task DeleteExceute(InventoriedItem item)
+        {
+            await _repository.DeleteItemAsync(item);
+
+            if (groupedDifferences!=null)
+            {
+                foreach (var group in groupedDifferences)
+                {
+                    if (group.Contains(Element))
+                    {
+                        group.Remove(Element);
+
+                        // Jeśli grupa jest teraz pusta, możesz zdecydować się na jej usunięcie
+                        if (!group.Any())
+                        {
+                            groupedDifferences.Remove(group);
+                        }
+
+                        break; // Przerwij pętlę po usunięciu elementu
+                    }
+                }
+            }
+
+        }
+
+        
+
+      
 
         private bool CanSave()
         {
@@ -185,7 +288,7 @@ namespace App2.ViewModel
                 if (_existingItem == null || userDecision == UserDecision.Cancel)
                 {
                     // Zakończ operację zapisu i wróć do poprzedniego okna
-                    await Application.Current.MainPage.Navigation.PopModalAsync();
+                    await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }
             catch (Exception ex)
@@ -224,7 +327,7 @@ namespace App2.ViewModel
 
                             MessagingCenter.Send(this, "RefreshReport", true);
 
-                            await Application.Current.MainPage.Navigation.PopModalAsync();
+                            //await Application.Current.MainPage.Navigation.PopAsync();
 
                         }
                     }
@@ -258,7 +361,7 @@ namespace App2.ViewModel
                 if (_existingItem == null || userDecision == UserDecision.Cancel)
                 {
                     // Zakończ operację zapisu i wróć do poprzedniego okna
-                    await Application.Current.MainPage.Navigation.PopModalAsync();
+                    await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }
             catch (Exception s)
@@ -338,6 +441,16 @@ namespace App2.ViewModel
             {
                 throw new Exception("nie znaleziono produktu o tym eanie");
             }
+        }
+
+        private async Task<bool> CheckCameraPermissionAsync()
+        {
+            var granted = await Permissions.CheckStatusAsync<Permissions.Camera>();
+            if (granted != PermissionStatus.Granted)
+            {
+                granted = await Permissions.RequestAsync<Permissions.Camera>();
+            }
+            return granted == PermissionStatus.Granted;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace App2.Model
 {
     public class PMM_RaportElement
     {
+        public int Id { get; set; }
         public string Twr_Ean { get; set; }
         public string Twr_Url { get; set; }
         public string Twr_Kod { get; set; }
@@ -19,5 +20,7 @@ namespace App2.Model
         public string TrnDokumentObcy { get; set; }
         public string DataMM { get; set; }
         public string Operator { get; set; }
+        public int Lp { get; internal set; }
+        public string GroupName { get; set; }
     }
 }

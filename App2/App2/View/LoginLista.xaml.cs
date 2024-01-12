@@ -54,7 +54,10 @@ namespace App2.View
 
             this.BindingContext = this;
 
-            if (SettingsPage.SelectedDeviceType == 1)
+
+            var app = Application.Current as App;
+
+            if (app.Skanowanie == 1)
                 UseAparatButton.IsVisible = false;
         }
 
@@ -66,7 +69,7 @@ namespace App2.View
             await GetLogins();
         }
 
-        public async void SkanujIdetyfikator()
+        public async Task SkanujIdetyfikator()
         {
         
             var testCamera = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
@@ -154,7 +157,9 @@ namespace App2.View
 
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
                         {
-                            if (scanPage.IsScanning) scanPage.AutoFocus(); return true;
+                            if (scanPage.IsScanning) 
+                                scanPage.AutoFocus(); 
+                            return true;
                         });
                         Navigation.PopModalAsync();
                         entry_haslo.Text = (result.Text);
@@ -186,9 +191,11 @@ namespace App2.View
                     _user = _wybranyPracownik.OpeKod; //"Zalogowany : "
                     _nazwisko = _wybranyPracownik.OpeNazwa;
 
-                    if (SettingsPage.SelectedDeviceType == 1)
+                    var app = Application.Current as App;
+
+                    if (app.Skanowanie == 1)             
                     {
-                        SkanujIdetyfikator();
+                        await SkanujIdetyfikator();
                     }
                     else
                     {
@@ -422,15 +429,15 @@ namespace App2.View
             }
         }
 
-        private void UseAparatToScan_Clicked_1(object sender, EventArgs e)
+        private async void UseAparatToScan_Clicked_1(object sender, EventArgs e)
         {
 
-            DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
-            ListViewLogin.ItemSelected += (source, args) =>
+            await DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
+            ListViewLogin.ItemSelected += async (source, args) =>
             {
                 var pracownik = args.SelectedItem as ViewUser;
 
-                SkanujIdetyfikator();
+                await SkanujIdetyfikator();
 
             };
         }

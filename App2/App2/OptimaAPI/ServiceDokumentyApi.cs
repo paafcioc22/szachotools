@@ -2,6 +2,7 @@
 using App2.Model.ApiModel;
 using Azure.Core;
 using Azure.Storage.Blobs.Models;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace App2.OptimaAPI
@@ -17,9 +19,25 @@ namespace App2.OptimaAPI
     public class ServiceDokumentyApi : BaseService
     {
         private RestClient _client;
-        public ObservableCollection<DokNaglowekDto> DokNaglowekDtos { get; set; } =
-            new ObservableCollection<DokNaglowekDto>();
+        private bool _finishedToo;
+        public ObservableRangeCollection<DokNaglowekDto> DokNaglowekDtos { get; set; } =
+            new ObservableRangeCollection<DokNaglowekDto>();
 
+        public ICommand LoadMMCommand {  get; set; }
+        public ICommand SwitchToggledCommand { get; private set; }
+        public bool FinishedToo
+        {
+            get => _finishedToo;
+            //set => _finishedToo = SetProperty(ref _finishedToo, value);
+            set
+            {
+                if (SetProperty(ref _finishedToo, value))
+                {
+                    // Komenda jest wywoływana tylko wtedy, gdy wartość się zmienia.
+                    LoadMMCommand.Execute(null);
+                }
+            }
+        }
 
         public static ObservableCollection<DokElementDto> DokElementsDtos { get; set; } =
             new ObservableCollection<DokElementDto>();
@@ -29,7 +47,27 @@ namespace App2.OptimaAPI
             var app = Application.Current as App;
 
             _client = new RestClient($"http://{app.Serwer}");
+            LoadMMCommand = new Command(async ()=> await LoadMMExec(FinishedToo) );
+            //SwitchToggledCommand = new Command<bool>(ExecuteSwitchToggled);
+        }
 
+        private async void ExecuteSwitchToggled(bool obj)
+        {
+            await LoadMMExec(obj);
+        }
+
+        public async Task LoadMMExec(bool finishedToo)
+        {
+            IsBusy = true;
+
+          //  DokNaglowekDtos.Clear();
+            
+            if(finishedToo)
+                await GetDokAll(GidTyp.Mm, true);
+            
+            await GetDokAll(GidTyp.Mm, false);
+
+            IsBusy = false;
         }
 
         public async Task<ApiResponse<DokNaglowekDto>> SaveDokument(CreateDokumentNaglowek dokument)
@@ -85,19 +123,42 @@ namespace App2.OptimaAPI
             {
 
                 apiResponse.Data = response.Data;
+                var itemsToAdd = new List<DokNaglowekDto>();
+                var idsToDelete = new List<int>();
 
                 foreach (var item in response.Data)
                 {
                     if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
                     {
-                       await DeleteDokument(item.Id);
+                        idsToDelete.Add(item.Id);
                     }
                     else
                     {
-                        DokNaglowekDtos.Add(item);
+                        itemsToAdd.Add(item);
                     }
-
                 }
+
+                var tmp = itemsToAdd.OrderBy(s => s.Id);
+
+                DokNaglowekDtos.AddRange(tmp); // Dodaj wszystkie naraz
+
+                // Usuń dokumenty poza pętlą
+                foreach (var id in idsToDelete)
+                {
+                    await DeleteDokument(id);
+                }
+                //foreach (var item in response.Data)
+                //{
+                //    if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
+                //    {
+                //       await DeleteDokument(item.Id);
+                //    }
+                //    else
+                //    {
+                //        DokNaglowekDtos.Add(item);
+                //    }
+
+                //}
             }
             else
             {
@@ -298,7 +359,7 @@ namespace App2.OptimaAPI
             var response = await GetDokWithElementByTwrkod(twrkod);
             if (response.IsSuccessful)
             {
-                isFound = response.Data.Any(s => s.Id != dokumentId);
+                isFound = response.Data.Any(s => s.Id != dokumentId && string.IsNullOrEmpty(s.NumerDokumentu));
             }
             return isFound;
         }
@@ -323,6 +384,7 @@ namespace App2.OptimaAPI
             if (smallDto != null)
             {
                 total = smallDto
+                       // .Where(nn=> string.IsNullOrEmpty(nn.NumerDokumentu))
                         .SelectMany(naglowek => naglowek.DokElements)     // połącz wszystkie listy DokElements w jedną
                         .Where(element => element.TwrIlosc.HasValue)
                         .Sum(element => element.TwrIlosc.Value);
