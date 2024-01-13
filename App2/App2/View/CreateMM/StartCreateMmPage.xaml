@@ -62,12 +62,12 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10"/>
+            <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10" Visual="Material" CornerRadius="20"/>
             <StackLayout Orientation="Horizontal">
-                <Label Text="Wyświetl mmki już wyeksportowane do optimy"/>
-                <Switch IsToggled="{Binding FinishedToo}" >
-                   
+                <Label Text="Wyświetl wyeksportowane do optimy"/>
+                <Switch IsToggled="{Binding FinishedToo}" >                   
                 </Switch>
+                <Button Text="?" CornerRadius="20" BorderColor="DarkCyan" HorizontalOptions="End" FontAttributes="Bold" WidthRequest="40"   />
             </StackLayout>
             <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
         </StackLayout>

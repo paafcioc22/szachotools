@@ -60,7 +60,7 @@ namespace App2.OptimaAPI
         {
             IsBusy = true;
 
-          //  DokNaglowekDtos.Clear();
+            DokNaglowekDtos.Clear();
             
             if(finishedToo)
                 await GetDokAll(GidTyp.Mm, true);
@@ -147,6 +147,7 @@ namespace App2.OptimaAPI
                 {
                     await DeleteDokument(id);
                 }
+
                 //foreach (var item in response.Data)
                 //{
                 //    if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
