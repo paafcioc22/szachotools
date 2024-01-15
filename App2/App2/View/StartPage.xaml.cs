@@ -90,12 +90,14 @@ namespace App2.View
             catch (Exception s)
             {
                 version.ShowShort("Błąd pobierania wersji aplikacji");
+                var isNet = CheckInternetConnection();
                 var app= Application.Current as App ;
                 var properties = new Dictionary<string, string>
                 {
                     { "wersjabaza", $"{app.BazaProd}"},
                     { "wersjaApp", $"{bulidVer}"}, 
                     { "serwer", $"{app.Serwer}"}, 
+                    { "internet", $"{isNet.ToString()}"} 
 
                 };
                 Crashes.TrackError(s, properties);

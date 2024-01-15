@@ -81,7 +81,7 @@ namespace App2.View.PrzyjmijMM
                 }
                 else
                 {
-                    if (viewModel.IsFirstLoad)
+                    if (viewModel.IsFirstLoad && !viewModel.IsEditMode)
                     {
                         await viewModel.InitiateScan();
                         viewModel.IsFirstLoad = false;

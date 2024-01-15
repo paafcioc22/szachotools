@@ -31,7 +31,7 @@ namespace App2.ViewModel
         public PMM_DiffRaportViewModel(List<InventoriedItem> skanElements, 
                 PMM_DokNaglowek dokument)
         {
-            LoadDataCommand = new Command(() => GenerateDifferenceReport(dokument, skanElements));
+            LoadDataCommand = new Command(async() => await GenerateDifferenceReport(dokument, skanElements));
             OpenSelctedItemCommand = new Command<PMM_RaportElement>(OnItemTapped);
             Title = $"Raport {dokument.TrN_DokumentObcy}";
             SkanElements = skanElements;
@@ -42,7 +42,7 @@ namespace App2.ViewModel
                 if (changesMade)
                 {
                     var items = await App.Database.GetItemsAsync(dokument.Trn_Trnid);
-                    GenerateDifferenceReport(dokument, items);
+                    await GenerateDifferenceReport(dokument, items);
                     _isFirstLoad = false;
                     Debug.WriteLine("odpalam z mediacenter");
                 }
@@ -79,7 +79,7 @@ namespace App2.ViewModel
 
         }
 
-        public void GenerateDifferenceReport(DokumentMM dokument, List<InventoriedItem> inventoriedItems)
+        public async Task GenerateDifferenceReport(DokumentMM dokument, List<InventoriedItem> inventoriedItems)
         {
             var differences = new List<PMM_RaportElement>();
 
@@ -87,12 +87,12 @@ namespace App2.ViewModel
 
             var magGidnumer = (Application.Current as App).MagGidNumer;
 
-            //if (magGidnumer == 0)
-            //{
-            //    ServicePrzyjmijMM api = new ServicePrzyjmijMM();
-            //    var magazyn = await api.GetSklepMagNumer();
-            //    magGidnumer = (short)magazyn.Id;
-            //}
+            if (magGidnumer == 0)
+            {
+                ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                var magazyn = await api.GetSklepMagNumer();
+                magGidnumer = (short)magazyn.Id;
+            }
 
             // Sprawdzenie zeskanowanych elementów
             foreach (var scannedItem in inventoriedItems)

@@ -25,20 +25,27 @@ namespace App2.View.PrzyjmijMM
 
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            if (BindingContext is PMM_DiffRaportViewModel viewModel)
+            try
             {
-                // viewModel.LoadDataCommand.Execute(null);
-                Debug.WriteLine("odpalam a onapreainh");
-
-                if (viewModel._isFirstLoad)
+                if (BindingContext is PMM_DiffRaportViewModel viewModel)
                 {
-                    viewModel.LoadDataCommand.Execute(null);
-                    viewModel._isFirstLoad = false; // Ustawienie flagi na false po pierwszym załadowaniu
+                    // viewModel.LoadDataCommand.Execute(null);
+                    Debug.WriteLine("odpalam a onapreainh");
+
+                    if (viewModel._isFirstLoad)
+                    {
+                        viewModel.LoadDataCommand.Execute(null);
+                        viewModel._isFirstLoad = false; // Ustawienie flagi na false po pierwszym załadowaniu
+                    }
                 }
+            }
+            catch (Exception s)
+            {
+                await DisplayAlert("Uwaga", "Wystąpił nieoczekiwany błąd - wygeneruj raport jeszcze raz", "OK");
             }
 
         }

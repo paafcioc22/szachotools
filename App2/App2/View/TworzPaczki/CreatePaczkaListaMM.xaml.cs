@@ -128,7 +128,7 @@ namespace App2.View.TworzPaczki
                 zxing = new ZXingScannerView
                 {
 
-                    IsScanning = false,
+                    IsScanning = true,
                     IsTorchOn = false,
                     IsAnalyzing = false,
                     AutomationId = "zxingDefaultOverlay",//zxingScannerView

@@ -351,6 +351,13 @@ namespace App2.View.CreateMM
 
                         int.TryParse(ilosc.Text, out int iloscSkanowana);
 
+                        //todo : dodaj to poźniej - chcę zobaczyć skale problemu
+                        //if (twr_info == null)
+                        //{
+                        //    await DisplayAlert(null, "Błąd pobierania karty towarowej", "OK");
+                        //    return;
+                        //}
+
                         createElementDto = new CreateDokElementDto()
                         {
                             DokTyp = (int)GidTyp.Mm,
@@ -441,10 +448,11 @@ namespace App2.View.CreateMM
             catch (Exception s)
             {
                 await DisplayAlert("błąd", s.Message, "OK");
+                var kod = twr_info != null ? twr_info.Twr_Kod : "kod niezaczytany";
                 var properties = new Dictionary<string, string>
                 {
                     {"conn", $"/api/dokument/{dokumentId}/element" },
-                    {"towar", twr_info.Twr_Kod}, 
+                    {"towar", kod}, 
                     {"user", App.SessionManager.CurrentSession.UserName }
                 };
 
