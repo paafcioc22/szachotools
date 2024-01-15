@@ -34,9 +34,18 @@ namespace App2.Droid
             get
             {
                 var context = Android.App.Application.Context;
-                //var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
-                return info.LongVersionCode;
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.P)
+                {
+                    return info.LongVersionCode; // Dla Android 9.0 i nowszych
+                }
+                else
+                {
+#pragma warning disable CS0618 // Typ lub składowa jest przestarzała/deprecated
+                    return info.VersionCode; // Dla starszych wersji Android
+#pragma warning restore CS0618 // Typ lub składowa jest przestarzała/deprecated
+                }
             }
         }
         string _packageName => Android.App.Application.Context.PackageName;

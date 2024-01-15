@@ -31,8 +31,8 @@
                   ItemTapped="ListaMMek_ItemTapped" SeparatorColor="DeepSkyBlue" SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement" 
                   HasUnevenRows="True"  
-                  VerticalOptions="FillAndExpand"
-                  RefreshCommand="{Binding LoadMMCommand}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsBusy}">
+                  VerticalOptions="FillAndExpand">
+                <!--RefreshCommand="{Binding LoadMMCommand}" IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsBusy}"-->
                 <ListView.ItemTemplate>
                     <DataTemplate  >
                         <ViewCell>
@@ -62,12 +62,20 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10" Visual="Material" CornerRadius="20"/>
+            <Button Text="Dodaj MMkę" Clicked="Btn_AddMm_Clicked" ImageSource="add48x2.png" ContentLayout="right,10" CornerRadius="20"/>
             <StackLayout Orientation="Horizontal">
-                <Label Text="Wyświetl wyeksportowane do optimy"/>
-                <Switch IsToggled="{Binding FinishedToo}" >                   
+                <Label Text="Wyświetl wyeksportowane do optimy" VerticalOptions="Center"/>
+                <Switch IsToggled="{Binding FinishedToo}" ThumbColor="DarkCyan" OnColor="Black">
                 </Switch>
-                <Button Text="?" CornerRadius="20" BorderColor="DarkCyan" HorizontalOptions="End" FontAttributes="Bold" WidthRequest="40"   />
+                <Button Text="?" CornerRadius="20" 
+                         BorderColor="DarkCyan" x:Name="btn_help"
+                         HorizontalOptions="EndAndExpand" 
+                         FontAttributes="Bold" 
+                         WidthRequest="40" 
+                         BackgroundColor="White"  
+                         BorderWidth="4"
+                         Clicked="btn_help_Clicked"
+                         />
             </StackLayout>
             <!--<Button Text="Odśwież listę mmek" Clicked="Button_Clicked_3" Image="refresh48x2.png" ContentLayout="right,10"/>-->
         </StackLayout>

@@ -15,7 +15,7 @@ namespace App2.View
 	public partial class StartCreateMmPage : ContentPage
 	{
         private Timer _timer;
-
+        private bool isUpdatingList = false;
         ServiceDokumentyApi dokumentyApi;
         public StartCreateMmPage ()
 		{
@@ -38,9 +38,13 @@ namespace App2.View
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
+                isUpdatingList = true;
+                //Debug.WriteLine("jestem w update list metod -timer-  isUpdatingList=true");
                 // Logika aktualizacji listy, na przykład:
                 //await LoadMMExec(FinishedToo);
-            await dokumentyApi.LoadMMExec(dokumentyApi.FinishedToo);
+                await dokumentyApi.LoadMMExec(dokumentyApi.FinishedToo);
+                //Debug.WriteLine("koniec metody isupdte=false");
+                isUpdatingList = false;
             });
         }
         protected override void OnDisappearing()
@@ -105,22 +109,34 @@ namespace App2.View
          
         private async void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            
-            ViewCell cell = (sender as CheckBox).Parent.Parent as ViewCell;
 
-            var model = cell.BindingContext as DokNaglowekDto;
+            if (isUpdatingList) return;
+            //ViewCell cell = (sender as CheckBox).Parent.Parent as ViewCell;
+
+            var checkBox = (CheckBox)sender;
+
+            var model = checkBox.BindingContext as DokNaglowekDto;
 
             try
             {
-                var odp = await dokumentyApi.UpdateDokMm(model.Id, model);
+                var odp = await dokumentyApi.UpdateDokMm(model.Id, model);            
             }
             catch (Exception s)
             {
                 await DisplayAlert("Błąd:", s.Message, "OK");
-            }   
+            }
 
         }
 
-        
+        private async void btn_help_Clicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Pomoc",
+                "1) Widok odświeża sie co 7sekund\n" +
+                "2) Po zaczytaniu mmki w optimie - powinna znikąć z szachotools'a\n" +
+                "3) Przesuń suwak, aby je wyświetlić\n" +
+                "4) By uniknąć błędów exportuj mmki pojedyńczo", "OK");
+        }
+
+
     }
 }

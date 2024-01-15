@@ -144,7 +144,7 @@ namespace App2.View
          
             var odp = await apiService.UpdateDokMm(dokumentId, dokmm);
 
-            await apiService.GetDokAll(GidTyp.Mm,false); 
+            //await apiService.GetDokAll(GidTyp.Mm,false); 
  
             await Navigation.PopModalAsync();
 

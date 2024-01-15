@@ -56,19 +56,91 @@ namespace App2.OptimaAPI
             await LoadMMExec(obj);
         }
 
+        //public async Task LoadMMExec(bool finishedToo)
+        //{
+        //    IsBusy = true;
+
+        //    DokNaglowekDtos.Clear();
+
+        //    if(finishedToo)
+        //        await GetDokAll(GidTyp.Mm, true);
+
+        //    await GetDokAll(GidTyp.Mm, false);
+
+        //    IsBusy = false;
+        //}
+
         public async Task LoadMMExec(bool finishedToo)
         {
             IsBusy = true;
 
-            DokNaglowekDtos.Clear();
-            
-            if(finishedToo)
-                await GetDokAll(GidTyp.Mm, true);
-            
-            await GetDokAll(GidTyp.Mm, false);
+            try
+            {
+                var noweDane = new List<DokNaglowekDto>();
+                if (finishedToo)
+                {
+                    var response = await GetDokAll(GidTyp.Mm, true);
+                    if (response.IsSuccessful)
+                        noweDane.AddRange(response.Data);
+                }
 
+                var response2 = await GetDokAll(GidTyp.Mm, false);
+                if (response2.IsSuccessful)
+                    noweDane.AddRange(response2.Data);
+                //Debug.WriteLine("odczyt danych z bazy iteracja po isexport");
+                var idsToDelete = noweDane
+                    .Where(item => !string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
+                    .Select(item => item.Id)
+                    .ToList();
+
+                // Usuwanie starych dokumentów z bazy danych
+                foreach (var id in idsToDelete)
+                {
+                    await DeleteDokument(id);
+                }
+
+                noweDane = noweDane.Where(item => !idsToDelete.Contains(item.Id)).ToList();
+
+                foreach (var nowyItem in noweDane)
+                {
+                    var istniejacyItem = DokNaglowekDtos.FirstOrDefault(d => d.Id == nowyItem.Id);
+                    if (istniejacyItem != null)
+                    {
+                        // Aktualizuj tylko potrzebne pola
+                        // Debug.WriteLine("zmieniamy tylko odpowiednia pola");
+                        istniejacyItem.NumerDokumentu = nowyItem.NumerDokumentu;
+                        istniejacyItem.IsFinish = nowyItem.IsFinish;
+                        istniejacyItem.IsExport = nowyItem.IsExport;
+                        // Aktualizuj inne pola w razie potrzeby
+                    }
+                    else
+                    {
+                        // Jeśli element nie istnieje, dodaj go do kolekcji                         
+                        DokNaglowekDtos.Add(nowyItem);
+                    }
+                }
+
+                for (int i = DokNaglowekDtos.Count - 1; i >= 0; i--)
+                {
+                    var item = DokNaglowekDtos[i];
+                    if (!noweDane.Any(nd => nd.Id == item.Id))
+                    {
+                        DokNaglowekDtos.Remove(item);
+                    }
+                }
+            }
+            catch (Exception s)
+            {
+                await Application.Current.MainPage.DisplayAlert("błąd", s.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
             IsBusy = false;
         }
+
+
 
         public async Task<ApiResponse<DokNaglowekDto>> SaveDokument(CreateDokumentNaglowek dokument)
         {
@@ -121,45 +193,10 @@ namespace App2.OptimaAPI
 
             if (response.IsSuccessful)
             {
-
                 apiResponse.Data = response.Data;
                 var itemsToAdd = new List<DokNaglowekDto>();
                 var idsToDelete = new List<int>();
 
-                foreach (var item in response.Data)
-                {
-                    if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
-                    {
-                        idsToDelete.Add(item.Id);
-                    }
-                    else
-                    {
-                        itemsToAdd.Add(item);
-                    }
-                }
-
-                var tmp = itemsToAdd.OrderBy(s => s.Id);
-
-                DokNaglowekDtos.AddRange(tmp); // Dodaj wszystkie naraz
-
-                // Usuń dokumenty poza pętlą
-                foreach (var id in idsToDelete)
-                {
-                    await DeleteDokument(id);
-                }
-
-                //foreach (var item in response.Data)
-                //{
-                //    if (!string.IsNullOrEmpty(item.NumerDokumentu) && item.CreateDokDate < DateTime.Now.AddDays(-2))
-                //    {
-                //       await DeleteDokument(item.Id);
-                //    }
-                //    else
-                //    {
-                //        DokNaglowekDtos.Add(item);
-                //    }
-
-                //}
             }
             else
             {

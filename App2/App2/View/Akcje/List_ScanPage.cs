@@ -893,6 +893,7 @@ namespace App2.View
                                     var cutNrmmki = odp.Substring(0, gdzieCut);
                                     Int32.TryParse(cutNrmmki, out gidnumerMM);
 
+
                                     if(await ZapiszPozycje(gidnumerMM, _akcja, iloscZeskanowana, odp))
                                         entry_skanowanaIlosc.Text = (totalTwrIlosc + iloscZeskanowana).ToString();
                                 }

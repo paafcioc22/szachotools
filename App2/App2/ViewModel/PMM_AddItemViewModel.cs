@@ -46,15 +46,17 @@ namespace App2.ViewModel
         private bool _isEntryIloscEnabled;
         private UserDecision userDecision;
         private InventoriedItem item;
+        private bool isScanning = false;
+        public bool IsFirstLoad = true;
 
-        public bool IsWarrningEnable => !_isEntryIloscEnabled && _isEditMode; 
+        public bool IsWarrningEnable => !_isEntryIloscEnabled && _isEditMode;
 
         public string? ScannedEan
         {
-            get => _scannedEan; 
+            get => _scannedEan;
             set => SetProperty(ref _scannedEan, value);
         }
-         
+
 
         public TwrInfo SelectedTwrInfo
         {
@@ -94,16 +96,16 @@ namespace App2.ViewModel
         public ICommand StartCameraCommand { get; private set; }
         public static IszachoApi Api => DependencyService.Get<IszachoApi>();
 
-        public bool IsEditMode 
-        { 
-            get => _isEditMode; 
+        public bool IsEditMode
+        {
+            get => _isEditMode;
             set
             {
                 SetProperty(ref _isEditMode, value);
                 OnPropertyChanged(nameof(IsDeleteButtonVisible)); // Powiadom o zmianie widoczności przycisku
             }
         }
-        public bool IsDeleteButtonVisible => IsEditMode && (Element?.GroupName == "Nadstany" ||Element == null);
+        public bool IsDeleteButtonVisible => IsEditMode && (Element?.GroupName == "Nadstany" || Element == null);
 
 
         public event EventHandler<InventoriedItem> RequestDelete;
@@ -112,7 +114,7 @@ namespace App2.ViewModel
         {
 
             _dokument = dokument;
-
+            Title ="Dodawanie nowego elementu";
             _repository = repository;
             //SaveCommand = new Command(async () => await Save());
             SaveCommand = new AsyncCommand(Save, _ => CanSave());
@@ -140,7 +142,7 @@ namespace App2.ViewModel
             this.groupedDifferences = groupedDifferences;
             SaveCommand = new AsyncCommand(Save, _ => CanSave());
             DeleteCommand = new Xamarin.Forms.Command(() => OnDeleteRequested(item));
-
+            Title = item.Twr_Kod;
             SelectedTwrInfo = new TwrInfo()
             {
                 Twr_Url = FilesHelper.ConvertUrlToOtherSize(item.ImageUrl, item.Twr_Kod, FilesHelper.OtherSize.large),
@@ -164,10 +166,14 @@ namespace App2.ViewModel
 
         }
 
-        private async Task InitiateScan()
+        public  async Task InitiateScan()
         {
-            if (await CheckCameraPermissionAsync())
+            if (isScanning) return; // Zapobiegaj ponownemu uruchomieniu
+            isScanning = true;
+
+            if (  await CheckCameraPermissionAsync())
             {
+               
                 var zxingiewModel = new ZXingViewModel();
                 var addItemPage = new ZxingScannerPage
                 {
@@ -177,21 +183,24 @@ namespace App2.ViewModel
                 await Task.Delay(100);
                 await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
 
-                zxingiewModel.ScanCompleted +=async (sender, result) =>
+                zxingiewModel.ScanCompleted += async (sender, result) =>
                 {
                     // Logika obsługi wyniku skanowania
-                     ScannedEan=result;
-                     await Task.Delay(100);
-                     await Application.Current.MainPage.Navigation.PopModalAsync();
-                     await ScanForProduct(ScannedEan);
-                     zxingiewModel.StopScanning();
+                    ScannedEan = result;
+                    await Task.Delay(100);
+                    await Application.Current.MainPage.Navigation.PopModalAsync();
+                    await ScanForProduct(ScannedEan);
+                    zxingiewModel.StopScanning();
                 };
+
+                isScanning = false;
 
             }
             else
             {
                 // Uprawnienia nie przyznane, pokaż komunikat
                 await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
+                isScanning = false;
             }
         }
 
@@ -204,7 +213,7 @@ namespace App2.ViewModel
         {
             await _repository.DeleteItemAsync(item);
 
-            if (groupedDifferences!=null)
+            if (groupedDifferences != null)
             {
                 foreach (var group in groupedDifferences)
                 {
@@ -225,9 +234,9 @@ namespace App2.ViewModel
 
         }
 
-        
 
-      
+
+
 
         private bool CanSave()
         {
@@ -307,7 +316,7 @@ namespace App2.ViewModel
                 _existingItem = await _repository.GetItemAsync(_dokument.Trn_Trnid, SelectedTwrInfo.Twr_Ean);
                 if (_existingItem != null)
                 {
-                    _existingItem.ImageUrl= FilesHelper.ConvertUrlToOtherSize(_existingItem.ImageUrl, _existingItem.Twr_Kod,FilesHelper.OtherSize.small);
+                    _existingItem.ImageUrl = FilesHelper.ConvertUrlToOtherSize(_existingItem.ImageUrl, _existingItem.Twr_Kod, FilesHelper.OtherSize.small);
                     if (!IsEditMode)
                     {
                         Device.BeginInvokeOnMainThread(() =>
@@ -336,21 +345,28 @@ namespace App2.ViewModel
                 {
                     if (InventoriedQuantity.HasValue)
                     {
-
-                        var inventaryProduct = new InventoriedItem()
+                        if (InventoriedQuantity == 0)
                         {
-                            Twr_Ean = SelectedTwrInfo.Twr_Ean,
-                            ActualQuantity = InventoriedQuantity ?? 0,
-                            //ImageUrl = SelectedTwrInfo.Twr_Url,
-                            ImageUrl =FilesHelper.ConvertUrlToOtherSize( SelectedTwrInfo.Twr_Url,SelectedTwrInfo.Twr_Kod,FilesHelper.OtherSize.small),
-                            DokumentId = _dokument.Trn_Trnid,
-                            Twr_Kod = SelectedTwrInfo.Twr_Kod,
-                            Twr_Nazwa = SelectedTwrInfo.Twr_Nazwa,
-                            ScannedTime = DateTime.Now,
-                            ItemOrder = ItemOrder
-                        };
+                            await Application.Current.MainPage.DisplayAlert("Uwaga", "Jeśli chcesz usunąć element z raportu użyj przycisku na dole okna", "OK");
+                        }
+                        else
+                        {
+                            var inventaryProduct = new InventoriedItem()
+                            {
+                                Twr_Ean = SelectedTwrInfo.Twr_Ean,
+                                ActualQuantity = InventoriedQuantity ?? 0,
+                                //ImageUrl = SelectedTwrInfo.Twr_Url,
+                                ImageUrl = FilesHelper.ConvertUrlToOtherSize(SelectedTwrInfo.Twr_Url, SelectedTwrInfo.Twr_Kod, FilesHelper.OtherSize.small),
+                                DokumentId = _dokument.Trn_Trnid,
+                                Twr_Kod = SelectedTwrInfo.Twr_Kod,
+                                Twr_Nazwa = SelectedTwrInfo.Twr_Nazwa,
+                                ScannedTime = DateTime.Now,
+                                ItemOrder = ItemOrder
+                            };
 
-                        await _repository.SaveItemAsync(inventaryProduct);
+                            await _repository.SaveItemAsync(inventaryProduct);
+                        }
+
                     }
                     else
                     {

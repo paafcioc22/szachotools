@@ -27,7 +27,7 @@ namespace App2.View
         public static IszachoApi Api => DependencyService.Get<IszachoApi>();
         public ListView ListViewLogin { get { return MyListView; } }
         public ObservableCollection<ViewUser> ListaLogin { get; set; }
-        public Entry enthaslo { get { return entry_haslo; } }
+        //public Entry enthaslo { get { return entry_haslo; } }
         private ViewUser _wybranyPracownik;
 
         private BindableProperty IsSearchingProperty =
@@ -176,10 +176,77 @@ namespace App2.View
             }
         }
 
+        //async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        //{
+        //    if (e.Item == null)
+        //        return;
+
+        //    try
+        //    {
+        //        _wybranyPracownik = e.Item as ViewUser;
+
+        //        if (_wybranyPracownik != null)
+        //        {
+        //            _opeGid = _wybranyPracownik.OpeGidnumer;
+        //            _user = _wybranyPracownik.OpeKod; //"Zalogowany : "
+        //            _nazwisko = _wybranyPracownik.OpeNazwa;
+
+        //            var app = Application.Current as App;
+
+        //            if (app.Skanowanie == 1)             
+        //            {
+        //                await SkanujIdetyfikator();
+        //            }
+        //            else
+        //            {
+        //                enthaslo.Focus();
+        //            }
+
+        //            if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+        //            {
+
+        //                App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception s)
+        //    {
+        //        await DisplayAlert("błąd",s.Message,"OK");
+        //    }
+
+
+        //}
+
+        private ViewUser _ostatnioWybranyPracownik = null;
+
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.Item == null)
+            if (e.Item == null) return;
+
+            var aktualnieWybranyPracownik = e.Item as ViewUser;
+
+            if (aktualnieWybranyPracownik == _ostatnioWybranyPracownik)
+            {
+                // Odznacz element, jeśli użytkownik kliknął drugi raz na ten sam
+                ((ListView)sender).SelectedItem = null;
+                _ostatnioWybranyPracownik = null;
+
+                if (entry_haslo.IsFocused)
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        await Task.Delay(100); // Opóźnienie 100 ms
+                        entry_haslo.Unfocus();
+                    });
+
+                }
+
                 return;
+            }
+
+            _ostatnioWybranyPracownik = aktualnieWybranyPracownik;
 
             try
             {
@@ -193,13 +260,13 @@ namespace App2.View
 
                     var app = Application.Current as App;
 
-                    if (app.Skanowanie == 1)             
+                    if (app.Skanowanie == 1)
                     {
                         await SkanujIdetyfikator();
                     }
                     else
                     {
-                        enthaslo.Focus();
+                        entry_haslo.Focus();
                     }
 
                     if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
@@ -213,11 +280,10 @@ namespace App2.View
             }
             catch (Exception s)
             {
-                await DisplayAlert("błąd",s.Message,"OK");
+                await DisplayAlert("błąd", s.Message, "OK");
             }
-
-
         }
+
 
 
         private async Task GetLogins()
@@ -388,7 +454,9 @@ namespace App2.View
 
         protected override bool OnBackButtonPressed()
         {
+            entry_haslo.Unfocus();
             return base.OnBackButtonPressed();
+
         }
 
 
@@ -432,14 +500,14 @@ namespace App2.View
         private async void UseAparatToScan_Clicked_1(object sender, EventArgs e)
         {
 
-            await DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
-            ListViewLogin.ItemSelected += async (source, args) =>
+            await DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK"); 
+
+            ListViewLogin.ItemSelected +=   (source, args) =>
             {
                 var pracownik = args.SelectedItem as ViewUser;
 
-                await SkanujIdetyfikator();
-
             };
+             await SkanujIdetyfikator();
         }
 
 

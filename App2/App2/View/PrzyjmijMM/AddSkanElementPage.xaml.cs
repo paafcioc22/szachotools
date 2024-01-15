@@ -20,7 +20,7 @@ namespace App2.View.PrzyjmijMM
         public AddSkanElementPage()
         {
             InitializeComponent(); 
-
+         
         }
 
         public enum UserDecision
@@ -30,7 +30,7 @@ namespace App2.View.PrzyjmijMM
             Cancel
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
@@ -74,10 +74,18 @@ namespace App2.View.PrzyjmijMM
 
                 var app = Application.Current as App; 
 
-                if (app.Skanowanie == 0)
+                if (app.Skanowanie == 0)//skaner 
                 {
                     if (!viewModel.IsEntryIloscEnabled)
                         entrySkanEan.Focus();
+                }
+                else
+                {
+                    if (viewModel.IsFirstLoad)
+                    {
+                        await viewModel.InitiateScan();
+                        viewModel.IsFirstLoad = false;
+                    }
                 }
             }
 
@@ -96,7 +104,7 @@ namespace App2.View.PrzyjmijMM
 
                     var navigation = this.Navigation;
                     //{App2.View.PrzyjmijMM.AddSkanElementPage}
-                    if (navigation.NavigationStack.Count > 0  )
+                    if (navigation.NavigationStack.Count > 0)
                     {
                         var last = navigation.NavigationStack[navigation.NavigationStack.Count - 2];
 
@@ -157,6 +165,14 @@ namespace App2.View.PrzyjmijMM
         {
             await DisplayAlert("Ostrzeżenie", "Towar nie był skanowany\nzamiast edycji zeskanuj na wcześniejszym oknie ", "OK");
 
+        }
+
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Usuwanie..",
+                "1) Usnąć możesz tylko pozycję nadstanową\n" +
+                "2) Jeśli chcesz usunąć element z raportu użyj przycisku na dole okna (jeśli jest niewidoczny przewiń okno)\n" +
+                "3) Po usunięciu zostaniesz wrócony do listy zeskanowanych modeli", "OK");
         }
     }
 }

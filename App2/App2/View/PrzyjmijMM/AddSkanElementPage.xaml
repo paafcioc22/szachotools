@@ -2,10 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:App2.Converter"
-             x:Class="App2.View.PrzyjmijMM.AddSkanElementPage" >
+             x:Class="App2.View.PrzyjmijMM.AddSkanElementPage" Title="{Binding Title}" >
     <ContentPage.Resources>
         <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Usuń" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
     <Grid>
         <!-- Definicja dwóch wierszy: jeden dla obrazu, drugi dla treści -->
         <Grid.RowDefinitions>
