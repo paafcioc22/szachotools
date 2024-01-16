@@ -249,7 +249,8 @@ namespace App2.View
                         }
                         else
                         {
-                            await DisplayAlert("Uwaga", twrList.ErrorMessage, "OK");
+                            if(!string.IsNullOrEmpty(twrList.ErrorMessage))
+                                await DisplayAlert("Błąd..", twrList.ErrorMessage, "OK");
                         }
                     }
 

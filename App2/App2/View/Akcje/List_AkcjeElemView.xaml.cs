@@ -95,13 +95,9 @@ namespace App2.View
                             dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
                             ileKodow = jsonResponse.result;
                             wasTrue = true;
-                            break; // Jeśli chcesz przerwać pętlę od razu po znalezieniu pierwszego wystąpienia true
+                              // Jeśli chcesz przerwać pętlę od razu po znalezieniu pierwszego wystąpienia true
 
-                        }
-                        else
-                        {
-                            return wasTrue;
-                        }
+                        } 
 
 
                     }

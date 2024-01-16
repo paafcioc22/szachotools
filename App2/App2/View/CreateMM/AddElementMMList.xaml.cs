@@ -21,6 +21,9 @@ namespace App2.View
         public Int32 dokumentId;
         private bool bufor;
         ServiceDokumentyApi apiService;
+
+        private DokNaglowekDto Mmka { get; }
+
         public AddElementMMList(DokNaglowekDto mmka)
         {
             InitializeComponent();
@@ -41,8 +44,7 @@ namespace App2.View
             dokumentId = mmka.Id;
             bufor = !Convert.ToBoolean(mmka.IsFinish);
             ListaElementowMM.ItemsSource = ServiceDokumentyApi.DokElementsDtos;
-       
-          
+            Mmka = mmka;
         } 
          
 
@@ -110,20 +112,8 @@ namespace App2.View
             };
 
               Navigation.PushModalAsync(page);
-        }
-
-        //private async void Delete_Clicked(object sender, EventArgs e)
-        //{
-        //    var action = await DisplayAlert(null, "Czy chcesz usunąć towar z listy?", "Tak", "Nie");
-        //    if (action)
-        //    {
-        //        var usunMM = (sender as MenuItem).CommandParameter as Model.DokMM;
-                 
-        //        Model.DokMM.dokElementy.Remove(usunMM);
-        //        Model.DokMM.DeleteElementMM(usunMM);
-        //    }
-        //}
-
+        } 
+     
         private async void BtnAddPosition_Clicked(object sender, EventArgs e)
         {
            
@@ -132,17 +122,18 @@ namespace App2.View
 
         private async void BtnSave_Clicked(object sender, EventArgs e)
         {
-         
-            DokNaglowekDto dokmm = new DokNaglowekDto()
-            {
-                GidNumerXl= gidnumerXl,
 
-                MagKod= _magDcl.Text,
-                Opis= _opis.Text,
-            };
+            //DokNaglowekDto dokmm = new DokNaglowekDto()
+            //{
+            //    GidNumerXl= gidnumerXl, 
+            //    MagKod= _magDcl.Text,
+            //    Opis= _opis.Text,
+            //};
 
-         
-            var odp = await apiService.UpdateDokMm(dokumentId, dokmm);
+            Mmka.MagKod = _magDcl.Text;
+            Mmka.Opis = _opis.Text;
+
+            var odp = await apiService.UpdateDokMm(dokumentId, Mmka);
 
             //await apiService.GetDokAll(GidTyp.Mm,false); 
  

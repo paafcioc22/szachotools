@@ -9,11 +9,16 @@ namespace App2.Model.ApiModel
         private bool? isExport;
         private string numerDokumentu;
         private bool? isFinish;
+        private string magKod;
 
         public int Id { get; set; }
         public GidTyp GidTyp { get; set; }
         public int? GidNumerXl { get; set; }
-        public string MagKod { get; set; }
+        public string MagKod 
+        { 
+            get => magKod;
+            set => SetProperty(ref magKod, value);
+        }
         public string NumerDokumentu
         {
             get => numerDokumentu;
