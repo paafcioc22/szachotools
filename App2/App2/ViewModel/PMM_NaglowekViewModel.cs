@@ -115,7 +115,7 @@ namespace App2.ViewModel
 
                         foreach (var dok in listaMM.Data.OrderByDescending(s => s.DataMM))
                         {
-                            //todo : dodaj pobieranie statusu
+                            
 
                             var pmm = new PMM_DokNaglowek
                             {

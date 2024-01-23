@@ -96,7 +96,7 @@ namespace App2.View
             img_foto.Aspect = Aspect.AspectFill;
             TapGestureRecognizer tapGesture = new TapGestureRecognizer();
 
-            //todo : proba naprawy błędu
+     
             tapGesture.Tapped += async (s, e) =>
             {
                 try

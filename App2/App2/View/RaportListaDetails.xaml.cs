@@ -104,7 +104,7 @@ namespace App2.View
                 }
                
             }
-            //todo : sprawdź ten warunek
+           
 
         }
 

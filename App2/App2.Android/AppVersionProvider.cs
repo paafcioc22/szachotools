@@ -24,7 +24,7 @@ namespace App2.Droid
                 var context = Android.App.Application.Context;
                 //var info = context.PackageManager.GetPackageInfo(context.PackageName, PackageManager.PackageInfoFlags.Of(0));
                 var info = context.PackageManager.GetPackageInfo(context.PackageName, 0);
-                //todo : przestarzałe ale nowe nie działą
+         
                 return $"{info.VersionName}";
             }
         }

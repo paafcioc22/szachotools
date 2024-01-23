@@ -38,11 +38,11 @@ namespace App2.ViewModel
                             order by AkN_DataStart desc
                          '";
 
-
-            var items = await App.TodoManager.PobierzDaneZWeb<NagElem>(Webquery2);
-
             try
             {
+            var items = await App.TodoManager.PobierzDaneZWeb<NagElem>(Webquery2);
+
+            
                 ListaZFiltrem.Clear();
                
                 foreach (var item in items)
