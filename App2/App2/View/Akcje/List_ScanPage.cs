@@ -1381,7 +1381,7 @@ namespace App2.View
                 if (List_AkcjeView.TypAkcji.Contains("Zmiana"))
                 {
                     YpolozenieCeny = 115;
-                    YpolozeniePLN = 180;
+                    YpolozeniePLN = 175;
                 }
                 else
                 {
@@ -1395,9 +1395,12 @@ namespace App2.View
                 await SettingsPage._cpclPrinter.resetConcat();
                 //await SettingsPage._cpclPrinter.concatText(cpclConst.LK_CPCL_FONT_4, 0, 45, cenaGr); dół
                 await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, polozeniePLN, YpolozeniePLN, "PLN", 0);
+                if (!List_AkcjeView.TypAkcji.Contains("Zmiana")&& List_AkcjeView.TypAkcji.Contains("Przecena"))
+                {
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
+                    await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
+                }
 
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 100, 120, "najnizsza cena z 30 dni", 0);
-                await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_0, 0, 200, 135, "przed obnizka", 0);//old value 140
                 if (_akcja.TwrCena30 > 0 && _akcja.TwrCena30 < _akcja.TwrCena1)
                     await SettingsPage._cpclPrinter.printText(cpclConst.LK_CPCL_0_ROTATION, cpclConst.LK_CPCL_FONT_7, 0, 200, 150, $"{_akcja.TwrCena30}pln", 0);
 

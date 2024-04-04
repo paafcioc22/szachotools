@@ -40,19 +40,27 @@ namespace App2.View.TworzPaczki
         }
 
 
-        private async void GetListaMM(int fmm_gidnumer,int fmm_eleNumer)
+        private async Task GetListaMM(int fmm_gidnumer,int fmm_eleNumer)
         {
-            var query = $@"  cdn.PC_WykonajSelect '
+            try
+            {
+                var query = $@"  cdn.PC_WykonajSelect '
               select Fmm_GidNumer,Fmm_EleNumer,max(Fmm_NrListu)Fmm_NrListu, Fmm_NazwaPaczki,max(Fmm_Elmenty)Fmm_Elmenty, max(Fmm_DataZlecenia)Fmm_DataZlecenia, max(Fmm_MagDcl)Fmm_MagDcl ,max(Fmm_MagZrd)Fmm_MagZrd
                     from cdn.PC_FedexMM
                     where fmm_gidnumer={fmm_gidnumer} and Fmm_EleNumer={fmm_eleNumer} and Fmm_NazwaPaczki<>''''
                     group by Fmm_EleNumer,Fmm_GidNumer,Fmm_NazwaPaczki'
                     ";//and trn_Stan = 1
 
-            var lista = await App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query);
-            Items = lista;
+                var lista = await App.TodoManager.PobierzDaneZWeb<FedexPaczka>(query);
+                Items = lista;
 
-            MyListView.ItemsSource = Items;
+                MyListView.ItemsSource = Items;
+            }
+            catch (Exception)
+            {
+
+                await DisplayAlert("błąd", "Nie udało się pobrać danych- ponów próbę", "OK");
+            }
         }
 
 
@@ -86,9 +94,9 @@ namespace App2.View.TworzPaczki
         
 
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            GetListaMM(fmm_gidnumer, fmm_eleNumer);
+            await GetListaMM(fmm_gidnumer, fmm_eleNumer);
             base.OnAppearing();
         }
 
@@ -201,7 +209,7 @@ namespace App2.View.TworzPaczki
                 if (!string.IsNullOrEmpty(odpowiedz))
                 {
                     await DodajMMDoKartonu(odpowiedz.ToUpper());
-                    GetListaMM(fmm_gidnumer, fmm_eleNumer);
+                    await GetListaMM(fmm_gidnumer, fmm_eleNumer);
                 }
                
             }
@@ -240,7 +248,7 @@ namespace App2.View.TworzPaczki
                 var usunKarton = (sender as MenuItem).CommandParameter as Model.FedexPaczka;
 
                 await reposytorySQL.RemovePaczka(usunKarton,"MM");
-                GetListaMM(fmm_gidnumer, fmm_eleNumer);
+                await GetListaMM(fmm_gidnumer, fmm_eleNumer);
             }
         }
     }

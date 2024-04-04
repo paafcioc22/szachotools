@@ -34,59 +34,67 @@ namespace App2.View.PrzyjmijMM
         {
             base.OnAppearing();
 
-            MessagingCenter.Subscribe<PMM_AddItemViewModel, InventoriedItem>(this, "AskUserDecision", async (sender, args) =>
+            try
             {
-
-                var decision = await DisplayActionSheet(
-                    $"Element już istnieje: {args.ActualQuantity} szt, co chcesz zrobić?",
-                    "Anuluj",
-                    "DODAJ",
-                    "Dodaj ilość", "Zastąp ilość");
-
-                UserDecision odp;
-                switch (decision)
-                {
-                    case "Dodaj ilość":
-                        odp = UserDecision.AddQuantity;
-                        break; // Tutaj dodajemy break
-                    case "Zastąp ilość":
-                        odp = UserDecision.ReplaceQuantity;
-                        break; // I tutaj
-                    case "DODAJ":
-                        odp = UserDecision.AddQuantity;
-                        break; // I tutaj
-                    case "Anuluj":
-                        odp = UserDecision.Cancel;
-                        break; // I tutaj
-                    default:
-                        odp = UserDecision.Cancel; // Domyślnie, jeśli użytkownik kliknie poza, to anuluj
-                        break; // I tutaj
-                }
-                // Wyślij wiadomość z powrotem do ViewModel z decyzją użytkownika
-                MessagingCenter.Send(this, "UserDecisionMade", odp);
-            });
-
-            if (BindingContext is PMM_AddItemViewModel viewModel)
-            {
-                viewModel.RequestDelete += ViewModel_RequestDelete;
-
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
-
-                var app = Application.Current as App; 
-
-                if (app.Skanowanie == 0)//skaner 
-                {
-                    if (!viewModel.IsEntryIloscEnabled)
-                        entrySkanEan.Focus();
-                }
-                else
-                {
-                    if (viewModel.IsFirstLoad && !viewModel.IsEditMode)
+                MessagingCenter.Subscribe<PMM_AddItemViewModel, InventoriedItem>(this, "AskUserDecision", async (sender, args) =>
                     {
-                        await viewModel.InitiateScan();
-                        viewModel.IsFirstLoad = false;
+
+                        var decision = await DisplayActionSheet(
+                            $"Element już istnieje: {args.ActualQuantity} szt, co chcesz zrobić?",
+                            "Anuluj",
+                            "DODAJ",
+                            "Dodaj ilość", "Zastąp ilość");
+
+                        UserDecision odp;
+                        switch (decision)
+                        {
+                            case "Dodaj ilość":
+                                odp = UserDecision.AddQuantity;
+                                break; // Tutaj dodajemy break
+                            case "Zastąp ilość":
+                                odp = UserDecision.ReplaceQuantity;
+                                break; // I tutaj
+                            case "DODAJ":
+                                odp = UserDecision.AddQuantity;
+                                break; // I tutaj
+                            case "Anuluj":
+                                odp = UserDecision.Cancel;
+                                break; // I tutaj
+                            default:
+                                odp = UserDecision.Cancel; // Domyślnie, jeśli użytkownik kliknie poza, to anuluj
+                                break; // I tutaj
+                        }
+                        // Wyślij wiadomość z powrotem do ViewModel z decyzją użytkownika
+                        MessagingCenter.Send(this, "UserDecisionMade", odp);
+                    });
+
+                if (BindingContext is PMM_AddItemViewModel viewModel)
+                {
+                    viewModel.RequestDelete += ViewModel_RequestDelete;
+
+                    viewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+                    var app = Application.Current as App;
+
+                    if (app.Skanowanie == 0)//skaner 
+                    {
+                        if (!viewModel.IsEntryIloscEnabled)
+                            entrySkanEan.Focus();
+                    }
+                    else
+                    {
+                        if (viewModel.IsFirstLoad && !viewModel.IsEditMode)
+                        {
+                            await viewModel.InitiateScan();
+                            viewModel.IsFirstLoad = false;
+                        }
                     }
                 }
+            }
+            catch (Exception)
+            {
+
+                await DisplayAlert("Błąd", "Błędnie zeskanowany produkt - spróbuj ponownie","OK");
             }
 
         }

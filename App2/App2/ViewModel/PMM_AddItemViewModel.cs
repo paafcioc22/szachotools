@@ -5,6 +5,7 @@ using App2.View;
 using App2.View.PrzyjmijMM;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
+using RestSharp;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -171,36 +172,44 @@ namespace App2.ViewModel
             if (isScanning) return; // Zapobiegaj ponownemu uruchomieniu
             isScanning = true;
 
-            if (  await CheckCameraPermissionAsync())
+            try
             {
-               
-                var zxingiewModel = new ZXingViewModel();
-                var addItemPage = new ZxingScannerPage
+                if (await CheckCameraPermissionAsync())
                 {
-                    BindingContext = zxingiewModel
-                };
 
-                await Task.Delay(100);
-                await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
+                    var zxingiewModel = new ZXingViewModel();
+                    var addItemPage = new ZxingScannerPage
+                    {
+                        BindingContext = zxingiewModel
+                    };
 
-                zxingiewModel.ScanCompleted += async (sender, result) =>
-                {
-                    // Logika obsługi wyniku skanowania
-                    ScannedEan = result;
                     await Task.Delay(100);
-                    await Application.Current.MainPage.Navigation.PopModalAsync();
-                    await ScanForProduct(ScannedEan);
-                    zxingiewModel.StopScanning();
-                };
+                    await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
 
-                isScanning = false;
+                    zxingiewModel.ScanCompleted += async (sender, result) =>
+                    {
+                        // Logika obsługi wyniku skanowania
+                        ScannedEan = result;
+                        await Task.Delay(100);
+                        await Application.Current.MainPage.Navigation.PopModalAsync();
+                        await ScanForProduct(ScannedEan);
+                        zxingiewModel.StopScanning();
+                    };
 
+                    isScanning = false;
+
+                }
+                else
+                {
+                    // Uprawnienia nie przyznane, pokaż komunikat
+                    await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
+                    isScanning = false;
+                }
             }
-            else
+            catch (Exception)
             {
-                // Uprawnienia nie przyznane, pokaż komunikat
-                await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
-                isScanning = false;
+
+                throw;
             }
         }
 
@@ -420,6 +429,10 @@ namespace App2.ViewModel
                         {
                             IsEntryIloscEnabled = true;
                             ItemOrder = await CalculateItemOrder(_dokument.Trn_Trnid);
+                        }
+                        else
+                        {
+                            throw new Exception("Brak towru");
                         }
                     }
                 }
