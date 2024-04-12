@@ -623,92 +623,100 @@ namespace App2.View
         {
 
 
-
-            var bluetoothPermissionService = DependencyService.Get<IBluetoothPermissionService>();
-            var status = await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
-
-            if (!status)
-            {
-                await DisplayAlert("info", "Nie przyznano odpowiednich uprawnień BT", "OK");
-            }
-
-
-            _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
-
-            var appp = Application.Current as App;
-
-            printText = this.FindByName<Button>("btnPrintText");
-            connectButton = this.FindByName<Button>("btnConnect");
-            disconnectButton = this.FindByName<Button>("btnDisconnect");
-            editAddress = this.FindByName<Editor>("txtAddress");
-            //mediaTypePicker = this.FindByName<Picker>("cboMediaType");
-            //mediaTypePicker.SelectedIndex = 0; // Gap label default.
-
-            if (!CzyDrukarkaOn)
-            {
-                connectButton.IsEnabled = true;
-                printText.IsEnabled = false;
-                disconnectButton.IsEnabled = false;
-            }
-            else
-            {
-                connectButton.IsEnabled = false;
-                printText.IsEnabled = true;
-                disconnectButton.IsEnabled = true;
-
-
-            }
-
-            List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
-
-
-            var deviceList = await _cpclPrinter.connectableDevice();
-
-            if (deviceList != null)
+            try
             {
 
-                listdevice = deviceList.Where(c => c.Name.StartsWith("SW")).ToList();
-                connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
+                var bluetoothPermissionService = DependencyService.Get<IBluetoothPermissionService>();
+                var status = await bluetoothPermissionService.CheckAndRequestBluetoothPermissionAsync();
 
-            }
-
-            if (listdevice == null || listdevice.Count == 0)
-            {
-                editAddress.IsEnabled = true;
-                editAddress.Text = "00:00:00:00:00:00";
-                btnConnect.IsEnabled = false;
-            }
-            else
-            {
-                editAddress.IsEnabled = false;
-                // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
-                // editAddress.Text = deviceList.ElementAt(0).Address;
-                if (appp.Drukarka == "00:00:00:00:00:00")
+                if (!status)
                 {
-                    editAddress.Text = "";//deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
-                    btnConnect.IsEnabled = false;
+                    await DisplayAlert("info", "Nie przyznano odpowiednich uprawnień BT", "OK");
                 }
 
+
+                _cpclPrinter = CrossSewooXamarinSDK.Current.createCpclService((int)CodePages.LK_CODEPAGE_ISO_8859_2);
+
+                var appp = Application.Current as App;
+
+                printText = this.FindByName<Button>("btnPrintText");
+                connectButton = this.FindByName<Button>("btnConnect");
+                disconnectButton = this.FindByName<Button>("btnDisconnect");
+                editAddress = this.FindByName<Editor>("txtAddress");
+                //mediaTypePicker = this.FindByName<Picker>("cboMediaType");
+                //mediaTypePicker.SelectedIndex = 0; // Gap label default.
+
+                if (!CzyDrukarkaOn)
+                {
+                    connectButton.IsEnabled = true;
+                    printText.IsEnabled = false;
+                    disconnectButton.IsEnabled = false;
+                }
                 else
-                    editAddress.Text = appp.Drukarka;
+                {
+                    connectButton.IsEnabled = false;
+                    printText.IsEnabled = true;
+                    disconnectButton.IsEnabled = true;
 
 
+                }
+
+                List<connectableDeviceInfo> listdevice = new List<connectableDeviceInfo>();
+
+
+                var deviceList = await _cpclPrinter.connectableDevice();
+
+                if (deviceList != null)
+                {
+
+                    listdevice = deviceList.Where(c => c.Name.StartsWith("SW")).ToList();
+                    connectableDeviceView.ItemsSource = listdevice;// deviceList.Where(c => c.Name.StartsWith("SW"));
+
+                }
+
+                if (listdevice == null || listdevice.Count == 0)
+                {
+                    editAddress.IsEnabled = true;
+                    editAddress.Text = "00:00:00:00:00:00";
+                    btnConnect.IsEnabled = false;
+                }
+                else
+                {
+                    editAddress.IsEnabled = false;
+                    // editAddress.Text = deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+                    // editAddress.Text = deviceList.ElementAt(0).Address;
+                    if (appp.Drukarka == "00:00:00:00:00:00")
+                    {
+                        editAddress.Text = "";//deviceList.Where(c => c.Name.StartsWith("SW")).ElementAt(0).Address;
+                        btnConnect.IsEnabled = false;
+                    }
+
+                    else
+                        editAddress.Text = appp.Drukarka;
+
+
+                }
+
+                //try
+                //{
+
+                //    int iResult;
+                //    iResult = await _cpclPrinter.printStatus();
+                //    if (iResult == cpclConst.LK_SUCCESS)
+                //        btnConnect.IsEnabled = false;
+                //}
+                //catch (Exception)
+                //{
+                //    btnConnect.IsEnabled = true;
+                //}
+
+                cpclConst = new CPCLConst();
             }
+            catch (Exception s)
+            {
 
-            //try
-            //{
-
-            //    int iResult;
-            //    iResult = await _cpclPrinter.printStatus();
-            //    if (iResult == cpclConst.LK_SUCCESS)
-            //        btnConnect.IsEnabled = false;
-            //}
-            //catch (Exception)
-            //{
-            //    btnConnect.IsEnabled = true;
-            //}
-
-            cpclConst = new CPCLConst();
+                await DisplayAlert("Błąd", s.Message, "OK");
+            }
 
 
 

@@ -53,7 +53,7 @@ namespace App2
 
         public App() 
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF5cXmVCf1JpRGRGfV5yd0VCalhQTnNXUj0eQnxTdEZiWH5ecXJRR2VUU0ZxXQ==");
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF5cXmVCf1JpRGRGfV5yd0VCalhQTnNXUj0eQnxTdEZiWH5ecXJRR2VUU0ZxXQ==");
             InitializeComponent();
             DependencyService.Register<IszachoApi, szachoApi>();
             //MainPage = new NavigationPage( new View.SplashPage());

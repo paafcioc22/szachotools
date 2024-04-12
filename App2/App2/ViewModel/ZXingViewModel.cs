@@ -15,7 +15,7 @@ namespace App2.ViewModel
         
         public Xamarin.Forms.Command<ZXing.Result> ScanCommand { get; }
         public ZXing.Mobile.MobileBarcodeScanningOptions ScannerOptions { get; private set; }
-        public event EventHandler<string> ScanCompleted;
+        public event EventHandler<string> ScanCompleted; 
 
 
         public bool IsScanning { get; set; }
@@ -24,7 +24,12 @@ namespace App2.ViewModel
 
         public ZXingViewModel()
         {
-            ScanCommand = new Xamarin.Forms.Command<ZXing.Result>(HandleScanResult);
+            //ScanCommand = new Xamarin.Forms.Command<ZXing.Result>(HandleScanResult);
+            ScanCommand = new Xamarin.Forms.Command<ZXing.Result>(result =>
+            {
+                // Przekształć ZXing.Result na string i wywołaj zdarzenie ScanCompleted
+                HandleScanResult(result.Text);
+            });
             ScannerOptions = new ZXing.Mobile.MobileBarcodeScanningOptions
             {
                 PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.EAN_13 }
@@ -55,11 +60,23 @@ namespace App2.ViewModel
         }
 
 
-        private  void HandleScanResult(ZXing.Result result)
+        public  void HandleScanResult(string result)
         {
             // Logika obsługi zeskanowanego kodu
 
-            ScanCompleted?.Invoke(this, result.Text);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                if (result != null && !string.IsNullOrEmpty(result))
+                {
+                    // Zatrzymaj skanowanie, ponieważ mamy wynik
+                    StopScanning();
+
+                    // Wywołanie zdarzenia z wynikiem skanowania
+                    ScanCompleted?.Invoke(this, result);
+                }
+            });
+
+            //ScanCompleted?.Invoke(this, result.Text);
         }
 
         private async Task<bool> CheckCameraPermissionAsync()

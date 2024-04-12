@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6xYnyiCVenzM7XVYlUte9GaVK65DDJky97mm0ZmVPjP6IK2+xyTQ4tPw+rTNZ4KTE+HbCLltCD9lG1Uha6CLRQ==",
+  "dgSpecHash": "rchbuUczldVPqV32x7uPIx6sL5nOS2lJzYg5wpumON7+82M0pFSAx6NkWlEtmZjOLAm1E4gLVoUtnjhhBr8fKA==",
   "success": true,
   "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
   "expectedPackageFiles": [
@@ -32,9 +32,6 @@
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.core\\1.1.13\\sqlitepclraw.core.1.1.13.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3.android\\1.1.13\\sqlitepclraw.lib.e_sqlite3.android.1.1.13.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3.android\\1.1.13\\sqlitepclraw.provider.e_sqlite3.android.1.1.13.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.licensing\\23.1.44\\syncfusion.licensing.23.1.44.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.xamarin.core\\23.1.44\\syncfusion.xamarin.core.23.1.44.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.xamarin.sfnumerictextbox\\23.1.44\\syncfusion.xamarin.sfnumerictextbox.23.1.44.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.6.0\\system.diagnostics.diagnosticsource.4.6.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.io.hashing\\6.0.0\\system.io.hashing.6.0.0.nupkg.sha512",

@@ -408,10 +408,11 @@ namespace App2.View
             }
             catch (Exception s)
             {
+
                 var properties = new Dictionary<string, string>
                     {
-                        { "ean", twrkarty.Twr_Ean},
-                        { "kod", twrkarty.Twr_Kod},
+                        { "ean", twr_kod.Text},
+                        { "kod", lbl_twrkod.Text},
                         { "kolor", kolor},
                         { "ile", ileMetek.ToString()}
                     };

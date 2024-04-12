@@ -598,49 +598,6 @@
           "lib/netstandard2.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
       },
-      "Syncfusion.Licensing/23.1.44": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Syncfusion.Licensing.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Syncfusion.Licensing.dll": {}
-        }
-      },
-      "Syncfusion.Xamarin.Core/23.1.44": {
-        "type": "package",
-        "dependencies": {
-          "Syncfusion.Licensing": "23.1.44",
-          "Xamarin.Forms": "5.0.0.2012"
-        },
-        "compile": {
-          "lib/netstandard2.0/Syncfusion.Core.XForms.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Syncfusion.Core.XForms.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Syncfusion.Xamarin.SfNumericTextBox/23.1.44": {
-        "type": "package",
-        "dependencies": {
-          "Syncfusion.Xamarin.Core": "23.1.44",
-          "Xamarin.Forms": "5.0.0.2012"
-        },
-        "compile": {
-          "lib/netstandard2.0/Syncfusion.SfNumericTextBox.XForms.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Syncfusion.SfNumericTextBox.XForms.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -2915,94 +2872,6 @@
         "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll",
         "sqlitepclraw.provider.e_sqlite3.2.0.2.nupkg.sha512",
         "sqlitepclraw.provider.e_sqlite3.nuspec"
-      ]
-    },
-    "Syncfusion.Licensing/23.1.44": {
-      "sha512": "83M4d0oPKjTK9PYN4a2OTzqOHUmkZ7YaGlnnTZ5UIx5u5dNM8DEl37NJQBWt1FSDFUf3kXqJTrZcu6h2ClJ/2w==",
-      "type": "package",
-      "path": "syncfusion.licensing/23.1.44",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "README.md",
-        "lib/MonoAndroid90/Syncfusion.Licensing.dll",
-        "lib/Xamarin.Mac/Syncfusion.Licensing.dll",
-        "lib/Xamarin.iOS10/Syncfusion.Licensing.dll",
-        "lib/net40/Syncfusion.Licensing.dll",
-        "lib/net45/Syncfusion.Licensing.dll",
-        "lib/net451/Syncfusion.Licensing.dll",
-        "lib/net46/Syncfusion.Licensing.dll",
-        "lib/net6.0/Syncfusion.Licensing.dll",
-        "lib/net7.0/Syncfusion.Licensing.dll",
-        "lib/netstandard2.0/Syncfusion.Licensing.dll",
-        "lib/uap10.0/Syncfusion.Licensing.dll",
-        "syncfusion.licensing.23.1.44.nupkg.sha512",
-        "syncfusion.licensing.nuspec",
-        "syncfusion_logo.png"
-      ]
-    },
-    "Syncfusion.Xamarin.Core/23.1.44": {
-      "sha512": "t5G6YWF/iW6ofz5E6f4dD6hQ/Na7enyioJo/eae8xcGpzF9J3vzdsZ21RGCTVHEsuA04MyJ2Pwhbwb27jTTgOw==",
-      "type": "package",
-      "path": "syncfusion.xamarin.core/23.1.44",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "README.md",
-        "lib/MonoAndroid10.0/Syncfusion.Core.XForms.Android.dll",
-        "lib/MonoAndroid10.0/Syncfusion.Core.XForms.dll",
-        "lib/MonoAndroid10.0/Syncfusion.Core.XForms.xml",
-        "lib/Xamarin.Mac/Syncfusion.Core.XForms.dll",
-        "lib/Xamarin.Mac/Syncfusion.Core.XForms.macOS.dll",
-        "lib/Xamarin.iOS10/Syncfusion.Core.XForms.dll",
-        "lib/Xamarin.iOS10/Syncfusion.Core.XForms.iOS.dll",
-        "lib/Xamarin.iOS10/Syncfusion.Core.XForms.xml",
-        "lib/netstandard2.0/Syncfusion.Core.XForms.dll",
-        "lib/netstandard2.0/Syncfusion.Core.XForms.xml",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP.dll",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP.pri",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP/Syncfusion.Core.XForms.UWP.xr.xml",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP/TILRenderer/ToggleIcons/ClearButtonViewVisibleIcon.xaml",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP/TILRenderer/ToggleIcons/DropDownIcon.xaml",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP/TILRenderer/ToggleIcons/ToggleCollapsedIcon.xaml",
-        "lib/uap10.0/Syncfusion.Core.XForms.UWP/TILRenderer/ToggleIcons/ToggleVisibleIcon.xaml",
-        "lib/uap10.0/Syncfusion.Core.XForms.dll",
-        "lib/uap10.0/Syncfusion.Core.XForms.xml",
-        "syncfusion.xamarin.core.23.1.44.nupkg.sha512",
-        "syncfusion.xamarin.core.nuspec",
-        "syncfusion_logo.png"
-      ]
-    },
-    "Syncfusion.Xamarin.SfNumericTextBox/23.1.44": {
-      "sha512": "m6/uds+dbZawgmFKBOGnwl3wLcOA4aWB+IUSXSVhAYG91SWJzS3f8OS5vr8n10Lc+XF/jCLR83jiRF6g/nvZiw==",
-      "type": "package",
-      "path": "syncfusion.xamarin.sfnumerictextbox/23.1.44",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "README.md",
-        "lib/MonoAndroid10.0/Syncfusion.SfNumericTextBox.Android.dll",
-        "lib/MonoAndroid10.0/Syncfusion.SfNumericTextBox.Android.xml",
-        "lib/MonoAndroid10.0/Syncfusion.SfNumericTextBox.XForms.Android.dll",
-        "lib/MonoAndroid10.0/Syncfusion.SfNumericTextBox.XForms.dll",
-        "lib/MonoAndroid10.0/Syncfusion.SfNumericTextBox.XForms.xml",
-        "lib/Xamarin.iOS10/Syncfusion.SfNumericTextBox.XForms.dll",
-        "lib/Xamarin.iOS10/Syncfusion.SfNumericTextBox.XForms.iOS.dll",
-        "lib/Xamarin.iOS10/Syncfusion.SfNumericTextBox.XForms.xml",
-        "lib/Xamarin.iOS10/Syncfusion.SfNumericTextBox.iOS.XML",
-        "lib/Xamarin.iOS10/Syncfusion.SfNumericTextBox.iOS.dll",
-        "lib/netstandard2.0/Syncfusion.SfNumericTextBox.XForms.dll",
-        "lib/netstandard2.0/Syncfusion.SfNumericTextBox.XForms.xml",
-        "lib/uap10.0/Syncfusion.SfNumericTextBox.XForms.UWP.XML",
-        "lib/uap10.0/Syncfusion.SfNumericTextBox.XForms.UWP.dll",
-        "lib/uap10.0/Syncfusion.SfNumericTextBox.XForms.dll",
-        "lib/uap10.0/Syncfusion.SfNumericTextBox.XForms.xml",
-        "syncfusion.xamarin.sfnumerictextbox.23.1.44.nupkg.sha512",
-        "syncfusion.xamarin.sfnumerictextbox.nuspec",
-        "syncfusion_logo.png"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -7172,7 +7041,6 @@
       "Refractored.MvvmHelpers >= 1.6.2",
       "RestSharp >= 110.2.0",
       "Rg.Plugins.Popup >= 2.1.0",
-      "Syncfusion.Xamarin.SfNumericTextBox >= 23.1.44",
       "System.ServiceModel.Duplex >= 4.5.3",
       "System.ServiceModel.Http >= 4.5.3",
       "System.ServiceModel.NetTcp >= 4.5.3",
@@ -7282,10 +7150,6 @@
             "target": "Package",
             "version": "[2.1.0, )"
           },
-          "Syncfusion.Xamarin.SfNumericTextBox": {
-            "target": "Package",
-            "version": "[23.1.44, )"
-          },
           "System.ServiceModel.Duplex": {
             "target": "Package",
             "version": "[4.5.3, )"
@@ -7355,7 +7219,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
       }
     }
   },

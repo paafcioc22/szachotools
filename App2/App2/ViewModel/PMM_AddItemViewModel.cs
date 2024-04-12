@@ -49,6 +49,7 @@ namespace App2.ViewModel
         private InventoriedItem item;
         private bool isScanning = false;
         public bool IsFirstLoad = true;
+        private ZXingViewModel zxingiewModel;
 
         public bool IsWarrningEnable => !_isEntryIloscEnabled && _isEditMode;
 
@@ -115,7 +116,7 @@ namespace App2.ViewModel
         {
 
             _dokument = dokument;
-            Title ="Dodawanie nowego elementu";
+            Title = "Dodawanie nowego elementu";
             _repository = repository;
             //SaveCommand = new Command(async () => await Save());
             SaveCommand = new AsyncCommand(Save, _ => CanSave());
@@ -167,7 +168,7 @@ namespace App2.ViewModel
 
         }
 
-        public  async Task InitiateScan()
+        public async Task InitiateScan()
         {
             if (isScanning) return; // Zapobiegaj ponownemu uruchomieniu
             isScanning = true;
@@ -177,7 +178,7 @@ namespace App2.ViewModel
                 if (await CheckCameraPermissionAsync())
                 {
 
-                    var zxingiewModel = new ZXingViewModel();
+                    zxingiewModel = new ZXingViewModel();
                     var addItemPage = new ZxingScannerPage
                     {
                         BindingContext = zxingiewModel
@@ -186,30 +187,51 @@ namespace App2.ViewModel
                     await Task.Delay(100);
                     await Application.Current.MainPage.Navigation.PushModalAsync(addItemPage);
 
-                    zxingiewModel.ScanCompleted += async (sender, result) =>
-                    {
-                        // Logika obsługi wyniku skanowania
-                        ScannedEan = result;
-                        await Task.Delay(100);
-                        await Application.Current.MainPage.Navigation.PopModalAsync();
-                        await ScanForProduct(ScannedEan);
-                        zxingiewModel.StopScanning();
-                    };
-
-                    isScanning = false;
+                    zxingiewModel.ScanCompleted += ZxingiewModel_ScanCompleted; 
 
                 }
                 else
                 {
                     // Uprawnienia nie przyznane, pokaż komunikat
-                    await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+
+                        await Application.Current.MainPage.DisplayAlert("Błąd", "Brak uprawnień do aparatu.", "ΟΚ");
+                    });
                     isScanning = false;
                 }
             }
-            catch (Exception)
+            catch (Exception s)
             {
 
-                throw;
+                throw s;
+            }
+        }
+
+        private async void ZxingiewModel_ScanCompleted(object sender, string result)
+        {
+            try
+            {
+                // Logika obsługi wyniku skanowania
+                ScannedEan = result;
+                await Task.Delay(100);
+                await Application.Current.MainPage.Navigation.PopModalAsync();
+                await ScanForProduct(ScannedEan);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex); // Log the exception details
+                //Device.BeginInvokeOnMainThread(async () =>
+                //{
+                    //await Application.Current.MainPage.DisplayAlert("błąd", s.Message, "OK");
+                    await Application.Current.MainPage.DisplayAlert("Błąd", "Wystąpił problem podczas przetwarzania skanowania.", "OK");
+                //});
+            }
+            finally
+            {
+                zxingiewModel.ScanCompleted -= ZxingiewModel_ScanCompleted; // Unsubscribe from event
+                zxingiewModel.StopScanning();
+                isScanning = false;
             }
         }
 
@@ -276,6 +298,11 @@ namespace App2.ViewModel
                 return;
             }
 
+            if (!await IsValueCorrect(InventoriedQuantity))
+            {
+                return; // Przerywa wykonanie, jeśli IsValueCorrect zwróciło false
+            }
+
             userDecision = decision;
             try
             {
@@ -322,6 +349,12 @@ namespace App2.ViewModel
         {
             try
             {
+
+                if (!await IsValueCorrect(InventoriedQuantity) && InventoriedQuantity.HasValue)
+                {
+                    return; // Przerywa wykonanie, jeśli IsValueCorrect zwróciło false
+                }
+
                 _existingItem = await _repository.GetItemAsync(_dokument.Trn_Trnid, SelectedTwrInfo.Twr_Ean);
                 if (_existingItem != null)
                 {
@@ -336,7 +369,7 @@ namespace App2.ViewModel
                     else
                     {
                         if (InventoriedQuantity.HasValue)
-                        {
+                        {                           
 
                             _existingItem.ActualQuantity = InventoriedQuantity.Value;
                             await _repository.SaveItemAsync(_existingItem);
@@ -357,6 +390,10 @@ namespace App2.ViewModel
                         if (InventoriedQuantity == 0)
                         {
                             await Application.Current.MainPage.DisplayAlert("Uwaga", "Jeśli chcesz usunąć element z raportu użyj przycisku na dole okna", "OK");
+                        }
+                        if (!await IsValueCorrect(InventoriedQuantity))
+                        {
+                            return; // Przerywa wykonanie, jeśli IsValueCorrect zwróciło false
                         }
                         else
                         {
@@ -396,6 +433,18 @@ namespace App2.ViewModel
             }
         }
 
+
+        private async Task<bool> IsValueCorrect(int? _inventoriedQuantity)
+        {
+            if (_inventoriedQuantity > 5000)
+            {
+                await Application.Current.MainPage.DisplayAlert("Uwaga", "Prawdopodnie skanujesz EAN w pole ILOŚĆ lub wartość jest za duża\nPopraw wartość", "OK");
+                return false;
+            }
+            return true;
+        }
+
+
         private async Task<int> CalculateItemOrder(int trnGidnumer)
         {
             // Logika do obliczenia numeru porządkowego dla danego Twr_Gidnumer
@@ -432,15 +481,17 @@ namespace App2.ViewModel
                         }
                         else
                         {
-                            throw new Exception("Brak towru");
+                            throw new Exception("Brak towaru");
                         }
                     }
                 }
             }
             catch (Exception s)
             {
-
-                await Application.Current.MainPage.DisplayAlert("błąd", s.Message, "OK");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("błąd", s.Message, "OK");
+                });
                 ScannedEan = string.Empty;
 
             }

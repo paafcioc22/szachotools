@@ -21,16 +21,32 @@ namespace App2.View
     {
         public static ObservableCollection<Model.Magazynn> listaSklepows;
         private static RestClient _client;
+        private readonly string twrGidnumer;
 
         public  StanyTwrInnych(string TwrGidnumer)
         {
             InitializeComponent();
-            PobierzDaneDoListy(TwrGidnumer);
+ 
             var app = Application.Current as App;
             _client = new RestClient($"http://{app.Serwer}");
+            twrGidnumer = TwrGidnumer;
+        }
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            try
+            {
+                await PobierzDaneDoListy(twrGidnumer);
+            }
+            catch (Exception ex)
+            {
+                // Odpowiednie logowanie błędów lub wyświetlenie komunikatu
+                await DisplayAlert("Błąd", ex.Message, "OK");
+            }
         }
 
-        private async void PobierzDaneDoListy(string twrGidnumer)
+
+        private async Task PobierzDaneDoListy(string twrGidnumer)
         {
             string query = "CDN.StanyTowaruWOddzialach_int " + twrGidnumer;
             try
@@ -106,13 +122,19 @@ namespace App2.View
             if (String.IsNullOrWhiteSpace(searchText))
                 return listaSklepows;
             //return listaSklepows.Where(c => c.Magazyn.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase));
-            return listaSklepows.Where(c => c.Magazyn.Contains(searchText.ToUpper()));
+
+            if(listaSklepows != null)
+                return listaSklepows.Where(c => c.Magazyn.Contains(searchText.ToUpper()));
+            return null;
         }
 
 
         private void szukaj_TextChanged(object sender, TextChangedEventArgs e)
         {
-            MyListView.ItemsSource = Getsklep(e.NewTextValue);
+            if(MyListView.ItemsSource is IEnumerable<Magazynn> items && items.Any())
+            {
+                MyListView.ItemsSource = Getsklep(e.NewTextValue);
+            }
         }
     }
 }

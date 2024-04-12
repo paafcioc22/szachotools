@@ -7,8 +7,9 @@
 
 
 
- 
 
+    <Grid>
+        
     <StackLayout Padding="10"  VerticalOptions="FillAndExpand">
        
         
@@ -66,4 +67,8 @@
         <Button Text="Rozpocznij skanowanie dostawy" Command="{Binding StartSkanDostawyCommand}" Visual="Material"
                  VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" CornerRadius="20"/>
     </StackLayout>
+        <ActivityIndicator HorizontalOptions="CenterAndExpand" 
+                         VerticalOptions="CenterAndExpand" 
+                         IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"  Color="Black"  />
+    </Grid>
 </ContentPage>

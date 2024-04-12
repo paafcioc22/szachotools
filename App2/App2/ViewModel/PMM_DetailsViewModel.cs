@@ -80,10 +80,10 @@ namespace App2.ViewModel
                     dokument.Elementy = mmWithElements.Elementy;
                 }
             }
-            catch (Exception)
+            catch (Exception s)
             {
 
-                throw;
+                throw s;
             }
             finally
             {

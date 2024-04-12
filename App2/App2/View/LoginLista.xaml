@@ -35,7 +35,8 @@
             <Button Text="Zaloguj" Clicked="Button_Clicked" HorizontalOptions="FillAndExpand" Visual="Material" CornerRadius="20"/>
             <Button Text="Użyj Aparatu" Clicked="UseAparatToScan_Clicked_1" x:Name="UseAparatButton"   HorizontalOptions="FillAndExpand" Visual="Material" CornerRadius="20"/>
         </StackLayout>
-        <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" HorizontalOptions="CenterAndExpand" 
+        <ActivityIndicator IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" 
+                           HorizontalOptions="CenterAndExpand" 
                            VerticalOptions="CenterAndExpand" Color="Black" />
     </Grid>
 </ContentPage>

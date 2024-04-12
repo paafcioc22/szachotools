@@ -138,9 +138,6 @@
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.6.292</Version>
     </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfNumericTextBox">
-      <Version>23.1.44</Version>
-    </PackageReference>
     <PackageReference Include="Xam.Plugin.Media">
       <Version>6.0.2</Version>
     </PackageReference>

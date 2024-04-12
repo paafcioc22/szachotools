@@ -78,10 +78,6 @@
               "target": "Package",
               "version": "[2.1.0, )"
             },
-            "Syncfusion.Xamarin.SfNumericTextBox": {
-              "target": "Package",
-              "version": "[23.1.44, )"
-            },
             "Xam.Plugin.Media": {
               "target": "Package",
               "version": "[6.0.2, )"
@@ -211,10 +207,6 @@
               "target": "Package",
               "version": "[2.1.0, )"
             },
-            "Syncfusion.Xamarin.SfNumericTextBox": {
-              "target": "Package",
-              "version": "[23.1.44, )"
-            },
             "System.ServiceModel.Duplex": {
               "target": "Package",
               "version": "[4.5.3, )"
@@ -284,7 +276,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -370,7 +362,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
         }
       }
     }

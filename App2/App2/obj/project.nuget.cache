@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MxWtYAbb3hgXA4P32o0MQ57BnafdNk/FmXcyI0gTDlsV8cBinq7dMQXySqxLbPzFY7Pn7XZ995dkv4nP8+8j6w==",
+  "dgSpecHash": "SGkVLOPMU2CaJB5d9KBnsyUYX8CnrowOXvjpT2j3nz7EP1GRkQM/AjyXJfNWDTgO/FLHdDCcLWWU3T0lX/UXhw==",
   "success": true,
   "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
@@ -44,9 +44,6 @@
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.core\\2.0.2\\sqlitepclraw.core.2.0.2.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.2\\sqlitepclraw.lib.e_sqlite3.2.0.2.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.0.2\\sqlitepclraw.provider.e_sqlite3.2.0.2.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.licensing\\23.1.44\\syncfusion.licensing.23.1.44.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.xamarin.core\\23.1.44\\syncfusion.xamarin.core.23.1.44.nupkg.sha512",
-    "C:\\Users\\pawel\\.nuget\\packages\\syncfusion.xamarin.sfnumerictextbox\\23.1.44\\syncfusion.xamarin.sfnumerictextbox.23.1.44.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\pawel\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",

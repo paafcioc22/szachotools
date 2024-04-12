@@ -21,7 +21,10 @@ namespace App2.View.PrzyjmijMM
         {
             InitializeComponent();
             this.item = item; 
-            BindingContext = viewModel = new PMM_DetailsViewModel(item);
+            if(item != null )
+            {
+                BindingContext = viewModel = new PMM_DetailsViewModel(item);
+            }
         }
          
         protected override void OnAppearing()

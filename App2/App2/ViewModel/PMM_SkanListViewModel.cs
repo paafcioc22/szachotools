@@ -72,25 +72,45 @@ namespace App2.ViewModel
 
         private async Task OpenDiffRaportPage()
         {
-            var raportViewModel = new PMM_DiffRaportViewModel(SkanElements.ToList(),dokument);
-            var diffRaportPage = new DiffrenceRaportPage
+            if (SkanElements.Count > 0)
             {
-                BindingContext = raportViewModel
-            };
+                var raportViewModel = new PMM_DiffRaportViewModel(SkanElements.ToList(),dokument);
+                var diffRaportPage = new DiffrenceRaportPage
+                {
+                    BindingContext = raportViewModel
+                };
 
-            await Application.Current.MainPage.Navigation.PushAsync(diffRaportPage);
+                await Application.Current.MainPage.Navigation.PushAsync(diffRaportPage);
+
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Info", "Lista zeskanowanych produktów jest pusta", "OK");
+            }
         }
 
         private async Task AddSkanElementPage()
         {
-             
-            var addItemViewModel = new PMM_AddItemViewModel(_repository, dokument);
-            var addItemPage = new AddSkanElementPage
-            {
-                BindingContext = addItemViewModel
-            };
 
-            await Application.Current.MainPage.Navigation.PushAsync(addItemPage);
+            try
+            {
+                if (_repository != null && dokument != null)
+                {
+                    var addItemViewModel = new PMM_AddItemViewModel(_repository, dokument);
+                    var addItemPage = new AddSkanElementPage
+                    {
+                        BindingContext = addItemViewModel
+                    };
+
+                    await Application.Current.MainPage.Navigation.PushAsync(addItemPage);
+
+                }
+            }
+            catch (Exception s )
+            {
+                await Application.Current.MainPage.DisplayAlert("Błąd", s.Message, "OK");
+            }
+            
 
         }
 

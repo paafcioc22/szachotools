@@ -104,6 +104,15 @@ namespace App2.ViewModel
             {                
                 listaMM = await serviceApi.GetDokMmList(CzyZatwierdzone, pastDays);
                 var app = Application.Current as App;
+
+
+                if (app.MagGidNumer == 0)
+                {
+                    var magazyn = await serviceApi.GetSklepMagNumer();
+                    app.MagGidNumer = (short)magazyn.Id;
+                } 
+
+
                 if (listaMM.IsSuccessful)
                 {
 
@@ -114,9 +123,7 @@ namespace App2.ViewModel
                         var tmpMM = await serviceApi.GetRaportyZCentrali(app.MagGidNumer);
 
                         foreach (var dok in listaMM.Data.OrderByDescending(s => s.DataMM))
-                        {
-                            
-
+                        {                            
                             var pmm = new PMM_DokNaglowek
                             {
                                 Trn_Trnid = dok.Trn_Trnid,
@@ -127,7 +134,7 @@ namespace App2.ViewModel
                                 TrN_Opis= dok.TrN_Opis
                                
                             };
-                            pmm.IsPrzyjetaMM = tmpMM.Any(s=>s.RrD_MMGidNumer==dok.Trn_Gidnumer);   
+                            pmm.IsPrzyjetaMM = tmpMM != null &&  tmpMM.Any(s=>s.RrD_MMGidNumer==dok.Trn_Gidnumer);   
                             originalList.Add(pmm);
                         }
 
@@ -149,7 +156,7 @@ namespace App2.ViewModel
                 };
 
                 Crashes.TrackError(s, properties);
-                throw;
+               
             }
             finally
             {

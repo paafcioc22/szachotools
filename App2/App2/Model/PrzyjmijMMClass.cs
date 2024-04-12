@@ -123,7 +123,7 @@ namespace App2.Model
                 };
 
                 Crashes.TrackError(s, properties);
-                throw;
+             
             }
 
         }
