@@ -1,5 +1,6 @@
 ﻿using App2.Model;
 using App2.ViewModel;
+using Microsoft.AppCenter.Analytics;
 using MvvmHelpers;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,16 @@ namespace App2.View.PrzyjmijMM
 
             try
             {
+                var app = Application.Current as App;
+                if (app.Skanowanie == 0)//skaner 
+                {
+                    Analytics.TrackEvent("raport niezgodnosci tryb skaner"); 
+                }
+                else
+                {
+                    Analytics.TrackEvent("raport niezgodnosci tryb aparat");                    
+                }
+
                 if (BindingContext is PMM_DiffRaportViewModel viewModel)
                 {
                     // viewModel.LoadDataCommand.Execute(null);

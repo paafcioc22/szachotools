@@ -20,17 +20,30 @@ namespace App2.View.PrzyjmijMM
         public MMDetailPage(PMM_DokNaglowek item)
         {
             InitializeComponent();
-            this.item = item; 
-            if(item != null )
-            {
-                BindingContext = viewModel = new PMM_DetailsViewModel(item);
-            }
+            
+                this.item = item;
+                if (item != null)
+                {
+                    BindingContext = viewModel = new PMM_DetailsViewModel(item);
+                }
+            
         }
          
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            base.OnAppearing(); 
-            viewModel.LoadMmElementsCommand.Execute(item.Trn_Trnid);
+            base.OnAppearing();
+
+            if (viewModel != null && item != null)
+            {
+                viewModel.LoadMmElementsCommand.Execute(item.Trn_Trnid);
+            }
+            else
+            {
+                await DisplayAlert("błąd", "dokument jest null", "OK");
+            }
+
+
+          
         }
 
     }

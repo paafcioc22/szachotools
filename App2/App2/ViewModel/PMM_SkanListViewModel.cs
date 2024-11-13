@@ -72,7 +72,7 @@ namespace App2.ViewModel
 
         private async Task OpenDiffRaportPage()
         {
-            if (SkanElements.Count > 0)
+            if (SkanElements.Count > 0 && dokument!=null) //todo : dodałem sprawdzenie dokument bo daje bład być może sprawdzać tez eleementy
             {
                 var raportViewModel = new PMM_DiffRaportViewModel(SkanElements.ToList(),dokument);
                 var diffRaportPage = new DiffrenceRaportPage

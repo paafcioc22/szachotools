@@ -78,11 +78,16 @@ namespace App2.View.PrzyjmijMM
 
                     if (app.Skanowanie == 0)//skaner 
                     {
+                        //Analytics.TrackEvent("przyjecie towaru tryb skaner");
+
                         if (!viewModel.IsEntryIloscEnabled)
                             entrySkanEan.Focus();
                     }
                     else
                     {
+
+                        //Analytics.TrackEvent("przyjecie towaru tryb skaner");
+
                         if (viewModel.IsFirstLoad && !viewModel.IsEditMode)
                         {
                             await viewModel.InitiateScan();

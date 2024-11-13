@@ -87,6 +87,7 @@ namespace App2.View
             else
             {
                 WidokSkaner();
+                Analytics.TrackEvent("przecena tryb skaner");
             }
             if (List_AkcjeView.TypAkcji.Contains("Przecena"))
                 DependencyService.Get<IAppVersionProvider>().ShowLong("Sprawdź status drukarki i kolor etykiet");
@@ -1620,12 +1621,14 @@ namespace App2.View
             {
                 var magGidnumer = (Application.Current as App).MagGidNumer;
 
-                if (magGidnumer == 0)
-                {
-                    ServicePrzyjmijMM api = new ServicePrzyjmijMM();
-                    var magazyn = await api.GetSklepMagNumer();
-                    magGidnumer = (short)magazyn.Id;
-                }
+                 
+                ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                var magazyn = await api.GetSklepMagNumer();
+                magGidnumer = (short)magazyn.Id;
+
+                (Application.Current as App).MagGidNumer= magGidnumer;
+
+
 
                 if (listaToSend[0].TwrSkan > 0)
                 {

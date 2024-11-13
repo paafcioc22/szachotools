@@ -32,7 +32,7 @@ namespace App2.ViewModel
             });
             ScannerOptions = new ZXing.Mobile.MobileBarcodeScanningOptions
             {
-                PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.EAN_13 }
+                PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.CODE_39, ZXing.BarcodeFormat.EAN_13, ZXing.BarcodeFormat.QR_CODE }
             };
             IsScanning = true;
             IsAnalyzing = true;

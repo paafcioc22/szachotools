@@ -53,7 +53,7 @@ namespace App2.View
 
         private async Task CheckMinVersionSzachotools()
         {
-            long bulidVer=0;
+            long bulidVer = 0;
             SzachoSettings settings = new SzachoSettings();
             try
             {
@@ -65,7 +65,7 @@ namespace App2.View
                 var settingslist = await App.TodoManager.GetSzachoSettings();
                 //var settingslist = await Api.ExecSQLCommandAsync<SzachoSettings>("cdn.PC_SprawdzWersje");
 
-                if(settingslist.Any())
+                if (settingslist.Any())
                 {
                     settings = settingslist.FirstOrDefault();
 
@@ -75,7 +75,7 @@ namespace App2.View
 
                         if (update)
                         {
-                            await version.OpenAppInStore(); 
+                            await version.OpenAppInStore();
                         }
                         else
                         {
@@ -84,20 +84,20 @@ namespace App2.View
 
                     }
                 }
-                
+
 
             }
             catch (Exception s)
             {
                 version.ShowShort("Błąd pobierania wersji aplikacji");
                 var isNet = CheckInternetConnection();
-                var app= Application.Current as App ;
+                var app = Application.Current as App;
                 var properties = new Dictionary<string, string>
                 {
                     { "wersjabaza", $"{app.BazaProd}"},
-                    { "wersjaApp", $"{bulidVer}"}, 
-                    { "serwer", $"{app.Serwer}"}, 
-                    { "internet", $"{isNet.ToString()}"} 
+                    { "wersjaApp", $"{bulidVer}"},
+                    { "serwer", $"{app.Serwer}"},
+                    { "internet", $"{isNet.ToString()}"}
 
                 };
                 Crashes.TrackError(s, properties);
@@ -131,7 +131,15 @@ namespace App2.View
         {
             base.OnAppearing();
 
-            await CheckMinVersionSzachotools();            
+            version = DependencyService.Get<IAppVersionProvider>();
+
+            var isNet = CheckInternetConnection();
+            if (!isNet)
+            {
+                version.ShowShort("Brak połączenia z wifi lub LTE");
+                return;
+            }
+            await CheckMinVersionSzachotools();
 
         }
 
@@ -140,16 +148,16 @@ namespace App2.View
             if (isClicked) // Jeśli przycisk został już kliknięty, nie wykonuj żadnych działań.
                 return;
 
-            isClicked=true;
+            isClicked = true;
             try
             {
                 connected = await SettingsPage.SprConn();
                 if (connected)
                 {
-                    await Navigation.PushModalAsync(new View.StartCreateMmPage()); 
+                    await Navigation.PushModalAsync(new View.StartCreateMmPage());
 
 
-                } 
+                }
             }
             catch (Exception s)
             {
@@ -158,9 +166,9 @@ namespace App2.View
             }
             finally
             {
-                isClicked=false;
+                isClicked = false;
             }
-         
+
 
         }
         //weryfikator
@@ -205,7 +213,7 @@ namespace App2.View
                 {
                     viewModel.IsBusy = false;
                     //await Navigation.PushAsync(new PrzyjmijMM_ListaMMDoPrzyjecia()); 
-                    await Navigation.PushAsync(new PMM_NaglowekAndMenuView()); 
+                    await Navigation.PushAsync(new PMM_NaglowekAndMenuView());
 
                 }
                 else
@@ -213,11 +221,11 @@ namespace App2.View
                     viewModel.IsBusy = false;
                     //await DisplayAlert(null, "Brak połączenia z siecią", "OK");
                 }
-                 
+
             }
             catch (Exception x)
             {
-           
+
                 await DisplayAlert(null, x.Message, "OK");
             }
             finally
@@ -275,7 +283,7 @@ namespace App2.View
 
             }
             finally
-            {         
+            {
                 isClicked = false;
             }
 
@@ -296,7 +304,7 @@ namespace App2.View
                 {
                     //await Navigation.PushModalAsync(new List_AkcjeView());
                     await Navigation.PushAsync(new List_AkcjeView());
-                  
+
                 }
                 else
                     await DisplayAlert(null, "Brak połączenia z siecią", "OK");
@@ -351,8 +359,11 @@ namespace App2.View
 
             _userTapped = true;
 
-            await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
-            //await Navigation.PushAsync(new View.widoktestowy());
+            //await Launcher.OpenAsync("http://serwer.szachownica.com.pl:81/zdjecia/Instrukcja_Aplikacji_SzachoTools.pdf");
+            //await Launcher.OpenAsync("https://docs.google.com/document/d/e/2PACX-1vSXA8SYeOaGBanEYJh-8z8X6yXkxTQbZxLiU4nMm6YTu5J5Yy94Z2tu9mkuF5JWgMZVXyr4LjN1gOcy/pub");
+            //await Launcher.OpenAsync("https://docs.google.com/document/d/1VRAUtHXo_qH0u3gOLr6olDtRWtAFtp4XEO7CPsGGRnw/edit?tab=t.0");
+            await Launcher.OpenAsync("https://drive.google.com/file/d/1yr9JjHv_2WF4PMCP08PdnGo8lPgNiiyz/view?usp=sharing");
+       
             _userTapped = false;
         }
 
@@ -396,13 +407,14 @@ namespace App2.View
                 }
             }
             catch (Exception ex)
-            {   
+            {
                 await DisplayAlert("błąd", ex.Message, "OK");
-            }finally
-            { 
-                _userTapped = false; 
+            }
+            finally
+            {
+                _userTapped = false;
                 viewModel.IsBusy = false;
-            } 
+            }
         }
 
         private async void btn_zdjecia_Clicked(object sender, EventArgs e)

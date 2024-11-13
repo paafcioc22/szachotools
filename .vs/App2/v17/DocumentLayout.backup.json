@@ -1,0 +1,820 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\properties\\androidmanifest.xml||{4E01A4BC-CFCF-452C-8C08-51352512D197}",
+      "RelativeMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|solutionrelative:app2\\app2.android\\properties\\androidmanifest.xml||{4E01A4BC-CFCF-452C-8C08-51352512D197}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|App2.Android||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\addskanelementpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\addskanelementpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\weryfikatorcenpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\weryfikatorcenpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\raportlista_addtwrkod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\raportlista_addtwrkod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\loginlista.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\loginlista.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\akcje\\list_scanpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\akcje\\list_scanpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\pmm_diffraportviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\pmm_diffraportviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\createmm\\addtwrpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\createmm\\addtwrpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\foto\\fototest.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\foto\\fototest.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\pmm_skanlistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\pmm_skanlistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\pmm_additemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\pmm_additemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\weryfikatorcenpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\weryfikatorcenpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\pmm_naglowekviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\pmm_naglowekviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\pmm_detailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\pmm_detailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\zxingviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\zxingviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\startpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\startpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\akcje\\list_akcjeafterfiltr.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\akcje\\list_akcjeafterfiltr.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\createmm\\addelementmmlist.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\createmm\\addelementmmlist.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\tworzpaczki\\createpaczkalistazlecen.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\tworzpaczki\\createpaczkalistazlecen.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\scanningresultlistpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\scanningresultlistpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\zxingscannerpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\zxingscannerpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\zxingscannerpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\zxingscannerpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\settingsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\settingsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\viewmodel\\startpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\viewmodel\\startpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\akcje\\list_akcjetwrlist.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\akcje\\list_akcjetwrlist.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\webserwisszacho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|solutionrelative:app2\\app2.android\\webserwisszacho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\services\\webmenager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\services\\webmenager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\optimaapi\\servicedokumentyapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\optimaapi\\servicedokumentyapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\tworzpaczki\\createpaczkalistazlecen.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\tworzpaczki\\createpaczkalistazlecen.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\tworzpaczki\\createpaczkalistapaczek.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\tworzpaczki\\createpaczkalistapaczek.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\model\\imagazynserwis.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\model\\imagazynserwis.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\diffrenceraportpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\diffrenceraportpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\addskanelementpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\addskanelementpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\mainactivity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|solutionrelative:app2\\app2.android\\mainactivity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|solutionrelative:app2\\app2.android\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\mmdetailpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\mmdetailpage.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\przyjmijmm\\startowa\\pmm_naglowekandmenuviewdetail.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\przyjmijmm\\startowa\\pmm_naglowekandmenuviewdetail.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\foto\\fotorelacjelistview.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\foto\\fotorelacjelistview.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\foto\\fototest.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\foto\\fototest.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\akcje\\list_akcjeelemview.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\akcje\\list_akcjeelemview.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\akcje\\list_akcjetwrlist.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\akcje\\list_akcjetwrlist.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2\\view\\loginlista.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\view\\loginlista.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|f55ab99b-3d68-4af9-a3d5-c79e100096b0"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 227,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AndroidManifest.xml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AndroidManifest.xml",
+              "RelativeDocumentMoniker": "App2\\App2.Android\\Properties\\AndroidManifest.xml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AndroidManifest.xml",
+              "RelativeToolTip": "App2\\App2.Android\\Properties\\AndroidManifest.xml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2024-11-13T13:37:12.002Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App2.Android",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+              "RelativeDocumentMoniker": "App2\\App2.Android\\App2.Android.csproj",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
+              "RelativeToolTip": "App2\\App2.Android\\App2.Android.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-11-13T13:35:25.069Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{228e1580-0ef9-329a-bf07-81ebc3dcbf7e}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e3fb24c2-2e84-3146-a5f8-bc25bbc68f8a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RaportLista_AddTwrKod.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\RaportLista_AddTwrKod.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\RaportLista_AddTwrKod.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\RaportLista_AddTwrKod.cs",
+              "RelativeToolTip": "App2\\App2\\View\\RaportLista_AddTwrKod.cs",
+              "ViewState": "AgIAAFsDAAAAAAAAAAAewHEDAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T13:33:40.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "List_AkcjeAfterFiltr.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeAfterFiltr.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Akcje\\List_AkcjeAfterFiltr.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeAfterFiltr.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\Akcje\\List_AkcjeAfterFiltr.xaml.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAIA1wFEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T13:01:27.812Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AddTwrPage.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\CreateMM\\AddTwrPage.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\CreateMM\\AddTwrPage.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\CreateMM\\AddTwrPage.cs",
+              "RelativeToolTip": "App2\\App2\\View\\CreateMM\\AddTwrPage.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAADcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T12:26:12.168Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AddElementMMList.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\CreateMM\\AddElementMMList.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\CreateMM\\AddElementMMList.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\CreateMM\\AddElementMMList.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\CreateMM\\AddElementMMList.xaml.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAAAFoAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T12:26:08.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ScanningResultListPage.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\ScanningResultListPage.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\ScanningResultListPage.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\ScanningResultListPage.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\ScanningResultListPage.xaml",
+              "ViewState": "AgIAAAcAAAAAAAAAAADwvzEAAACmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-08T10:38:15.041Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddSkanElementPage.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml",
+              "ViewState": "AgIAADQAAAAAAAAAAAAAAEMAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-08T10:38:06.715Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WeryfikatorCenPage.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\WeryfikatorCenPage.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\WeryfikatorCenPage.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\WeryfikatorCenPage.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\WeryfikatorCenPage.xaml",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAYwHAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-07T11:38:21.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "StartPageViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\StartPageViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\StartPageViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\StartPageViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\StartPageViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-07T09:02:58.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "WeryfikatorCenPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\WeryfikatorCenPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\WeryfikatorCenPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\WeryfikatorCenPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\WeryfikatorCenPage.xaml.cs",
+              "ViewState": "AgIAAKAAAAAAAAAAAAAAALwAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-31T15:10:45.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "List_AkcjeTwrList.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAIBZwIIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T11:11:21.251Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "WebMenager.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\Services\\WebMenager.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\Services\\WebMenager.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\Services\\WebMenager.cs",
+              "RelativeToolTip": "App2\\App2\\Services\\WebMenager.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAiwDUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T19:42:34.62Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "SettingsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\SettingsViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\SettingsViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\SettingsViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\SettingsViewModel.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T19:33:55.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ZXingViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\ZXingViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\ZXingViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\ZXingViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\ZXingViewModel.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAADMAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T11:32:08.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "ZxingScannerPage.xaml.g.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs",
+              "RelativeToolTip": "App2\\App2\\obj\\Debug\\netstandard2.1\\View\\ZxingScannerPage.xaml.g.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T11:31:45.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ZxingScannerPage.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\ZxingScannerPage.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\ZxingScannerPage.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\ZxingScannerPage.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\ZxingScannerPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-10-17T11:30:17.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PMM_NaglowekViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_NaglowekViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\PMM_NaglowekViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_NaglowekViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\PMM_NaglowekViewModel.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAqwMAAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T11:30:01.744Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ZxingScannerPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\ZxingScannerPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\ZxingScannerPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\ZxingScannerPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\ZxingScannerPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T11:29:47.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PMM_DiffRaportViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_DiffRaportViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\PMM_DiffRaportViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_DiffRaportViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\PMM_DiffRaportViewModel.cs",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAQwN4AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T06:58:38.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PMM_AddItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_AddItemViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\PMM_AddItemViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_AddItemViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\PMM_AddItemViewModel.cs",
+              "ViewState": "AgIAAHMBAAAAAAAAAAAQwIUBAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T08:32:00.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ServiceDokumentyApi.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\OptimaAPI\\ServiceDokumentyApi.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\OptimaAPI\\ServiceDokumentyApi.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\OptimaAPI\\ServiceDokumentyApi.cs",
+              "RelativeToolTip": "App2\\App2\\OptimaAPI\\ServiceDokumentyApi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwKoAAAB3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-02T08:17:58.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "CreatePaczkaListaZlecen.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAtwB4AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-18T07:30:05.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "CreatePaczkaListaPaczek.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaPaczek.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaPaczek.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaPaczek.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaPaczek.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-18T07:27:15.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "DiffrenceRaportPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\DiffrenceRaportPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\DiffrenceRaportPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\DiffrenceRaportPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\DiffrenceRaportPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAABxwA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-15T08:08:08.333Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "StartPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\StartPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\StartPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\StartPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\StartPage.xaml.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAF0AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-12T13:53:35.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FotoTest.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoTest.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Foto\\FotoTest.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoTest.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\Foto\\FotoTest.xaml.cs",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAAALcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T10:23:53.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LoginLista.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\LoginLista.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\LoginLista.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\LoginLista.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\LoginLista.xaml.cs",
+              "ViewState": "AgIAABwBAAAAAAAAAAAMwDEBAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-26T08:01:36.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "List_ScanPage.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_ScanPage.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Akcje\\List_ScanPage.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_ScanPage.cs",
+              "RelativeToolTip": "App2\\App2\\View\\Akcje\\List_ScanPage.cs",
+              "ViewState": "AgIAADgGAAAAAAAAAAAQwFgGAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T09:09:57.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "LoginLista.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\LoginLista.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\LoginLista.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\LoginLista.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\LoginLista.xaml",
+              "ViewState": "AgIAABYAAAAAAAAAACBjwCYAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:43:54.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "List_AkcjeTwrList.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\Akcje\\List_AkcjeTwrList.xaml",
+              "ViewState": "AgIAAAMAAAAAAAAAACBjwAwAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:43:48.873Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PMM_SkanListViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_SkanListViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\PMM_SkanListViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_SkanListViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\PMM_SkanListViewModel.cs",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAAAFcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T08:31:42.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "CreatePaczkaListaZlecen.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\TworzPaczki\\CreatePaczkaListaZlecen.xaml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAEQAAABpAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-18T07:30:02.633Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "IMagazynSerwis.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\Model\\IMagazynSerwis.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\Model\\IMagazynSerwis.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\Model\\IMagazynSerwis.cs",
+              "RelativeToolTip": "App2\\App2\\Model\\IMagazynSerwis.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-12T13:51:59.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "List_AkcjeElemView.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeElemView.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Akcje\\List_AkcjeElemView.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Akcje\\List_AkcjeElemView.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\Akcje\\List_AkcjeElemView.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAMBdwAcAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:43:46.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "FotoTest.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoTest.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Foto\\FotoTest.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoTest.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\Foto\\FotoTest.xaml",
+              "ViewState": "AgIAACsAAAAAAAAAACBjwDQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:43:41.235Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "AddSkanElementPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\AddSkanElementPage.xaml.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAASwEwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T08:59:08.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "SettingsPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\SettingsPage.xaml.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\SettingsPage.xaml.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\SettingsPage.xaml.cs",
+              "RelativeToolTip": "App2\\App2\\View\\SettingsPage.xaml.cs",
+              "ViewState": "AgIAAPwAAAAAAAAAAAAAAC4BAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-12T13:52:03.767Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "FotoRelacjeListView.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoRelacjeListView.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\Foto\\FotoRelacjeListView.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\Foto\\FotoRelacjeListView.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\Foto\\FotoRelacjeListView.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAACBjwAkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:43:35.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PMM_DetailsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_DetailsViewModel.cs",
+              "RelativeDocumentMoniker": "App2\\App2\\ViewModel\\PMM_DetailsViewModel.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\ViewModel\\PMM_DetailsViewModel.cs",
+              "RelativeToolTip": "App2\\App2\\ViewModel\\PMM_DetailsViewModel.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAIAwwC8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T08:41:38.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "MMDetailPage.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\MMDetailPage.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\MMDetailPage.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\MMDetailPage.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\MMDetailPage.xaml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAgwEcAAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:40:27.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "PMM_NaglowekAndMenuViewDetail.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\Startowa\\PMM_NaglowekAndMenuViewDetail.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\View\\PrzyjmijMM\\Startowa\\PMM_NaglowekAndMenuViewDetail.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\View\\PrzyjmijMM\\Startowa\\PMM_NaglowekAndMenuViewDetail.xaml",
+              "RelativeToolTip": "App2\\App2\\View\\PrzyjmijMM\\Startowa\\PMM_NaglowekAndMenuViewDetail.xaml",
+              "ViewState": "AgIAAEcAAAAAAAAAAEBlwFAAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-04-11T08:40:09.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "WebSerwisSzacho.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\WebSerwisSzacho.cs",
+              "RelativeDocumentMoniker": "App2\\App2.Android\\WebSerwisSzacho.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\WebSerwisSzacho.cs",
+              "RelativeToolTip": "App2\\App2.Android\\WebSerwisSzacho.cs",
+              "ViewState": "AgIAAKgAAAAAAAAAAABRwKsAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-16T05:56:09.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "App2\\App2.Android\\Properties\\AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AssemblyInfo.cs",
+              "RelativeToolTip": "App2\\App2.Android\\Properties\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T10:29:52.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "MainActivity.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\MainActivity.cs",
+              "RelativeDocumentMoniker": "App2\\App2.Android\\MainActivity.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\MainActivity.cs",
+              "RelativeToolTip": "App2\\App2.Android\\MainActivity.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowDgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-11T10:30:57.109Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

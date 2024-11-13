@@ -28,7 +28,12 @@ namespace App2.ViewModel
 
         public PMM_DetailsViewModel(PMM_DokNaglowek dokument)
         {
-            MMElements= new ObservableRangeCollection<TwrInfo>();
+            if (dokument == null || dokument.Trn_Trnid == null)
+            {
+                throw new ArgumentNullException(nameof(dokument), "Dokument or Trn_Trnid nie może być null.");
+            }
+
+            MMElements = new ObservableRangeCollection<TwrInfo>();
             serviceApi = new ServicePrzyjmijMM();
             LoadMmElementsCommand = new Command(async () => await ExecuteLoadElementsCommand(dokument.Trn_Trnid));
             StartSkanDostawyCommand = new Command(async () => await OpenScanningProcessWindow());
@@ -60,7 +65,8 @@ namespace App2.ViewModel
             if (IsBusy)
                 return;
 
-            IsBusy = true;
+            IsBusy = true; 
+
 
             try
             {

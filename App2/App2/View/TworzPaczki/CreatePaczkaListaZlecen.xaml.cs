@@ -28,7 +28,7 @@ namespace App2.View
         }
 
 
-        async void GetList()
+        async Task GetList()
         {
             var app = Application.Current as App;
             DateTime data;
@@ -77,11 +77,19 @@ namespace App2.View
             ((ListView)sender).SelectedItem = null;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            GetList();
-
             base.OnAppearing();
+
+            try
+            {
+                await GetList();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Błąd:", ex.Message, "OK");
+                 
+            }
         }
 
         private async void BtnCreateNewZlecenie_Clicked(object sender, EventArgs e)

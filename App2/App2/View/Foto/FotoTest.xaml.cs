@@ -36,7 +36,7 @@ namespace App2.View.Foto
             this.akcja = _nazwaAkcji;
             viewModel.IsVisible = isvisible;
             //todo : odremuj
-           
+
         }
         async Task PickImages(string _nazwaAkcji)
         {
@@ -49,7 +49,7 @@ namespace App2.View.Foto
                 {
                     PresentationSourceBounds = System.Drawing.Rectangle.Empty,
                     UseCreateChooser = true,
-                    Title = "Select" 
+                    Title = "Select"
                 };
 
                 cts.CancelAfter(TimeSpan.FromMinutes(5));
@@ -82,11 +82,11 @@ namespace App2.View.Foto
                 using var stream = await file.OpenReadAsync();
 
                 var path = await GetPath(file);
-               
+
                 var czasnazwa = DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
 
                 var nazwa = $"{_nazwaAkcji}_{czasnazwa}.jpg";
-             
+
                 viewModel.AddFoto(new Photo()
                 {
                     URL = path,
@@ -98,54 +98,71 @@ namespace App2.View.Foto
             }
         }
 
+
+        private bool _isPickingPhotos = false;
+
+        //naprawione na wersje 1.3.62
         async Task PickImages2(string _nazwaakcji)
         {
-            int cntFile=0;
 
-            Analytics.TrackEvent("wybranie zdjęcia z galerii");
-            var options = new Plugin.Media.Abstractions.PickMediaOptions
+            if (_isPickingPhotos) return; // Exit if already picking
+
+            _isPickingPhotos = true;
+
+            int cntFile = 0;
+            try
             {
-                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
-                CustomPhotoSize = 35,
-                CompressionQuality = 80
-            };
 
-            var multi = new MultiPickerOptions {
-                MaximumImagesCount = 3,
-                LoadingTitle = "wybierz"
-                
-            };
-            var files = await Plugin.Media.CrossMedia.Current.PickPhotosAsync(options, multi);
-         
-
-            if (files == null)
-                return;
-             
-
-            foreach (var file in files)
-            {
-                PhotoPath = file.Path;
-                cntFile++;
-                var fileName = file.Path.Split("/");
-
-                var czasnazwa = DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
-
-                var nazwa = $"{_nazwaakcji} {cntFile}_{czasnazwa}.jpg";
-
-                viewModel.AddFoto(new Photo()
+                Analytics.TrackEvent("wybranie zdjęcia z galerii");
+                var options = new Plugin.Media.Abstractions.PickMediaOptions
                 {
-                    URL = PhotoPath,
-                    Title = nazwa
-                });
-            }
-            
+                    PhotoSize = Plugin.Media.Abstractions.PhotoSize.Custom,
+                    CustomPhotoSize = 35,
+                    CompressionQuality = 80
+                };
 
-            viewModel.isDone = true;
+                var multi = new MultiPickerOptions
+                {
+                    MaximumImagesCount = 3,
+                    LoadingTitle = "wybierz"
+
+                };
+                var files = await Plugin.Media.CrossMedia.Current.PickPhotosAsync(options, multi);
+
+
+                if (files == null)
+                    return;
+
+
+                foreach (var file in files)
+                {
+                    PhotoPath = file.Path;
+                    cntFile++;
+                    var fileName = file.Path.Split("/");
+
+                    var czasnazwa = DateTime.Now.ToString("yyyy_MM_dd_HHmmss");
+
+                    var nazwa = $"{_nazwaakcji} {cntFile}_{czasnazwa}.jpg";
+
+                    viewModel.AddFoto(new Photo()
+                    {
+                        URL = PhotoPath,
+                        Title = nazwa
+                    });
+                }
+
+
+                viewModel.isDone = true;
+            }
+            finally
+            {
+                _isPickingPhotos = false; // Reset flag when done
+            }
 
         }
         Task<string> GetPath(IMediaFile file)
         {
-            string path="";
+            string path = "";
             return Task.Run(async () =>
             {
                 IsBusy = true;
@@ -158,16 +175,16 @@ namespace App2.View.Foto
                         : file.NameWithoutExtension)
                         + $".{file.Extension}";
 
-                    path= await FilesHelper.SaveToCacheAsync(stream, name);
+                    path = await FilesHelper.SaveToCacheAsync(stream, name);
                     stream.Position = 0;
-                    
+
                 }
                 catch (Exception ex)
                 {
-                    await Application.Current.MainPage.DisplayAlert(null,ex.Message,"OK");
+                    await Application.Current.MainPage.DisplayAlert(null, ex.Message, "OK");
                 }
                 IsBusy = false;
-            return path;
+                return path;
             });
         }
         async Task TakePicture(string _nazwaAkcji)
@@ -265,8 +282,9 @@ namespace App2.View.Foto
                 {
                     var result = await this.DisplayAlert("uwaga!", "Nie wysłano zdjęć na serwer! Chcesz wyjść?", "Tak", "Nie");
 
-                    if (result)                    {
-                        
+                    if (result)
+                    {
+
                         await Navigation.PopAsync();
                     }
                     else
@@ -336,7 +354,7 @@ namespace App2.View.Foto
 
         private async void Button_Clicked_2(object sender, EventArgs e)
         {
-             await PickImages2(akcja.AkN_NazwaAkcji);
+            await PickImages2(akcja.AkN_NazwaAkcji);
         }
     }
 }

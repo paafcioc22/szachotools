@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -74,6 +75,7 @@ namespace App2.View
                         PossibleFormats = new List<ZXing.BarcodeFormat>() {
 
                         //ZXing.BarcodeFormat.CODE_128,
+                        ZXing.BarcodeFormat.QR_CODE,
                         ZXing.BarcodeFormat.CODABAR,
                         ZXing.BarcodeFormat.CODE_39,
                         ZXing.BarcodeFormat.EAN_13
@@ -150,7 +152,16 @@ namespace App2.View
                                 return true;
                             });
                             await Navigation.PopModalAsync();
-                            await pobierztwrkod(result.Text);
+                            //await pobierztwrkod(result.Text);
+
+                            if (result.Text.Contains("https"))
+                            {
+                                await Launcher.OpenAsync(result.Text + "7Sf9pSZHp1cJZArwovRhkwBVzbR2TvktDpykLVdE");
+                            }
+                            else
+                            {
+                                await pobierztwrkod(result.Text);
+                            }
 
 
                         });

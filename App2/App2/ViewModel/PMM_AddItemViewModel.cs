@@ -213,10 +213,19 @@ namespace App2.ViewModel
             try
             {
                 // Logika obsługi wyniku skanowania
-                ScannedEan = result;
                 await Task.Delay(100);
                 await Application.Current.MainPage.Navigation.PopModalAsync();
-                await ScanForProduct(ScannedEan);
+
+                if (result.Contains("https"))
+                {
+                    await Launcher.OpenAsync(result + "7Sf9pSZHp1cJZArwovRhkwBVzbR2TvktDpykLVdE");
+                }
+                else
+                {
+                    ScannedEan = result;
+                    await ScanForProduct(ScannedEan);
+                }
+
             }
             catch (Exception ex)
             {

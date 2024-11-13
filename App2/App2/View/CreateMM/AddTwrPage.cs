@@ -287,6 +287,12 @@ namespace App2.View.CreateMM
         private async void Kodean_Unfocused(object sender, FocusEventArgs e)
         {
             twr_info = await GetDataFromTwrEAN(kodean.Text);
+
+            if (twr_info.Twr_Kod == null) 
+            {
+                await DisplayAlert("bład", "..pobierania karty towaru", "OK");
+            }
+
         }
 
         private async Task EdytujPozyce()
@@ -336,6 +342,12 @@ namespace App2.View.CreateMM
         {
             int totalTwrIlosc = 0;
             //int iloscSkanowana = 0;
+
+            if (twr_info == null || twr_info.Twr_Kod == null) {
+                await DisplayAlert(null, "Akcja przerwana -błąd pobierania danych", "OK");
+                return;
+            }
+
             try
             {
                 CreateDokElementDto createElementDto;
@@ -695,6 +707,7 @@ namespace App2.View.CreateMM
                 {
                     // Obsłuż błędy żądania HTTP
                     var dsa = ex.Message;
+                    throw;
                 }
 
 

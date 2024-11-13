@@ -110,7 +110,7 @@
                                AbsoluteLayout.LayoutFlags="All"
                />
         <!--<Button Text="Pokaż Stany Innych" Clicked="BtnShowOther_Clicked"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"/>-->
-        <Button Text="Skanuj kod (aparat)" 
+        <Button Text="Skanuj kod (QR) - aparat" 
                 Clicked="ScanTwr_Clicked" 
                 HorizontalOptions="FillAndExpand" 
                 VerticalOptions="EndAndExpand"

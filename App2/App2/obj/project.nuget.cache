@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SGkVLOPMU2CaJB5d9KBnsyUYX8CnrowOXvjpT2j3nz7EP1GRkQM/AjyXJfNWDTgO/FLHdDCcLWWU3T0lX/UXhw==",
+  "dgSpecHash": "gZLZUitQI0U=",
   "success": true,
   "projectFilePath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2\\App2.csproj",
   "expectedPackageFiles": [
@@ -124,6 +124,16 @@
     "C:\\Users\\pawel\\.nuget\\packages\\zxing.net.mobile.forms\\2.4.1\\zxing.net.mobile.forms.2.4.1.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Pakiet „RestSharp” 110.2.0 ma znane umiarkowana luki w zabezpieczeniach o ważności, https://github.com/advisories/GHSA-4rr6-2v9v-wcpc",
+      "libraryId": "RestSharp",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.1"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

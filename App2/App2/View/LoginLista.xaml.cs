@@ -71,7 +71,7 @@ namespace App2.View
 
         public async Task SkanujIdetyfikator()
         {
-        
+
             var testCamera = await PermissionService.CheckAndRequestPermissionAsync(new Permissions.Camera());
 
             if (testCamera == PermissionStatus.Granted)
@@ -157,8 +157,8 @@ namespace App2.View
 
                         Device.StartTimer(new TimeSpan(0, 0, 0, 2), () =>
                         {
-                            if (scanPage.IsScanning) 
-                                scanPage.AutoFocus(); 
+                            if (scanPage.IsScanning)
+                                scanPage.AutoFocus();
                             return true;
                         });
                         Navigation.PopModalAsync();
@@ -293,11 +293,19 @@ namespace App2.View
 
             try
             {
-                if (await SettingsPage.SprConn())              
+                if (await SettingsPage.SprConn())
                 {
                     ServiceDokumentyApi serwisApi = new ServiceDokumentyApi();
                     var viewUsers = await serwisApi.GetViewUsersAsync();
                     //var viewUsers = await serwisApi.GetTestViewUsersAsync();
+
+                    ServicePrzyjmijMM api = new ServicePrzyjmijMM();
+                    var magazyn = await api.GetSklepMagNumer();
+                    var magGidnumer = (short)magazyn.Id;
+
+                    (Application.Current as App).MagGidNumer = magGidnumer;
+
+                    await Application.Current.SavePropertiesAsync();
 
                     foreach (var item in viewUsers)
                     {
@@ -306,7 +314,7 @@ namespace App2.View
                     }
                     IsSearching = false;
 
-                    MyListView.ItemsSource = ListaLogin; 
+                    MyListView.ItemsSource = ListaLogin;
 
                 }
             }
@@ -314,7 +322,8 @@ namespace App2.View
             {
                 IsSearching = false;
                 await DisplayAlert("uwaga", $"{s.Message}", "OK");
-            }finally { IsSearching = false; }
+            }
+            finally { IsSearching = false; }
         }
 
         #region Old IsPassOK Function
@@ -348,7 +357,7 @@ namespace App2.View
             }
             return false;
 
-        } 
+        }
         #endregion
 
 
@@ -441,7 +450,7 @@ namespace App2.View
                     {
                         await DisplayAlert(null, "Nie wybrano pracownika z listy", "OK");
                     }
-                    
+
                 }
             }
             catch (Exception s)
@@ -460,9 +469,45 @@ namespace App2.View
         }
 
 
+        private bool _isProcessing = false;
 
         private async void entry_haslo_Completed(object sender, EventArgs e)
         {
+
+            //try
+            //{
+            //    if (_wybranyPracownik != null)
+            //    {
+            //        if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
+            //        {
+
+            //            App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
+            //            await Navigation.PopModalAsync();
+            //        }
+            //        else
+            //        {
+            //            await DisplayAlert("Uwaga", "Wprowadzone hasło jest niepoprawne", "OK");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        await DisplayAlert(null, "Nie wybrano pracownika z listy", "OK");
+            //    }
+            //}
+            //catch (Exception exception)
+            //{
+
+            //    var properties = new Dictionary<string, string>
+            //    {
+            //        { "user", $"{_wybranyPracownik.OpeKod}_{_wybranyPracownik.OpeNazwa}"},
+            //        { "gid", _wybranyPracownik.OpeGidnumer.ToString()},
+            //        { "haslo", entry_haslo.Text}
+            //    };
+            //    Crashes.TrackError(exception, properties);
+            //}
+
+            if (_isProcessing) return; // Prevent multiple clicks
+            _isProcessing = true;
 
             try
             {
@@ -470,9 +515,11 @@ namespace App2.View
                 {
                     if (await IsPassCorrect(_wybranyPracownik.OpeGidnumer))
                     {
-
                         App.SessionManager.CreateSession(_wybranyPracownik.OpeKod);
-                        await Navigation.PopModalAsync();
+                        if (Navigation.ModalStack.Count > 0)
+                        {
+                            await Navigation.PopModalAsync();
+                        }
                     }
                     else
                     {
@@ -486,38 +533,41 @@ namespace App2.View
             }
             catch (Exception exception)
             {
-
                 var properties = new Dictionary<string, string>
                 {
-                    { "user", $"{_wybranyPracownik.OpeKod}_{_wybranyPracownik.OpeNazwa}"},
-                    { "gid", _wybranyPracownik.OpeGidnumer.ToString()},
+                    { "user", $"{_wybranyPracownik?.OpeKod}_{_wybranyPracownik?.OpeNazwa}"},
+                    { "gid", _wybranyPracownik?.OpeGidnumer.ToString()},
                     { "haslo", entry_haslo.Text}
                 };
                 Crashes.TrackError(exception, properties);
+            }
+            finally
+            {
+                _isProcessing = false; // Reset processing flag
             }
         }
 
         private async void UseAparatToScan_Clicked_1(object sender, EventArgs e)
         {
 
-            await DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK"); 
+            await DisplayAlert(null, "Wybierz operatora i zeskanuj indetyfikator", "OK");
 
-            ListViewLogin.ItemSelected +=   (source, args) =>
+            ListViewLogin.ItemSelected += (source, args) =>
             {
                 var pracownik = args.SelectedItem as ViewUser;
 
             };
-             await SkanujIdetyfikator();
+            await SkanujIdetyfikator();
         }
 
 
     }
 
-   // public class Pracownik
+    // public class Pracownik
     //{
     //    public string OpeKod { get; set; }
     //    public string OpeNazwa { get; set; }
-     
+
     //    public int OpeGidnumer { get; set; }
 
     //}

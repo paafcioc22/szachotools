@@ -65,7 +65,7 @@
                        ReturnCommandParameter="{Binding Text, Source={RelativeSource Self}}" />
 
 
-                <Button Text="Skanuj kod (aparat)" Command="{Binding StartCameraCommand}" CornerRadius="20" IsVisible="{Binding IsEditMode,Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Text="Skanuj kod (QR) - aparat" Command="{Binding StartCameraCommand}" CornerRadius="20" IsVisible="{Binding IsEditMode,Converter={StaticResource InverseBooleanConverter}}"/>
                 <Button Text="Zapisz" Command="{Binding SaveCommand}" CornerRadius="20" x:Name="savebtn"/>
                 <Button Text="Usuń"   Command="{Binding DeleteCommand}" IsVisible="{Binding IsDeleteButtonVisible}"
                         CornerRadius="20" x:Name="btn_delete" BackgroundColor="OrangeRed" TextColor="White"/>
