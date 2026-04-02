@@ -123,12 +123,6 @@
     <PackageReference Include="PhotoBrowser.Forms">
       <Version>0.1.4</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.CurrentActivity">
-      <Version>2.1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Plugin.Permissions">
-      <Version>6.0.1</Version>
-    </PackageReference>
     <PackageReference Include="Plugin.SewooXamarin.SDK">
       <Version>1.0.5</Version>
     </PackageReference>
@@ -183,6 +177,7 @@
     <Compile Include="WiFiConnector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

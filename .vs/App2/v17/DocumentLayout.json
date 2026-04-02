@@ -1,16 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\",
+  "WorkspaceRootPath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|App2.Android||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{7E39847C-961D-42A3-823B-2CCA49CA7052}|App2\\WebApiLib\\WebApiLib.csproj|c:\\users\\pawel\\source\\repos\\szachotools xamarin\\szachotools\\app2\\webapilib\\serwis\\szachoapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E39847C-961D-42A3-823B-2CCA49CA7052}|App2\\WebApiLib\\WebApiLib.csproj|solutionrelative:app2\\webapilib\\serwis\\szachoapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\properties\\androidmanifest.xml||{4E01A4BC-CFCF-452C-8C08-51352512D197}",
-      "RelativeMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|solutionrelative:app2\\app2.android\\properties\\androidmanifest.xml||{4E01A4BC-CFCF-452C-8C08-51352512D197}"
+      "AbsoluteMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|c:\\users\\pawel\\source\\repos\\szachotools xamarin\\szachotools\\app2\\app2\\app.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}",
+      "RelativeMoniker": "D:0:0:{B0835B56-A5C2-4A79-B998-67844A078182}|App2\\App2\\App2.csproj|solutionrelative:app2\\app2\\app.xaml||{2974C621-7033-421A-B08A-11D27B021D1B}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF7D38AB-DF5D-4316-9B81-96BE3D3589DF}|App2\\App2.Android\\App2.Android.csproj|c:\\users\\pawel\\source\\repos\\paafcioc22\\szachotools\\app2\\app2.android\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|f55ab99b-3d68-4af9-a3d5-c79e100096b0"
+      "AbsoluteMoniker": "D:0:0:{7E39847C-961D-42A3-823B-2CCA49CA7052}|App2\\WebApiLib\\WebApiLib.csproj|c:\\users\\pawel\\source\\repos\\szachotools xamarin\\szachotools\\app2\\webapilib\\serwis\\szachoapiservicexam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E39847C-961D-42A3-823B-2CCA49CA7052}|App2\\WebApiLib\\WebApiLib.csproj|solutionrelative:app2\\webapilib\\serwis\\szachoapiservicexam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 227,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -48,10 +50,6 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:0:0:{228e1580-0ef9-329a-bf07-81ebc3dcbf7e}"
             },
             {
@@ -59,27 +57,51 @@
               "Name": "ST:0:0:{e3fb24c2-2e84-3146-a5f8-bc25bbc68f8a}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "App2.Android",
-              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
-              "RelativeDocumentMoniker": "App2\\App2.Android\\App2.Android.csproj",
-              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\App2.Android.csproj",
-              "RelativeToolTip": "App2\\App2.Android\\App2.Android.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-13T18:46:10.236Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{35a13b2b-183b-3ec5-a509-0bd77da1a60c}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AndroidManifest.xml",
-              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AndroidManifest.xml",
-              "RelativeDocumentMoniker": "App2\\App2.Android\\Properties\\AndroidManifest.xml",
-              "ToolTip": "C:\\Users\\pawel\\source\\repos\\paafcioc22\\szachotools\\App2\\App2.Android\\Properties\\AndroidManifest.xml",
-              "RelativeToolTip": "App2\\App2.Android\\Properties\\AndroidManifest.xml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2024-11-13T18:20:45.752Z"
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\App2\\App.xaml",
+              "RelativeDocumentMoniker": "App2\\App2\\App.xaml",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\App2\\App.xaml",
+              "RelativeToolTip": "App2\\App2\\App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-04-02T06:53:10.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SzachoApiService.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\WebApiLib\\Serwis\\SzachoApiService.cs",
+              "RelativeDocumentMoniker": "App2\\WebApiLib\\Serwis\\SzachoApiService.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\WebApiLib\\Serwis\\SzachoApiService.cs",
+              "RelativeToolTip": "App2\\WebApiLib\\Serwis\\SzachoApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-02T06:52:48.637Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SzachoApiServiceXam.cs",
+              "DocumentMoniker": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\WebApiLib\\Serwis\\SzachoApiServiceXam.cs",
+              "RelativeDocumentMoniker": "App2\\WebApiLib\\Serwis\\SzachoApiServiceXam.cs",
+              "ToolTip": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\App2\\WebApiLib\\Serwis\\SzachoApiServiceXam.cs",
+              "RelativeToolTip": "App2\\WebApiLib\\Serwis\\SzachoApiServiceXam.cs",
+              "ViewState": "AgIAAJkBAAAAAAAAAAAUwK8BAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-02T06:52:20.319Z",
+              "EditorCaption": ""
             }
           ]
         }

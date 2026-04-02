@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "dgSpecHash": "AZuSBPfOsQk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\WebApiXL\\WebApiXL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pawel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.numerics.vectors\\4.4.0\\system.numerics.vectors.4.4.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512",
+    "C:\\Users\\pawel\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Pakiet „System.Text.Json” 8.0.0 ma znane wysoka luki w zabezpieczeniach o ważności, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\WebApiXL\\WebApiXL.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\WebApiXL\\WebApiXL.csproj",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.1"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Pakiet „System.Text.Json” 8.0.0 ma znane wysoka luki w zabezpieczeniach o ważności, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "projectPath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\WebApiXL\\WebApiXL.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\pawel\\source\\repos\\Szachotools xamarin\\szachotools\\WebApiXL\\WebApiXL.csproj",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        ".NETStandard,Version=v2.1"
+      ]
+    }
+  ]
+}

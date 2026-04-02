@@ -954,6 +954,11 @@ namespace App2.View
                 DisplayAlert(null, "Akcja zablokowana warunkowo przez IT", "OK");            
             }
         }
+
+        private async void btn_privacy_Clicked(object sender, EventArgs e)
+        {
+              await Launcher.OpenAsync(new Uri("https://szachotools.pl:8084/home/privacy"));
+        }
     }
 
     public class CennikClass

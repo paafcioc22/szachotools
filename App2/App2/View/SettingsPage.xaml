@@ -109,7 +109,9 @@
                     CornerRadius="15"
                     Margin="20,0,20,0"/>
 
+
             </StackLayout>
+            <Button Text="Polityka prywatności" Clicked="btn_privacy_Clicked" BackgroundColor="White"  x:Name="btn_privacy" BorderWidth="3" />
         </StackLayout>
     </ContentPage>
 

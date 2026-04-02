@@ -1,0 +1,11 @@
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\bin\Debug\netstandard2.1\WebApiXL.deps.json
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\bin\Debug\netstandard2.1\WebApiXL.dll
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\bin\Debug\netstandard2.1\WebApiXL.pdb
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.csproj.AssemblyReference.cache
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.AssemblyInfoInputs.cache
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.AssemblyInfo.cs
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.csproj.CoreCompileInputs.cache
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.sourcelink.json
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.dll
+C:\Users\pawel\source\repos\Szachotools xamarin\szachotools\WebApiXL\obj\Debug\netstandard2.1\WebApiXL.pdb

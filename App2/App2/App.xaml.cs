@@ -60,6 +60,8 @@ namespace App2
             networkMonitor = new NetworkMonitor();
             Plugin.Media.CrossMedia.Current.Initialize();
             MainPage = new NavigationPage( new View.StartPage());
+
+
         }
 
 
