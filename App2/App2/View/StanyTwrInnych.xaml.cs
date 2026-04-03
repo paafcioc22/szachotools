@@ -51,7 +51,7 @@ namespace App2.View
             string query = "CDN.StanyTowaruWOddzialach_int " + twrGidnumer;
             try
             {
-
+                var akcje = await App.ApiService.PobierzMagazynyAsync(twrGidnumer);
                 var Maglista = await App.TodoManager.GetTodoItemsAsync(query);
                 listaSklepows = Maglista;
                 MyListView.ItemsSource = listaSklepows;

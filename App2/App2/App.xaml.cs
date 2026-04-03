@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using App2.Model.ApiModel;
+using App2.Services;
+using App2.View;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Plugin.Media;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using SzachoApi.Client;
+using SzachoXamarin.Services;
 using WebApiLib;
 using WebApiLib.Serwis;
-using App2.View;
-using App2.Services;
-using System.IO;
-using Plugin.Media;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace App2
@@ -20,6 +23,8 @@ namespace App2
     {
         public static WebMenager TodoManager { get; set; }
         public static SessionManager SessionManager { get; set; }= new SessionManager();
+        public static ISzachoApiService ApiService { get; private set; }
+
 
         NetworkMonitor networkMonitor;
 
@@ -65,13 +70,24 @@ namespace App2
         }
 
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
             AppCenter.Start("android=81c9a3a4-22c2-495f-8d63-c07f259b834a;" +
                  "uwp={Your UWP App secret here};" +
                  "ios={Your iOS App secret here};" +
                  "macos={Your macOS App secret here};",
                  typeof(Analytics), typeof(Crashes));
+
+            //var api = new SzachoApiService(
+            //    ApiConfig.BaseUrl,
+            //    ApiConfig.Username,
+            //    ApiConfig.Password,
+            //    new XamarinTokenStorage()
+            //);
+            //await api.InitializeAsync();
+            //App.ApiService = api;
+
+
         }
 
         protected override void OnSleep()

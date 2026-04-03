@@ -17,7 +17,7 @@ namespace SzachoApi.Client
 
         Task<User> PobierzUzytkownikaAsync(int gidNumer);
         Task<SzachoSettings> SprawdzWersjeAsync();
-        Task<List<int>> PobierzMagazynyAsync(int twrNumer);
+        Task<List<int>> PobierzMagazynyAsync(string twrNumer);
 
         Task<List<AkcjeNagElem>> PobierzAkcjeTypyAsync(int magNumer, int dodajDni = 0);
         Task<List<AkcjeNagElem>> PobierzAkcjeAsync(int akNNumer);

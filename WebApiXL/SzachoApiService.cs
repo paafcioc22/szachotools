@@ -118,7 +118,7 @@ namespace SzachoApi.Client
 
         // ─── Magazyny ─────────────────────────────────────────────────────────
 
-        public async Task<List<int>> PobierzMagazynyAsync(int twrNumer)
+        public async Task<List<int>> PobierzMagazynyAsync(string twrNumer)
         {
             await EnsureValidTokenAsync().ConfigureAwait(false);
             var list = await GetListAsync<MagazynInfo>(
